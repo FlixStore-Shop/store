@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#290204"/>
+      <stop offset="50%" stop-color="#08080c"/>
+      <stop offset="100%" stop-color="#02162b"/>
+    </linearGradient>
+    <radialGradient id="cardGlow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#E50914" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#E50914" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="dropGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#E50914" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="600" height="360" fill="url(#cardBg)"/>
+  <rect width="600" height="360" fill="url(#cardGlow)"/>
+
+  <!-- Subtle Ambient Grid / Accents -->
+  <g opacity="0.08" stroke="#ffffff" stroke-width="1">
+    <line x1="0" y1="90" x2="600" y2="90" />
+    <line x1="0" y1="180" x2="600" y2="180" />
+    <line x1="0" y1="270" x2="600" y2="270" />
+    <line x1="150" y1="0" x2="150" y2="360" />
+    <line x1="300" y1="0" x2="300" y2="360" />
+    <line x1="450" y1="0" x2="450" y2="360" />
+  </g>
+
+  <!-- Centered Official Logo Artwork -->
+  <g transform="translate(300, 140)">
+    
+      <!-- Dual Combo Emblems -->
+      <g filter="url(#dropGlow)" transform="translate(0, -10)">
+        <!-- Left: Netflix N -->
+        <g transform="translate(-55, 0) scale(0.7)">
+          <path d="M-24 -40 L-10 -40 L-10 40 L-24 40 Z" fill="#B81D24"/>
+          <path d="M10 -40 L24 -40 L24 40 L10 40 Z" fill="#B81D24"/>
+          <path d="M-24 -40 L-10 -40 L24 40 L10 40 Z" fill="#E50914"/>
+        </g>
+        <!-- Center Plus -->
+        <text x="0" y="8" font-family="sans-serif" font-size="34" font-weight="900" fill="#FBBF24" text-anchor="middle">+</text>
+        <!-- Right: Prime Video -->
+        <g transform="translate(55, 0)">
+          <circle cx="0" cy="0" r="30" fill="#00A8E1"/>
+          <path d="M-15 4 Q0 16 15 4" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
+          <polygon points="13,0 19,5 12,8" fill="#FFFFFF"/>
+        </g>
+      </g>
+    
+  </g>
+
+  <!-- Brand Title -->
+  <text x="300" y="245" 
+    text-anchor="middle" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" 
+    font-size="28" 
+    font-weight="800" 
+    fill="#ffffff" 
+    letter-spacing="0.5">
+    Netflix + Prime Video
+  </text>
+
+  <!-- Badge Pill -->
+  
+  <g transform="translate(300, 275)">
+    <rect x="-70" y="-12" width="140" height="24" rx="12" fill="rgba(251, 191, 36, 0.2)" stroke="#fbbf24" stroke-width="1.2"/>
+    <text x="0" y="4" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#fbbf24" letter-spacing="1">
+      80% SUPER SAVER
+    </text>
+  </g>
+
+  <!-- Feature Subtitle -->
+  <text x="300" y="320" 
+    text-anchor="middle" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="13" 
+    font-weight="500" 
+    fill="rgba(255, 255, 255, 0.7)" 
+    letter-spacing="0.3">
+    2-in-1 Master Entertainment Bundle • 4K UHD Across Both
+  </text>
+</svg>

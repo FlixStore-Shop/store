@@ -1,0 +1,20 @@
+services:
+  flixstore:
+    build: .
+    container_name: flixstore-platform
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_PATH=/data/flixstore.db
+    volumes:
+      # Persistent volume for database so data is never lost during container updates
+      - flixstore-data:/data
+    env_file:
+      - .env
+
+volumes:
+  flixstore-data:
+    name: flixstore_db_data

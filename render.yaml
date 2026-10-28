@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: flixstore-platform
+    env: node
+    plan: starter # Starter plan or free plan
+    buildCommand: npm install --production
+    startCommand: node server.js
+    envVars:
+      - key: NODE_VERSION
+        value: 22.11.0
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DB_PATH
+        value: /var/data/flixstore.db
+    disk:
+      name: flixstore-storage
+      mountPath: /var/data
+      sizeGB: 1

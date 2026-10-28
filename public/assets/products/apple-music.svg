@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#24050f"/>
+      <stop offset="50%" stop-color="#0d0407"/>
+      <stop offset="100%" stop-color="#240715"/>
+    </linearGradient>
+    <radialGradient id="cardGlow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#FA243C" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#FA243C" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="dropGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#FA243C" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="600" height="360" fill="url(#cardBg)"/>
+  <rect width="600" height="360" fill="url(#cardGlow)"/>
+
+  <!-- Subtle Ambient Grid / Accents -->
+  <g opacity="0.08" stroke="#ffffff" stroke-width="1">
+    <line x1="0" y1="90" x2="600" y2="90" />
+    <line x1="0" y1="180" x2="600" y2="180" />
+    <line x1="0" y1="270" x2="600" y2="270" />
+    <line x1="150" y1="0" x2="150" y2="360" />
+    <line x1="300" y1="0" x2="300" y2="360" />
+    <line x1="450" y1="0" x2="450" y2="360" />
+  </g>
+
+  <!-- Centered Official Logo Artwork -->
+  <g transform="translate(300, 140)">
+    
+      <!-- Apple Music Note -->
+      <g filter="url(#dropGlow)" transform="translate(0, -10)">
+        <rect x="-42" y="-42" width="84" height="84" rx="22" fill="#FA243C"/>
+        <path d="M-8 22 C-14 22 -18 18 -18 13 C-18 8 -13 5 -6 5 L-6 -18 L16 -24 L16 14 C10 14 6 10 6 5 C6 0 11 -3 16 -3" 
+          fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    
+  </g>
+
+  <!-- Brand Title -->
+  <text x="300" y="245" 
+    text-anchor="middle" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" 
+    font-size="28" 
+    font-weight="800" 
+    fill="#ffffff" 
+    letter-spacing="0.5">
+    Apple Music Premium
+  </text>
+
+  <!-- Badge Pill -->
+  
+  <g transform="translate(300, 275)">
+    <rect x="-70" y="-12" width="140" height="24" rx="12" fill="rgba(250, 36, 60, 0.2)" stroke="#fa243c" stroke-width="1.2"/>
+    <text x="0" y="4" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#fa243c" letter-spacing="1">
+      DOLBY ATMOS
+    </text>
+  </g>
+
+  <!-- Feature Subtitle -->
+  <text x="300" y="320" 
+    text-anchor="middle" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="13" 
+    font-weight="500" 
+    fill="rgba(255, 255, 255, 0.7)" 
+    letter-spacing="0.3">
+    100M+ Songs • Lossless Audio (24-bit/192kHz) • Spatial Audio
+  </text>
+</svg>

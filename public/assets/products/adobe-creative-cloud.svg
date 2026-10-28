@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a0c24"/>
+      <stop offset="50%" stop-color="#0e1017"/>
+      <stop offset="100%" stop-color="#0a1728"/>
+    </linearGradient>
+    <linearGradient id="adobeRainbow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF0000"/>
+      <stop offset="25%" stop-color="#FF7A00"/>
+      <stop offset="50%" stop-color="#FF007A"/>
+      <stop offset="75%" stop-color="#7B00FF"/>
+      <stop offset="100%" stop-color="#00A6FF"/>
+    </linearGradient>
+    <radialGradient id="cardGlow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#ff007a" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ff007a" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="dropGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#ff007a" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="600" height="360" fill="url(#cardBg)"/>
+  <rect width="600" height="360" fill="url(#cardGlow)"/>
+
+  <!-- Subtle Ambient Grid / Accents -->
+  <g opacity="0.08" stroke="#ffffff" stroke-width="1">
+    <line x1="0" y1="90" x2="600" y2="90" />
+    <line x1="0" y1="180" x2="600" y2="180" />
+    <line x1="0" y1="270" x2="600" y2="270" />
+    <line x1="150" y1="0" x2="150" y2="360" />
+    <line x1="300" y1="0" x2="300" y2="360" />
+    <line x1="450" y1="0" x2="450" y2="360" />
+  </g>
+
+  <!-- Centered Official Logo Artwork -->
+  <g transform="translate(300, 140)">
+    
+      <!-- Adobe CC Ribbon / Cloud Emblem -->
+      <g filter="url(#dropGlow)" transform="translate(0, -15)">
+        <path d="M-40 12 C-45 -18 -15 -35 10 -25 C25 -32 48 -18 42 12 C48 24 30 35 15 30 C-10 38 -38 32 -40 12 Z" 
+          fill="none" stroke="url(#adobeRainbow)" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/>
+        <!-- App icon squares -->
+        <g transform="translate(-60, 42)">
+          <rect x="0" y="0" width="24" height="24" rx="5" fill="#001E36"/><text x="12" y="17" fill="#31A8FF" font-size="12" font-weight="900" text-anchor="middle">Ps</text>
+          <rect x="32" y="0" width="24" height="24" rx="5" fill="#330000"/><text x="44" y="17" fill="#FF9A00" font-size="12" font-weight="900" text-anchor="middle">Ai</text>
+          <rect x="64" y="0" width="24" height="24" rx="5" fill="#00005B"/><text x="76" y="17" fill="#9999FF" font-size="12" font-weight="900" text-anchor="middle">Pr</text>
+          <rect x="96" y="0" width="24" height="24" rx="5" fill="#200030"/><text x="108" y="17" fill="#D29BFF" font-size="12" font-weight="900" text-anchor="middle">Ae</text>
+        </g>
+      </g>
+    
+  </g>
+
+  <!-- Brand Title -->
+  <text x="300" y="245" 
+    text-anchor="middle" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" 
+    font-size="28" 
+    font-weight="800" 
+    fill="#ffffff" 
+    letter-spacing="0.5">
+    Adobe Creative Cloud
+  </text>
+
+  <!-- Badge Pill -->
+  
+  <g transform="translate(300, 275)">
+    <rect x="-70" y="-12" width="140" height="24" rx="12" fill="rgba(255, 0, 122, 0.2)" stroke="#ff3366" stroke-width="1.2"/>
+    <text x="0" y="4" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#ff3366" letter-spacing="1">
+      MASTER PRO SUITE
+    </text>
+  </g>
+
+  <!-- Feature Subtitle -->
+  <text x="300" y="320" 
+    text-anchor="middle" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-size="13" 
+    font-weight="500" 
+    fill="rgba(255, 255, 255, 0.7)" 
+    letter-spacing="0.3">
+    20+ Professional Creative Apps • 100GB Cloud • Firefly AI
+  </text>
+</svg>

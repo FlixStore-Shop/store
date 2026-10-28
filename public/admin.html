@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlixStore Admin Portal | Database Handover & Control Center</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    /* Admin specific layout styling */
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+    .admin-sidebar {
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--glass-border);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-nav {
+      list-style: none;
+      margin-top: 30px;
+      flex: 1;
+    }
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 6px;
+      transition: all 0.2s ease;
+    }
+    .admin-nav-item:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+    .admin-nav-item.active {
+      background: var(--accent-blue);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.35);
+    }
+    .admin-main {
+      padding: 30px 40px;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+    .admin-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    .data-table th, .data-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .data-table th {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .handover-card {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      border-radius: var(--radius-xl);
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-layout">
+    
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <a href="/" class="brand-logo" style="padding-left:8px;">
+        <div class="brand-icon-box" style="width:34px; height:34px;">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px; height:18px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+        <div>
+          <span class="brand-name">FlixStore</span>
+          <span class="brand-tag">ADMIN</span>
+        </div>
+      </a>
+
+      <ul class="admin-nav">
+        <li class="admin-nav-item active" data-tab="overview">
+          <span>📊</span> Overview & KPIs
+        </li>
+        <li class="admin-nav-item" data-tab="orders">
+          <span>📦</span> Orders & Deliveries
+        </li>
+        <li class="admin-nav-item" data-tab="products">
+          <span>🎬</span> Subscription Catalog
+        </li>
+        <li class="admin-nav-item" data-tab="vault">
+          <span>🔑</span> Credential Vault
+        </li>
+        <li class="admin-nav-item" data-tab="coupons">
+          <span>🏷️</span> Promo Codes
+        </li>
+        <li class="admin-nav-item" data-tab="database" style="color:#a78bfa;">
+          <span>💾</span> Database & Security
+        </li>
+      </ul>
+
+      <div style="border-top:1px solid var(--glass-border); padding-top:16px;">
+        <a href="/" class="btn-secondary" style="width:100%; justify-content:center; margin-bottom:8px;">
+          ← Visit Storefront
+        </a>
+        <button class="action-btn" onclick="adminLogout()" style="width:100%; justify-content:center; color:#f87171;">
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+      
+      <div class="admin-topbar">
+        <div>
+          <h1 style="font-size:1.6rem; font-weight:800; letter-spacing:-0.5px;">FlixStore Management Portal</h1>
+          <p style="color:var(--text-secondary); font-size:0.85rem;">Complete inventory, order fulfillment, security & database handover center</p>
+        </div>
+        <div style="display:flex; gap:12px;">
+          <button class="btn-secondary" onclick="triggerDatabaseDownload()" title="Download flixstore.db SQLite file directly">
+            💾 Download flixstore.db
+          </button>
+          <button class="btn-primary" onclick="openAddProductModal()">
+            + Add New Subscription
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 1: OVERVIEW & KPIS -->
+      <section id="overviewView" class="admin-tab-content">
+        
+        <!-- KPI Cards -->
+        <div class="stats-grid" style="margin-bottom:30px;">
+          <div class="stat-card">
+            <div class="stat-icon emerald">💵</div>
+            <div>
+              <div id="statTotalRevenue" class="stat-value">৳0</div>
+              <div class="stat-label">Total Verified Revenue</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon blue">📦</div>
+            <div>
+              <div id="statTotalOrders" class="stat-value">0</div>
+              <div class="stat-label">Total Orders Processed</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon purple">🎬</div>
+            <div>
+              <div id="statActiveProducts" class="stat-value">0</div>
+              <div class="stat-label">Active Subscriptions</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon amber">🔑</div>
+            <div>
+              <div id="statAvailableVault" class="stat-value">0</div>
+              <div class="stat-label">Available Vault Accounts</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:24px; margin-bottom:30px;">
+          <!-- Recent Orders Table -->
+          <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h3 style="font-size:1.1rem; font-weight:700;">Recent Customer Orders</h3>
+              <button class="action-btn" onclick="switchAdminTab('orders')" style="font-size:0.75rem;">View All →</button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Order #</th>
+                    <th>Customer</th>
+                    <th>Amount</th>
+                    <th>Gateway</th>
+                    <th>Status</th>
+                    <th>Credentials</th>
+                  </tr>
+                </thead>
+                <tbody id="recentOrdersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Sales Breakdown by Category -->
+          <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:16px;">Revenue by Category</h3>
+            <div id="categorySalesStats"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 2: ORDERS MANAGEMENT -->
+      <section id="ordersView" class="admin-tab-content" style="display:none;">
+        <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
+          <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:16px;">All Customer Orders & Dispatched Credentials</h3>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order Number</th>
+                  <th>Customer Information</th>
+                  <th>Total Amount</th>
+                  <th>Payment Method & TrxID</th>
+                  <th>Delivery Status</th>
+                  <th>Date</th>
+                  <th>Credentials</th>
+                </tr>
+              </thead>
+              <tbody id="allOrdersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: PRODUCTS CATALOG -->
+      <section id="productsView" class="admin-tab-content" style="display:none;">
+        <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 style="font-size:1.2rem; font-weight:700;">Subscription Products</h3>
+            <button class="btn-primary" onclick="openAddProductModal()">+ Add New Subscription</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Base Price</th>
+                  <th>Badge</th>
+                  <th>Customer Rating</th>
+                </tr>
+              </thead>
+              <tbody id="adminProductsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: CREDENTIAL VAULT -->
+      <section id="vaultView" class="admin-tab-content" style="display:none;">
+        <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div>
+              <h3 style="font-size:1.2rem; font-weight:700;">Pre-Stocked Credential Vault</h3>
+              <p style="color:var(--text-secondary); font-size:0.85rem;">When a customer places an order, the system pulls an available account or key from this vault.</p>
+            </div>
+            <button class="btn-primary" onclick="openAddVaultModal()">+ Stock New Account / Key</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Subscription</th>
+                  <th>Type</th>
+                  <th>Account / Email / Key</th>
+                  <th>Password</th>
+                  <th>PIN</th>
+                  <th>Vault Status</th>
+                </tr>
+              </thead>
+              <tbody id="adminVaultTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: PROMO CODES -->
+      <section id="couponsView" class="admin-tab-content" style="display:none;">
+        <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
+          <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:16px;">Promotional Coupons & Discounts</h3>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Discount</th>
+                  <th>Min Spend</th>
+                  <th>Usage Count</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="adminCouponsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: DATABASE HANDOVER & SECURITY CENTER -->
+      <section id="databaseView" class="admin-tab-content" style="display:none;">
+        
+        <!-- Big Handover Hero Card -->
+        <div class="handover-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
+            <div>
+              <span class="badge-pill" style="background:rgba(139,92,246,0.3); color:#c4b5fd; margin-bottom:10px;">
+                DATABASE HANDOVER CENTER
+              </span>
+              <h2 style="font-size:1.8rem; font-weight:800; margin-top:6px; color:#ffffff;">
+                Your Complete FlixStore Database & Security Vault
+              </h2>
+              <p style="color:#cbd5e1; max-width:680px; font-size:0.95rem; margin-top:6px; line-height:1.6;">
+                As requested, you have complete ownership and handover of the database. You can download the physical SQLite database file (<code>flixstore.db</code>) with one click, export a portable JSON backup, or inspect table statistics at any time.
+              </p>
+            </div>
+            <div style="font-size:3.5rem;">💾</div>
+          </div>
+
+          <div style="display:flex; gap:16px; margin-top:20px;">
+            <button class="btn-primary" style="padding:14px 28px; font-size:1rem;" onclick="triggerDatabaseDownload()">
+              📥 Download Live flixstore.db (SQLite File)
+            </button>
+            <button class="btn-secondary" style="padding:14px 24px; font-size:1rem;" onclick="triggerJsonExport()">
+              📄 Export Full JSON Database
+            </button>
+          </div>
+        </div>
+
+        <!-- Database Health & File Details -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:30px;">
+          
+          <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:24px;">
+            <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:16px;">Database File Statistics</h3>
+            
+            <div style="font-size:0.88rem; line-height:2;">
+              <div>File Path: <strong id="dbFilePath" style="font-family:monospace; color:#60a5fa;"></strong></div>
+              <div>File Size: <strong id="dbFileSize"></strong></div>
+              <div>Integrity Check: <strong id="dbIntegrity" style="color:#34d399;"></strong></div>
+              <div>Last Written: <span id="dbLastModified"></span></div>
+            </div>
+
+            <h4 style="font-size:0.95rem; margin-top:20px; font-weight:700;">Record Counts by Table:</h4>
+            <div id="dbTableCounts"></div>
+          </div>
+
+          <!-- Security Architecture Verification -->
+          <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:24px;">
+            <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:16px;">Security & Protection Architecture</h3>
+            
+            <ul style="list-style:none; font-size:0.88rem; color:var(--text-secondary); line-height:1.8;">
+              <li style="display:flex; gap:10px;">
+                <span style="color:#34d399;">✓</span>
+                <span><strong>scrypt Key Derivation:</strong> Passwords hashed with 64-byte cryptographic salts.</span>
+              </li>
+              <li style="display:flex; gap:10px;">
+                <span style="color:#34d399;">✓</span>
+                <span><strong>Zero SQL Injection:</strong> 100% Parameterized prepared statements across all queries.</span>
+              </li>
+              <li style="display:flex; gap:10px;">
+                <span style="color:#34d399;">✓</span>
+                <span><strong>Rate Limiting Protection:</strong> In-memory sliding window defense against brute force.</span>
+              </li>
+              <li style="display:flex; gap:10px;">
+                <span style="color:#34d399;">✓</span>
+                <span><strong>XSS Defense:</strong> Strict sanitization of customer names, reviews, and inputs.</span>
+              </li>
+              <li style="display:flex; gap:10px;">
+                <span style="color:#34d399;">✓</span>
+                <span><strong>Encrypted Vault:</strong> Customer credentials isolated and only revealed to authenticated buyers.</span>
+              </li>
+              <li style="display:flex; gap:10px;">
+                <span style="color:#34d399;">✓</span>
+                <span><strong>Hardened HTTP Headers:</strong> X-Content-Type-Options, X-Frame-Options, strict referrer policies.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- =========================================================================
+       ADMIN MODALS
+       ========================================================================= -->
+
+  <!-- Admin Login Modal -->
+  <div id="adminLoginModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box" style="max-width:420px; padding:32px;">
+      <h2 style="font-size:1.5rem; font-weight:800; margin-bottom:8px;">Admin Authentication</h2>
+      <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:20px;">
+        FlixStore Master Administration & Database Security Gate.
+      </p>
+
+      <form onsubmit="handleAdminLogin(event)">
+        <div class="form-group">
+          <label>Admin Email</label>
+          <input type="email" id="adminEmail" class="form-input" value="admin@flixstore.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Admin Password</label>
+          <input type="password" id="adminPassword" class="form-input" value="adminflixstore2026!" required>
+        </div>
+
+        <div id="adminLoginError" style="color:#f87171; font-size:0.82rem; margin-bottom:12px;"></div>
+
+        <button type="submit" class="btn-primary" style="width:100%; height:44px;">
+          Unlock Management Console
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Credentials Viewer Modal -->
+  <div id="credentialsViewerModal" class="modal-overlay" style="display:none;" onclick="closeCredentialsViewer()">
+    <div class="modal-box" style="max-width:560px; padding:30px;" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeCredentialsViewer()">✕</button>
+      <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:16px;">Delivered Digital Credentials</h3>
+      <div id="credentialsViewerBody"></div>
+    </div>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div id="addProductModal" class="modal-overlay" style="display:none;" onclick="closeAddProductModal()">
+    <div class="modal-box" style="max-width:640px; padding:30px;" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeAddProductModal()">✕</button>
+      <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:16px;">Add New Subscription Product</h3>
+
+      <form onsubmit="handleCreateProduct(event)">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div class="form-group">
+            <label>Category</label>
+            <select name="category_id" class="form-input">
+              <option value="1">OTT & Streaming</option>
+              <option value="2">Regional Bengali OTT</option>
+              <option value="3">AI & Productivity</option>
+              <option value="4">Music & Audio</option>
+              <option value="5">Cloud & Creative</option>
+              <option value="6">VPN & Security</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Badge</label>
+            <input type="text" name="badge" class="form-input" placeholder="e.g. Bestseller, Hot Deal" value="New">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Subscription Title</label>
+          <input type="text" name="title" class="form-input" placeholder="e.g. Disney+ Premium UHD" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div class="form-group">
+            <label>Slug (URL key)</label>
+            <input type="text" name="slug" class="form-input" placeholder="e.g. disney-plus-premium" required>
+          </div>
+          <div class="form-group">
+            <label>Base Price ($ USD / ~120 ৳ BDT)</label>
+            <input type="number" step="0.01" name="base_price" class="form-input" placeholder="3.99" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tagline</label>
+          <input type="text" name="tagline" class="form-input" placeholder="Short highlight punchline">
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea name="description" class="form-input" style="height:70px; resize:none; padding:8px 12px;"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Image Logo URL</label>
+          <input type="url" name="logo_url" class="form-input" value="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500">
+        </div>
+
+        <button type="submit" class="btn-primary" style="width:100%; height:44px; margin-top:10px;">
+          Publish Subscription
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Vault Credential Modal -->
+  <div id="addVaultModal" class="modal-overlay" style="display:none;" onclick="closeAddVaultModal()">
+    <div class="modal-box" style="max-width:540px; padding:30px;" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeAddVaultModal()">✕</button>
+      <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:16px;">Stock Credentials into Vault</h3>
+
+      <form onsubmit="handleAddVaultItem(event)">
+        <div class="form-group">
+          <label>Select Product</label>
+          <select name="product_id" class="form-input">
+            <option value="1">Netflix Premium 4K UHD</option>
+            <option value="2">Amazon Prime Video</option>
+            <option value="3">Crunchyroll Mega Fan</option>
+            <option value="4">YouTube Premium & Music</option>
+            <option value="5">Hoichoi Premium</option>
+            <option value="6">Chorki Premium</option>
+            <option value="7">ChatGPT Plus (OpenAI)</option>
+            <option value="8">Claude Pro (Anthropic)</option>
+            <option value="9">Midjourney Pro Plan</option>
+            <option value="10">Spotify Premium Individual</option>
+            <option value="12">Adobe Creative Cloud All Apps</option>
+            <option value="13">Google One 2TB Cloud + Gemini</option>
+            <option value="14">Canva Pro Subscription</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Credential Type</label>
+          <select name="credential_type" class="form-input">
+            <option value="account">Account (Email + Password)</option>
+            <option value="profile_pin">Private Profile PIN</option>
+            <option value="license_key">License Key</option>
+            <option value="invite_link">Activation / Invite Link</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Account Email / Username / Key</label>
+          <input type="text" name="account_email" class="form-input" placeholder="user@flixstore-auth.com">
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label>Password</label>
+            <input type="text" name="account_password" class="form-input" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <label>Profile PIN (if any)</label>
+            <input type="text" name="profile_pin" class="form-input" placeholder="e.g. 4821">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Special Delivery Instructions</label>
+          <input type="text" name="special_instructions" class="form-input" placeholder="e.g. Login with assigned profile only.">
+        </div>
+
+        <button type="submit" class="btn-primary" style="width:100%; height:44px; margin-top:8px;">
+          Add to Credential Vault
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
