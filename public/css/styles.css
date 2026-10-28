@@ -2228,78 +2228,25 @@ body {
   transform: translateY(-1px);
 }
 
-/* ==========================================================================
-   MOBILE BOTTOM NAVIGATION & APP DOCK (ANDROID & IOS OPTIMIZED)
-   ========================================================================== */
-.mobile-search-section {
-  display: none;
-  padding: 10px 16px 4px;
-  position: relative;
-}
 
-.mobile-bottom-nav {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 64px;
-  background: rgba(15, 19, 26, 0.94);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--glass-border);
-  z-index: 999;
-  justify-content: space-around;
-  align-items: center;
-  padding: 4px 8px env(safe-area-inset-bottom, 8px);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
-}
-
-[data-theme="light"] .mobile-bottom-nav {
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.mobile-nav-btn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  font-size: 0.68rem;
-  font-weight: 600;
-  padding: 6px 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex: 1;
-}
-
-.mobile-nav-btn svg {
-  width: 20px;
-  height: 20px;
-}
-
-.mobile-nav-btn.active, .mobile-nav-btn:hover {
-  color: var(--accent-blue);
-}
 
 /* ==========================================================================
    RESPONSIVE QUERIES (OPTIMIZED FOR ANDROID & MOBILE BROWSERS)
    ========================================================================== */
 @media (max-width: 1024px) {
   .hero-slide {
-    flex-direction: column;
-    padding: 40px 24px;
-    text-align: center;
+    flex-direction: row;
+    padding: 36px 32px;
+    text-align: left;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
   }
   .hero-badge-row, .hero-pricing-box, .hero-cta-group {
-    justify-content: center;
+    justify-content: flex-start;
   }
   .hero-visual {
-    margin-top: 30px;
+    margin-top: 0;
   }
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -2317,41 +2264,48 @@ body {
 
 @media (max-width: 768px) {
   body {
-    padding-bottom: 74px; /* Space for Mobile Bottom Dock */
+    padding-bottom: 0 !important;
   }
 
   .floating-whatsapp-btn {
-    bottom: 78px;
-    right: 14px;
-    width: 48px;
-    height: 48px;
+    bottom: 24px;
+    right: 20px;
+    width: 52px;
+    height: 52px;
   }
   .whatsapp-tooltip {
     display: none;
   }
 
+  /* Keep desktop buttons and navigation accessible */
   .desktop-only {
-    display: none !important;
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
   }
 
   .mobile-search-section {
-    display: block;
+    display: none !important;
   }
 
   .mobile-bottom-nav {
-    display: flex;
+    display: none !important;
   }
 
   .header-search {
-    display: none;
+    display: flex !important;
+    max-width: 320px;
+    flex: 1;
+    margin: 0 10px;
   }
 
   .header-inner {
-    height: 60px;
+    height: 68px;
+    gap: 8px;
   }
 
   .brand-logo {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
   }
 
   .currency-select {
@@ -2360,119 +2314,90 @@ body {
   }
 
   .action-btn {
-    padding: 6px 10px;
-    font-size: 0.8rem;
+    padding: 7px 12px;
+    font-size: 0.82rem;
   }
 
+  /* Desktop-style Hero Presentation */
   .hero-section {
-    padding: 16px 0 20px;
+    padding: 24px 0 30px;
   }
 
   .hero-slide {
-    padding: 24px 16px;
+    padding: 32px 24px;
     min-height: auto;
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
   }
 
   .hero-title {
-    font-size: 1.75rem;
-    line-height: 1.2;
+    font-size: 2rem;
+    line-height: 1.25;
     margin-bottom: 12px;
   }
 
   .hero-subtitle {
-    font-size: 0.88rem;
+    font-size: 0.95rem;
     line-height: 1.5;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
 
   .hero-current-price {
-    font-size: 1.85rem;
+    font-size: 2.2rem;
   }
 
   .hero-visual {
-    margin-top: 16px;
+    margin-top: 0;
+    flex-shrink: 0;
   }
 
   .hero-art-card {
-    width: 200px;
-    height: 200px;
-    border-radius: var(--radius-lg);
+    width: 220px;
+    height: 220px;
+    border-radius: var(--radius-xl);
   }
 
   .hero-cta-group {
-    flex-direction: column;
-    width: 100%;
-    gap: 10px;
+    flex-direction: row;
+    gap: 12px;
   }
 
   .hero-cta-group button {
-    width: 100%;
-    height: 44px;
+    width: auto;
+    padding: 12px 20px;
   }
 
-  /* Full screen touch drawer on mobile */
-  .cart-drawer {
-    max-width: 100% !important;
-    width: 100% !important;
-  }
-
-  /* Full screen modal on Android */
-  .checkout-modal-box {
-    margin: 0 !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    height: 100% !important;
-    max-height: 100vh !important;
-    border-radius: 0 !important;
-  }
-
-  .checkout-grid {
-    grid-template-columns: 1fr !important;
-    padding: 16px !important;
-    gap: 20px !important;
-  }
-
-  .product-detail-modal-grid {
-    grid-template-columns: 1fr !important;
-    padding: 20px !important;
-    gap: 16px !important;
-  }
-
-  .detail-img-box {
-    height: 200px !important;
-  }
-
+  /* Keep Multi-column Grid like Desktop */
   .products-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .product-card {
-    border-radius: var(--radius-md);
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    gap: 20px;
   }
 
   .category-pill {
-    padding: 8px 14px;
-    font-size: 0.82rem;
+    padding: 8px 16px;
+    font-size: 0.85rem;
   }
 
   .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
   }
 
   .stat-card {
-    padding: 14px 16px;
+    padding: 16px 20px;
   }
 
   .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
   }
 
   .footer-bottom {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
   }
 }
