@@ -1233,6 +1233,111 @@ app.get('/api/admin/database/backup-json', authMiddleware('admin'), async (req, 
   }
 });
 
+// Restore database from JSON backup (SQLite Forever Free persistence handover)
+app.post('/api/admin/database/restore-json', authMiddleware('admin'), async (req, res) => {
+  try {
+    const payload = req.body;
+    const backupData = payload.data || payload;
+    if (!backupData || typeof backupData !== 'object') {
+      return res.status(400).json({ success: false, message: 'Invalid backup file format' });
+    }
+
+    let restoredOrders = 0;
+    let restoredUsers = 0;
+    let restoredVault = 0;
+
+    // Restore Users
+    if (Array.isArray(backupData.users)) {
+      const insertUser = db.prepare(`
+        INSERT INTO users (email, password_hash, full_name, role, phone)
+        VALUES (?, ?, ?, ?, ?)
+        ON CONFLICT(email) DO UPDATE SET full_name = excluded.full_name, phone = excluded.phone
+      `);
+      for (const u of backupData.users) {
+        if (u.email && u.password_hash) {
+          await insertUser.run(u.email, u.password_hash, u.full_name || 'Customer', u.role || 'customer', u.phone || '');
+          restoredUsers++;
+        }
+      }
+    }
+
+    // Restore Orders
+    if (Array.isArray(backupData.orders)) {
+      const insertOrder = db.prepare(`
+        INSERT INTO orders (
+          order_number, customer_name, customer_email, customer_phone,
+          payment_method, payment_status, transaction_id, currency, currency_symbol,
+          subtotal, discount, total_amount, coupon_code, delivery_status,
+          delivered_credentials, customer_notes, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(order_number) DO UPDATE SET
+          payment_status = excluded.payment_status,
+          delivery_status = excluded.delivery_status
+      `);
+
+      for (const o of backupData.orders) {
+        if (o.order_number) {
+          await insertOrder.run(
+            o.order_number,
+            o.customer_name || 'Customer',
+            o.customer_email || 'customer@example.com',
+            o.customer_phone || '',
+            o.payment_method || 'card',
+            o.payment_status || 'completed',
+            o.transaction_id || '',
+            o.currency || 'USD',
+            o.currency_symbol || '$',
+            o.subtotal || 0,
+            o.discount || 0,
+            o.total_amount || 0,
+            o.coupon_code || null,
+            o.delivery_status || 'delivered',
+            typeof o.delivered_credentials === 'string' ? o.delivered_credentials : JSON.stringify(o.delivered_credentials || []),
+            o.customer_notes || '',
+            o.created_at || new Date().toISOString()
+          );
+          restoredOrders++;
+        }
+      }
+    }
+
+    // Restore Vault Keys if provided
+    if (Array.isArray(backupData.credential_vault)) {
+      const insertVault = db.prepare(`
+        INSERT INTO credential_vault (
+          product_id, credential_type, account_email, account_password,
+          profile_name, profile_pin, license_key, activation_link, special_instructions, is_used
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      for (const v of backupData.credential_vault) {
+        if (v.product_id && (v.account_email || v.license_key)) {
+          await insertVault.run(
+            v.product_id,
+            v.credential_type || 'account',
+            v.account_email || null,
+            v.account_password || null,
+            v.profile_name || null,
+            v.profile_pin || null,
+            v.license_key || null,
+            v.activation_link || null,
+            v.special_instructions || null,
+            v.is_used ? 1 : 0
+          );
+          restoredVault++;
+        }
+      }
+    }
+
+    res.json({
+      success: true,
+      message: `Database restored successfully! (${restoredOrders} orders, ${restoredUsers} users, ${restoredVault} vault keys synced)`
+    });
+  } catch (err) {
+    console.error('Database restore error:', err);
+    res.status(500).json({ success: false, message: 'Failed to restore database: ' + err.message });
+  }
+});
+
 // 3. Database Statistics & Health check
 app.get('/api/admin/database/stats', authMiddleware('admin'), async (req, res) => {
   try {

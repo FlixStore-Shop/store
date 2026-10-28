@@ -345,13 +345,17 @@
             <div style="font-size:3.5rem;">💾</div>
           </div>
 
-          <div style="display:flex; gap:16px; margin-top:20px;">
+          <div style="display:flex; gap:16px; margin-top:20px; flex-wrap:wrap;">
             <button class="btn-primary" style="padding:14px 28px; font-size:1rem;" onclick="triggerDatabaseDownload()">
               📥 Download Live flixstore.db (SQLite File)
             </button>
             <button class="btn-secondary" style="padding:14px 24px; font-size:1rem;" onclick="triggerJsonExport()">
               📄 Export Full JSON Database
             </button>
+            <button class="btn-secondary" style="padding:14px 24px; font-size:1rem; border-color:#8b5cf6; color:#c4b5fd;" onclick="document.getElementById('dbRestoreInput').click()">
+              📤 Restore Database from Backup
+            </button>
+            <input type="file" id="dbRestoreInput" accept=".json" style="display:none;" onchange="handleRestoreFile(event)">
           </div>
         </div>
 

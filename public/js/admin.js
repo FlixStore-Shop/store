@@ -582,3 +582,41 @@ function triggerJsonExport() {
     alert('Failed to export JSON backup: ' + err.message);
   });
 }
+
+// 1-Click Restore JSON Full Backup
+function handleRestoreFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (!confirm(`Are you sure you want to restore the SQLite database from "${file.name}"? This will sync customer orders and accounts.`)) {
+    event.target.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      const res = await fetch('/api/admin/database/restore-json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminState.token}`
+        },
+        body: JSON.stringify(parsed)
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('🎉 ' + data.message);
+        loadDashboardStats();
+        loadDatabaseStats();
+      } else {
+        alert('Restore failed: ' + data.message);
+      }
+    } catch (err) {
+      alert('Failed to parse backup file: ' + err.message);
+    }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
