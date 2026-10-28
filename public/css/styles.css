@@ -471,21 +471,81 @@ body {
   border: 1px solid var(--glass-border);
   background: linear-gradient(135deg, rgba(24, 29, 39, 0.8) 0%, rgba(17, 20, 28, 0.95) 100%);
   box-shadow: var(--shadow-card);
+  user-select: none;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.hero-slider-container.grabbing {
+  cursor: grabbing;
+}
+
+.hero-slider-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1);
+  will-change: transform;
 }
 
 .hero-slide {
-  display: none;
-  padding: 60px 50px;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  display: flex;
+  padding: 50px 48px;
   align-items: center;
-  min-height: 420px;
+  justify-content: space-between;
+  min-height: 400px;
   position: relative;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+  box-sizing: border-box;
+  opacity: 0.85;
+  transition: opacity 0.35s ease;
 }
 
 .hero-slide.active {
-  display: flex;
   opacity: 1;
+}
+
+/* Slide Navigation Arrows */
+.hero-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.hero-arrow-btn:hover {
+  background: rgba(59, 130, 246, 0.9);
+  border-color: #38bdf8;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+}
+
+.hero-arrow-btn.prev {
+  left: 16px;
+}
+
+.hero-arrow-btn.next {
+  right: 16px;
+}
+
+.hero-arrow-btn svg {
+  width: 24px;
+  height: 24px;
 }
 
 .hero-content {
@@ -2107,13 +2167,13 @@ body {
   font-size: 0.82rem;
 }
 
-/* Floating WhatsApp Button */
+/* Floating WhatsApp Button - Desktop Standard */
 .floating-whatsapp-btn {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
+  bottom: 28px;
+  right: 28px;
+  width: 58px;
+  height: 58px;
   background: #25D366;
   color: #ffffff;
   border-radius: 50%;
@@ -2121,13 +2181,18 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
-  z-index: 990;
+  z-index: 9999;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
 
+.floating-whatsapp-btn svg {
+  width: 32px;
+  height: 32px;
+}
+
 .floating-whatsapp-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
   box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
   color: #ffffff;
 }
@@ -2153,6 +2218,86 @@ body {
 .floating-whatsapp-btn:hover .whatsapp-tooltip {
   opacity: 1;
   transform: translateX(0);
+}
+
+/* Floating WhatsApp Button & Controls - Smartphone Present View (Standard Physical Size in 1200px Viewport) */
+@media (hover: none) and (pointer: coarse), (pointer: coarse) {
+  .floating-whatsapp-btn {
+    width: 135px !important;
+    height: 135px !important;
+    bottom: 36px !important;
+    right: 32px !important;
+    box-shadow: 0 8px 32px rgba(37, 211, 102, 0.7) !important;
+  }
+  .floating-whatsapp-btn svg {
+    width: 76px !important;
+    height: 76px !important;
+  }
+  .whatsapp-tooltip {
+    display: none !important;
+  }
+  .hero-arrow-btn {
+    width: 68px !important;
+    height: 68px !important;
+  }
+  .hero-arrow-btn svg {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .slider-dot {
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 6px !important;
+  }
+  .slider-dot.active {
+    width: 48px !important;
+    border-radius: 10px !important;
+  }
+}
+
+.is-mobile-view .floating-whatsapp-btn,
+.is-touch-device .floating-whatsapp-btn {
+  width: 135px !important;
+  height: 135px !important;
+  bottom: 36px !important;
+  right: 32px !important;
+  box-shadow: 0 8px 32px rgba(37, 211, 102, 0.7) !important;
+}
+
+.is-mobile-view .floating-whatsapp-btn svg,
+.is-touch-device .floating-whatsapp-btn svg {
+  width: 76px !important;
+  height: 76px !important;
+}
+
+.is-mobile-view .whatsapp-tooltip,
+.is-touch-device .whatsapp-tooltip {
+  display: none !important;
+}
+
+.is-mobile-view .hero-arrow-btn,
+.is-touch-device .hero-arrow-btn {
+  width: 68px !important;
+  height: 68px !important;
+}
+
+.is-mobile-view .hero-arrow-btn svg,
+.is-touch-device .hero-arrow-btn svg {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+.is-mobile-view .slider-dot,
+.is-touch-device .slider-dot {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 6px !important;
+}
+
+.is-mobile-view .slider-dot.active,
+.is-touch-device .slider-dot.active {
+  width: 48px !important;
+  border-radius: 10px !important;
 }
 
 /* Tier Explainer Banner in Modal */
@@ -2265,16 +2410,6 @@ body {
 @media (max-width: 768px) {
   body {
     padding-bottom: 0 !important;
-  }
-
-  .floating-whatsapp-btn {
-    bottom: 24px;
-    right: 20px;
-    width: 52px;
-    height: 52px;
-  }
-  .whatsapp-tooltip {
-    display: none;
   }
 
   /* Keep desktop buttons and navigation accessible */
