@@ -1,23 +1,6 @@
-const { db } = require('../db/database');
+const { db: defaultDb } = require('../db/database');
 
-console.log('--- Migrating FlixStore Database with Updated Pricing & New Products ---');
-
-// 1. Ensure original_price_bdt column exists
-try {
-  db.exec('ALTER TABLE products ADD COLUMN original_price_bdt REAL;');
-  console.log('[OK] Added original_price_bdt to products');
-} catch (e) {
-  console.log('[INFO] Column original_price_bdt already exists on products');
-}
-
-try {
-  db.exec('ALTER TABLE product_plans ADD COLUMN original_price_bdt REAL;');
-  console.log('[OK] Added original_price_bdt to product_plans');
-} catch (e) {
-  console.log('[INFO] Column original_price_bdt already exists on product_plans');
-}
-
-// 2. Comprehensive catalog definition
+// Comprehensive catalog definition
 const catalog = [
   // 1. Netflix
   {
@@ -666,120 +649,140 @@ const catalog = [
   }
 ];
 
-// 3. Upsert products and replace plans
-const insertOrUpdateProd = db.prepare(`
-  INSERT INTO products (
-    category_id, title, slug, tagline, description, logo_url, badge,
-    base_price, original_price, original_price_bdt, delivery_time, warranty, rating, review_count,
-    stock_status, is_featured, is_trending, is_bestseller, features_list, instructions
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Instant', 'Full Duration Warranty', ?, ?, 'in_stock', ?, ?, ?, ?, ?)
-  ON CONFLICT(slug) DO UPDATE SET
-    category_id = excluded.category_id,
-    title = excluded.title,
-    tagline = excluded.tagline,
-    description = excluded.description,
-    logo_url = excluded.logo_url,
-    badge = excluded.badge,
-    base_price = excluded.base_price,
-    original_price = excluded.original_price,
-    original_price_bdt = excluded.original_price_bdt,
-    rating = excluded.rating,
-    review_count = excluded.review_count,
-    is_featured = excluded.is_featured,
-    is_trending = excluded.is_trending,
-    is_bestseller = excluded.is_bestseller,
-    features_list = excluded.features_list,
-    instructions = excluded.instructions
-`);
+// Sync catalog into target database (SQLite or PostgreSQL)
+async function syncCatalog(targetDb) {
+  const db = targetDb || defaultDb;
+  console.log('--- Migrating FlixStore Database with Updated Pricing & New Products ---');
 
-const insertPlan = db.prepare(`
-  INSERT INTO product_plans (
-    product_id, plan_name, tier_type, duration_months, duration_label,
-    price_usd, price_bdt, original_price_usd, original_price_bdt, is_popular, device_limit, plan_features, sort_order
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-`);
+  try {
+    await db.exec('ALTER TABLE products ADD COLUMN original_price_bdt REAL;');
+  } catch (e) {}
 
-const insertVault = db.prepare(`
-  INSERT INTO credential_vault (
-    product_id, plan_id, credential_type, account_email, account_password,
-    profile_name, profile_pin, license_key, special_instructions
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-`);
+  try {
+    await db.exec('ALTER TABLE product_plans ADD COLUMN original_price_bdt REAL;');
+  } catch (e) {}
 
-let totalProductsProcessed = 0;
-let totalPlansProcessed = 0;
+  const insertOrUpdateProd = db.prepare(`
+    INSERT INTO products (
+      category_id, title, slug, tagline, description, logo_url, badge,
+      base_price, original_price, original_price_bdt, delivery_time, warranty, rating, review_count,
+      stock_status, is_featured, is_trending, is_bestseller, features_list, instructions
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Instant', 'Full Duration Warranty', ?, ?, 'in_stock', ?, ?, ?, ?, ?)
+    ON CONFLICT(slug) DO UPDATE SET
+      category_id = excluded.category_id,
+      title = excluded.title,
+      tagline = excluded.tagline,
+      description = excluded.description,
+      logo_url = excluded.logo_url,
+      badge = excluded.badge,
+      base_price = excluded.base_price,
+      original_price = excluded.original_price,
+      original_price_bdt = excluded.original_price_bdt,
+      rating = excluded.rating,
+      review_count = excluded.review_count,
+      is_featured = excluded.is_featured,
+      is_trending = excluded.is_trending,
+      is_bestseller = excluded.is_bestseller,
+      features_list = excluded.features_list,
+      instructions = excluded.instructions
+  `);
 
-for (const p of catalog) {
-  const cat = db.prepare('SELECT id FROM categories WHERE slug = ?').get(p.cat_slug);
-  if (!cat) {
-    console.error('Category not found for slug:', p.cat_slug);
-    continue;
-  }
+  const insertPlan = db.prepare(`
+    INSERT INTO product_plans (
+      product_id, plan_name, tier_type, duration_months, duration_label,
+      price_usd, price_bdt, original_price_usd, original_price_bdt, is_popular, device_limit, plan_features, sort_order
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
 
-  insertOrUpdateProd.run(
-    cat.id,
-    p.title,
-    p.slug,
-    p.tagline,
-    p.description,
-    p.logo_url,
-    p.badge,
-    p.base_price,
-    p.original_price,
-    p.original_price_bdt,
-    p.rating,
-    p.review_count,
-    p.is_featured,
-    p.is_trending,
-    p.is_bestseller,
-    p.features_list,
-    p.instructions
-  );
+  const insertVault = db.prepare(`
+    INSERT INTO credential_vault (
+      product_id, plan_id, credential_type, account_email, account_password,
+      profile_name, profile_pin, license_key, special_instructions
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
 
-  const prod = db.prepare('SELECT id FROM products WHERE slug = ?').get(p.slug);
-  totalProductsProcessed++;
+  let totalProductsProcessed = 0;
+  let totalPlansProcessed = 0;
 
-  // Delete old plans and re-insert fresh ones
-  db.prepare('DELETE FROM product_plans WHERE product_id = ?').run(prod.id);
+  for (const p of catalog) {
+    const cat = await db.prepare('SELECT id FROM categories WHERE slug = ?').get(p.cat_slug);
+    if (!cat) {
+      console.error('Category not found for slug:', p.cat_slug);
+      continue;
+    }
 
-  let sortOrder = 0;
-  for (const pl of p.plans) {
-    sortOrder++;
-    const planRes = insertPlan.run(
-      prod.id,
-      pl.name,
-      pl.tier,
-      pl.months,
-      pl.label,
-      pl.usd,
-      pl.bdt,
-      pl.orig_usd,
-      pl.orig_bdt,
-      pl.popular,
-      pl.devices,
-      pl.features,
-      sortOrder
+    await insertOrUpdateProd.run(
+      cat.id,
+      p.title,
+      p.slug,
+      p.tagline,
+      p.description,
+      p.logo_url,
+      p.badge,
+      p.base_price,
+      p.original_price,
+      p.original_price_bdt,
+      p.rating,
+      p.review_count,
+      p.is_featured,
+      p.is_trending,
+      p.is_bestseller,
+      p.features_list,
+      p.instructions
     );
-    totalPlansProcessed++;
 
-    // Seed vault credentials if empty for this product
-    const vaultCount = db.prepare('SELECT COUNT(*) as count FROM credential_vault WHERE product_id = ?').get(prod.id);
-    if (vaultCount.count === 0 && p.vault && p.vault.length > 0) {
-      for (const vs of p.vault) {
-        insertVault.run(
-          prod.id,
-          planRes.lastInsertRowid,
-          vs.type,
-          vs.email || null,
-          vs.pass || null,
-          vs.profile || null,
-          vs.pin || null,
-          vs.key || null,
-          vs.instr || null
-        );
+    const prod = await db.prepare('SELECT id FROM products WHERE slug = ?').get(p.slug);
+    totalProductsProcessed++;
+
+    await db.prepare('DELETE FROM product_plans WHERE product_id = ?').run(prod.id);
+
+    let sortOrder = 0;
+    for (const pl of p.plans) {
+      sortOrder++;
+      const planRes = await insertPlan.run(
+        prod.id,
+        pl.name,
+        pl.tier,
+        pl.months,
+        pl.label,
+        pl.usd,
+        pl.bdt,
+        pl.orig_usd,
+        pl.orig_bdt,
+        pl.popular,
+        pl.devices,
+        pl.features,
+        sortOrder
+      );
+      totalPlansProcessed++;
+
+      const vaultCount = await db.prepare('SELECT COUNT(*) as count FROM credential_vault WHERE product_id = ?').get(prod.id);
+      if (vaultCount && Number(vaultCount.count) === 0 && p.vault && p.vault.length > 0) {
+        for (const vs of p.vault) {
+          await insertVault.run(
+            prod.id,
+            planRes.lastInsertRowid,
+            vs.type,
+            vs.email || null,
+            vs.pass || null,
+            vs.profile || null,
+            vs.pin || null,
+            vs.key || null,
+            vs.instr || null
+          );
+        }
       }
     }
   }
+
+  console.log(`[SUCCESS] Migrated ${totalProductsProcessed} products and ${totalPlansProcessed} plans!`);
 }
 
-console.log(`[SUCCESS] Migrated ${totalProductsProcessed} products and ${totalPlansProcessed} plans!`);
+if (require.main === module) {
+  syncCatalog().then(() => process.exit(0)).catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}
+
+module.exports = { catalog, syncCatalog };
