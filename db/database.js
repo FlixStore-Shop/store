@@ -230,6 +230,17 @@ function initDatabase() {
   } catch (e) {}
 
   seedInitialData();
+
+  // Ensure full 20-product verified catalog is always active
+  try {
+    const prodCount = db.prepare('SELECT COUNT(*) as count FROM products').get();
+    if (prodCount.count < 20) {
+      console.log(`[CATALOG SYNC] Detected ${prodCount.count}/20 products. Synchronizing full 20-product catalog...`);
+      require('../scripts/update-catalog.js');
+    }
+  } catch (err) {
+    console.error('[CATALOG SYNC ERROR]:', err);
+  }
 }
 
 // Seed comprehensive, realistic catalog
