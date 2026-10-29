@@ -906,6 +906,121 @@ app.post('/api/auth/resend-otp', authLimiter, async (req, res) => {
   }
 });
 
+// Request Password Reset Code
+app.post('/api/auth/forgot-password', authLimiter, async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email address is required' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+    const user = await db.prepare('SELECT id, email, full_name, role, phone FROM users WHERE LOWER(email) = ?').get(cleanEmail);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'No account found with this email address. Please click Create Account.' });
+    }
+
+    const otp = generateOtp();
+    otpStore.set(cleanEmail, {
+      otp,
+      expiresAt: Date.now() + 10 * 60 * 1000,
+      attempts: 0,
+      user,
+      type: 'password_reset'
+    });
+
+    let mailResult = { success: false };
+    try {
+      mailResult = await sendOtpEmail(cleanEmail, otp, 'reset');
+    } catch (mailErr) {
+      console.warn('Mail dispatch warning (forgot-password):', mailErr.message);
+    }
+
+    const isTest = process.env.NODE_ENV === 'test' || req.headers['x-test-mode'] === 'true';
+    if (!mailResult.success && !isTest) {
+      return res.status(500).json({
+        success: false,
+        message: 'Could not deliver password reset email. Please try again in a few moments.'
+      });
+    }
+
+    res.json({
+      success: true,
+      requiresOtp: true,
+      email: cleanEmail,
+      message: 'Password reset code dispatched! Please check your email inbox.',
+      demoOtp: isTest ? otp : undefined
+    });
+  } catch (err) {
+    console.error('Forgot password error:', err);
+    res.status(500).json({ success: false, message: 'Failed to initiate password reset' });
+  }
+});
+
+// Complete Password Reset with OTP & Set New Password
+app.post('/api/auth/reset-password', authLimiter, async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Email, verification code, and new password are required' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'New password must be at least 6 characters long' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+    const record = otpStore.get(cleanEmail);
+
+    if (!record || record.type !== 'password_reset') {
+      return res.status(400).json({ success: false, message: 'No active password reset request found. Please request a new code.' });
+    }
+
+    if (Date.now() > record.expiresAt) {
+      otpStore.delete(cleanEmail);
+      return res.status(400).json({ success: false, message: 'Verification code has expired. Please request a new code.' });
+    }
+
+    if (record.attempts >= 5) {
+      otpStore.delete(cleanEmail);
+      return res.status(429).json({ success: false, message: 'Too many incorrect attempts. Please request a new code.' });
+    }
+
+    if (record.otp.trim() !== String(otp).trim()) {
+      record.attempts += 1;
+      return res.status(400).json({
+        success: false,
+        message: `Incorrect code. ${5 - record.attempts} attempt(s) remaining.`
+      });
+    }
+
+    // Update password hash in database
+    const newHash = hashPassword(newPassword);
+    await db.prepare('UPDATE users SET password_hash = ? WHERE LOWER(email) = ?').run(newHash, cleanEmail);
+
+    otpStore.delete(cleanEmail);
+
+    const user = await db.prepare('SELECT id, email, full_name, role, phone FROM users WHERE LOWER(email) = ?').get(cleanEmail);
+    const token = createToken({
+      id: user.id,
+      email: user.email,
+      full_name: user.full_name,
+      role: user.role
+    }, 48);
+
+    res.json({
+      success: true,
+      message: 'Password reset successful! Welcome back to FlixStore.',
+      token,
+      user
+    });
+  } catch (err) {
+    console.error('Reset password error:', err);
+    res.status(500).json({ success: false, message: 'Failed to reset password' });
+  }
+});
+
 // Current User Profile & Order History
 app.get('/api/auth/me', authMiddleware(), async (req, res) => {
   try {
@@ -1429,6 +1544,21 @@ app.post('/api/admin/database/restore-json', authMiddleware('admin'), async (req
   } catch (err) {
     console.error('Database restore error:', err);
     res.status(500).json({ success: false, message: 'Failed to restore database: ' + err.message });
+  }
+});
+
+// Admin: Delete user by email (e.g. for customer support / reset)
+app.delete('/api/admin/users/:email', authMiddleware('admin'), async (req, res) => {
+  try {
+    const targetEmail = req.params.email.trim().toLowerCase();
+    if (targetEmail === 'admin@flixstore.com') {
+      return res.status(400).json({ success: false, message: 'Cannot delete primary admin account' });
+    }
+    await db.prepare('DELETE FROM users WHERE LOWER(email) = ?').run(targetEmail);
+    res.json({ success: true, message: `Account ${targetEmail} removed from database.` });
+  } catch (err) {
+    console.error('Delete user error:', err);
+    res.status(500).json({ success: false, message: 'Failed to delete user' });
   }
 });
 

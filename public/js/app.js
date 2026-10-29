@@ -1409,6 +1409,7 @@ function switchAuthMode(mode) {
   const signUpView = document.getElementById('authSignUpView');
   const otpView = document.getElementById('authOtpView');
   const profileView = document.getElementById('authProfileView');
+  const forgotView = document.getElementById('authForgotView');
 
   // Dismiss any active in-modal sign out prompt
   dismissSignOutPrompt();
@@ -1417,9 +1418,16 @@ function switchAuthMode(mode) {
   const loginErr = document.getElementById('loginErrorMsg');
   const regErr = document.getElementById('registerErrorMsg');
   const otpErr = document.getElementById('otpErrorMsg');
+  const forgotErr1 = document.getElementById('forgotErrorMsg1');
+  const forgotErr2 = document.getElementById('forgotErrorMsg2');
   if (loginErr) loginErr.textContent = '';
   if (regErr) regErr.textContent = '';
   if (otpErr) otpErr.textContent = '';
+  if (forgotErr1) forgotErr1.textContent = '';
+  if (forgotErr2) forgotErr2.textContent = '';
+
+  if (forgotView) forgotView.style.display = 'none';
+  if (profileView) profileView.style.display = 'none';
 
   if (mode === 'profile') {
     if (modalBox) modalBox.style.maxWidth = '580px';
@@ -1433,7 +1441,6 @@ function switchAuthMode(mode) {
   }
 
   if (modalBox) modalBox.style.maxWidth = '460px';
-  if (profileView) profileView.style.display = 'none';
 
   if (mode === 'signin') {
     if (tabsContainer) tabsContainer.style.display = 'flex';
@@ -1468,6 +1475,24 @@ function switchAuthMode(mode) {
         otpInput.value = '';
         otpInput.focus();
       }
+    }, 100);
+  } else if (mode === 'forgot') {
+    if (tabsContainer) tabsContainer.style.display = 'none';
+    if (signInView) signInView.style.display = 'none';
+    if (signUpView) signUpView.style.display = 'none';
+    if (otpView) otpView.style.display = 'none';
+    if (forgotView) forgotView.style.display = 'block';
+    const step1 = document.getElementById('forgotStep1');
+    const step2 = document.getElementById('forgotStep2');
+    if (step1) step1.style.display = 'block';
+    if (step2) step2.style.display = 'none';
+    const loginEmail = document.getElementById('loginEmail');
+    const forgotEmail = document.getElementById('forgotEmail');
+    if (loginEmail && forgotEmail && loginEmail.value) {
+      forgotEmail.value = loginEmail.value;
+    }
+    setTimeout(() => {
+      if (forgotEmail) forgotEmail.focus();
     }, 100);
   }
 }
@@ -1762,7 +1787,9 @@ async function handleLoginSubmit(e) {
         completeAuthentication(json);
       }
     } else {
-      if (errElem) errElem.textContent = json.message || 'Invalid email or password';
+      if (errElem) {
+        errElem.innerHTML = `Invalid email or password. <a href="javascript:void(0)" onclick="switchAuthMode('forgot')" style="color:#60a5fa; font-weight:700; text-decoration:underline;">Forgot Password?</a> or <a href="javascript:void(0)" onclick="switchAuthMode('signup')" style="color:#60a5fa; font-weight:700; text-decoration:underline;">Create Account</a>`;
+      }
     }
   } catch (err) {
     console.error('Login error:', err);
@@ -1808,7 +1835,13 @@ async function handleRegisterSubmit(e) {
     if (json.success) {
       updateOtpUiState(json);
     } else {
-      if (errElem) errElem.textContent = json.message || 'Registration failed';
+      if (errElem) {
+        if (json.message && json.message.toLowerCase().includes('already exists')) {
+          errElem.innerHTML = `An account with this email already exists. <a href="javascript:void(0)" onclick="switchAuthMode('signin')" style="color:#60a5fa; font-weight:700; text-decoration:underline;">Sign In</a> or <a href="javascript:void(0)" onclick="switchAuthMode('forgot')" style="color:#60a5fa; font-weight:700; text-decoration:underline;">Reset Password</a>`;
+        } else {
+          errElem.textContent = json.message || 'Registration failed';
+        }
+      }
     }
   } catch (err) {
     console.error('Registration error:', err);
@@ -1817,6 +1850,108 @@ async function handleRegisterSubmit(e) {
     if (submitBtn) {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Create Account & Continue →';
+    }
+  }
+}
+
+// 2.1 Request Password Reset Code
+async function handleForgotRequest(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('forgotEmail');
+  const errElem = document.getElementById('forgotErrorMsg1');
+  const submitBtn = document.getElementById('forgotSubmitBtn1');
+
+  if (errElem) errElem.textContent = '';
+  if (!emailInput || !emailInput.value.trim()) return;
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending Reset Code...';
+  }
+
+  try {
+    const res = await fetch('/api/auth/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: emailInput.value.trim() }),
+      signal: AbortSignal.timeout(12000)
+    });
+    const json = await res.json();
+
+    if (json.success) {
+      state.pendingResetEmail = json.email;
+      const step1 = document.getElementById('forgotStep1');
+      const step2 = document.getElementById('forgotStep2');
+      const emailTarget = document.getElementById('forgotEmailTarget');
+      if (step1) step1.style.display = 'none';
+      if (step2) step2.style.display = 'block';
+      if (emailTarget) emailTarget.textContent = json.email;
+      setTimeout(() => {
+        const codeInput = document.getElementById('resetOtpCode');
+        if (codeInput) codeInput.focus();
+      }, 100);
+    } else {
+      if (errElem) {
+        if (json.message && json.message.includes('No account found')) {
+          errElem.innerHTML = `No account found with this email. <a href="javascript:void(0)" onclick="switchAuthMode('signup')" style="color:#60a5fa; font-weight:700; text-decoration:underline;">Create Account</a>`;
+        } else {
+          errElem.textContent = json.message || 'Failed to send reset code';
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Forgot password error:', err);
+    if (errElem) errElem.textContent = 'Network error. Please try again.';
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Reset Code →';
+    }
+  }
+}
+
+// 2.2 Complete Password Reset & Sign In
+async function handleResetSubmit(e) {
+  e.preventDefault();
+  const codeInput = document.getElementById('resetOtpCode');
+  const passInput = document.getElementById('resetNewPassword');
+  const errElem = document.getElementById('forgotErrorMsg2');
+  const submitBtn = document.getElementById('forgotSubmitBtn2');
+
+  if (errElem) errElem.textContent = '';
+  if (!codeInput || !passInput) return;
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Updating Password...';
+  }
+
+  try {
+    const res = await fetch('/api/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: state.pendingResetEmail,
+        otp: codeInput.value.trim(),
+        newPassword: passInput.value
+      }),
+      signal: AbortSignal.timeout(12000)
+    });
+    const json = await res.json();
+
+    if (json.success) {
+      completeAuthentication(json);
+      showToast('Password updated successfully! Welcome back.', 'success');
+    } else {
+      if (errElem) errElem.textContent = json.message || 'Failed to update password';
+    }
+  } catch (err) {
+    console.error('Reset submit error:', err);
+    if (errElem) errElem.textContent = 'Network error. Please try again.';
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Set New Password & Sign In →';
     }
   }
 }

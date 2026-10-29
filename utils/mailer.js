@@ -128,9 +128,19 @@ async function sendOtpEmail(toEmail, otpCode, purpose = 'verification') {
   const fromAddress = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER || 'no-reply@flixstore.org';
   const from = `"${fromName}" <${fromAddress}>`;
 
-  const subject = purpose === 'register' 
-    ? 'Verify Your Email Address - FlixStore' 
-    : 'Your FlixStore Security Verification Code';
+  let subject = 'Your FlixStore Security Verification Code';
+  let heading = 'Verify Your Email Address';
+  let introText = 'You requested a verification code to authenticate with your <strong>FlixStore</strong> account. Please use the one-time verification code below to verify your email address:';
+
+  if (purpose === 'register') {
+    subject = 'Verify Your Email Address - FlixStore';
+    heading = 'Welcome to FlixStore';
+    introText = 'Thank you for joining FlixStore. Please enter the one-time verification code below to complete your account setup:';
+  } else if (purpose === 'reset') {
+    subject = 'Reset Your FlixStore Password';
+    heading = 'Reset Your Password';
+    introText = 'You requested a verification code to reset your FlixStore account password. Enter the one-time verification code below to choose a new password:';
+  }
 
   const htmlContent = `
     <!DOCTYPE html>
@@ -165,10 +175,10 @@ async function sendOtpEmail(toEmail, otpCode, purpose = 'verification') {
           </div>
         </div>
         <div class="body-content">
-          <h2 class="h1-title">Verify Your Email Address</h2>
+          <h2 class="h1-title">${heading}</h2>
           <p class="text">
             Hello,<br><br>
-            You requested a verification code to authenticate with your <strong>FlixStore</strong> account. Please use the one-time verification code below to verify your email address:
+            ${introText}
           </p>
 
           <div class="otp-box">

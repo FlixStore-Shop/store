@@ -119,6 +119,19 @@ async function runTests() {
     });
     console.log('[TEST 7.2] /api/auth/me Status:', meRes.status, 'User:', meRes.body.user?.email, 'Orders:', meRes.body.orders?.length);
 
+    // 7.3 Forgot & Reset Password Flow
+    const forgotRes = await request('/api/auth/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-test-mode': 'true' },
+      body: { email: 'customer@example.com' }
+    });
+    const resetRes = await request('/api/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: { email: 'customer@example.com', otp: forgotRes.body.demoOtp, newPassword: 'NewCustomer2026!' }
+    });
+    console.log('[TEST 7.3] Password Reset Status:', resetRes.status, 'Success:', resetRes.body.success);
+
     // 8. Admin Stats
     const statsRes = await request('/api/admin/stats', {
       headers: { 'Authorization': `Bearer ${adminToken}` }
