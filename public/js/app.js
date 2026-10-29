@@ -1262,12 +1262,49 @@ function closeOrderSuccessModal() {
   document.getElementById('orderSuccessModal').classList.remove('active');
 }
 
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    alert(`Copied to clipboard: ${text}`);
-  }).catch(() => {
+function showToast(message, type = 'success') {
+  let toast = document.getElementById('flixToastNotification');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'flixToastNotification';
+    toast.className = 'flix-toast';
+    document.body.appendChild(toast);
+  }
+  toast.className = `flix-toast flix-toast-${type} active`;
+  const icon = type === 'success' ? '✓' : (type === 'danger' ? '✕' : 'ℹ');
+  toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => {
+    toast.classList.remove('active');
+  }, 3200);
+}
+
+function copyToClipboard(text, label = 'Information') {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(`${label} copied to clipboard!`, 'success');
+    }).catch(() => {
+      fallbackCopy(text, label);
+    });
+  } else {
+    fallbackCopy(text, label);
+  }
+}
+
+function fallbackCopy(text, label) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast(`${label} copied to clipboard!`, 'success');
+  } catch (e) {
     prompt('Copy to clipboard:', text);
-  });
+  }
+  document.body.removeChild(ta);
 }
 
 // -----------------------------------------------------------------------------
@@ -1363,6 +1400,7 @@ function closeAuthModal() {
 
 function switchAuthMode(mode) {
   state.authMode = mode;
+  const modalBox = document.getElementById('authModalBox');
   const tabsContainer = document.getElementById('authTabsContainer');
   const tabSignInBtn = document.getElementById('tabSignInBtn');
   const tabSignUpBtn = document.getElementById('tabSignUpBtn');
@@ -1371,6 +1409,9 @@ function switchAuthMode(mode) {
   const signUpView = document.getElementById('authSignUpView');
   const otpView = document.getElementById('authOtpView');
   const profileView = document.getElementById('authProfileView');
+
+  // Dismiss any active in-modal sign out prompt
+  dismissSignOutPrompt();
 
   // Clear errors
   const loginErr = document.getElementById('loginErrorMsg');
@@ -1381,6 +1422,7 @@ function switchAuthMode(mode) {
   if (otpErr) otpErr.textContent = '';
 
   if (mode === 'profile') {
+    if (modalBox) modalBox.style.maxWidth = '580px';
     if (tabsContainer) tabsContainer.style.display = 'none';
     if (signInView) signInView.style.display = 'none';
     if (signUpView) signUpView.style.display = 'none';
@@ -1390,6 +1432,7 @@ function switchAuthMode(mode) {
     return;
   }
 
+  if (modalBox) modalBox.style.maxWidth = '460px';
   if (profileView) profileView.style.display = 'none';
 
   if (mode === 'signin') {
@@ -1432,38 +1475,54 @@ function switchAuthMode(mode) {
 async function renderUserProfile() {
   if (!state.user) return;
 
-  const avatarBox = document.getElementById('profileAvatarBox');
-  const nameElem = document.getElementById('profileFullName');
-  const emailElem = document.getElementById('profileEmail');
-  const phoneElem = document.getElementById('profilePhone');
-  const roleBadge = document.getElementById('profileRoleBadge');
+  const avatarBox = document.getElementById('digitalPassAvatar');
+  const nameElem = document.getElementById('digitalPassName');
+  const emailElem = document.getElementById('digitalPassEmail');
+  const phoneElem = document.getElementById('digitalPassPhone');
+  const roleBadge = document.getElementById('digitalPassBadge');
+  const passTier = document.getElementById('digitalPassTier');
+  const memberIdElem = document.getElementById('digitalPassMemberId');
+  const signOutEmailElem = document.getElementById('signOutEmailDisplay');
+  const activeCountElem = document.getElementById('statActivePlansCount');
+  const countPill = document.getElementById('profileOrderCountPill');
   const ordersList = document.getElementById('profileOrdersList');
-  const countBadge = document.getElementById('profileOrderCount');
+  const tierLabel = document.getElementById('statTierLabel');
 
-  // Set user basics
+  // Compute clean customer initials
   const initials = state.user.full_name 
-    ? state.user.full_name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() 
+    ? state.user.full_name.trim().split(/\s+/).map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() 
     : 'U';
-  if (avatarBox) avatarBox.textContent = initials;
+
+  const memberIdCode = `FLX-${(state.user.id || 8842).toString().padStart(4, '0')}`;
+
+  if (avatarBox) avatarBox.textContent = initials || 'U';
   if (nameElem) nameElem.textContent = state.user.full_name || 'Customer';
   if (emailElem) emailElem.textContent = state.user.email || '';
-  if (phoneElem) phoneElem.textContent = state.user.phone ? `Phone: ${state.user.phone}` : 'Account: Active';
+  if (phoneElem) phoneElem.textContent = state.user.phone ? `Phone: ${state.user.phone}` : 'Backup Phone: Not set';
+  if (memberIdElem) memberIdElem.textContent = memberIdCode;
+  if (signOutEmailElem) signOutEmailElem.textContent = state.user.email || '';
 
-  if (roleBadge) {
-    if (state.user.role === 'admin') {
-      roleBadge.textContent = '👑 Admin';
+  if (state.user.role === 'admin') {
+    if (roleBadge) {
+      roleBadge.textContent = '👑 Admin Master';
       roleBadge.style.color = '#38bdf8';
-      roleBadge.style.background = 'rgba(56, 189, 248, 0.12)';
-      roleBadge.style.borderColor = 'rgba(56, 189, 248, 0.3)';
+      roleBadge.style.background = 'rgba(56, 189, 248, 0.15)';
+      roleBadge.style.borderColor = 'rgba(56, 189, 248, 0.35)';
       roleBadge.style.cursor = 'pointer';
       roleBadge.onclick = () => window.location.href = '/admin';
-    } else {
-      roleBadge.textContent = '✓ Verified Customer';
-      roleBadge.style.color = '#10b981';
-      roleBadge.style.background = 'rgba(52, 211, 153, 0.12)';
-      roleBadge.style.borderColor = 'rgba(52, 211, 153, 0.25)';
+    }
+    if (passTier) passTier.innerHTML = `<span>👑 ADMIN PRO</span>`;
+    if (tierLabel) tierLabel.textContent = 'Admin Tier';
+  } else {
+    if (roleBadge) {
+      roleBadge.textContent = '✓ Verified VIP';
+      roleBadge.style.color = '#34d399';
+      roleBadge.style.background = 'rgba(52, 211, 153, 0.15)';
+      roleBadge.style.borderColor = 'rgba(52, 211, 153, 0.3)';
       roleBadge.onclick = null;
     }
+    if (passTier) passTier.innerHTML = `<span>★ VIP MEMBER</span>`;
+    if (tierLabel) tierLabel.textContent = 'Priority VIP';
   }
 
   // Fetch real order history from /api/auth/me
@@ -1477,24 +1536,28 @@ async function renderUserProfile() {
     });
 
     if (res.status === 401 || res.status === 403) {
-      logoutUser();
+      confirmSignOut();
       return;
     }
 
     const data = await res.json();
     if (data.success && data.orders) {
       const orders = data.orders;
-      if (countBadge) countBadge.textContent = `${orders.length} Order${orders.length === 1 ? '' : 's'}`;
+      const orderCountText = `${orders.length} Plan${orders.length === 1 ? '' : 's'}`;
+      if (activeCountElem) activeCountElem.textContent = orderCountText;
+      if (countPill) countPill.textContent = `${orders.length} Order${orders.length === 1 ? '' : 's'}`;
 
       if (ordersList) {
         if (orders.length === 0) {
           ordersList.innerHTML = `
-            <div style="text-align:center; padding:22px 14px; background:var(--bg-secondary); border-radius:var(--radius-md); border:1px dashed var(--glass-border);">
-              <div style="font-size:1.8rem; margin-bottom:6px;">✨</div>
-              <p style="margin:0 0 6px 0; font-size:0.86rem; font-weight:700; color:var(--text-primary);">No active orders yet</p>
-              <p style="margin:0 0 12px 0; font-size:0.78rem; color:var(--text-secondary);">Browse our catalog to get instant premium entertainment.</p>
-              <button class="btn-primary" style="padding:6px 14px; font-size:0.78rem;" onclick="closeAuthModal();">
-                Explore Subscriptions →
+            <div style="text-align:center; padding:28px 16px; background:var(--bg-secondary); border-radius:var(--radius-md); border:1px dashed var(--glass-border);">
+              <div style="font-size:2rem; margin-bottom:8px;">⚡</div>
+              <h5 style="margin:0 0 6px 0; font-size:0.95rem; font-weight:700; color:var(--text-primary);">Your Subscriptions Vault is Ready</h5>
+              <p style="margin:0 0 16px 0; font-size:0.8rem; color:var(--text-secondary); line-height:1.45;">
+                You don't have any active subscription orders under <strong>${state.user.email}</strong> yet. Browse our verified streaming and AI suite with instant automated delivery.
+              </p>
+              <button type="button" class="btn-primary" style="padding:8px 18px; font-size:0.82rem;" onclick="closeAuthModal(); window.scrollTo({top: 400, behavior:'smooth'});">
+                🚀 Explore Premium Subscriptions
               </button>
             </div>
           `;
@@ -1504,22 +1567,97 @@ async function renderUserProfile() {
             const isDelivered = ord.delivery_status === 'delivered';
             const statusColor = isDelivered ? '#10b981' : '#f59e0b';
             const statusBg = isDelivered ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)';
-            
+            const statusBorder = isDelivered ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)';
+            const statusLabel = isDelivered ? '● ACTIVE / READY' : '⏳ PROCESSING';
+
+            // Items list
+            const itemsHtml = (ord.items && ord.items.length > 0)
+              ? ord.items.map(it => `
+                  <div style="font-size:0.84rem; font-weight:700; color:var(--text-primary); margin-bottom:3px; display:flex; justify-content:space-between; align-items:center;">
+                    <span>${it.product_title}</span>
+                    <span style="font-weight:600; font-size:0.75rem; color:#60a5fa; background:rgba(59,130,246,0.12); padding:1px 6px; border-radius:4px;">${it.plan_name || it.duration_label || 'Subscription'}</span>
+                  </div>
+                `).join('')
+              : `<div style="font-size:0.84rem; font-weight:700; color:var(--text-primary); margin-bottom:3px;">FlixStore Order #${ord.order_number}</div>`;
+
+            // Delivered credentials
+            let credentialsHtml = '';
+            const creds = Array.isArray(ord.credentials) ? ord.credentials : [];
+            if (creds.length > 0) {
+              credentialsHtml = `
+                <div class="vault-credentials-box">
+                  <div class="vault-credentials-title">
+                    <span>🔑 DIGITAL ACCESS CREDENTIALS</span>
+                    <span style="font-size:0.68rem; color:#94a3b8;">1-Click Copy</span>
+                  </div>
+                  ${creds.map(c => `
+                    <div style="margin-bottom:6px; padding-bottom:6px; border-bottom:1px dashed rgba(255,255,255,0.06);">
+                      ${c.product_title ? `<div style="font-size:0.75rem; color:#93c5fd; font-weight:700; margin-bottom:4px;">${c.product_title}</div>` : ''}
+                      ${c.account_email ? `
+                        <div class="vault-cred-row">
+                          <span><strong>Email:</strong> ${c.account_email}</span>
+                          <button type="button" class="btn-copy-chip" onclick="copyToClipboard('${c.account_email}', 'Account Email')">Copy</button>
+                        </div>
+                      ` : ''}
+                      ${c.account_password ? `
+                        <div class="vault-cred-row">
+                          <span><strong>Password:</strong> ${c.account_password}</span>
+                          <button type="button" class="btn-copy-chip" onclick="copyToClipboard('${c.account_password}', 'Password')">Copy</button>
+                        </div>
+                      ` : ''}
+                      ${c.profile_pin ? `
+                        <div class="vault-cred-row">
+                          <span><strong>Profile PIN:</strong> ${c.profile_pin}</span>
+                          <button type="button" class="btn-copy-chip" onclick="copyToClipboard('${c.profile_pin}', 'PIN')">Copy</button>
+                        </div>
+                      ` : ''}
+                      ${c.license_key ? `
+                        <div class="vault-cred-row">
+                          <span><strong>License Key:</strong> ${c.license_key}</span>
+                          <button type="button" class="btn-copy-chip" onclick="copyToClipboard('${c.license_key}', 'License Key')">Copy</button>
+                        </div>
+                      ` : ''}
+                      ${c.activation_link ? `
+                        <div style="margin-top:4px; font-size:0.76rem;">
+                          <a href="${c.activation_link}" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                            <span>🔗 Access Activation Portal &rarr;</span>
+                          </a>
+                        </div>
+                      ` : ''}
+                    </div>
+                  `).join('')}
+                </div>
+              `;
+            }
+
             return `
-              <div style="background:var(--bg-secondary); border:1px solid var(--glass-border); border-radius:var(--radius-md); padding:12px; margin-bottom:10px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                  <strong style="font-size:0.84rem; color:var(--accent-blue);">${ord.order_number}</strong>
-                  <span style="font-size:0.68rem; font-weight:700; color:${statusColor}; background:${statusBg}; padding:2px 6px; border-radius:4px;">
-                    ${ord.delivery_status.toUpperCase()}
+              <div class="vault-order-card">
+                <div class="vault-order-top">
+                  <span class="vault-order-num">${ord.order_number}</span>
+                  <span class="vault-status-pill" style="color:${statusColor}; background:${statusBg}; border:1px solid ${statusBorder};">
+                    ${statusLabel}
                   </span>
                 </div>
-                <div style="display:flex; justify-content:space-between; font-size:0.78rem; color:var(--text-secondary); margin-bottom:8px;">
-                  <span>${dateStr} • ${(ord.payment_method || 'Online').toUpperCase()}</span>
-                  <strong style="color:var(--text-primary); font-size:0.82rem;">${ord.currency_symbol || '৳'}${ord.total_amount}</strong>
+                
+                <div style="margin-bottom:8px;">
+                  ${itemsHtml}
                 </div>
-                <button class="btn-secondary" style="width:100%; padding:6px 10px; font-size:0.76rem; justify-content:center; gap:4px;" onclick="closeAuthModal(); openTrackOrderModal('${ord.order_number}');">
-                  <span>🔑</span> View Credentials & Status
-                </button>
+
+                <div class="vault-order-meta">
+                  <span>${dateStr} • ${(ord.payment_method || 'Online').toUpperCase()}</span>
+                  <strong style="color:var(--text-primary); font-size:0.86rem;">${ord.currency_symbol || '৳'}${ord.total_amount}</strong>
+                </div>
+
+                ${credentialsHtml}
+
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                  <button type="button" class="btn-secondary" style="flex:1; padding:7px 10px; font-size:0.76rem; justify-content:center; gap:4px;" onclick="closeAuthModal(); openTrackOrderModal('${ord.order_number}');">
+                    <span>🔍</span> Live Tracker
+                  </button>
+                  <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20need%20assistance%20with%20Order%20${encodeURIComponent(ord.order_number)}" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:7px 12px; font-size:0.76rem; justify-content:center; gap:4px; text-decoration:none; color:#10b981; border-color:rgba(16,185,129,0.3);">
+                    <span>💬</span> Help
+                  </a>
+                </div>
               </div>
             `;
           }).join('');
@@ -1529,7 +1667,7 @@ async function renderUserProfile() {
   } catch (err) {
     console.error('Failed to load profile orders:', err);
     if (ordersList) {
-      ordersList.innerHTML = `<div style="text-align:center; padding:16px; font-size:0.8rem; color:var(--text-muted);">Unable to load orders right now.</div>`;
+      ordersList.innerHTML = `<div style="text-align:center; padding:18px; font-size:0.82rem; color:var(--text-muted);">Unable to synchronize orders at this moment.</div>`;
     }
   }
 }
@@ -1807,14 +1945,43 @@ function completeAuthentication(json) {
   }
 }
 
-function logoutUser() {
-  if (confirm('Are you sure you want to log out?')) {
-    state.user = null;
-    state.token = null;
-    localStorage.removeItem('flix_user');
-    localStorage.removeItem('flix_token');
-    checkAuthStatus();
+// Sign Out System (Clear, High-Clarity & In-Modal Confirmation)
+function promptSignOut() {
+  const overlay = document.getElementById('signOutConfirmOverlay');
+  const subElem = document.getElementById('signOutConfirmSubtitle');
+  if (state.user && subElem) {
+    const firstName = state.user.full_name ? state.user.full_name.trim().split(/\s+/)[0] : 'there';
+    subElem.textContent = `Are you sure you want to sign out, ${firstName}? You can sign back in anytime with your email & password.`;
   }
+  if (overlay) {
+    overlay.style.display = 'flex';
+  }
+}
+
+function dismissSignOutPrompt() {
+  const overlay = document.getElementById('signOutConfirmOverlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+function confirmSignOut() {
+  dismissSignOutPrompt();
+  state.user = null;
+  state.token = null;
+  localStorage.removeItem('flix_user');
+  localStorage.removeItem('flix_token');
+  closeAuthModal();
+  checkAuthStatus();
+  showToast('You have safely signed out of FlixStore.', 'success');
+}
+
+function logoutUser() {
+  promptSignOut();
+}
+
+function copyMemberId() {
+  const codeElem = document.getElementById('digitalPassMemberId');
+  const code = codeElem ? codeElem.textContent.trim() : 'FLX-VIP-8842';
+  copyToClipboard(code, 'Member ID');
 }
 
 // -----------------------------------------------------------------------------

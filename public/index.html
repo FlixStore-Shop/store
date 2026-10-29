@@ -933,12 +933,12 @@
     </div>
   </div>
 
-  <!-- 6. Customer Authentication Modal (Sign In / Sign Up / OTP Verification) -->
+  <!-- 6. Customer Authentication Modal (Sign In / Sign Up / OTP Verification / Digital Profile) -->
   <div id="authModal" class="modal-overlay" onclick="closeAuthModal()">
-    <div class="modal-box" style="max-width:460px;" onclick="event.stopPropagation()">
+    <div class="modal-box" id="authModalBox" style="max-width:460px;" onclick="event.stopPropagation()">
       <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
 
-      <div style="padding:32px;">
+      <div style="padding:28px 26px;">
         
         <!-- Segmented Tab Switcher (Sign In vs Create Account) -->
         <div id="authTabsContainer" class="auth-tabs">
@@ -1064,63 +1064,150 @@
           </div>
         </div>
 
-        <!-- 4. CUSTOMER PROFILE & SUBSCRIPTIONS VIEW (LOGGED IN) -->
+        <!-- 4. CUSTOMER DIGITAL PROFILE DASHBOARD (LOGGED IN) -->
         <div id="authProfileView" style="display:none;">
-          <!-- User Profile Header -->
-          <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px; padding-bottom:18px; border-bottom:1px solid var(--glass-border);">
-            <div id="profileAvatarBox" style="width:54px; height:54px; border-radius:50%; background:linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color:#ffffff; font-size:1.3rem; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(59,130,246,0.35); flex-shrink:0;">
-              U
+          <!-- Profile Top Executive Bar -->
+          <div class="profile-top-bar">
+            <div class="profile-top-title">
+              <span class="digital-live-badge"><span class="pulse-dot"></span> LIVE VAULT</span>
+              <h3>Customer Dashboard</h3>
             </div>
-            <div style="flex:1; min-width:0;">
-              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:2px;">
-                <h3 id="profileFullName" style="font-size:1.15rem; font-weight:800; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                  Customer Name
-                </h3>
-                <span id="profileRoleBadge" class="tier-badge-pill" style="background:rgba(52,211,153,0.12); color:#10b981; border:1px solid rgba(52,211,153,0.25); font-size:0.65rem; padding:2px 7px;">
-                  ✓ Verified
-                </span>
+            <button type="button" class="btn-signout-top" onclick="promptSignOut()" title="Sign out of account">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sign Out</span>
+            </button>
+          </div>
+
+          <!-- Digital Holographic Member Card -->
+          <div class="digital-member-card">
+            <!-- Card Chip & Tier Row -->
+            <div class="card-chip-row">
+              <div class="digital-chip">
+                <svg width="28" height="22" viewBox="0 0 28 22" fill="none">
+                  <rect width="28" height="22" rx="4" fill="#fbbf24" fill-opacity="0.9"/>
+                  <line x1="0" y1="7" x2="28" y2="7" stroke="#b45309" stroke-width="1"/>
+                  <line x1="0" y1="15" x2="28" y2="15" stroke="#b45309" stroke-width="1"/>
+                  <line x1="14" y1="0" x2="14" y2="22" stroke="#b45309" stroke-width="1"/>
+                  <circle cx="14" cy="11" r="3" fill="#fef3c7"/>
+                </svg>
+                <span class="digital-brand-text">FLIXSTORE DIGITAL PASS</span>
               </div>
-              <div id="profileEmail" style="font-size:0.82rem; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                user@example.com
+              <div class="digital-card-tier" id="digitalPassTier">
+                <span>★ VIP MEMBER</span>
               </div>
-              <div id="profilePhone" style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">
-                Phone: +880...
+            </div>
+
+            <!-- Card User Details Row -->
+            <div class="digital-user-row">
+              <div class="digital-avatar" id="digitalPassAvatar">
+                U
+              </div>
+              <div class="digital-user-info">
+                <div class="digital-user-name-wrap">
+                  <h4 id="digitalPassName">Customer Name</h4>
+                  <span id="digitalPassBadge" class="digital-role-badge">✓ Verified</span>
+                </div>
+                <div id="digitalPassEmail" class="digital-user-email">user@example.com</div>
+                <div id="digitalPassPhone" class="digital-user-phone">Phone: +880...</div>
+              </div>
+            </div>
+
+            <!-- Card Footer Row -->
+            <div class="digital-card-footer">
+              <div class="digital-member-id-wrap" onclick="copyMemberId()" title="Click to copy Member ID">
+                <span class="id-label">MEMBER ID:</span>
+                <span id="digitalPassMemberId" class="id-code">FLX-VIP-8842</span>
+                <span class="copy-icon-sm">📋</span>
+              </div>
+              <div class="digital-security-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Synced & Protected</span>
               </div>
             </div>
           </div>
 
-          <!-- Section: My Subscriptions & Orders -->
-          <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
-            <h4 style="font-size:0.92rem; font-weight:700; margin:0; display:flex; align-items:center; gap:6px;">
-              <span>📦</span> My Subscriptions & Orders
+          <!-- Digital Stat Matrix (3 Tiles) -->
+          <div class="digital-stats-grid">
+            <div class="stat-matrix-tile">
+              <div class="stat-matrix-icon">⚡</div>
+              <div class="stat-matrix-data">
+                <strong id="statActivePlansCount">0 Plans</strong>
+                <span>Active Vault</span>
+              </div>
+            </div>
+            <div class="stat-matrix-tile">
+              <div class="stat-matrix-icon">🛡️</div>
+              <div class="stat-matrix-data">
+                <strong>100% Shield</strong>
+                <span>Warranty Policy</span>
+              </div>
+            </div>
+            <div class="stat-matrix-tile">
+              <div class="stat-matrix-icon">👑</div>
+              <div class="stat-matrix-data">
+                <strong id="statTierLabel">VIP Tier 1</strong>
+                <span>Priority Auto-Dispatch</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Subscriptions & Credentials Vault -->
+          <div class="digital-vault-header">
+            <h4>
+              <span>📦</span> Active Subscriptions & Credentials Vault
             </h4>
-            <span id="profileOrderCount" style="font-size:0.75rem; color:var(--text-muted); background:var(--bg-tertiary); padding:2px 8px; border-radius:var(--radius-full);">
+            <span id="profileOrderCountPill" class="vault-count-pill">
               0 Orders
             </span>
           </div>
 
-          <!-- Orders Container (Rendered dynamically) -->
-          <div id="profileOrdersList" style="max-height:220px; overflow-y:auto; margin-bottom:20px; padding-right:4px;">
-            <div style="text-align:center; padding:24px 10px; color:var(--text-muted); font-size:0.84rem;">
-              Loading subscriptions...
+          <!-- Orders Container -->
+          <div id="profileOrdersList" class="profile-orders-scroll">
+            <div class="profile-orders-loading">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon"><circle cx="12" cy="12" r="10"></circle></svg>
+              <span>Synchronizing subscriptions vault...</span>
             </div>
           </div>
 
           <!-- Quick Action Buttons -->
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
-            <button type="button" class="btn-secondary" style="padding:10px 12px; font-size:0.82rem; justify-content:center;" onclick="closeAuthModal(); openTrackOrderModal();">
-              <span>🔍</span> Track Order
+          <div class="profile-quick-actions">
+            <button type="button" class="btn-secondary" onclick="closeAuthModal(); openTrackOrderModal();">
+              <span>🔍</span> Track Any Order
             </button>
-            <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%20Support%2C%20I%20have%20an%20inquiry%20about%20my%20account" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:10px 12px; font-size:0.82rem; justify-content:center; text-decoration:none; color:#10b981; border-color:rgba(16,185,129,0.3);">
-              <span>💬</span> WhatsApp VIP
+            <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%20Support%2C%20I%20have%20an%20inquiry%20about%20my%20account" target="_blank" rel="noopener noreferrer" class="btn-secondary whatsapp-vip-btn">
+              <span>💬</span> WhatsApp VIP Concierge
             </a>
           </div>
 
-          <!-- Logout Button -->
-          <button type="button" class="btn-secondary" style="width:100%; padding:10px; font-size:0.82rem; justify-content:center; color:#ef4444; border-color:rgba(239,68,68,0.25);" onclick="logoutUser()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-            Sign Out of Account
-          </button>
+          <!-- Prominent Dedicated Sign Out Card -->
+          <div class="profile-signout-card">
+            <div class="signout-card-left">
+              <div class="signout-icon-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              </div>
+              <div class="signout-text-box">
+                <div class="signout-user-label">Signed in as <strong id="signOutEmailDisplay">user@example.com</strong></div>
+                <div class="signout-desc-label">Securely close your active session on this device.</div>
+              </div>
+            </div>
+            <button type="button" class="btn-signout-action" onclick="promptSignOut()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sleek In-Modal Sign Out Confirmation Overlay -->
+        <div id="signOutConfirmOverlay" class="signout-confirm-modal" style="display:none;">
+          <div class="signout-confirm-box">
+            <div class="signout-confirm-icon">🚪</div>
+            <h3>Sign Out of FlixStore?</h3>
+            <p id="signOutConfirmSubtitle">Are you sure you want to sign out? You can sign back in anytime with your email & password.</p>
+            <div class="signout-confirm-buttons">
+              <button type="button" class="btn-secondary" onclick="dismissSignOutPrompt()">Keep Signed In</button>
+              <button type="button" class="btn-signout-confirm" onclick="confirmSignOut()">Yes, Sign Out</button>
+            </div>
+          </div>
         </div>
 
         <div style="margin-top:24px; font-size:0.78rem; color:var(--text-muted); text-align:center; border-top:1px solid var(--glass-border); padding-top:14px;">

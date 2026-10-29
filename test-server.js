@@ -113,6 +113,12 @@ async function runTests() {
     console.log('[TEST 7.1] /api/auth/verify-otp Status:', verifyRes.status, 'Role:', verifyRes.body.user.role);
     const adminToken = verifyRes.body.token;
 
+    // 7.2 Profile Dashboard Me Endpoint
+    const meRes = await request('/api/auth/me', {
+      headers: { 'Authorization': `Bearer ${adminToken}` }
+    });
+    console.log('[TEST 7.2] /api/auth/me Status:', meRes.status, 'User:', meRes.body.user?.email, 'Orders:', meRes.body.orders?.length);
+
     // 8. Admin Stats
     const statsRes = await request('/api/admin/stats', {
       headers: { 'Authorization': `Bearer ${adminToken}` }

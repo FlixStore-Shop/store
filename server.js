@@ -920,7 +920,22 @@ app.get('/api/auth/me', authMiddleware(), async (req, res) => {
       ORDER BY created_at DESC
     `).all(user.email.toLowerCase());
 
-    res.json({ success: true, user, orders });
+    const enrichedOrders = await Promise.all(orders.map(async (ord) => {
+      let credentials = [];
+      try {
+        credentials = JSON.parse(ord.delivered_credentials || '[]');
+      } catch (e) {
+        credentials = [];
+      }
+      const items = await db.prepare('SELECT * FROM order_items WHERE order_id = ?').all(ord.id);
+      return {
+        ...ord,
+        items: items || [],
+        credentials: Array.isArray(credentials) ? credentials : []
+      };
+    }));
+
+    res.json({ success: true, user, orders: enrichedOrders });
   } catch (err) {
     console.error('Fetch profile error:', err);
     res.status(500).json({ success: false, message: 'Error fetching user profile' });
