@@ -1712,6 +1712,52 @@ app.post('/api/admin/database/restore-json', authMiddleware('admin'), async (req
   }
 });
 
+// Admin: Customer & User Management
+app.get('/api/admin/users', authMiddleware('admin'), async (req, res) => {
+  try {
+    const users = await db.prepare(`
+      SELECT u.id, u.email, u.full_name, u.role, u.phone, u.created_at,
+             (SELECT COUNT(*) FROM orders o WHERE o.user_id = u.id OR LOWER(o.customer_email) = LOWER(u.email)) as order_count,
+             (SELECT COALESCE(SUM(total_amount), 0) FROM orders o WHERE (o.user_id = u.id OR LOWER(o.customer_email) = LOWER(u.email)) AND o.payment_status = 'completed') as total_spent
+      FROM users u
+      ORDER BY u.id DESC
+    `).all();
+
+    const formatted = users.map(u => {
+      const spent = parseFloat(u.total_spent || 0);
+      const isVip = u.role === 'admin' || spent > 0;
+      return {
+        ...u,
+        total_spent: spent,
+        order_count: parseInt(u.order_count || 0, 10),
+        is_vip: isVip,
+        tier: u.role === 'admin' ? 'admin' : (isVip ? 'vip' : 'standard')
+      };
+    });
+
+    res.json({ success: true, count: formatted.length, users: formatted });
+  } catch (err) {
+    console.error('Fetch admin users error:', err);
+    res.status(500).json({ success: false, message: 'Failed to fetch users' });
+  }
+});
+
+// Admin: Update user role / tier
+app.patch('/api/admin/users/:id/role', authMiddleware('admin'), async (req, res) => {
+  try {
+    const { role } = req.body;
+    const userId = req.params.id;
+    if (role && ['admin', 'customer'].includes(role)) {
+      await db.prepare('UPDATE users SET role = ? WHERE id = ?').run(role, userId);
+      return res.json({ success: true, message: `User role updated to ${role}` });
+    }
+    res.status(400).json({ success: false, message: 'Invalid role specified' });
+  } catch (err) {
+    console.error('Update user role error:', err);
+    res.status(500).json({ success: false, message: 'Failed to update user role' });
+  }
+});
+
 // Admin: Delete user by email (e.g. for customer support / reset)
 app.delete('/api/admin/users/:email', authMiddleware('admin'), async (req, res) => {
   try {

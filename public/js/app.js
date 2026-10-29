@@ -266,83 +266,105 @@ function renderProducts() {
     return;
   }
 
-  grid.innerHTML = state.filteredProducts.map(p => {
-    const badgeClass = p.badge ? p.badge.toLowerCase().replace(/[^a-z]/g, '') : 'pro';
-    
-    // Offer Price vs Real Market Price Comparison
-    const offerPriceBDT = p.min_price_bdt || (p.base_price ? Math.round(p.base_price * 120) : 0);
-    const origPriceBDT = p.min_original_price_bdt || p.original_price_bdt || (p.original_price ? Math.round(p.original_price * 120) : null);
-    
-    const offerFormatted = formatPrice(offerPriceBDT, true);
-    const origFormatted = (origPriceBDT && origPriceBDT > offerPriceBDT) ? formatPrice(origPriceBDT, true) : '';
-    const discountPercent = (origPriceBDT && origPriceBDT > offerPriceBDT) ? Math.round((1 - offerPriceBDT / origPriceBDT) * 100) : 0;
+  try {
+    grid.innerHTML = state.filteredProducts.map(p => {
+      try {
+        const badgeClass = p.badge ? String(p.badge).toLowerCase().replace(/[^a-z]/g, '') : 'pro';
+        
+        // Offer Price vs Real Market Price Comparison
+        const offerPriceBDT = Number(p.min_price_bdt || (p.base_price ? Math.round(Number(p.base_price) * 120) : 0));
+        const origPriceBDT = p.min_original_price_bdt 
+          ? Number(p.min_original_price_bdt) 
+          : (p.original_price_bdt 
+              ? Number(p.original_price_bdt) 
+              : (p.original_price ? Math.round(Number(p.original_price) * 120) : null));
+        
+        const offerFormatted = formatPrice(offerPriceBDT, true);
+        const origFormatted = (origPriceBDT && origPriceBDT > offerPriceBDT) ? formatPrice(origPriceBDT, true) : '';
+        const discountPercent = (origPriceBDT && origPriceBDT > offerPriceBDT) ? Math.round((1 - offerPriceBDT / origPriceBDT) * 100) : 0;
 
-    // Generate tier chips (e.g. Shared, Private PIN, Full Account)
-    const tiers = p.all_tier_types ? p.all_tier_types.split(',') : [];
-    let tierChipsHTML = '<div class="card-tier-hint">';
-    if (tiers.includes('shared')) tierChipsHTML += '<span class="tier-badge-pill shared">👥 Shared</span>';
-    if (tiers.includes('private')) tierChipsHTML += '<span class="tier-badge-pill private">🔒 Private PIN</span>';
-    if (tiers.includes('family')) tierChipsHTML += '<span class="tier-badge-pill family">👨‍👩‍👧‍👦 Full Account</span>';
-    if (tiers.includes('license')) tierChipsHTML += '<span class="tier-badge-pill license">🔑 License Key</span>';
-    if (tiers.length === 0) tierChipsHTML += '<span class="tier-badge-pill pro">⚡ Instant Access</span>';
-    tierChipsHTML += '</div>';
+        // Generate tier chips (e.g. Shared, Private PIN, Full Account)
+        const tiers = (p.all_tier_types && typeof p.all_tier_types === 'string') ? p.all_tier_types.split(',') : [];
+        let tierChipsHTML = '<div class="card-tier-hint">';
+        if (tiers.includes('shared')) tierChipsHTML += '<span class="tier-badge-pill shared">👥 Shared</span>';
+        if (tiers.includes('private')) tierChipsHTML += '<span class="tier-badge-pill private">🔒 Private PIN</span>';
+        if (tiers.includes('family')) tierChipsHTML += '<span class="tier-badge-pill family">👨‍👩‍👧‍👦 Full Account</span>';
+        if (tiers.includes('license')) tierChipsHTML += '<span class="tier-badge-pill license">🔑 License Key</span>';
+        if (tiers.length === 0) tierChipsHTML += '<span class="tier-badge-pill pro">⚡ Instant Access</span>';
+        tierChipsHTML += '</div>';
 
-    return `
-      <div class="product-card" data-slug="${p.slug}">
-        <div class="product-card-top" onclick="openProductDetail('${p.slug}')" style="cursor: pointer;">
-          <img src="${p.logo_url}" alt="${p.title}" class="product-card-img" loading="lazy">
-          <div class="product-card-gradient"></div>
-          <div class="product-card-badges">
-            <span class="badge-tag ${badgeClass}">${p.badge || 'Verified'}</span>
-            <span class="instant-delivery-badge">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-              ${p.delivery_time || 'Instant'}
-            </span>
-          </div>
-        </div>
-
-        <div class="product-body">
-          <div class="product-category-name">${p.category_name}</div>
-          <h3 class="product-title" onclick="openProductDetail('${p.slug}')" style="cursor: pointer;">${p.title}</h3>
-          <p class="product-tagline">${p.tagline || ''}</p>
-
-          ${tierChipsHTML}
-
-          <div class="product-rating-row">
-            <div class="stars">
-              ${'★'.repeat(5)}
-            </div>
-            <strong>${Number(p.rating || 5.0).toFixed(1)}</strong>
-            <span class="review-count">(${p.review_count || 0})</span>
-          </div>
-
-          <div class="card-pricing-row">
-            <div class="card-pricing-main">
-              <div class="card-price-label-row">
-                <span class="card-price-label">Offer Price</span>
-                ${discountPercent > 0 ? `<span class="discount-pill">${discountPercent}% OFF</span>` : ''}
-              </div>
-              <div class="card-price-numbers">
-                <span class="card-price-current">${offerFormatted}</span>
-                ${origFormatted ? `<span class="card-price-original" title="Official Market Price">${origFormatted}</span>` : ''}
+        return `
+          <div class="product-card" data-slug="${p.slug}">
+            <div class="product-card-top" onclick="openProductDetail('${p.slug}')" style="cursor: pointer;">
+              <img src="${p.logo_url || '/assets/logos/default.png'}" alt="${p.title || 'Subscription'}" class="product-card-img" loading="lazy">
+              <div class="product-card-gradient"></div>
+              <div class="product-card-badges">
+                <span class="badge-tag ${badgeClass}">${p.badge || 'Verified'}</span>
+                <span class="instant-delivery-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  ${p.delivery_time || 'Instant'}
+                </span>
               </div>
             </div>
-            <div class="card-warranty-pill" title="Full Duration Replacement Warranty">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-              <span>Full Warranty</span>
+
+            <div class="product-body">
+              <div class="product-category-name">${p.category_name || 'Premium'}</div>
+              <h3 class="product-title" onclick="openProductDetail('${p.slug}')" style="cursor: pointer;">${p.title || 'Subscription'}</h3>
+              <p class="product-tagline">${p.tagline || ''}</p>
+
+              ${tierChipsHTML}
+
+              <div class="product-rating-row">
+                <div class="stars">
+                  ${'★'.repeat(5)}
+                </div>
+                <strong>${Number(p.rating || 5.0).toFixed(1)}</strong>
+                <span class="review-count">(${Number(p.review_count || 0)})</span>
+              </div>
+
+              <div class="card-pricing-row">
+                <div class="card-pricing-main">
+                  <div class="card-price-label-row">
+                    <span class="card-price-label">Offer Price</span>
+                    ${discountPercent > 0 ? `<span class="discount-pill">${discountPercent}% OFF</span>` : ''}
+                  </div>
+                  <div class="card-price-numbers">
+                    <span class="card-price-current">${offerFormatted}</span>
+                    ${origFormatted ? `<span class="card-price-original" title="Official Market Price">${origFormatted}</span>` : ''}
+                  </div>
+                </div>
+                <div class="card-warranty-pill" title="Full Duration Replacement Warranty">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  <span>Full Warranty</span>
+                </div>
+              </div>
+
+              <div class="product-card-actions">
+                <button class="btn-select-plan" onclick="openProductDetail('${p.slug}')">
+                  <span>⚡ Select Plan & Duration</span>
+                  <span style="font-size:0.85rem; opacity:0.9;">→</span>
+                </button>
+              </div>
             </div>
           </div>
-
-          <div class="product-card-actions">
-            <button class="btn-select-plan" onclick="openProductDetail('${p.slug}')">
-              <span>⚡ Select Plan & Duration</span>
-              <span style="font-size:0.85rem; opacity:0.9;">→</span>
-            </button>
+        `;
+      } catch (itemErr) {
+        console.error('Error rendering individual product card:', itemErr, p);
+        return `
+          <div class="product-card" data-slug="${p.slug || ''}">
+            <div class="product-body" style="padding: 20px;">
+              <h3>${p.title || 'Subscription'}</h3>
+              <p>${p.tagline || ''}</p>
+              <button class="btn-select-plan" onclick="openProductDetail('${p.slug || ''}')">View Details →</button>
+            </div>
           </div>
-        </div>
-      </div>
-    `;
-  }).join('');
+        `;
+      }
+    }).join('');
+  } catch (gridErr) {
+    console.error('Critical failure in renderProducts:', gridErr);
+    grid.innerHTML = '<div style="grid-column:1/-1; padding:40px; text-align:center;">Failed to render subscriptions. Please refresh page.</div>';
+  }
 }
 
 function resetFilters() {

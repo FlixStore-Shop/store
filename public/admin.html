@@ -3,137 +3,391 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FlixStore Admin Portal | Database Handover & Control Center</title>
+  <title>FlixStore Developer Console & Admin Portal</title>
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238b5cf6'><polygon points='5 3 19 12 5 21 5 3'></polygon></svg>">
   <style>
-    /* Admin specific layout styling */
+    /* ==========================================================================
+       DEVELOPER-GRADE ADMIN PORTAL STYLING
+       ========================================================================== */
+    :root {
+      --admin-bg-base: #090d16;
+      --admin-bg-card: rgba(17, 24, 39, 0.75);
+      --admin-border: rgba(255, 255, 255, 0.08);
+      --admin-border-focus: rgba(139, 92, 246, 0.45);
+      --neon-blue: #38bdf8;
+      --neon-purple: #a855f7;
+      --neon-emerald: #34d399;
+      --neon-amber: #fbbf24;
+    }
+
+    body {
+      background: var(--admin-bg-base);
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
     .admin-layout {
       display: grid;
-      grid-template-columns: 260px 1fr;
+      grid-template-columns: 270px 1fr;
       min-height: 100vh;
     }
+
+    /* Sidebar */
     .admin-sidebar {
-      background: var(--bg-secondary);
-      border-right: 1px solid var(--glass-border);
-      padding: 24px 16px;
+      background: #0d121f;
+      border-right: 1px solid var(--admin-border);
+      padding: 24px 18px;
       display: flex;
       flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      box-sizing: border-box;
+      z-index: 100;
     }
-    .admin-nav {
-      list-style: none;
-      margin-top: 30px;
-      flex: 1;
-    }
-    .admin-nav-item {
+
+    .admin-brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 16px;
-      border-radius: var(--radius-md);
-      color: var(--text-secondary);
-      font-size: 0.9rem;
+      text-decoration: none;
+      padding: 4px 6px 20px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+
+    .admin-brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    .admin-nav {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 0 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: #94a3b8;
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       transition: all 0.2s ease;
+      user-select: none;
     }
+
+    .admin-nav-item-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .admin-nav-item:hover {
-      background: var(--bg-tertiary);
-      color: var(--text-primary);
-    }
-    .admin-nav-item.active {
-      background: var(--accent-blue);
+      background: rgba(255, 255, 255, 0.04);
       color: #ffffff;
-      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.35);
     }
+
+    .admin-nav-item.active {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(139, 92, 246, 0.22));
+      color: #ffffff;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
+    }
+
+    .nav-badge-pill {
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+    }
+
+    .admin-nav-item.active .nav-badge-pill {
+      background: #8b5cf6;
+      color: #ffffff;
+    }
+
+    .admin-sidebar-footer {
+      border-top: 1px solid var(--admin-border);
+      padding-top: 16px;
+    }
+
+    /* Main Content Area */
     .admin-main {
-      padding: 30px 40px;
+      padding: 28px 36px;
       overflow-y: auto;
       max-height: 100vh;
+      box-sizing: border-box;
+      background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent 400px),
+                  radial-gradient(circle at top left, rgba(16, 185, 129, 0.03), transparent 300px);
     }
+
     .admin-topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--glass-border);
+      margin-bottom: 26px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--admin-border);
+      flex-wrap: wrap;
+      gap: 16px;
     }
+
+    .live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #34d399;
+    }
+
+    .live-dot-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.7; }
+    }
+
+    /* Panels & Tables */
+    .admin-card {
+      background: var(--admin-bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--admin-border);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .admin-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .admin-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .data-table-wrapper {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--admin-border);
+    }
+
     .data-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
+      white-space: nowrap;
     }
+
     .data-table th, .data-table td {
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--glass-border);
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--admin-border);
     }
+
     .data-table th {
-      background: var(--bg-tertiary);
-      color: var(--text-secondary);
+      background: rgba(15, 23, 42, 0.75);
+      color: #94a3b8;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
     }
+
     .data-table tr:hover td {
-      background: rgba(255, 255, 255, 0.02);
+      background: rgba(255, 255, 255, 0.025);
     }
-    .handover-card {
-      background: linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
-      border: 1px solid rgba(139, 92, 246, 0.4);
-      border-radius: var(--radius-xl);
-      padding: 30px;
-      margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+
+    .filter-search-input {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--admin-border);
+      color: #ffffff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      outline: none;
+      min-width: 240px;
+      transition: border-color 0.2s;
+    }
+
+    .filter-search-input:focus {
+      border-color: #8b5cf6;
+    }
+
+    .gateway-pill {
+      font-size: 0.72rem;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .gateway-pill.bkash { background: rgba(226, 19, 110, 0.15); color: #f43f5e; border: 1px solid rgba(226, 19, 110, 0.3); }
+    .gateway-pill.nagad { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.3); }
+    .gateway-pill.card { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .gateway-pill.crypto { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .gateway-pill.paypal { background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); }
+
+    /* Developer Terminal & Diagnostics Card */
+    .dev-terminal-box {
+      background: #020617;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 12px;
+      padding: 18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      color: #38bdf8;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
       position: relative;
-      overflow: hidden;
+    }
+
+    /* Toast Notification */
+    #adminToast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e293b;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      font-size: 0.86rem;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      z-index: 10000;
     }
   </style>
 </head>
 <body>
 
+  <!-- Toast Notification System -->
+  <div id="adminToast">
+    <span id="adminToastIcon">✓</span>
+    <span id="adminToastMsg">Notification</span>
+  </div>
+
   <div class="admin-layout">
     
     <!-- Sidebar -->
     <aside class="admin-sidebar">
-      <a href="/" class="brand-logo" style="padding-left:8px;">
-        <div class="brand-icon-box" style="width:34px; height:34px;">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px; height:18px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <a href="/" class="admin-brand">
+        <div class="admin-brand-logo">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px; height:20px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         </div>
         <div>
-          <span class="brand-name">FlixStore</span>
-          <span class="brand-tag">ADMIN</span>
+          <div style="font-weight:800; font-size:1.05rem; letter-spacing:-0.3px; color:#ffffff;">FlixStore <span style="font-size:0.68rem; background:rgba(99,102,241,0.25); color:#a5b4fc; padding:2px 6px; border-radius:4px; font-weight:700;">DEV</span></div>
+          <div style="font-size:0.7rem; color:#64748b;">Cloud Ops & Control Center</div>
         </div>
       </a>
 
       <ul class="admin-nav">
         <li class="admin-nav-item active" data-tab="overview">
-          <span>📊</span> Overview & KPIs
+          <div class="admin-nav-item-inner">
+            <span>📊</span> Overview & KPIs
+          </div>
+          <span class="nav-badge-pill" id="navKpiBadge">Live</span>
         </li>
+
         <li class="admin-nav-item" data-tab="orders">
-          <span>📦</span> Orders & Deliveries
+          <div class="admin-nav-item-inner">
+            <span>📦</span> Orders & Fulfillment
+          </div>
+          <span class="nav-badge-pill" id="navOrdersCount">0</span>
         </li>
+
         <li class="admin-nav-item" data-tab="products">
-          <span>🎬</span> Subscription Catalog
+          <div class="admin-nav-item-inner">
+            <span>🎬</span> Catalog & Pricing
+          </div>
+          <span class="nav-badge-pill" id="navProductsCount">20</span>
         </li>
+
         <li class="admin-nav-item" data-tab="vault">
-          <span>🔑</span> Credential Vault
+          <div class="admin-nav-item-inner">
+            <span>🔑</span> Credential Vault
+          </div>
+          <span class="nav-badge-pill" id="navVaultAlert" style="background:rgba(16,185,129,0.15); color:#34d399;">Active</span>
         </li>
+
+        <li class="admin-nav-item" data-tab="customers">
+          <div class="admin-nav-item-inner">
+            <span>👥</span> Customers & VIPs
+          </div>
+          <span class="nav-badge-pill" id="navUsersCount">Users</span>
+        </li>
+
         <li class="admin-nav-item" data-tab="coupons">
-          <span>🏷️</span> Promo Codes
+          <div class="admin-nav-item-inner">
+            <span>🏷️</span> Promo & Discounts
+          </div>
+          <span class="nav-badge-pill" id="navCouponsCount">4</span>
         </li>
-        <li class="admin-nav-item" data-tab="database" style="color:#a78bfa;">
-          <span>💾</span> Database & Security
+
+        <li class="admin-nav-item" data-tab="neon">
+          <div class="admin-nav-item-inner">
+            <span>⚡</span> Neon Cloud & Dev
+          </div>
+          <span class="nav-badge-pill" style="color:#38bdf8;">Cloud</span>
         </li>
       </ul>
 
-      <div style="border-top:1px solid var(--glass-border); padding-top:16px;">
-        <a href="/" class="btn-secondary" style="width:100%; justify-content:center; margin-bottom:8px;">
-          ← Visit Storefront
+      <div class="admin-sidebar-footer">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px; padding:6px 8px; background:rgba(255,255,255,0.03); border-radius:8px;">
+          <div style="width:30px; height:30px; border-radius:50%; background:#6366f1; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem;">A</div>
+          <div style="overflow:hidden; flex:1;">
+            <div id="adminUserLabel" style="font-size:0.82rem; font-weight:700; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">Administrator</div>
+            <div style="font-size:0.7rem; color:#64748b;">admin@flixstore.com</div>
+          </div>
+        </div>
+
+        <a href="/" target="_blank" class="btn-secondary" style="width:100%; justify-content:center; margin-bottom:8px; font-size:0.8rem; padding:8px 0;">
+          ↗ Open Live Storefront
         </a>
-        <button class="action-btn" onclick="adminLogout()" style="width:100%; justify-content:center; color:#f87171;">
+        <button class="action-btn" onclick="adminLogout()" style="width:100%; justify-content:center; color:#f87171; font-size:0.8rem; padding:7px 0;">
           Sign Out
         </button>
       </div>
@@ -142,31 +396,48 @@
     <!-- Main Content Area -->
     <main class="admin-main">
       
+      <!-- Topbar with System Diagnostics Status -->
       <div class="admin-topbar">
         <div>
-          <h1 style="font-size:1.6rem; font-weight:800; letter-spacing:-0.5px;">FlixStore Management Portal</h1>
-          <p style="color:var(--text-secondary); font-size:0.85rem;">Complete inventory, order fulfillment, security & database handover center</p>
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:4px;">
+            <h1 style="font-size:1.55rem; font-weight:800; letter-spacing:-0.5px; margin:0; color:#ffffff;">
+              FlixStore Engineering & Ops Portal
+            </h1>
+            <div class="live-status-pill">
+              <span class="live-dot-pulse"></span>
+              <span id="topSystemStatus">Neon Lakebase Postgres • Connected</span>
+            </div>
+          </div>
+          <p style="color:#94a3b8; font-size:0.84rem; margin:0;">
+            Unified operational console for subscription fulfillment, automated credential vaults, customer memberships, and cloud persistence.
+          </p>
         </div>
-        <div style="display:flex; gap:12px;">
-          <button class="btn-secondary" onclick="triggerDatabaseDownload()" title="Download flixstore.db SQLite file directly">
-            💾 Download flixstore.db
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="btn-secondary" onclick="copyAdminApiToken()" style="font-size:0.78rem; padding:7px 12px; gap:6px;" title="Copy Bearer JWT token for curl / Postman testing">
+            <span>🔑</span> Copy API Token
           </button>
-          <button class="btn-primary" onclick="openAddProductModal()">
-            + Add New Subscription
+          <button class="btn-secondary" onclick="exportOrdersToCSV()" style="font-size:0.78rem; padding:7px 12px; gap:6px;" title="Export orders into a spreadsheet">
+            <span>📥</span> Export CSV
+          </button>
+          <button class="btn-primary" onclick="openAddProductModal()" style="font-size:0.8rem; padding:8px 14px; gap:6px;">
+            <span>+</span> Add Subscription
           </button>
         </div>
       </div>
 
-      <!-- TAB 1: OVERVIEW & KPIS -->
+      <!-- =====================================================================
+           TAB 1: OVERVIEW & ADVANCED KPIS
+           ===================================================================== -->
       <section id="overviewView" class="admin-tab-content">
         
-        <!-- KPI Cards -->
-        <div class="stats-grid" style="margin-bottom:30px;">
+        <!-- KPI Metrics Matrix -->
+        <div class="stats-grid" style="margin-bottom:24px;">
           <div class="stat-card">
-            <div class="stat-icon emerald">💵</div>
+            <div class="stat-icon emerald">৳</div>
             <div>
               <div id="statTotalRevenue" class="stat-value">৳0</div>
-              <div class="stat-label">Total Verified Revenue</div>
+              <div class="stat-label">Verified Gross Revenue</div>
             </div>
           </div>
 
@@ -174,7 +445,7 @@
             <div class="stat-icon blue">📦</div>
             <div>
               <div id="statTotalOrders" class="stat-value">0</div>
-              <div class="stat-label">Total Orders Processed</div>
+              <div class="stat-label">Total Orders Handled</div>
             </div>
           </div>
 
@@ -195,14 +466,19 @@
           </div>
         </div>
 
-        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:24px; margin-bottom:30px;">
+        <!-- 2-Column Analytics & Live Feeds -->
+        <div style="display:grid; grid-template-columns: 1.7fr 1fr; gap:22px; margin-bottom:24px;">
+          
           <!-- Recent Orders Table -->
-          <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-              <h3 style="font-size:1.1rem; font-weight:700;">Recent Customer Orders</h3>
-              <button class="action-btn" onclick="switchAdminTab('orders')" style="font-size:0.75rem;">View All →</button>
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">
+                <span>⚡</span> Real-Time Sales & Fulfillment Feed
+              </h3>
+              <button class="action-btn" onclick="switchAdminTab('orders')" style="font-size:0.76rem;">View All Orders →</button>
             </div>
-            <div style="overflow-x:auto;">
+            
+            <div class="data-table-wrapper">
               <table class="data-table">
                 <thead>
                   <tr>
@@ -211,38 +487,82 @@
                     <th>Amount</th>
                     <th>Gateway</th>
                     <th>Status</th>
-                    <th>Credentials</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
-                <tbody id="recentOrdersTableBody"></tbody>
+                <tbody id="recentOrdersTableBody">
+                  <tr><td colspan="6" style="text-align:center; padding:18px; color:#94a3b8;">Loading orders...</td></tr>
+                </tbody>
               </table>
             </div>
           </div>
 
-          <!-- Sales Breakdown by Category -->
-          <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
-            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:16px;">Revenue by Category</h3>
-            <div id="categorySalesStats"></div>
+          <!-- Sales Breakdown by Category & Cloud Stats -->
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">
+                <span>🏷️</span> Revenue by Category
+              </h3>
+              <span id="salesCurrencyTag" style="font-size:0.75rem; color:#60a5fa; font-weight:700;">BDT (৳)</span>
+            </div>
+            <div id="categorySalesStats" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+            <!-- Quick DevOps Actions -->
+            <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--admin-border);">
+              <div style="font-size:0.78rem; font-weight:700; color:#94a3b8; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;">Quick Cloud Actions</div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="button" class="btn-secondary" style="font-size:0.74rem; padding:6px 10px;" onclick="switchAdminTab('neon')">⚡ Neon Health</button>
+                <button type="button" class="btn-secondary" style="font-size:0.74rem; padding:6px 10px;" onclick="triggerJsonExport()">📄 JSON Backup</button>
+                <button type="button" class="btn-secondary" style="font-size:0.74rem; padding:6px 10px;" onclick="switchAdminTab('vault')">🔑 Restock Vault</button>
+              </div>
+            </div>
           </div>
+
         </div>
 
       </section>
 
-      <!-- TAB 2: ORDERS MANAGEMENT -->
+      <!-- =====================================================================
+           TAB 2: ORDERS MANAGEMENT & FULFILLMENT
+           ===================================================================== -->
       <section id="ordersView" class="admin-tab-content" style="display:none;">
-        <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
-          <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:16px;">All Customer Orders & Dispatched Credentials</h3>
-          <div style="overflow-x:auto;">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div>
+              <h3 class="admin-card-title"><span>📦</span> Customer Orders & Dispatch Tracker</h3>
+              <p style="color:#94a3b8; font-size:0.8rem; margin:4px 0 0 0;">Manage subscription delivery status, verify TrxIDs, and inspect customer credentials.</p>
+            </div>
+            
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <input type="text" id="orderSearchInput" class="filter-search-input" placeholder="Search Order #, Email, Name, or TrxID..." oninput="filterOrdersTable()">
+              <select id="orderStatusFilter" class="form-input" style="width:auto; padding:8px 12px;" onchange="filterOrdersTable()">
+                <option value="all">All Delivery Statuses</option>
+                <option value="delivered">Delivered</option>
+                <option value="processing">Processing</option>
+                <option value="pending">Pending</option>
+              </select>
+              <select id="orderGatewayFilter" class="form-input" style="width:auto; padding:8px 12px;" onchange="filterOrdersTable()">
+                <option value="all">All Gateways</option>
+                <option value="bkash">bKash</option>
+                <option value="nagad">Nagad</option>
+                <option value="card">Cards</option>
+                <option value="crypto">Crypto</option>
+                <option value="paypal">PayPal</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="data-table-wrapper">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Order Number</th>
+                  <th>Order #</th>
                   <th>Customer Information</th>
-                  <th>Total Amount</th>
+                  <th>Amount</th>
                   <th>Payment Method & TrxID</th>
                   <th>Delivery Status</th>
                   <th>Date</th>
-                  <th>Credentials</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="allOrdersTableBody"></tbody>
@@ -251,22 +571,32 @@
         </div>
       </section>
 
-      <!-- TAB 3: PRODUCTS CATALOG -->
+      <!-- =====================================================================
+           TAB 3: PRODUCTS & PRICING ENGINE
+           ===================================================================== -->
       <section id="productsView" class="admin-tab-content" style="display:none;">
-        <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-            <h3 style="font-size:1.2rem; font-weight:700;">Subscription Products</h3>
-            <button class="btn-primary" onclick="openAddProductModal()">+ Add New Subscription</button>
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div>
+              <h3 class="admin-card-title"><span>🎬</span> Subscription Catalog Management</h3>
+              <p style="color:#94a3b8; font-size:0.8rem; margin:4px 0 0 0;">Control base prices, durations, promotional badges, and category tags.</p>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <input type="text" id="productSearchInput" class="filter-search-input" placeholder="Search subscriptions..." oninput="filterProductsTable()">
+              <button class="btn-primary" onclick="openAddProductModal()">+ Add New Subscription</button>
+            </div>
           </div>
-          <div style="overflow-x:auto;">
+
+          <div class="data-table-wrapper">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Product</th>
+                  <th>Subscription</th>
                   <th>Category</th>
-                  <th>Base Price</th>
-                  <th>Badge</th>
-                  <th>Customer Rating</th>
+                  <th>Base Price (USD / BDT)</th>
+                  <th>Badge Tag</th>
+                  <th>Verified Rating</th>
+                  <th>Plans</th>
                 </tr>
               </thead>
               <tbody id="adminProductsTableBody"></tbody>
@@ -275,22 +605,39 @@
         </div>
       </section>
 
-      <!-- TAB 4: CREDENTIAL VAULT -->
+      <!-- =====================================================================
+           TAB 4: CREDENTIAL VAULT INVENTORY
+           ===================================================================== -->
       <section id="vaultView" class="admin-tab-content" style="display:none;">
-        <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-            <div>
-              <h3 style="font-size:1.2rem; font-weight:700;">Pre-Stocked Credential Vault</h3>
-              <p style="color:var(--text-secondary); font-size:0.85rem;">When a customer places an order, the system pulls an available account or key from this vault.</p>
-            </div>
-            <button class="btn-primary" onclick="openAddVaultModal()">+ Stock New Account / Key</button>
+        <div class="admin-card">
+          
+          <!-- Low Stock Alert Banner -->
+          <div id="vaultStockAlertBox" style="display:none; margin-bottom:18px; padding:12px 16px; border-radius:10px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); font-size:0.84rem; color:#fbbf24;">
+            <div style="font-weight:700; margin-bottom:2px;">⚠️ Low Inventory Notice in Credential Vault</div>
+            <div id="vaultStockAlertText">Some products are running low on available accounts or license keys. Stock more to prevent automated fallback.</div>
           </div>
-          <div style="overflow-x:auto;">
+
+          <div class="admin-card-header">
+            <div>
+              <h3 class="admin-card-title"><span>🔑</span> Pre-Stocked Credential Vault</h3>
+              <p style="color:#94a3b8; font-size:0.8rem; margin:4px 0 0 0;">When a customer places an order, the system pulls an available account or key from this vault instantly.</p>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <select id="vaultFilterStatus" class="form-input" style="width:auto; padding:8px 12px;" onchange="filterVaultTable()">
+                <option value="all">All Vault Items</option>
+                <option value="available">Available Only</option>
+                <option value="assigned">Assigned / Dispatched</option>
+              </select>
+              <button class="btn-primary" onclick="openAddVaultModal()">+ Stock Credentials</button>
+            </div>
+          </div>
+
+          <div class="data-table-wrapper">
             <table class="data-table">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Subscription</th>
+                  <th>Product</th>
                   <th>Type</th>
                   <th>Account / Email / Key</th>
                   <th>Password</th>
@@ -304,18 +651,63 @@
         </div>
       </section>
 
-      <!-- TAB 5: PROMO CODES -->
-      <section id="couponsView" class="admin-tab-content" style="display:none;">
-        <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px;">
-          <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:16px;">Promotional Coupons & Discounts</h3>
-          <div style="overflow-x:auto;">
+      <!-- =====================================================================
+           TAB 5: CUSTOMER & VIP MANAGEMENT (BRAND NEW)
+           ===================================================================== -->
+      <section id="customersView" class="admin-tab-content" style="display:none;">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div>
+              <h3 class="admin-card-title"><span>👥</span> Customer Accounts & Membership Tiers</h3>
+              <p style="color:#94a3b8; font-size:0.8rem; margin:4px 0 0 0;">Inspect registered users, manage VIP member privileges, and communicate directly via WhatsApp.</p>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <input type="text" id="customerSearchInput" class="filter-search-input" placeholder="Search customer name, email, phone..." oninput="filterCustomersTable()">
+              <button class="btn-secondary" onclick="loadCustomersList()">↻ Refresh Users</button>
+            </div>
+          </div>
+
+          <div class="data-table-wrapper">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Code</th>
-                  <th>Discount</th>
+                  <th>Member ID</th>
+                  <th>Customer Profile</th>
+                  <th>Phone Number</th>
+                  <th>Orders</th>
+                  <th>Total Spent</th>
+                  <th>Membership Tier</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminCustomersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           TAB 6: PROMO CODES & COUPONS
+           ===================================================================== -->
+      <section id="couponsView" class="admin-tab-content" style="display:none;">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div>
+              <h3 class="admin-card-title"><span>🏷️</span> Promotional Campaigns & Coupons</h3>
+              <p style="color:#94a3b8; font-size:0.8rem; margin:4px 0 0 0;">Create percentage or fixed USD discounts with spending thresholds.</p>
+            </div>
+            <button class="btn-primary" onclick="openAddCouponModal()">+ Create Coupon</button>
+          </div>
+
+          <div class="data-table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Coupon Code</th>
+                  <th>Discount Value</th>
                   <th>Min Spend</th>
-                  <th>Usage Count</th>
+                  <th>Redemption Meter</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -325,89 +717,108 @@
         </div>
       </section>
 
-      <!-- TAB 6: DATABASE HANDOVER & SECURITY CENTER -->
-      <section id="databaseView" class="admin-tab-content" style="display:none;">
+      <!-- =====================================================================
+           TAB 7: NEON CLOUD & DEVELOPER DIAGNOSTICS (NEW SUPERPOWER)
+           ===================================================================== -->
+      <section id="neonView" class="admin-tab-content" style="display:none;">
         
-        <!-- Big Handover Hero Card -->
-        <div class="handover-card">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
+        <!-- Neon Lakebase Hero Header -->
+        <div class="admin-card" style="margin-bottom:24px; background:linear-gradient(135deg, rgba(30, 27, 75, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%); border-color:rgba(139, 92, 246, 0.35);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px;">
             <div>
-              <span class="badge-pill" style="background:rgba(139,92,246,0.3); color:#c4b5fd; margin-bottom:10px;">
-                DATABASE HANDOVER CENTER
+              <span class="badge-pill" style="background:rgba(139,92,246,0.25); color:#c4b5fd; margin-bottom:8px;">
+                NEON LAKEBASE ARCHITECTURE & CLOUD BACKEND
               </span>
-              <h2 style="font-size:1.8rem; font-weight:800; margin-top:6px; color:#ffffff;">
-                Your Complete FlixStore Database & Security Vault
+              <h2 style="font-size:1.6rem; font-weight:800; color:#ffffff; margin:6px 0 6px 0;">
+                Cloud Services & Handover Console
               </h2>
-              <p style="color:#cbd5e1; max-width:680px; font-size:0.95rem; margin-top:6px; line-height:1.6;">
-                As requested, you have complete ownership and handover of the database. You can download the physical SQLite database file (<code>flixstore.db</code>) with one click, export a portable JSON backup, or inspect table statistics at any time.
+              <p style="color:#cbd5e1; font-size:0.88rem; max-width:680px; line-height:1.6; margin:0;">
+                FlixStore is powered by 100% persistent Cloud PostgreSQL (Neon), S3-compatible Object Storage for static assets, and WebSocket Realtime sync. Export portable backups or test services directly below.
               </p>
             </div>
-            <div style="font-size:3.5rem;">💾</div>
+            <div style="font-size:3rem;">⚡</div>
           </div>
 
-          <div style="display:flex; gap:16px; margin-top:20px; flex-wrap:wrap;">
-            <button class="btn-primary" style="padding:14px 28px; font-size:1rem;" onclick="triggerDatabaseDownload()">
-              📥 Download Live flixstore.db (SQLite File)
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button class="btn-primary" onclick="triggerJsonExport()">
+              📥 Export Portable JSON Backup
             </button>
-            <button class="btn-secondary" style="padding:14px 24px; font-size:1rem;" onclick="triggerJsonExport()">
-              📄 Export Full JSON Database
+            <button class="btn-secondary" style="border-color:#8b5cf6; color:#c4b5fd;" onclick="document.getElementById('dbRestoreInput').click()">
+              📤 Restore Database from JSON
             </button>
-            <button class="btn-secondary" style="padding:14px 24px; font-size:1rem; border-color:#8b5cf6; color:#c4b5fd;" onclick="document.getElementById('dbRestoreInput').click()">
-              📤 Restore Database from Backup
+            <button class="btn-secondary" onclick="triggerDatabaseDownload()">
+              💾 Download SQLite Fallback
             </button>
             <input type="file" id="dbRestoreInput" accept=".json" style="display:none;" onchange="handleRestoreFile(event)">
           </div>
         </div>
 
-        <!-- Database Health & File Details -->
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:30px;">
+        <!-- 3 Diagnostic Cards -->
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; margin-bottom:24px;">
           
-          <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:24px;">
-            <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:16px;">Database File Statistics</h3>
-            
-            <div style="font-size:0.88rem; line-height:2;">
-              <div>File Path: <strong id="dbFilePath" style="font-family:monospace; color:#60a5fa;"></strong></div>
-              <div>File Size: <strong id="dbFileSize"></strong></div>
-              <div>Integrity Check: <strong id="dbIntegrity" style="color:#34d399;"></strong></div>
-              <div>Last Written: <span id="dbLastModified"></span></div>
+          <!-- PostgreSQL Status -->
+          <div class="admin-card">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+              <span style="font-size:1.2rem;">🐘</span>
+              <h4 style="margin:0; font-size:1rem; font-weight:700;">Lakebase Postgres</h4>
             </div>
-
-            <h4 style="font-size:0.95rem; margin-top:20px; font-weight:700;">Record Counts by Table:</h4>
-            <div id="dbTableCounts"></div>
+            <div style="font-size:0.82rem; line-height:1.9; color:#94a3b8;">
+              <div>Status: <strong style="color:#34d399;">Operational</strong></div>
+              <div>Engine: <strong>PostgreSQL 16 (Neon)</strong></div>
+              <div>Connection: <strong>Connection Pooler</strong></div>
+              <div>SSL Mode: <strong>Require (TLS 1.3)</strong></div>
+              <div>Retry Handler: <strong>Active (3 retries)</strong></div>
+            </div>
           </div>
 
-          <!-- Security Architecture Verification -->
-          <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:24px;">
-            <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:16px;">Security & Protection Architecture</h3>
-            
-            <ul style="list-style:none; font-size:0.88rem; color:var(--text-secondary); line-height:1.8;">
-              <li style="display:flex; gap:10px;">
-                <span style="color:#34d399;">✓</span>
-                <span><strong>scrypt Key Derivation:</strong> Passwords hashed with 64-byte cryptographic salts.</span>
-              </li>
-              <li style="display:flex; gap:10px;">
-                <span style="color:#34d399;">✓</span>
-                <span><strong>Zero SQL Injection:</strong> 100% Parameterized prepared statements across all queries.</span>
-              </li>
-              <li style="display:flex; gap:10px;">
-                <span style="color:#34d399;">✓</span>
-                <span><strong>Rate Limiting Protection:</strong> In-memory sliding window defense against brute force.</span>
-              </li>
-              <li style="display:flex; gap:10px;">
-                <span style="color:#34d399;">✓</span>
-                <span><strong>XSS Defense:</strong> Strict sanitization of customer names, reviews, and inputs.</span>
-              </li>
-              <li style="display:flex; gap:10px;">
-                <span style="color:#34d399;">✓</span>
-                <span><strong>Encrypted Vault:</strong> Customer credentials isolated and only revealed to authenticated buyers.</span>
-              </li>
-              <li style="display:flex; gap:10px;">
-                <span style="color:#34d399;">✓</span>
-                <span><strong>Hardened HTTP Headers:</strong> X-Content-Type-Options, X-Frame-Options, strict referrer policies.</span>
-              </li>
-            </ul>
+          <!-- S3 Object Storage -->
+          <div class="admin-card">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+              <span style="font-size:1.2rem;">🪣</span>
+              <h4 style="margin:0; font-size:1rem; font-weight:700;">Neon S3 Object Storage</h4>
+            </div>
+            <div style="font-size:0.82rem; line-height:1.9; color:#94a3b8;">
+              <div>Bucket: <strong style="color:#60a5fa;">assets</strong></div>
+              <div>Region: <strong>ap-southeast-1</strong></div>
+              <div>SDK: <strong>@aws-sdk/client-s3</strong></div>
+              <div>Test Health: <button class="btn-secondary" style="padding:2px 8px; font-size:0.7rem;" onclick="testNeonStorage()">Test S3 Put/Get</button></div>
+              <div id="s3TestResult" style="color:#34d399; font-size:0.75rem; margin-top:4px;"></div>
+            </div>
           </div>
 
+          <!-- SMTP & Brevo Email Dispatcher -->
+          <div class="admin-card">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+              <span style="font-size:1.2rem;">📧</span>
+              <h4 style="margin:0; font-size:1rem; font-weight:700;">SMTP & Brevo Dispatcher</h4>
+            </div>
+            <div style="font-size:0.82rem; line-height:1.9; color:#94a3b8;">
+              <div>Engine: <strong>Nodemailer / Direct API</strong></div>
+              <div>Templates: <strong>2FA OTP & Order Receipts</strong></div>
+              <div style="margin-top:6px; display:flex; gap:6px;">
+                <input type="email" id="testEmailTarget" class="form-input" style="padding:4px 8px; font-size:0.75rem;" placeholder="Email address" value="mridhamahmod@gmail.com">
+                <button class="btn-secondary" style="padding:4px 8px; font-size:0.72rem; white-space:nowrap;" onclick="sendTestAdminEmail()">Send OTP</button>
+              </div>
+              <div id="smtpTestResult" style="color:#34d399; font-size:0.75rem; margin-top:4px;"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Developer cURL API Playground -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3 class="admin-card-title"><span>💻</span> Developer CLI & cURL API Inspector</h3>
+            <span style="font-size:0.76rem; color:#94a3b8;">Pre-authenticated cURL commands for automated cron or headless integration</span>
+          </div>
+
+          <div class="dev-terminal-box">
+            <div style="color:#94a3b8; margin-bottom:6px;"># 1. Fetch live KPI stats via REST API:</div>
+            <div>curl -X GET https://store-q51q.onrender.com/api/admin/stats \</div>
+            <div style="padding-left:16px;">-H "Authorization: Bearer <span id="curlTokenPlaceholder">&lt;YOUR_ADMIN_JWT_TOKEN&gt;</span>"</div>
+            <div style="margin-top:12px; color:#94a3b8;"># 2. Inspect real-time health:</div>
+            <div>curl -X GET https://store-q51q.onrender.com/api/neon/health</div>
+          </div>
         </div>
 
       </section>
@@ -423,7 +834,7 @@
   <!-- Admin Login Modal -->
   <div id="adminLoginModal" class="modal-overlay" style="display:none;">
     <div class="modal-box" style="max-width:420px; padding:32px;">
-      <h2 style="font-size:1.5rem; font-weight:800; margin-bottom:8px;">Admin Authentication</h2>
+      <h2 style="font-size:1.5rem; font-weight:800; margin-bottom:6px;">Admin Authentication</h2>
       <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:20px;">
         FlixStore Master Administration & Database Security Gate.
       </p>
@@ -436,12 +847,12 @@
 
         <div class="form-group">
           <label>Admin Password</label>
-          <input type="password" id="adminPassword" class="form-input" value="adminflixstore2026!" required>
+          <input type="password" id="adminPassword" class="form-input" value="FlixAdmin2026!" required>
         </div>
 
         <div id="adminLoginError" style="color:#f87171; font-size:0.82rem; margin-bottom:12px;"></div>
 
-        <button type="submit" class="btn-primary" style="width:100%; height:44px;">
+        <button type="submit" id="adminLoginSubmitBtn" class="btn-primary" style="width:100%; height:44px;">
           Unlock Management Console
         </button>
       </form>
@@ -450,9 +861,9 @@
 
   <!-- Credentials Viewer Modal -->
   <div id="credentialsViewerModal" class="modal-overlay" style="display:none;" onclick="closeCredentialsViewer()">
-    <div class="modal-box" style="max-width:560px; padding:30px;" onclick="event.stopPropagation()">
+    <div class="modal-box" style="max-width:580px; padding:30px;" onclick="event.stopPropagation()">
       <button class="modal-close-btn" onclick="closeCredentialsViewer()">✕</button>
-      <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:16px;">Delivered Digital Credentials</h3>
+      <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:16px;">Dispatched Digital Credentials</h3>
       <div id="credentialsViewerBody"></div>
     </div>
   </div>
@@ -461,7 +872,7 @@
   <div id="addProductModal" class="modal-overlay" style="display:none;" onclick="closeAddProductModal()">
     <div class="modal-box" style="max-width:640px; padding:30px;" onclick="event.stopPropagation()">
       <button class="modal-close-btn" onclick="closeAddProductModal()">✕</button>
-      <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:16px;">Add New Subscription Product</h3>
+      <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:16px;">Publish New Subscription Product</h3>
 
       <form onsubmit="handleCreateProduct(event)">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
@@ -477,24 +888,24 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Badge</label>
+            <label>Badge Tag</label>
             <input type="text" name="badge" class="form-input" placeholder="e.g. Bestseller, Hot Deal" value="New">
           </div>
         </div>
 
         <div class="form-group">
-          <label>Subscription Title</label>
-          <input type="text" name="title" class="form-input" placeholder="e.g. Disney+ Premium UHD" required>
+          <label>Subscription Title *</label>
+          <input type="text" name="title" class="form-input" placeholder="e.g. Disney+ Premium 4K UHD" required>
         </div>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div class="form-group">
-            <label>Slug (URL key)</label>
+            <label>Slug (URL key) *</label>
             <input type="text" name="slug" class="form-input" placeholder="e.g. disney-plus-premium" required>
           </div>
           <div class="form-group">
-            <label>Base Price ($ USD / ~120 ৳ BDT)</label>
-            <input type="number" step="0.01" name="base_price" class="form-input" placeholder="3.99" required>
+            <label>Base Price ($ USD / ~120 ৳ BDT) *</label>
+            <input type="number" step="0.01" name="base_price" class="form-input" placeholder="2.99" required>
           </div>
         </div>
 
@@ -509,12 +920,12 @@
         </div>
 
         <div class="form-group">
-          <label>Image Logo URL</label>
+          <label>Brand Logo URL</label>
           <input type="url" name="logo_url" class="form-input" value="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500">
         </div>
 
         <button type="submit" class="btn-primary" style="width:100%; height:44px; margin-top:10px;">
-          Publish Subscription
+          Publish Subscription to Catalog
         </button>
       </form>
     </div>
@@ -528,26 +939,12 @@
 
       <form onsubmit="handleAddVaultItem(event)">
         <div class="form-group">
-          <label>Select Product</label>
-          <select name="product_id" class="form-input">
-            <option value="1">Netflix Premium 4K UHD</option>
-            <option value="2">Amazon Prime Video</option>
-            <option value="3">Crunchyroll Mega Fan</option>
-            <option value="4">YouTube Premium & Music</option>
-            <option value="5">Hoichoi Premium</option>
-            <option value="6">Chorki Premium</option>
-            <option value="7">ChatGPT Plus (OpenAI)</option>
-            <option value="8">Claude Pro (Anthropic)</option>
-            <option value="9">Midjourney Pro Plan</option>
-            <option value="10">Spotify Premium Individual</option>
-            <option value="12">Adobe Creative Cloud All Apps</option>
-            <option value="13">Google One 2TB Cloud + Gemini</option>
-            <option value="14">Canva Pro Subscription</option>
-          </select>
+          <label>Select Product *</label>
+          <select name="product_id" id="vaultProductSelect" class="form-input"></select>
         </div>
 
         <div class="form-group">
-          <label>Credential Type</label>
+          <label>Credential Type *</label>
           <select name="credential_type" class="form-input">
             <option value="account">Account (Email + Password)</option>
             <option value="profile_pin">Private Profile PIN</option>
@@ -564,7 +961,7 @@
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
           <div class="form-group">
             <label>Password</label>
-            <input type="text" name="account_password" class="form-input" placeholder="Password">
+            <input type="text" name="account_password" class="form-input" placeholder="Account Password">
           </div>
           <div class="form-group">
             <label>Profile PIN (if any)</label>
@@ -578,7 +975,48 @@
         </div>
 
         <button type="submit" class="btn-primary" style="width:100%; height:44px; margin-top:8px;">
-          Add to Credential Vault
+          Stock into Vault
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Coupon Modal -->
+  <div id="addCouponModal" class="modal-overlay" style="display:none;" onclick="closeAddCouponModal()">
+    <div class="modal-box" style="max-width:460px; padding:30px;" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeAddCouponModal()">✕</button>
+      <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:16px;">Create Promotional Coupon</h3>
+
+      <form onsubmit="handleCreateCoupon(event)">
+        <div class="form-group">
+          <label>Coupon Code *</label>
+          <input type="text" name="code" class="form-input" placeholder="e.g. SPECIAL20" required style="text-transform:uppercase;">
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label>Discount %</label>
+            <input type="number" name="discount_percent" class="form-input" placeholder="15" min="0" max="100">
+          </div>
+          <div class="form-group">
+            <label>Or Flat USD ($)</label>
+            <input type="number" step="0.01" name="discount_amount_usd" class="form-input" placeholder="5.00">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label>Min Spend ($ USD)</label>
+            <input type="number" step="0.01" name="min_spend_usd" class="form-input" placeholder="10.00">
+          </div>
+          <div class="form-group">
+            <label>Max Uses</label>
+            <input type="number" name="max_uses" class="form-input" value="1000">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width:100%; height:44px; margin-top:8px;">
+          Activate Coupon Code
         </button>
       </form>
     </div>
