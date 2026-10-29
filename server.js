@@ -1410,6 +1410,31 @@ app.post('/api/admin/products', authMiddleware('admin'), async (req, res) => {
   }
 });
 
+// Admin: Delete Product / Subscription
+app.delete('/api/admin/products/:id', authMiddleware('admin'), async (req, res) => {
+  try {
+    const prodId = parseInt(req.params.id, 10);
+    if (!prodId) {
+      return res.status(400).json({ success: false, message: 'Valid product ID is required' });
+    }
+
+    const prod = await db.prepare('SELECT id, title FROM products WHERE id = ?').get(prodId);
+    if (!prod) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    // Cascade delete associated plans, vault items and product
+    await db.prepare('DELETE FROM credential_vault WHERE product_id = ?').run(prodId);
+    await db.prepare('DELETE FROM product_plans WHERE product_id = ?').run(prodId);
+    await db.prepare('DELETE FROM products WHERE id = ?').run(prodId);
+
+    res.json({ success: true, message: `Product "${prod.title}" removed successfully` });
+  } catch (err) {
+    console.error('Error deleting product:', err);
+    res.status(500).json({ success: false, message: 'Failed to delete product' });
+  }
+});
+
 // Admin: Vault Credentials Management
 app.get('/api/admin/vault', authMiddleware('admin'), async (req, res) => {
   try {
@@ -1471,6 +1496,22 @@ app.post('/api/admin/vault', authMiddleware('admin'), async (req, res) => {
   }
 });
 
+// Admin: Delete Vault Credential
+app.delete('/api/admin/vault/:id', authMiddleware('admin'), async (req, res) => {
+  try {
+    const vaultId = parseInt(req.params.id, 10);
+    if (!vaultId) {
+      return res.status(400).json({ success: false, message: 'Valid vault ID is required' });
+    }
+
+    await db.prepare('DELETE FROM credential_vault WHERE id = ?').run(vaultId);
+    res.json({ success: true, message: 'Vault credential removed successfully' });
+  } catch (err) {
+    console.error('Error deleting vault credential:', err);
+    res.status(500).json({ success: false, message: 'Failed to delete vault credential' });
+  }
+});
+
 // Admin: Coupons List & Create
 app.get('/api/admin/coupons', authMiddleware('admin'), async (req, res) => {
   try {
@@ -1502,6 +1543,22 @@ app.post('/api/admin/coupons', authMiddleware('admin'), async (req, res) => {
     res.json({ success: true, message: 'Coupon created successfully' });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Failed to create coupon' });
+  }
+});
+
+// Admin: Delete Coupon
+app.delete('/api/admin/coupons/:id', authMiddleware('admin'), async (req, res) => {
+  try {
+    const couponId = parseInt(req.params.id, 10);
+    if (!couponId) {
+      return res.status(400).json({ success: false, message: 'Valid coupon ID is required' });
+    }
+
+    await db.prepare('DELETE FROM coupons WHERE id = ?').run(couponId);
+    res.json({ success: true, message: 'Coupon deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting coupon:', err);
+    res.status(500).json({ success: false, message: 'Failed to delete coupon' });
   }
 });
 
@@ -1758,15 +1815,29 @@ app.patch('/api/admin/users/:id/role', authMiddleware('admin'), async (req, res)
   }
 });
 
-// Admin: Delete user by email (e.g. for customer support / reset)
-app.delete('/api/admin/users/:email', authMiddleware('admin'), async (req, res) => {
+// Admin: Delete user by email or ID
+app.delete('/api/admin/users/:identifier', authMiddleware('admin'), async (req, res) => {
   try {
-    const targetEmail = req.params.email.trim().toLowerCase();
-    if (targetEmail === 'admin@flixstore.com') {
-      return res.status(400).json({ success: false, message: 'Cannot delete primary admin account' });
+    const raw = req.params.identifier.trim();
+    const isNum = /^\d+$/.test(raw);
+
+    let user;
+    if (isNum) {
+      user = await db.prepare('SELECT id, email, role FROM users WHERE id = ?').get(parseInt(raw, 10));
+    } else {
+      user = await db.prepare('SELECT id, email, role FROM users WHERE LOWER(email) = ?').get(raw.toLowerCase());
     }
-    await db.prepare('DELETE FROM users WHERE LOWER(email) = ?').run(targetEmail);
-    res.json({ success: true, message: `Account ${targetEmail} removed from database.` });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    if (user.email.toLowerCase() === 'admin@flixstore.com' || (user.id === req.user.id && user.role === 'admin')) {
+      return res.status(400).json({ success: false, message: 'Cannot delete primary system administrator' });
+    }
+
+    await db.prepare('DELETE FROM users WHERE id = ?').run(user.id);
+    res.json({ success: true, message: `Account ${user.email} removed from database.` });
   } catch (err) {
     console.error('Delete user error:', err);
     res.status(500).json({ success: false, message: 'Failed to delete user' });

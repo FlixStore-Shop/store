@@ -542,13 +542,44 @@ function renderAdminProducts(products) {
         <td><span class="badge-tag bestseller">${p.badge || 'Active'}</span></td>
         <td><strong style="color:#fbbf24;">${Number(p.rating || 5.0).toFixed(1)} ★</strong> (${p.review_count || 0})</td>
         <td>
-          <a href="/#productsGrid" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem;">
-            View on Store
-          </a>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <a href="/#productsGrid" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem;">
+              View
+            </a>
+            <button onclick="deleteProduct(${p.id}, '${p.title.replace(/'/g, "\\'")}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.06);" title="Delete Subscription">
+              🗑️ Delete
+            </button>
+          </div>
         </td>
       </tr>
     `;
   }).join('');
+}
+
+async function deleteProduct(productId, title) {
+  if (!confirm(`Are you sure you want to permanently remove "${title}"?\n\nThis will remove the product and its plans from the store catalog.`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/admin/products/${productId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${adminState.token}`
+      }
+    });
+    const json = await res.json();
+    if (json.success) {
+      showToast(json.message || 'Product removed successfully', 'success');
+      loadProductsList();
+      loadAdminStats();
+    } else {
+      showToast(json.message || 'Failed to remove product', 'error');
+    }
+  } catch (err) {
+    console.error('Delete product error:', err);
+    showToast('Network error removing product', 'error');
+  }
 }
 
 function openAddProductModal() {
@@ -663,7 +694,7 @@ function renderAdminVault(vault) {
   if (!tableBody) return;
 
   if (vault.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:#94a3b8;">No credentials stocked in vault yet.</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#94a3b8;">No credentials stocked in vault yet.</td></tr>`;
     return;
   }
 
@@ -680,8 +711,39 @@ function renderAdminVault(vault) {
           ${v.is_used ? '● ASSIGNED' : '✓ AVAILABLE'}
         </span>
       </td>
+      <td>
+        <button onclick="deleteVaultItem(${v.id})" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.06);" title="Remove Inventory Item">
+          🗑️
+        </button>
+      </td>
     </tr>
   `).join('');
+}
+
+async function deleteVaultItem(vaultId) {
+  if (!confirm(`Are you sure you want to remove vault inventory item #${vaultId}?`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/admin/vault/${vaultId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${adminState.token}`
+      }
+    });
+    const json = await res.json();
+    if (json.success) {
+      showToast(json.message || 'Vault item removed', 'success');
+      loadVaultInventory();
+      loadAdminStats();
+    } else {
+      showToast(json.message || 'Failed to remove vault item', 'error');
+    }
+  } catch (err) {
+    console.error('Delete vault item error:', err);
+    showToast('Network error removing vault item', 'error');
+  }
 }
 
 function populateVaultProductDropdown(products) {
@@ -810,15 +872,48 @@ function renderCustomers(users) {
           </select>
         </td>
         <td>
-          ${cleanPhone ? `
-            <a href="https://wa.me/${cleanPhone}?text=Hello%20${encodeURIComponent(u.full_name)}%2C%20greetings%20from%20FlixStore%20Management!" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#10b981; border-color:rgba(16,185,129,0.3); text-decoration:none;">
-              💬 WhatsApp
-            </a>
-          ` : '<span style="color:#64748b; font-size:0.75rem;">No WhatsApp</span>'}
+          <div style="display:flex; gap:6px; align-items:center;">
+            ${cleanPhone ? `
+              <a href="https://wa.me/${cleanPhone}?text=Hello%20${encodeURIComponent(u.full_name)}%2C%20greetings%20from%20FlixStore%20Management!" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#10b981; border-color:rgba(16,185,129,0.3); text-decoration:none;">
+                💬 WhatsApp
+              </a>
+            ` : '<span style="color:#64748b; font-size:0.75rem;">No WhatsApp</span>'}
+            ${u.email !== 'admin@flixstore.com' ? `
+              <button onclick="deleteCustomer(${u.id}, '${u.email}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.06);" title="Remove Customer">
+                🗑️
+              </button>
+            ` : ''}
+          </div>
         </td>
       </tr>
     `;
   }).join('');
+}
+
+async function deleteCustomer(userId, email) {
+  if (!confirm(`Are you sure you want to remove user account (${email})?\n\nThis will remove their customer profile from the system.`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/admin/users/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${adminState.token}`
+      }
+    });
+    const json = await res.json();
+    if (json.success) {
+      showToast(json.message || 'Customer removed', 'success');
+      loadCustomersList();
+      loadAdminStats();
+    } else {
+      showToast(json.message || 'Failed to remove customer', 'error');
+    }
+  } catch (err) {
+    console.error('Delete customer error:', err);
+    showToast('Network error removing customer', 'error');
+  }
 }
 
 async function updateUserRole(userId, newRole) {
@@ -882,9 +977,39 @@ function renderAdminCoupons(coupons) {
           </div>
         </td>
         <td><span class="badge-tag ${c.is_active ? 'bestseller' : 'hot'}">${c.is_active ? 'ACTIVE' : 'EXPIRED'}</span></td>
+        <td>
+          <button onclick="deleteCoupon(${c.id}, '${c.code}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.06);" title="Delete Coupon">
+            🗑️ Delete
+          </button>
+        </td>
       </tr>
     `;
   }).join('');
+}
+
+async function deleteCoupon(couponId, code) {
+  if (!confirm(`Are you sure you want to permanently delete coupon code "${code}"?`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/admin/coupons/${couponId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${adminState.token}`
+      }
+    });
+    const json = await res.json();
+    if (json.success) {
+      showToast(json.message || 'Coupon deleted successfully', 'success');
+      loadCouponsList();
+    } else {
+      showToast(json.message || 'Failed to delete coupon', 'error');
+    }
+  } catch (err) {
+    console.error('Delete coupon error:', err);
+    showToast('Network error deleting coupon', 'error');
+  }
 }
 
 function openAddCouponModal() {
