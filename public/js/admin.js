@@ -384,7 +384,7 @@ function renderAllOrders(orders) {
         </td>
         <td>${dateStr}</td>
         <td>
-          <div style="display:flex; gap:6px;">
+          <div style="display:flex; gap:6px; align-items:center;">
             <button class="btn-secondary" style="padding:4px 8px; font-size:0.74rem;" onclick="viewOrderCredentials('${encodeURIComponent(o.delivered_credentials || '[]')}')" title="Inspect Credentials">
               🔑 View Keys
             </button>
@@ -393,11 +393,40 @@ function renderAllOrders(orders) {
                 💬 WhatsApp
               </a>
             ` : ''}
+            <button onclick="deleteOrder(${o.id}, '${o.order_number}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.06);" title="Delete Order Record">
+              🗑️
+            </button>
           </div>
         </td>
       </tr>
     `;
   }).join('');
+}
+
+async function deleteOrder(orderId, orderNumber) {
+  if (!confirm(`Are you sure you want to permanently delete Order #${orderNumber}?\n\nThis will remove the transaction record and release any assigned credentials back to available inventory.`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/admin/orders/${orderId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${adminState.token}`
+      }
+    });
+    const json = await res.json();
+    if (json.success) {
+      showToast(json.message || `Order #${orderNumber} removed`, 'success');
+      loadOrdersList();
+      loadAdminStats();
+    } else {
+      showToast(json.message || 'Failed to delete order', 'error');
+    }
+  } catch (err) {
+    console.error('Delete order error:', err);
+    showToast('Network error deleting order', 'error');
+  }
 }
 
 async function updateOrderStatus(orderId, newStatus) {

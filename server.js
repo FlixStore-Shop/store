@@ -1313,6 +1313,35 @@ app.patch('/api/admin/orders/:id/status', authMiddleware('admin'), async (req, r
   }
 });
 
+// Admin: Delete Order Record
+app.delete('/api/admin/orders/:id', authMiddleware('admin'), async (req, res) => {
+  try {
+    const orderId = parseInt(req.params.id, 10);
+    if (!orderId) {
+      return res.status(400).json({ success: false, message: 'Valid Order ID is required' });
+    }
+
+    const order = await db.prepare('SELECT id, order_number FROM orders WHERE id = ?').get(orderId);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    // Unassign credentials from vault so inventory isn't lost
+    await db.prepare('UPDATE credential_vault SET is_used = 0, assigned_order_id = NULL WHERE assigned_order_id = ?').run(orderId);
+
+    // Delete associated order items
+    await db.prepare('DELETE FROM order_items WHERE order_id = ?').run(orderId);
+
+    // Delete order record
+    await db.prepare('DELETE FROM orders WHERE id = ?').run(orderId);
+
+    res.json({ success: true, message: `Order #${order.order_number} removed successfully` });
+  } catch (err) {
+    console.error('Error deleting order:', err);
+    res.status(500).json({ success: false, message: 'Failed to delete order' });
+  }
+});
+
 // Admin: Products List & Create
 app.get('/api/admin/products', authMiddleware('admin'), async (req, res) => {
   try {
