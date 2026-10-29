@@ -20,3 +20,4 @@ Thumbs.db
 # Test outputs
 test-output/
 coverage/
+.neon

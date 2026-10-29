@@ -705,7 +705,19 @@ async function syncCatalog(targetDb) {
   let totalPlansProcessed = 0;
 
   for (const p of catalog) {
-    const cat = await db.prepare('SELECT id FROM categories WHERE slug = ?').get(p.cat_slug);
+    const slugCandidates = [
+      p.cat_slug,
+      p.cat_slug === 'regional-bengali' ? 'regional-bengali-ott' : null,
+      p.cat_slug === 'ai-tools' ? 'ai-productivity' : null,
+      p.cat_slug === 'vpn-security' ? 'security-utilities' : null
+    ].filter(Boolean);
+
+    let cat = null;
+    for (const s of slugCandidates) {
+      cat = await db.prepare('SELECT id FROM categories WHERE slug = ?').get(s);
+      if (cat) break;
+    }
+
     if (!cat) {
       console.error('Category not found for slug:', p.cat_slug);
       continue;

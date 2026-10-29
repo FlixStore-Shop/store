@@ -100,7 +100,7 @@ async function runTests() {
     const loginRes = await request('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-test-mode': 'true' },
-      body: { email: 'admin@flixstore.com', password: 'adminflixstore2026!' }
+      body: { email: 'admin@flixstore.com', password: 'FlixAdmin2026!' }
     });
     console.log('[TEST 7] /api/auth/login Status:', loginRes.status, 'Requires OTP:', loginRes.body.requiresOtp);
 
@@ -123,12 +123,12 @@ async function runTests() {
     const forgotRes = await request('/api/auth/forgot-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-test-mode': 'true' },
-      body: { email: 'customer@example.com' }
+      body: { email: 'customer@flixstore.com' }
     });
     const resetRes = await request('/api/auth/reset-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: { email: 'customer@example.com', otp: forgotRes.body.demoOtp, newPassword: 'NewCustomer2026!' }
+      body: { email: 'customer@flixstore.com', otp: forgotRes.body.demoOtp, newPassword: 'NewCustomer2026!' }
     });
     console.log('[TEST 7.3] Password Reset Status:', resetRes.status, 'Success:', resetRes.body.success);
 
@@ -144,7 +144,15 @@ async function runTests() {
     });
     console.log('[TEST 9] /api/admin/database/stats Status:', dbStatsRes.status, 'Integrity:', dbStatsRes.body.stats.integrityCheck, 'Size:', dbStatsRes.body.stats.fileSizeFormatted);
 
-    console.log('\n>>> ALL 9 TESTS PASSED WITH 100% SUCCESS! <<<\n');
+    // 10. Neon Services Health (Postgres, S3 Object Storage, Realtime)
+    const neonHealthRes = await request('/api/neon/health');
+    console.log('[TEST 10] /api/neon/health Status:', neonHealthRes.status, 'Postgres:', neonHealthRes.body.services.postgres.status, 'S3:', neonHealthRes.body.services.objectStorage.status, 'Realtime:', neonHealthRes.body.services.realtime.status);
+
+    // 11. Neon Object Storage End-to-End
+    const neonStorageRes = await request('/api/neon/storage/test', { method: 'POST' });
+    console.log('[TEST 11] /api/neon/storage/test Status:', neonStorageRes.status, 'Bucket:', neonStorageRes.body.bucket, 'Success:', neonStorageRes.body.success);
+
+    console.log('\n>>> ALL 11 TESTS PASSED WITH 100% SUCCESS! <<<\n');
   } catch (e) {
     console.error('Test error:', e);
   } finally {

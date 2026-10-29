@@ -9,6 +9,8 @@ const { db, DB_PATH, hashPassword, verifyPassword, initDatabase } = require('./d
 const { createToken, verifyToken, authMiddleware } = require('./utils/auth');
 const { rateLimiter, sanitizeInput, generateOrderNumber, generateLicenseKey } = require('./utils/security');
 const { sendOtpEmail, sendOrderConfirmationEmail, sendAdminOrderAlert, verifySmtpConnection } = require('./utils/mailer');
+const { checkStorageHealth, uploadAsset, getAsset, deleteAsset, listAssets, BUCKET_NAME } = require('./utils/storage');
+const { checkRealtimeHealth, getRealtimeConfig } = require('./utils/realtime');
 
 // Database initialized asynchronously on startServer()
 
@@ -1602,6 +1604,64 @@ app.get('/api/admin/database/stats', authMiddleware('admin'), async (req, res) =
   } catch (err) {
     console.error('Database stats error:', err);
     res.status(500).json({ success: false, message: 'Failed to read database statistics' });
+  }
+});
+
+// -----------------------------------------------------------------------------
+// NEON SERVICES: HEALTH & STORAGE DIAGNOSTICS (Postgres, S3 Storage, Realtime)
+// -----------------------------------------------------------------------------
+
+app.get('/api/neon/health', async (req, res) => {
+  try {
+    let pgStatus = { status: 'unknown' };
+    if (db.isPostgres) {
+      const pgRes = await db.prepare('SELECT version(), count(*) as user_count FROM users').get();
+      pgStatus = {
+        status: 'connected',
+        driver: 'node-postgres (pg)',
+        version: pgRes?.version?.split(' ')?.[0] + ' ' + (pgRes?.version?.split(' ')?.[1] || ''),
+        userCount: pgRes?.user_count || 0
+      };
+    } else {
+      pgStatus = { status: 'sqlite-local', note: 'DATABASE_URL not configured for PostgreSQL' };
+    }
+
+    const s3Status = await checkStorageHealth();
+    const rtStatus = await checkRealtimeHealth();
+
+    res.json({
+      success: true,
+      timestamp: new Date().toISOString(),
+      services: {
+        postgres: pgStatus,
+        objectStorage: s3Status,
+        realtime: rtStatus
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/neon/storage/test', async (req, res) => {
+  try {
+    const testKey = `test-${Date.now()}.txt`;
+    const content = `FlixStore Neon Object Storage probe at ${new Date().toISOString()}`;
+    const uploadRes = await uploadAsset(testKey, content, 'text/plain');
+    const readRes = await getAsset(testKey);
+    const delRes = await deleteAsset(testKey);
+
+    res.json({
+      success: true,
+      message: 'Neon S3 Object Storage test passed end-to-end!',
+      bucket: BUCKET_NAME,
+      key: testKey,
+      upload: uploadRes,
+      readBack: readRes.buffer.toString(),
+      cleanedUp: delRes.success
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
