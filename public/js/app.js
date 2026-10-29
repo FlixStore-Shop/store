@@ -295,7 +295,7 @@ function renderProducts() {
 
         return `
           <div class="product-card" data-slug="${p.slug}">
-            <div class="product-card-top" onclick="openProductDetail('${p.slug}')" style="cursor: pointer;">
+            <div class="product-card-top" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer;">
               <img src="${p.logo_url || '/assets/logos/default.png'}" alt="${p.title || 'Subscription'}" class="product-card-img" loading="lazy">
               <div class="product-card-gradient"></div>
               <div class="product-card-badges">
@@ -309,7 +309,7 @@ function renderProducts() {
 
             <div class="product-body">
               <div class="product-category-name">${p.category_name || 'Premium'}</div>
-              <h3 class="product-title" onclick="openProductDetail('${p.slug}')" style="cursor: pointer;">${p.title || 'Subscription'}</h3>
+              <h3 class="product-title" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer;">${p.title || 'Subscription'}</h3>
               <p class="product-tagline">${p.tagline || ''}</p>
 
               ${tierChipsHTML}
@@ -340,10 +340,10 @@ function renderProducts() {
               </div>
 
               <div class="product-card-actions">
-                <button class="btn-select-plan" onclick="openProductDetail('${p.slug}')">
+                <a href="/product/${p.slug}" class="btn-select-plan" style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;">
                   <span>⚡ Select Plan & Duration</span>
                   <span style="font-size:0.85rem; opacity:0.9;">→</span>
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -355,7 +355,7 @@ function renderProducts() {
             <div class="product-body" style="padding: 20px;">
               <h3>${p.title || 'Subscription'}</h3>
               <p>${p.tagline || ''}</p>
-              <button class="btn-select-plan" onclick="openProductDetail('${p.slug || ''}')">View Details →</button>
+              <a href="/product/${p.slug || ''}" class="btn-select-plan" style="text-decoration:none; display:inline-block; text-align:center;">View Details →</a>
             </div>
           </div>
         `;
@@ -633,18 +633,9 @@ function hideSearchDropdown() {
 // -----------------------------------------------------------------------------
 
 async function openProductDetail(slug) {
-  try {
-    const res = await fetch(`/api/products/${slug}`);
-    const json = await res.json();
-    if (!json.success) return;
-
-    state.selectedProduct = json.data;
-    state.selectedPlan = json.data.plans[0] || null;
-
-    renderQuickViewDetails();
-    document.getElementById('productDetailModal').classList.add('active');
-  } catch (err) {
-    console.error('Error opening product:', err);
+  if (slug) {
+    window.location.href = `/product/${slug}`;
+    return;
   }
 }
 

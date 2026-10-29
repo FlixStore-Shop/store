@@ -1975,8 +1975,16 @@ app.post('/api/neon/storage/test', async (req, res) => {
 });
 
 // -----------------------------------------------------------------------------
-// Fallback for Single Page App & 404
+// Dedicated Product Pages & Fallback for Single Page App
 // -----------------------------------------------------------------------------
+
+app.get('/product/:slug', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'product.html'));
+});
+
+app.get('/product', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'product.html'));
+});
 
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));

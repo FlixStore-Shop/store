@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>FlixStore | Official Premium OTT, AI & Cloud Subscriptions</title>
+  <meta name="description" content="FlixStore is your premier destination for genuine Netflix, Prime Video, Crunchyroll, YouTube Premium, Hoichoi, Chorki, ChatGPT Plus, Claude, Spotify, Adobe & Cloud subscriptions with instant 60s automated delivery and 100% warranty.">
+  <link rel="canonical" href="https://store-q51q.onrender.com">
+
+  <!-- OpenGraph Social Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FlixStore | Official Premium OTT, AI & Cloud Subscriptions">
+  <meta property="og:description" content="Instant automated subscription credentials for Netflix, ChatGPT Plus, YouTube Premium, Spotify, Prime Video & Canva Pro with 100% replacement warranty.">
+  <meta property="og:image" content="https://store-q51q.onrender.com/assets/brands/netflix.png">
+  <meta property="og:url" content="https://store-q51q.onrender.com">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FlixStore Pro Subscriptions">
+  <meta name="twitter:description" content="Instant 60s automated subscription credentials with 100% replacement warranty in Bangladesh.">
+
+  <!-- Structured Data (JSON-LD) for Search Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "OnlineStore",
+    "name": "FlixStore",
+    "description": "Genuine digital subscription platform delivering automated Netflix, AI tools, and OTT access.",
+    "url": "https://store-q51q.onrender.com",
+    "telephone": "+8801343546958",
+    "priceRange": "৳99 - ৳3800",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "4850"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><polygon points='5 3 19 12 5 21 5 3'></polygon></svg>">
+</head>
+<body>
+
+  <!-- Ambient Glow Light Accents -->
+  <div class="ambient-glow"></div>
+
+  <!-- Top Announcement Marquee Bar -->
+  <div class="top-announcement">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <span class="badge-pill">🔥 MEGA SALE</span>
+        Use coupon code <strong>FLIXVIP</strong> for <strong>15% OFF</strong> • Over <strong>48,500+</strong> genuine subscriptions delivered • Instant automated dispatch active!
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;" class="desktop-only">
+        <a href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="badge-pill" style="background:#25D366; color:#ffffff; text-decoration:none; display:inline-flex; align-items:center; gap:5px; font-size:0.75rem; padding:3px 10px; font-weight:600; border-radius:12px;">
+          <span>💬</span> WhatsApp
+        </a>
+        <a href="https://www.facebook.com/FlixStore.org" target="_blank" rel="noopener noreferrer" class="badge-pill" style="background:#1877F2; color:#ffffff; text-decoration:none; display:inline-flex; align-items:center; gap:5px; font-size:0.75rem; padding:3px 10px; font-weight:600; border-radius:12px;">
+          <span>📘</span> Facebook
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Sticky Navigation Bar -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        
+        <!-- Brand Logo -->
+        <a href="/" class="brand-logo">
+          <div class="brand-icon-box">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <div>
+            <span class="brand-name">FlixStore</span>
+            <span class="brand-tag">PRO</span>
+          </div>
+        </a>
+
+        <!-- Search Bar with Live Autocomplete -->
+        <div class="header-search">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="mainSearchInput" 
+              class="search-input" 
+              placeholder="Search Netflix, ChatGPT Plus, Spotify, Hoichoi, Adobe..." 
+              autocomplete="off"
+            >
+          </div>
+          <div id="searchResultsDropdown" class="search-results-dropdown"></div>
+        </div>
+
+        <!-- Header Actions -->
+        <div class="header-actions">
+          
+          <!-- Currency Badge (BDT Exclusive) -->
+          <div class="currency-select-box" title="Store Currency: Bangladeshi Taka (৳)">
+            <div class="currency-select" style="display:flex; align-items:center; gap:6px; font-weight:700; color:var(--text-primary); cursor:default; user-select:none;">
+              <span>🇧🇩</span>
+              <span>BDT (৳)</span>
+            </div>
+          </div>
+
+          <!-- Track Order Button (Desktop) -->
+          <button class="action-btn desktop-only" onclick="openTrackOrderModal()" title="Track My Order">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+            <span>Track Order</span>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button id="themeToggleBtn" class="action-btn icon-only" onclick="toggleTheme()" title="Toggle Theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+            </svg>
+          </button>
+
+          <!-- Shopping Cart Button -->
+          <button class="action-btn" onclick="openCartDrawer()" title="View Cart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span>Cart</span>
+            <div id="headerCartCount" class="cart-badge" style="display:none;">0</div>
+          </button>
+
+          <!-- Account / Sign In (Desktop) -->
+          <button id="headerAuthBtn" class="action-btn desktop-only" onclick="openAuthModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Sign In</span>
+          </button>
+
+          <!-- Admin Private Switch Pill (Hidden for clients; visible only to verified administrators) -->
+          <a href="/admin" id="headerAdminLink" class="btn-secondary" style="display:none; padding:6px 12px; font-size:0.75rem;" title="FlixStore Control Panel">
+            🛡️ Admin Portal
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Dedicated Search Bar (Visible on Android & iOS phones) -->
+  <div class="mobile-search-section">
+    <div class="search-input-wrapper">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input 
+        type="text" 
+        id="mobileSearchInput" 
+        class="search-input" 
+        placeholder="Search Netflix, ChatGPT, Hoichoi, Spotify..." 
+        autocomplete="off"
+      >
+    </div>
+    <div id="mobileSearchResultsDropdown" class="search-results-dropdown"></div>
+  </div>
+
+  <!-- Hero Spotlight Showcase Slider (Apple/Samsung Aesthetic) -->
+  <!-- Main PDP Container -->
+  <div class="pdp-page-wrapper">
+    <div class="container">
+      
+      <!-- Breadcrumb Navigation -->
+      <nav class="pdp-breadcrumb-bar" aria-label="Breadcrumb">
+        <a href="/">🏠 Home</a>
+        <span class="pdp-breadcrumb-separator">/</span>
+        <a href="/#productsGrid" id="pdpBreadcrumbCategory">Category</a>
+        <span class="pdp-breadcrumb-separator">/</span>
+        <span class="pdp-breadcrumb-current" id="pdpBreadcrumbTitle">Subscription Details</span>
+      </nav>
+
+      <!-- Loading State -->
+      <div id="pdpLoadingState" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:100px 20px; text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:16px;" class="spin-icon">⏳</div>
+        <h3 style="font-size:1.3rem; margin-bottom:8px;">Loading subscription details...</h3>
+        <p style="color:var(--text-secondary); font-size:0.9rem;">Connecting to FlixStore secure cloud vault</p>
+      </div>
+
+      <!-- 404 Error State -->
+      <div id="pdpErrorState" style="display:none; text-align:center; padding:90px 20px; background:var(--bg-card); border:1px solid var(--glass-border); border-radius:20px; max-width:600px; margin:0 auto 40px;">
+        <div style="font-size:3.5rem; margin-bottom:16px;">🔍</div>
+        <h2 style="font-size:1.6rem; margin-bottom:10px;">Subscription Not Found</h2>
+        <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:24px;">
+          The subscription you are looking for may have been updated or moved. Browse all verified streaming and AI subscriptions on our homepage.
+        </p>
+        <a href="/#productsGrid" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+          <span>Explore All Subscriptions</span>
+          <span>→</span>
+        </a>
+      </div>
+
+      <!-- Dynamic Content State -->
+      <div id="pdpContentState" style="display:none;">
+        
+        <!-- Two-Column Product Hero Grid -->
+        <div class="pdp-main-grid">
+          
+          <!-- Column Left: Visual Showcase & Trust Highlights -->
+          <div class="pdp-media-column">
+            
+            <div class="pdp-showcase-card">
+              <div class="pdp-showcase-glow"></div>
+              <img id="pdpProductLogo" src="/assets/brands/netflix.png" alt="Subscription" class="pdp-showcase-img">
+              <div class="pdp-media-badges">
+                <span id="pdpBadgeTag" class="badge-tag pro">Official</span>
+                <span id="pdpDeliveryBadge" class="instant-delivery-badge">⚡ 60s Instant Delivery</span>
+              </div>
+            </div>
+
+            <!-- Trust Highlights Card -->
+            <div class="pdp-trust-card">
+              <div class="pdp-trust-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>FlixStore Buyer Protection</span>
+              </div>
+              <ul class="pdp-trust-list">
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span><strong>100% Replacement Warranty:</strong> Guaranteed full duration coverage.</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span><strong>Automated Delivery:</strong> Instant credentials in your personal digital vault.</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span><strong>Native Bangladesh Support:</strong> Works zero VPN on TV, Mobile & PC.</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span><strong>24/7 Helpline:</strong> Direct assistance via official WhatsApp.</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Customer Happiness Score Box -->
+            <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:16px; padding:18px; display:flex; align-items:center; gap:14px;">
+              <div style="font-size:2rem; font-weight:800; color:#fbbf24;">4.9</div>
+              <div>
+                <div style="color:#fbbf24; font-size:0.9rem; letter-spacing:2px;">★★★★★</div>
+                <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:2px;">Based on 4,800+ verified Bangladeshi streamers</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Column Right: Plan, Tier & Validity Engine -->
+          <div class="pdp-info-column">
+            
+            <div class="pdp-header-row">
+              <span id="pdpCategoryPill" class="pdp-category-pill">OTT & Streaming</span>
+              <h1 id="pdpProductTitle" class="pdp-title">Netflix Premium 4K UHD</h1>
+              <p id="pdpProductTagline" class="pdp-tagline">Private Profile with PIN • Ultra HD 4K Streaming</p>
+              
+              <div class="pdp-rating-row">
+                <span class="pdp-rating-stars">★★★★★</span>
+                <strong id="pdpRatingScore" style="color:var(--text-primary);">4.9</strong>
+                <span id="pdpReviewCount" style="color:var(--text-secondary); font-size:0.8rem;">(128 verified reviews)</span>
+                <span style="color:var(--text-muted);">•</span>
+                <span style="color:#34d399; font-weight:600; font-size:0.8rem;">✓ In Stock</span>
+              </div>
+
+              <p id="pdpProductDescription" class="pdp-desc">
+                Stream unlimited movies and TV series in stunning 4K Ultra HD resolution with Dolby Atmos spatial audio.
+              </p>
+            </div>
+
+            <!-- 1. Subscription Tier Selector -->
+            <div style="margin-bottom:20px;">
+              <div class="pdp-section-label">
+                <span>1. Select Account Tier</span>
+                <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">Step 1 of 2</span>
+              </div>
+              <div id="pdpTierTabs" class="pdp-tier-tabs">
+                <!-- Dynamically populated -->
+              </div>
+              <div id="pdpTierHintBox" class="pdp-tier-hint" style="display:none;"></div>
+            </div>
+
+            <!-- 2. Validity / Duration Selector -->
+            <div style="margin-bottom:24px;">
+              <div class="pdp-section-label">
+                <span>2. Select Validity Duration</span>
+                <span style="font-size:0.75rem; color:#34d399; font-weight:600;">Longer = Bigger Savings</span>
+              </div>
+              <div id="pdpDurationGrid" class="pdp-duration-grid">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- 3. Dynamic Price Summary Box -->
+            <div class="pdp-price-summary-box">
+              <div class="pdp-price-main-row">
+                <div style="display:flex; align-items:baseline;">
+                  <span id="pdpCurrentPrice" class="pdp-current-price">৳0</span>
+                  <span id="pdpOriginalPrice" class="pdp-original-price">৳0</span>
+                </div>
+                <span id="pdpSavingsTag" class="pdp-savings-tag" style="display:none;">Save ৳0</span>
+              </div>
+
+              <div class="pdp-plan-features-row">
+                <span id="pdpSelectedPlanSummary" style="font-weight:700; color:var(--text-primary);">1 Month • Private PIN Profile</span>
+              </div>
+
+              <div class="pdp-plan-features-row" style="color:var(--text-secondary); font-size:0.78rem;">
+                <span id="pdpDeviceLimitSummary">1 Dedicated Device • 4K Ultra HD • Full Warranty</span>
+              </div>
+
+              <!-- VIP Member Benefit Alert -->
+              <div id="pdpVipDiscountNotice" class="pdp-vip-notice" style="display:none;">
+                <span>👑</span>
+                <span>VIP Member Perk: Automatic 5% extra discount applied at checkout!</span>
+              </div>
+            </div>
+
+            <!-- 4. Action Buttons -->
+            <div class="pdp-actions-container">
+              <div class="pdp-btn-row">
+                <button type="button" class="pdp-buy-now-btn" onclick="pdpBuyNow()">
+                  <span>⚡ Instant Buy (Direct Checkout)</span>
+                  <span>→</span>
+                </button>
+                <button type="button" class="pdp-add-cart-btn" onclick="pdpAddToCart()">
+                  <span>🛒 Add to Cart</span>
+                </button>
+              </div>
+
+              <a id="pdpWhatsAppInquiryBtn" href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="pdp-whatsapp-btn">
+                <span>💬 Quick Question? Inquire on WhatsApp (+8801343546958)</span>
+              </a>
+            </div>
+
+            <!-- Payment Gateways Accepted -->
+            <div class="pdp-gateways-row">
+              <span>Accepted:</span>
+              <span style="color:#ffffff; font-weight:600;">bKash</span>
+              <span>•</span>
+              <span style="color:#ffffff; font-weight:600;">Nagad</span>
+              <span>•</span>
+              <span style="color:#ffffff; font-weight:600;">Rocket</span>
+              <span>•</span>
+              <span style="color:#ffffff; font-weight:600;">Cards / Stripe</span>
+              <span>•</span>
+              <span style="color:#ffffff; font-weight:600;">USDT Crypto</span>
+              <span style="margin-left:auto; color:#34d399;">🔒 0% Extra Fee</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Full Detailed Information Tabs -->
+        <div class="pdp-tabs-wrapper">
+          <div class="pdp-tabs-nav" id="pdpTabNav">
+            <button type="button" class="pdp-tab-nav-btn active" data-tab="features" onclick="switchPdpTab('features')">
+              <span>✨</span> Included Features
+            </button>
+            <button type="button" class="pdp-tab-nav-btn" data-tab="instructions" onclick="switchPdpTab('instructions')">
+              <span>📋</span> How It Works & Setup
+            </button>
+            <button type="button" class="pdp-tab-nav-btn" data-tab="warranty" onclick="switchPdpTab('warranty')">
+              <span>🛡️</span> Replacement Warranty
+            </button>
+            <button type="button" class="pdp-tab-nav-btn" data-tab="reviews" onclick="switchPdpTab('reviews')">
+              <span>⭐</span> Verified Reviews
+            </button>
+            <button type="button" class="pdp-tab-nav-btn" data-tab="faq" onclick="switchPdpTab('faq')">
+              <span>❓</span> FAQ
+            </button>
+          </div>
+
+          <div class="pdp-tab-body">
+            
+            <!-- Tab 1: Features -->
+            <div class="pdp-tab-pane active" id="pdpTab_features">
+              <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:16px;">What's Included in This Subscription:</h3>
+              <div id="pdpFeaturesContainer"></div>
+            </div>
+
+            <!-- Tab 2: Instructions & Setup -->
+            <div class="pdp-tab-pane" id="pdpTab_instructions">
+              <div id="pdpInstructionsContainer"></div>
+            </div>
+
+            <!-- Tab 3: Warranty Policy -->
+            <div class="pdp-tab-pane" id="pdpTab_warranty">
+              <div style="max-width:800px;">
+                <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                  <span style="color:#34d399;">🛡️</span> 100% Full Duration Replacement Guarantee
+                </h3>
+                <p style="color:var(--text-secondary); line-height:1.7; margin-bottom:16px;">
+                  At FlixStore, customer trust is our #1 asset. Every single digital subscription purchase is backed by our complete replacement warranty for the entire validity period of your plan.
+                </p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin-top:20px;">
+                  <div style="background:rgba(255,255,255,0.02); border:1px solid var(--glass-border); border-radius:12px; padding:16px;">
+                    <div style="font-weight:700; color:#34d399; margin-bottom:4px;">✓ Zero Downtime Policy</div>
+                    <p style="font-size:0.82rem; color:var(--text-secondary); margin:0; line-height:1.5;">If password resets or access drops, we restore or replace credentials within minutes.</p>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.02); border:1px solid var(--glass-border); border-radius:12px; padding:16px;">
+                    <div style="font-weight:700; color:#60a5fa; margin-bottom:4px;">✓ 24/7 Priority Support</div>
+                    <p style="font-size:0.82rem; color:var(--text-secondary); margin:0; line-height:1.5;">Direct helpline on official WhatsApp (+8801343546958) with average response under 5 mins.</p>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.02); border:1px solid var(--glass-border); border-radius:12px; padding:16px;">
+                    <div style="font-weight:700; color:#fbbf24; margin-bottom:4px;">✓ Money-Back Assurance</div>
+                    <p style="font-size:0.82rem; color:var(--text-secondary); margin:0; line-height:1.5;">If we are unable to resolve any credential delivery issue, you receive a full refund.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 4: Reviews -->
+            <div class="pdp-tab-pane" id="pdpTab_reviews">
+              <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:16px;">Customer Reviews & Ratings:</h3>
+              <div id="pdpReviewsContainer"></div>
+            </div>
+
+            <!-- Tab 5: FAQ -->
+            <div class="pdp-tab-pane" id="pdpTab_faq">
+              <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:16px;">Frequently Asked Questions:</h3>
+              <div id="pdpFaqContainer"></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Related Subscriptions Grid -->
+        <div id="pdpRelatedProductsContainer" style="margin-bottom:40px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <div>
+              <h3 style="font-size:1.4rem; font-weight:800; margin:0 0 4px 0;">You Might Also Like</h3>
+              <p style="color:var(--text-secondary); font-size:0.85rem; margin:0;">Popular complementary subscriptions chosen by customers</p>
+            </div>
+            <a href="/#productsGrid" class="btn-secondary" style="padding:6px 14px; font-size:0.8rem; text-decoration:none;">View All Subscriptions →</a>
+          </div>
+          <div id="pdpRelatedProductsGrid" class="products-grid"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo" style="margin-bottom:14px;">
+            <div class="brand-icon-box" style="width:32px; height:32px;">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px; height:16px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </div>
+            <span class="brand-name">FlixStore</span>
+          </div>
+          <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:16px;">
+            The world's most trusted digital subscription hub. Delivering genuine OTT entertainment, AI tools, and creative cloud suites with instant automated fulfillment.
+          </p>
+          <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+            <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20want%20to%20inquire%20about%20a%20subscription" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#25D366; color:#ffffff; padding:8px 16px; font-size:0.82rem; box-shadow:0 3px 12px rgba(37,211,102,0.3); text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+              <span>💬</span> WhatsApp
+            </a>
+            <a href="https://www.facebook.com/FlixStore.org" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:8px 16px; font-size:0.82rem; border-color:rgba(24,119,242,0.5); color:#60a5fa; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+              <span>📘</span> Facebook
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Popular OTT</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="openProductDetail('netflix-premium-4k-uhd')">Netflix Premium 4K</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('amazon-prime-video')">Amazon Prime Video</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('crunchyroll-mega-fan')">Crunchyroll Mega Fan</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('hoichoi-premium')">Hoichoi Premium</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('chorki-premium')">Chorki Premium</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>AI & Tools</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="openProductDetail('chatgpt-plus-openai')">ChatGPT Plus (o1 & 4o)</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('claude-pro-anthropic')">Claude Pro Sonnet</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('midjourney-pro-plan')">Midjourney Pro</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('adobe-creative-cloud-all-apps')">Adobe Creative Cloud</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('canva-pro-subscription')">Canva Pro Lifetime</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Security & Legal</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="openTrackOrderModal()">Track My Order</a></li>
+            <li><a href="javascript:void(0)" onclick="openAuthModal()">Customer Account</a></li>
+            <li><a href="javascript:void(0)">Warranty Policy</a></li>
+            <li><a href="javascript:void(0)">256-Bit SSL Encryption</a></li>
+            <li><a href="javascript:void(0)">Instant Refund Terms</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 FlixStore Inc. All rights reserved. Built with pride for seamless streaming.</div>
+        <div style="display:flex; gap:16px;">
+          <span>🔒 256-Bit Bank Grade SSL</span>
+          <span>⚡ Automated Credential Vault</span>
+          <span>🛡️ Verified Seller</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================  <!-- 1. Shopping Cart Drawer (Slide-over) -->
+  <div id="cartDrawerOverlay" class="cart-drawer-overlay" onclick="closeCartDrawer()">
+    <div class="cart-drawer" onclick="event.stopPropagation()">
+      <div class="cart-drawer-header">
+        <div class="cart-drawer-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          Your Shopping Cart
+        </div>
+        <button class="modal-close-btn" onclick="closeCartDrawer()" style="position:static;">✕</button>
+      </div>
+
+      <div id="cartDrawerItems" class="cart-drawer-items">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <div class="cart-drawer-footer">
+        <div class="coupon-input-group">
+          <input type="text" id="couponCodeInput" class="coupon-input" placeholder="Promo code (e.g. FLIXVIP)">
+          <button class="btn-secondary" onclick="applyCouponCode()" style="padding:8px 14px;">Apply</button>
+        </div>
+        <div id="couponMessage" style="font-size:0.8rem; margin-bottom:10px;"></div>
+
+        <div class="cart-summary-line">
+          <span>Subtotal</span>
+          <strong id="cartSubtotalDisplay">৳0</strong>
+        </div>
+        <div class="cart-summary-line" id="cartVipDiscountRow" style="display:none;">
+          <span style="color:#fbbf24; font-weight:700;">★ VIP Member Perk (5% OFF)</span>
+          <strong id="cartVipDiscountDisplay" style="color:#fbbf24;">-৳0</strong>
+        </div>
+        <div class="cart-summary-line">
+          <span>Coupon Discount</span>
+          <strong id="cartDiscountDisplay" style="color:#34d399;">৳0</strong>
+        </div>
+        <div class="cart-summary-total">
+          <span>Total to Pay</span>
+          <span id="cartTotalDisplay" style="color:#60a5fa;">৳0</span>
+        </div>
+
+        <button id="cartCheckoutBtn" class="btn-primary" style="width:100%; height:46px;" onclick="openCheckoutModal()">
+          Proceed to Secure Checkout →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Product Detail / Quick View Modal -->
+  <div id="productDetailModal" class="modal-overlay" onclick="closeProductDetail()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeProductDetail()">✕</button>
+
+      <div class="product-detail-modal-grid">
+        <div>
+          <div class="detail-img-box">
+            <img id="detailProductImg" src="" alt="Product">
+          </div>
+          <div style="margin-top:20px;">
+            <h4 style="font-size:0.95rem; margin-bottom:10px; font-weight:700;">Included Features:</h4>
+            <ul id="detailFeaturesList" class="detail-features-list"></ul>
+          </div>
+        </div>
+
+        <div>
+          <span id="detailCategory" class="product-category-name"></span>
+          <h2 id="detailTitle" style="font-size:1.6rem; font-weight:800; margin:4px 0 8px;"></h2>
+          <p id="detailTagline" style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:12px;"></p>
+          <div id="detailRating" style="color:#fbbf24; font-size:0.85rem; margin-bottom:16px;"></div>
+
+          <p id="detailDescription" style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6; margin-bottom:20px;"></p>
+
+          <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+            <span>📋</span> Select Account Tier & Duration:
+          </h4>
+          <div id="detailPlansList" class="plans-selector-container"></div>
+
+          <div style="display:flex; align-items:baseline; justify-content:space-between; margin-top:20px; padding-top:16px; border-top:1px solid var(--glass-border); flex-wrap:wrap; gap:12px;">
+            <div>
+              <span style="font-size:0.8rem; color:var(--text-muted); display:block;">Special Offer Price</span>
+              <div style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;">
+                <span id="detailSelectedPrice" style="font-size:1.8rem; font-weight:800; color:#60a5fa;"></span>
+                <div id="detailPriceCompare" style="display:inline-flex; align-items:center; gap:6px;"></div>
+              </div>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <button class="btn-secondary" onclick="addCurrentModalPlanToCart()">Add to Cart</button>
+              <button id="detailBuyNowBtn" class="btn-primary" onclick="buyCurrentModalPlanNow()">Buy Now →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Checkout & Payment Modal -->
+  <div id="checkoutModal" class="modal-overlay" onclick="closeCheckoutModal()">
+    <div class="modal-box checkout-modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeCheckoutModal()">✕</button>
+
+      <div class="checkout-grid">
+        
+        <!-- Left Column: Payment Gateways & Customer Inputs -->
+        <div>
+          <div class="checkout-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            1. Delivery Information
+          </div>
+
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="checkoutName" class="form-input" placeholder="e.g. Alex Morgan" required>
+          </div>
+
+          <div class="form-group">
+            <label>Email Address (For instant credential dispatch) *</label>
+            <input type="email" id="checkoutEmail" class="form-input" placeholder="name@example.com" required>
+            <div id="checkoutEmailAccountBadge" style="display:none; margin-top:4px; font-size:0.75rem; color:#34d399; align-items:center; gap:4px;">
+              <span>🔒</span> <span id="checkoutEmailAccountBadgeText">Verified FlixStore Account</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>WhatsApp / Telegram Phone (For instant backup notification)</label>
+            <input type="tel" id="checkoutPhone" class="form-input" placeholder="+1 (555) 000-0000 or +88017...">
+          </div>
+
+          <div class="checkout-section-title" style="margin-top:24px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            2. Choose Payment Method
+          </div>
+
+          <!-- Payment Method Selector Tabs -->
+          <div class="payment-methods-grid">
+            <div class="payment-method-card active" data-method="card" onclick="selectPaymentMethod('card')">
+              <span style="font-size:1.3rem;">💳</span>
+              <div class="method-name">Card / Stripe</div>
+            </div>
+
+            <div class="payment-method-card" data-method="bkash" onclick="selectPaymentMethod('bkash')">
+              <span style="font-size:1.3rem;">🇧🇩</span>
+              <div class="method-name">bKash</div>
+            </div>
+
+            <div class="payment-method-card" data-method="nagad" onclick="selectPaymentMethod('nagad')">
+              <span style="font-size:1.3rem;">⚡</span>
+              <div class="method-name">Nagad</div>
+            </div>
+
+            <div class="payment-method-card" data-method="rocket" onclick="selectPaymentMethod('rocket')">
+              <span style="font-size:1.3rem;">🚀</span>
+              <div class="method-name">Rocket</div>
+            </div>
+
+            <div class="payment-method-card" data-method="paypal" onclick="selectPaymentMethod('paypal')">
+              <span style="font-size:1.3rem;">🅿️</span>
+              <div class="method-name">PayPal</div>
+            </div>
+
+            <div class="payment-method-card" data-method="crypto" onclick="selectPaymentMethod('crypto')">
+              <span style="font-size:1.3rem;">🪙</span>
+              <div class="method-name">USDT / BTC</div>
+            </div>
+          </div>
+
+          <!-- Gateway Panel: Credit Card -->
+          <div id="cardPaymentPanel">
+            <!-- Safe Demo Sandbox Security Notice -->
+            <div class="card-sandbox-banner">
+              <div class="sandbox-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>DEMO SANDBOX MODE</span>
+              </div>
+              <p>Transactions are simulated locally. <strong>Never enter real banking cards or CVVs.</strong></p>
+              <button type="button" class="btn-fill-test-card" onclick="fillTestCardDetails()">
+                <span>⚡ Fill Safe Test Visa (4242)</span>
+              </button>
+            </div>
+
+            <div class="credit-card-preview" id="creditCardVisual">
+              <div class="card-preview-top">
+                <div class="card-chip"></div>
+                <div class="card-brand-badge" id="cardBrandBadge">VISA</div>
+              </div>
+              <div class="card-num-display" id="cardNumPreview">4242 •••• •••• 4242</div>
+              <div class="card-preview-bottom">
+                <div class="card-holder-info">
+                  <span class="label">CARD HOLDER</span>
+                  <span class="val" id="cardHolderPreview">FLIXSTORE SUBSCRIBER</span>
+                </div>
+                <div class="card-exp-info">
+                  <span class="label">EXPIRES</span>
+                  <span class="val" id="cardExpPreview">12/28</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <label for="checkoutCardNumber" style="margin:0;">Card Number</label>
+                <span id="cardValidationStatus" class="card-valid-status"></span>
+              </div>
+              <div class="card-input-wrapper">
+                <input type="text" id="checkoutCardNumber" class="form-input" placeholder="4242 •••• •••• 4242" maxlength="19" autocomplete="off" value="4242 8891 0021 4242">
+                <span id="cardTypeIcon" class="card-type-icon">💳</span>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label for="checkoutCardExp">Expiration</label>
+                <input type="text" id="checkoutCardExp" class="form-input" placeholder="MM/YY" maxlength="5" autocomplete="off" value="12/28">
+              </div>
+              <div class="form-group">
+                <label for="checkoutCardCvc">CVC / CVV</label>
+                <input type="text" id="checkoutCardCvc" class="form-input" placeholder="123" maxlength="4" autocomplete="off" value="921">
+              </div>
+            </div>
+          </div>
+
+          <!-- Gateway Panel: bKash (Bangladesh Regional) -->
+          <div id="bkashPaymentPanel" class="mobile-banking-panel" style="display:none;">
+            <div class="merchant-badge">bKash Send Money / Merchant</div>
+            <p style="font-size:0.85rem; color:var(--text-secondary);">
+              Send payment to our verified number using the bKash App or by dialing <strong>*247#</strong>:
+            </p>
+            <div class="merchant-num-row">
+              <span>01343-546958</span>
+              <button class="copy-btn" onclick="copyToClipboard('01343546958')">Copy Number</button>
+            </div>
+            <div class="form-group" style="margin-top:14px;">
+              <label>Enter bKash Transaction ID (TrxID) *</label>
+              <input type="text" id="bkashTrxInput" class="form-input" placeholder="e.g. 9K2M4019XZ">
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:0.78rem;">
+              <span style="color:var(--accent-emerald);">✓ Instant automated verification</span>
+              <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20need%20help%20with%20bKash%20payment" target="_blank" style="color:#25D366; text-decoration:none; font-weight:600;">WhatsApp Help →</a>
+            </div>
+          </div>
+
+          <!-- Gateway Panel: Nagad -->
+          <div id="nagadPaymentPanel" class="mobile-banking-panel nagad" style="display:none;">
+            <div class="merchant-badge">Nagad Send Money / Payment</div>
+            <p style="font-size:0.85rem; color:var(--text-secondary);">
+              Send payment to our Nagad account:
+            </p>
+            <div class="merchant-num-row">
+              <span>01343-546958</span>
+              <button class="copy-btn" onclick="copyToClipboard('01343546958')">Copy Number</button>
+            </div>
+            <div class="form-group" style="margin-top:14px;">
+              <label>Enter Nagad Transaction ID *</label>
+              <input type="text" id="nagadTrxInput" class="form-input" placeholder="e.g. NAG78210492">
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:0.78rem;">
+              <span style="color:var(--accent-emerald);">✓ Instant automated verification</span>
+              <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20need%20help%20with%20Nagad%20payment" target="_blank" style="color:#25D366; text-decoration:none; font-weight:600;">WhatsApp Help →</a>
+            </div>
+          </div>
+
+          <!-- Gateway Panel: Rocket -->
+          <div id="rocketPaymentPanel" class="mobile-banking-panel" style="display:none;">
+            <div class="merchant-badge" style="background:#8b5cf6;">DBBL Rocket Payment</div>
+            <div class="merchant-num-row">
+              <span>01933-ROCKET-8</span>
+              <button class="copy-btn" onclick="copyToClipboard('019339912048')">Copy</button>
+            </div>
+          </div>
+
+          <!-- Gateway Panel: PayPal -->
+          <div id="paypalPaymentPanel" style="display:none; text-align:center; padding:20px; background:var(--bg-tertiary); border-radius:var(--radius-md);">
+            <div style="font-size:2rem; margin-bottom:8px;">🅿️</div>
+            <p style="font-size:0.88rem; color:var(--text-secondary);">One-click PayPal express checkout. Safe, buyer-protected, and instant.</p>
+          </div>
+
+          <!-- Gateway Panel: Crypto -->
+          <div id="cryptoPaymentPanel" style="display:none; padding:16px; background:var(--bg-tertiary); border-radius:var(--radius-md);">
+            <label style="font-size:0.8rem; color:var(--text-muted);">Send USDT (TRC-20 Network):</label>
+            <div class="merchant-num-row" style="font-size:0.85rem;">
+              <span>TX8nKq92LpM441jKflix2026</span>
+              <button class="copy-btn" onclick="copyToClipboard('TX8nKq92LpM441jKflix2026')">Copy Address</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Order Summary & Pay Button -->
+        <div style="background:var(--bg-tertiary); padding:24px; border-radius:var(--radius-lg); border:1px solid var(--glass-border); display:flex; flex-direction:column;">
+          <h4 style="font-size:1.05rem; font-weight:700; margin-bottom:16px;">Order Summary</h4>
+
+          <div id="checkoutOrderItems" style="flex:1; max-height:220px; overflow-y:auto; margin-bottom:16px;"></div>
+
+          <div class="form-group">
+            <label>Order Notes / Existing Email (Optional)</label>
+            <textarea id="checkoutNotes" class="form-input" style="height:60px; padding:8px 12px; resize:none;" placeholder="e.g. Please assign invite to my personal email..."></textarea>
+          </div>
+
+          <div style="border-top:1px dashed var(--glass-border); padding-top:14px; margin-bottom:18px;">
+            <div id="checkoutBreakdown" style="font-size:0.86rem; margin-bottom:10px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:var(--text-secondary);">
+                <span>Subtotal</span>
+                <span id="checkoutSubtotal">৳0</span>
+              </div>
+              <div id="checkoutVipRow" style="display:none; justify-content:space-between; margin-bottom:4px; color:#fbbf24; font-weight:700;">
+                <span>★ VIP Member (5% OFF)</span>
+                <span id="checkoutVipDiscount">-৳0</span>
+              </div>
+              <div id="checkoutCouponRow" style="display:none; justify-content:space-between; margin-bottom:4px; color:#34d399; font-weight:600;">
+                <span>Coupon Discount</span>
+                <span id="checkoutCouponDiscount">-৳0</span>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:1.2rem; font-weight:800;">
+              <span>Total Amount:</span>
+              <span id="checkoutFinalTotal" style="color:#60a5fa;">৳0</span>
+            </div>
+            <small id="vipAutoAppliedNotice" style="color:#fbbf24; display:none; margin-top:4px; font-weight:600;">★ VIP 5% Discount automatically applied to your order!</small>
+            <small style="color:var(--text-muted); display:block; margin-top:4px;">No hidden charges. Automated dispatch included.</small>
+          </div>
+
+          <button id="submitOrderBtn" class="btn-primary" style="width:100%; height:48px;" onclick="processOrderPayment()">
+            Complete Order & Get Instant Access (<span id="payBtnAmount">৳0</span>)
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Order Confirmation & Instant Credentials Receipt Modal -->
+  <div id="orderSuccessModal" class="modal-overlay" onclick="closeOrderSuccessModal()">
+    <div class="modal-box" style="max-width:700px;" onclick="event.stopPropagation()">
+      <div class="order-success-box">
+        <div class="success-icon-badge">✓</div>
+        <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:6px;">Order Completed Successfully!</h2>
+        <p style="color:var(--text-secondary); margin-bottom:20px;">
+          Your payment was verified. Credentials have been dispatched directly below and also emailed to <strong id="receiptCustomerEmail"></strong>.
+        </p>
+
+        <div style="display:inline-flex; gap:16px; background:var(--bg-tertiary); padding:10px 20px; border-radius:var(--radius-full); font-size:0.85rem; margin-bottom:24px;">
+          <span>Order ID: <strong id="receiptOrderNum" style="color:#60a5fa;"></strong></span>
+          <span>Method: <strong id="receiptPaymentMethod"></strong></span>
+          <span>Amount: <strong id="receiptTotalAmount" style="color:#34d399;"></strong></span>
+        </div>
+
+        <h3 style="text-align:left; font-size:1.1rem; font-weight:700; margin-bottom:12px;">🔑 Your Access Credentials & Tokens:</h3>
+        <div id="receiptCredentialsList"></div>
+
+        <!-- 24/7 VIP Support Help Desk Block -->
+        <div style="margin-top:20px; padding:16px 20px; background:rgba(37,211,102,0.08); border:1px solid rgba(37,211,102,0.25); border-radius:var(--radius-md); text-align:left;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>
+              <strong style="color:#25D366; display:flex; align-items:center; gap:6px; font-size:0.95rem;">
+                <span>💬</span> Need Instant Activation Help or Renewal Setup?
+              </strong>
+              <p style="font-size:0.82rem; color:var(--text-secondary); margin:4px 0 0;">
+                Our 24/7 FlixStore live agent is standing by on WhatsApp & Facebook to guide you or assist with profile PINs.
+              </p>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a id="receiptWhatsappLink" href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#25D366; color:#ffffff; padding:8px 16px; font-size:0.82rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                <span>💬</span> WhatsApp
+              </a>
+              <a href="https://www.facebook.com/FlixStore.org" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:8px 16px; font-size:0.82rem; text-decoration:none; border-color:rgba(24,119,242,0.5); color:#60a5fa; display:inline-flex; align-items:center; gap:6px;">
+                <span>📘</span> Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:center; gap:12px; margin-top:24px;">
+          <button class="btn-primary" onclick="window.print()">
+            🖨️ Print / Save Receipt
+          </button>
+          <button class="btn-secondary" onclick="closeOrderSuccessModal()">
+            Done & Continue Shopping
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Track Order Modal -->
+  <div id="trackOrderModal" class="modal-overlay" onclick="closeTrackOrderModal()">
+    <div class="modal-box" style="max-width:600px;" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeTrackOrderModal()">✕</button>
+
+      <div style="padding:30px;">
+        <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:8px;">Track Your Order & Subscriptions</h3>
+        <p style="color:var(--text-secondary); font-size:0.88rem; margin-bottom:20px;">
+          Enter your Order Number (e.g. <strong>FLX-98214</strong>) or the email address used during purchase.
+        </p>
+
+        <div style="display:flex; gap:10px; margin-bottom:16px;">
+          <input type="text" id="trackOrderInput" class="form-input" placeholder="Order ID (e.g. FLX-98214) or Email">
+          <button class="btn-primary" onclick="performOrderLookup()">Lookup</button>
+        </div>
+
+        <div id="trackOrderResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Customer Authentication Modal (Sign In / Sign Up / OTP Verification / Digital Profile) -->
+  <div id="authModal" class="modal-overlay" onclick="closeAuthModal()">
+    <div class="modal-box" id="authModalBox" style="max-width:460px;" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
+
+      <div class="auth-modal-content">
+        
+        <!-- Compulsory Checkout Notice -->
+        <div id="authCheckoutNotice" style="display:none; margin-bottom:16px; padding:12px 14px; border-radius:10px; background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.3); font-size:0.84rem; color:#93c5fd; line-height:1.45;">
+          <div style="font-weight:700; display:flex; align-items:center; gap:6px; margin-bottom:3px; color:#60a5fa;">
+            <span>🔐</span> <span>Sign Up Compulsory for Purchase</span>
+          </div>
+          <span>An account is strictly required to secure your subscription credentials, track renewals, and activate your personal Digital Pass.</span>
+        </div>
+
+        <!-- Segmented Tab Switcher (Sign In vs Create Account) -->
+        <div id="authTabsContainer" class="auth-tabs">
+          <button type="button" class="auth-tab-btn active" id="tabSignInBtn" onclick="switchAuthMode('signin')">Sign In</button>
+          <button type="button" class="auth-tab-btn" id="tabSignUpBtn" onclick="switchAuthMode('signup')">Create Account</button>
+        </div>
+
+        <!-- 1. SIGN IN VIEW -->
+        <div id="authSignInView">
+          <h3 style="font-size:1.45rem; font-weight:800; margin-bottom:6px;">Sign in to FlixStore</h3>
+          <p style="color:var(--text-secondary); font-size:0.86rem; margin-bottom:20px;">
+            Access your active subscriptions, renewal dates, and digital vault.
+          </p>
+
+          <form onsubmit="handleLoginSubmit(event)">
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="loginEmail" class="form-input" placeholder="name@example.com" required autocomplete="email">
+            </div>
+
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <label style="margin:0;">Password</label>
+                <a href="javascript:void(0)" onclick="switchAuthMode('forgot')" style="color:#60a5fa; font-size:0.78rem; font-weight:600; text-decoration:none;">
+                  Forgot Password?
+                </a>
+              </div>
+              <input type="password" id="loginPassword" class="form-input" placeholder="Your password" required autocomplete="current-password">
+            </div>
+
+            <div id="loginErrorMsg" style="color:#f87171; font-size:0.82rem; margin-bottom:12px;"></div>
+
+            <button type="submit" id="signInSubmitBtn" class="btn-primary" style="width:100%; height:44px; margin-top:8px;">
+              Sign In →
+            </button>
+          </form>
+
+          <div style="margin-top:16px; text-align:center; font-size:0.84rem; color:var(--text-secondary);">
+            Don't have an account? <a href="javascript:void(0)" onclick="switchAuthMode('signup')" style="color:#60a5fa; font-weight:600; text-decoration:none;">Create Account</a>
+          </div>
+        </div>
+
+        <!-- 2. SIGN UP (REGISTRATION) VIEW -->
+        <div id="authSignUpView" style="display:none;">
+          <h3 style="font-size:1.45rem; font-weight:800; margin-bottom:6px;">Create Your Account</h3>
+          <p style="color:var(--text-secondary); font-size:0.86rem; margin-bottom:20px;">
+            Join thousands of happy streamers with instant automated delivery.
+          </p>
+
+          <form onsubmit="handleRegisterSubmit(event)">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="regFullName" class="form-input" placeholder="e.g. Alex Morgan" required autocomplete="name">
+            </div>
+
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input type="email" id="regEmail" class="form-input" placeholder="name@example.com" required autocomplete="email">
+            </div>
+
+            <div class="form-group">
+              <label>WhatsApp / Phone (Optional for backup dispatch)</label>
+              <input type="tel" id="regPhone" class="form-input" placeholder="+88017... or +1..." autocomplete="tel">
+            </div>
+
+            <div class="form-group">
+              <label>Create Password (min. 6 characters) *</label>
+              <input type="password" id="regPassword" class="form-input" placeholder="Create secure password" required minlength="6" autocomplete="new-password">
+            </div>
+
+            <div id="registerErrorMsg" style="color:#f87171; font-size:0.82rem; margin-bottom:12px;"></div>
+
+            <button type="submit" id="signUpSubmitBtn" class="btn-primary" style="width:100%; height:44px; margin-top:8px;">
+              Create Account & Continue →
+            </button>
+          </form>
+
+          <div style="margin-top:16px; text-align:center; font-size:0.84rem; color:var(--text-secondary);">
+            Already have an account? <a href="javascript:void(0)" onclick="switchAuthMode('signin')" style="color:#60a5fa; font-weight:600; text-decoration:none;">Sign In</a>
+          </div>
+        </div>
+
+        <!-- 3. OTP VERIFICATION VIEW -->
+        <div id="authOtpView" style="display:none;">
+          <div style="text-align:center; margin-bottom:16px;">
+            <div style="font-size:2.4rem; margin-bottom:8px;">📬</div>
+            <h3 style="font-size:1.45rem; font-weight:800; margin-bottom:6px;">Check Your Email</h3>
+            <p style="color:var(--text-secondary); font-size:0.86rem;">
+              We sent a 6-digit verification code to <strong id="otpEmailTarget" style="color:#60a5fa;"></strong>
+            </p>
+          </div>
+
+          <!-- Email Delivery Notice -->
+          <div id="otpDeliveryNotice" style="background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.22); padding:10px 14px; border-radius:var(--radius-md); font-size:0.82rem; color:var(--text-secondary); margin-bottom:20px; text-align:center;">
+            Please check your inbox (and spam folder). Enter the verification code below:
+          </div>
+
+          <form onsubmit="handleOtpSubmit(event)">
+            <div class="form-group" style="margin-bottom:16px;">
+              <label style="text-align:center; display:block; margin-bottom:8px; font-weight:600;">Enter 6-Digit Code</label>
+              <input 
+                type="text" 
+                id="otpCodeInput" 
+                class="otp-input-field" 
+                placeholder="••••••" 
+                maxlength="6" 
+                pattern="[0-9]{6}" 
+                inputmode="numeric" 
+                autocomplete="one-time-code" 
+                required
+              >
+            </div>
+
+            <div id="otpErrorMsg" style="color:#f87171; font-size:0.82rem; margin-bottom:12px; text-align:center;"></div>
+
+            <button type="submit" id="verifyOtpBtn" class="btn-primary" style="width:100%; height:44px;">
+              Verify & Complete Sign In →
+            </button>
+          </form>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; font-size:0.82rem;">
+            <a href="javascript:void(0)" onclick="switchAuthMode('signin')" style="color:var(--text-muted); text-decoration:none;">
+              ← Back to Sign In
+            </a>
+            <button type="button" id="resendOtpBtn" onclick="handleResendOtp()" style="background:none; border:none; color:#60a5fa; cursor:pointer; font-size:0.82rem; font-weight:600; padding:0;">
+              Resend Code
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. FORGOT & RESET PASSWORD VIEW -->
+        <div id="authForgotView" style="display:none;">
+          <h3 style="font-size:1.45rem; font-weight:800; margin-bottom:6px;">Reset Password</h3>
+          <p style="color:var(--text-secondary); font-size:0.86rem; margin-bottom:20px;">
+            Enter your email to receive a secure 6-digit reset code in your inbox.
+          </p>
+
+          <!-- Step 1: Request Reset Code -->
+          <div id="forgotStep1">
+            <form onsubmit="handleForgotRequest(event)">
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="forgotEmail" class="form-input" placeholder="name@example.com" required autocomplete="email">
+              </div>
+              <div id="forgotErrorMsg1" style="color:#f87171; font-size:0.82rem; margin-bottom:12px;"></div>
+              <button type="submit" id="forgotSubmitBtn1" class="btn-primary" style="width:100%; height:44px; margin-top:4px;">
+                Send Reset Code →
+              </button>
+            </form>
+          </div>
+
+          <!-- Step 2: Enter Code and New Password -->
+          <div id="forgotStep2" style="display:none;">
+            <div style="background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.25); padding:10px 14px; border-radius:var(--radius-md); font-size:0.82rem; color:var(--text-secondary); margin-bottom:16px; text-align:center;">
+              Code dispatched to <strong id="forgotEmailTarget" style="color:#60a5fa;"></strong>. Check your inbox:
+            </div>
+            <form onsubmit="handleResetSubmit(event)">
+              <div class="form-group" style="margin-bottom:14px;">
+                <label style="text-align:center; display:block; margin-bottom:6px; font-weight:600;">6-Digit Reset Code</label>
+                <input type="text" id="resetOtpCode" class="otp-input-field" placeholder="••••••" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" required>
+              </div>
+              <div class="form-group">
+                <label>Choose New Password (min. 6 characters)</label>
+                <input type="password" id="resetNewPassword" class="form-input" placeholder="New secure password" required minlength="6" autocomplete="new-password">
+              </div>
+              <div id="forgotErrorMsg2" style="color:#f87171; font-size:0.82rem; margin-bottom:12px;"></div>
+              <button type="submit" id="forgotSubmitBtn2" class="btn-primary" style="width:100%; height:44px;">
+                Set New Password & Sign In →
+              </button>
+            </form>
+          </div>
+
+          <div style="margin-top:18px; text-align:center; font-size:0.84rem;">
+            <a href="javascript:void(0)" onclick="switchAuthMode('signin')" style="color:var(--text-muted); text-decoration:none;">
+              ← Back to Sign In
+            </a>
+          </div>
+        </div>
+
+        <!-- 5. CUSTOMER DIGITAL PROFILE DASHBOARD (LOGGED IN) -->
+        <div id="authProfileView" style="display:none;">
+          <!-- Profile Top Executive Bar -->
+          <div class="profile-top-bar">
+            <div class="profile-top-title">
+              <span class="digital-live-badge"><span class="pulse-dot"></span> LIVE VAULT</span>
+              <h3>Customer Dashboard</h3>
+            </div>
+            <button type="button" class="btn-signout-top" onclick="promptSignOut()" title="Sign out of account">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sign Out</span>
+            </button>
+          </div>
+
+          <!-- Digital Holographic Member Card -->
+          <div class="digital-member-card">
+            <!-- Card Chip & Tier Row -->
+            <div class="card-chip-row">
+              <div class="digital-chip">
+                <svg width="28" height="22" viewBox="0 0 28 22" fill="none">
+                  <rect width="28" height="22" rx="4" fill="#fbbf24" fill-opacity="0.9"/>
+                  <line x1="0" y1="7" x2="28" y2="7" stroke="#b45309" stroke-width="1"/>
+                  <line x1="0" y1="15" x2="28" y2="15" stroke="#b45309" stroke-width="1"/>
+                  <line x1="14" y1="0" x2="14" y2="22" stroke="#b45309" stroke-width="1"/>
+                  <circle cx="14" cy="11" r="3" fill="#fef3c7"/>
+                </svg>
+                <span class="digital-brand-text">FLIXSTORE DIGITAL PASS</span>
+              </div>
+              <div class="digital-card-tier tier-standard" id="digitalPassTier">
+                <span>STANDARD MEMBER</span>
+              </div>
+            </div>
+
+            <!-- Card User Details Row -->
+            <div class="digital-user-row">
+              <div class="digital-avatar" id="digitalPassAvatar">
+                U
+              </div>
+              <div class="digital-user-info">
+                <div class="digital-user-name-wrap">
+                  <h4 id="digitalPassName">Customer Name</h4>
+                  <span id="digitalPassBadge" class="digital-role-badge role-standard">✓ Verified Member</span>
+                </div>
+                <div id="digitalPassEmail" class="digital-user-email">user@example.com</div>
+                <div id="digitalPassPhone" class="digital-user-phone">Phone: +880...</div>
+              </div>
+            </div>
+
+            <!-- Card Footer Row -->
+            <div class="digital-card-footer">
+              <div class="digital-member-id-wrap" onclick="copyMemberId()" title="Click to copy Member ID">
+                <span class="id-label">MEMBER ID:</span>
+                <span id="digitalPassMemberId" class="id-code">FLX-0001</span>
+                <span class="copy-icon-sm">📋</span>
+              </div>
+              <div class="digital-security-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Synced & Protected</span>
+              </div>
+            </div>
+
+            <!-- VIP Perk Banner (Active when VIP) -->
+            <div id="digitalVipPerkBanner" class="digital-vip-banner" style="display:none;">
+              <span>👑</span>
+              <div>
+                <strong>★ VIP PERK ACTIVE:</strong> Enjoy an automatic <strong>5% OFF</strong> on all products!
+              </div>
+            </div>
+          </div>
+
+          <!-- Digital Stat Matrix (3 Tiles) -->
+          <div class="digital-stats-grid">
+            <div class="stat-matrix-tile">
+              <div class="stat-matrix-icon">⚡</div>
+              <div class="stat-matrix-data">
+                <strong id="statActivePlansCount">0 Plans</strong>
+                <span>Active Vault</span>
+              </div>
+            </div>
+            <div class="stat-matrix-tile">
+              <div class="stat-matrix-icon">🛡️</div>
+              <div class="stat-matrix-data">
+                <strong>100% Shield</strong>
+                <span>Warranty Policy</span>
+              </div>
+            </div>
+            <div class="stat-matrix-tile">
+              <div class="stat-matrix-icon" id="statTierIcon">⭐</div>
+              <div class="stat-matrix-data">
+                <strong id="statTierLabel">Standard Member</strong>
+                <span id="statTierSub">Order to unlock 5% VIP Perk</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Subscriptions & Credentials Vault -->
+          <div class="digital-vault-header">
+            <h4>
+              <span>📦</span> Active Subscriptions & Credentials Vault
+            </h4>
+            <span id="profileOrderCountPill" class="vault-count-pill">
+              0 Orders
+            </span>
+          </div>
+
+          <!-- Orders Container -->
+          <div id="profileOrdersList" class="profile-orders-scroll">
+            <div class="profile-orders-loading">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon"><circle cx="12" cy="12" r="10"></circle></svg>
+              <span>Synchronizing subscriptions vault...</span>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="profile-quick-actions">
+            <button type="button" class="btn-secondary" onclick="closeAuthModal(); openTrackOrderModal();">
+              <span>🔍</span> Track Any Order
+            </button>
+            <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%20Support%2C%20I%20have%20an%20inquiry%20about%20my%20account" target="_blank" rel="noopener noreferrer" class="btn-secondary whatsapp-vip-btn">
+              <span>💬</span> WhatsApp VIP Concierge
+            </a>
+          </div>
+
+          <!-- Prominent Dedicated Sign Out Card -->
+          <div class="profile-signout-card">
+            <div class="signout-card-left">
+              <div class="signout-icon-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              </div>
+              <div class="signout-text-box">
+                <div class="signout-user-label">Signed in as <strong id="signOutEmailDisplay">user@example.com</strong></div>
+                <div class="signout-desc-label">Securely close your active session on this device.</div>
+              </div>
+            </div>
+            <button type="button" class="btn-signout-action" onclick="promptSignOut()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sleek In-Modal Sign Out Confirmation Overlay -->
+        <div id="signOutConfirmOverlay" class="signout-confirm-modal" style="display:none;">
+          <div class="signout-confirm-box">
+            <div class="signout-confirm-icon">🚪</div>
+            <h3>Sign Out of FlixStore?</h3>
+            <p id="signOutConfirmSubtitle">Are you sure you want to sign out? You can sign back in anytime with your email & password.</p>
+            <div class="signout-confirm-buttons">
+              <button type="button" class="btn-secondary" onclick="dismissSignOutPrompt()">Keep Signed In</button>
+              <button type="button" class="btn-signout-confirm" onclick="confirmSignOut()">Yes, Sign Out</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px; font-size:0.78rem; color:var(--text-muted); text-align:center; border-top:1px solid var(--glass-border); padding-top:14px;">
+          🔒 Protected by FlixStore 256-bit bank-grade encryption.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom App Dock for Android / Phones -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-btn active" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <span>Home</span>
+    </button>
+    <button class="mobile-nav-btn" onclick="focusMobileSearch()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <span>Search</span>
+    </button>
+    <button class="mobile-nav-btn" onclick="openTrackOrderModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+      <span>Track</span>
+    </button>
+    <button class="mobile-nav-btn" onclick="openCartDrawer()">
+      <div style="position:relative; display:inline-block;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        <span id="mobileCartCount" class="cart-badge" style="display:none; top:-6px; right:-8px;">0</span>
+      </div>
+      <span>Cart</span>
+    </button>
+    <button class="mobile-nav-btn" onclick="openAuthModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span id="mobileNavUserLabel">Account</span>
+    </button>
+  </nav>
+
+  <!-- Floating WhatsApp Quick Support Button -->
+  <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20have%20a%20question%20about%20subscriptions" 
+     class="floating-whatsapp-btn" 
+     target="_blank" 
+     rel="noopener noreferrer" 
+     aria-label="Chat with FlixStore on WhatsApp">
+    <span class="whatsapp-tooltip">💬 24/7 WhatsApp Support</span>
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+      <path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.97.567 3.81 1.545 5.373L2 22l4.757-1.514A9.972 9.972 0 0 0 12.031 22C17.567 22 22 17.505 22 12.031 22 6.495 17.567 2 12.031 2zm5.792 14.288c-.244.686-1.22 1.307-1.745 1.365-.487.054-1.12.079-3.626-.957-3.197-1.32-5.267-4.57-5.426-4.783-.16-.213-1.294-1.722-1.294-3.284 0-1.562.819-2.332 1.109-2.651.29-.319.633-.399.844-.399.21 0 .422 0 .607.01.196.01.458-.074.717.55.264.633.9 2.197.978 2.357.079.16.132.348.026.56-.105.213-.158.348-.316.533-.159.186-.334.415-.477.557-.16.16-.328.334-.141.655.186.32.827 1.367 1.775 2.212 1.222 1.088 2.253 1.424 2.573 1.583.32.16.507.133.693-.08.187-.213.794-.925 1.006-1.242.211-.318.423-.265.714-.159.29.106 1.848.872 2.165 1.03.317.16.529.238.608.37.079.133.079.768-.165 1.454z"/>
+    </svg>
+  </a>
+
+  <!-- Scripts -->
+  <script src="/js/app.js"></script>
+  <script src="/js/product.js"></script>
+</body>
+</html>
