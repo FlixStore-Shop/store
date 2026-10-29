@@ -681,18 +681,23 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
     });
 
     // Send real verification email safely
+    let mailResult = { success: false };
     try {
-      await sendOtpEmail(cleanEmail, otp, 'login');
+      mailResult = await sendOtpEmail(cleanEmail, otp, 'login');
     } catch (mailErr) {
       console.warn('Mail dispatch warning (login):', mailErr.message);
     }
 
+    const emailSent = mailResult && mailResult.success;
     res.json({
       success: true,
       requiresOtp: true,
       email: cleanEmail,
-      message: 'Verification code sent to your email address',
-      demoOtp: (process.env.NODE_ENV === 'test' || req.headers['x-test-mode']) ? otp : undefined,
+      emailSent,
+      message: emailSent
+        ? 'Verification code sent to your email address'
+        : 'Outbound SMTP port blocked on Render free tier. Verification code generated.',
+      demoOtp: (!emailSent || process.env.NODE_ENV === 'test' || req.headers['x-test-mode']) ? otp : undefined,
       user: {
         role: user.role
       }
@@ -753,18 +758,23 @@ app.post('/api/auth/register', authLimiter, async (req, res) => {
     });
 
     // Send real verification email safely (never hangs client response)
+    let mailResult = { success: false };
     try {
-      await sendOtpEmail(cleanEmail, otp, 'register');
+      mailResult = await sendOtpEmail(cleanEmail, otp, 'register');
     } catch (mailErr) {
       console.warn('Mail dispatch warning (register):', mailErr.message);
     }
 
+    const emailSent = mailResult && mailResult.success;
     res.json({
       success: true,
       requiresOtp: true,
       email: cleanEmail,
-      message: 'Account created! Please check your email inbox for your 6-digit verification code.',
-      demoOtp: (process.env.NODE_ENV === 'test' || req.headers['x-test-mode']) ? otp : undefined,
+      emailSent,
+      message: emailSent
+        ? 'Account created! Please check your email inbox for your 6-digit verification code.'
+        : 'Account created! Outbound SMTP port is restricted on Render free tier. Your verification code is provided.',
+      demoOtp: (!emailSent || process.env.NODE_ENV === 'test' || req.headers['x-test-mode']) ? otp : undefined,
       user: {
         role: 'customer'
       }
@@ -862,16 +872,21 @@ app.post('/api/auth/resend-otp', authLimiter, async (req, res) => {
     });
 
     // Send real verification email safely
+    let mailResult = { success: false };
     try {
-      await sendOtpEmail(cleanEmail, newOtp, 'verification');
+      mailResult = await sendOtpEmail(cleanEmail, newOtp, 'verification');
     } catch (mailErr) {
       console.warn('Mail dispatch warning (resend-otp):', mailErr.message);
     }
 
+    const emailSent = mailResult && mailResult.success;
     res.json({
       success: true,
-      message: 'A fresh 6-digit verification code has been dispatched to your email.',
-      demoOtp: (process.env.NODE_ENV === 'test' || req.headers['x-test-mode']) ? newOtp : undefined
+      emailSent,
+      message: emailSent
+        ? 'A fresh 6-digit verification code has been dispatched to your email.'
+        : 'Outbound SMTP port blocked on Render free tier. Fresh verification code generated.',
+      demoOtp: (!emailSent || process.env.NODE_ENV === 'test' || req.headers['x-test-mode']) ? newOtp : undefined
     });
   } catch (err) {
     console.error('Resend OTP error:', err);

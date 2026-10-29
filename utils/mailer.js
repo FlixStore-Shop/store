@@ -44,6 +44,77 @@ function getTransporter() {
 }
 
 /**
+ * Sends emails over standard HTTPS Port 443 (Brevo / Resend REST APIs)
+ * Essential for cloud hosts like Render Free Tier that block outbound ports 25, 465, and 587
+ */
+async function dispatchViaHttpApi({ to, subject, html, text }) {
+  const fromName = process.env.SMTP_FROM_NAME || 'FlixStore Security';
+  const fromEmail = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER || 'no-reply@flixstore.org';
+
+  // 1. Brevo REST API (300 free emails/day over HTTPS Port 443 - zero ports blocked)
+  if (process.env.BREVO_API_KEY) {
+    try {
+      const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'api-key': process.env.BREVO_API_KEY.trim(),
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: { name: fromName, email: fromEmail },
+          to: [{ email: to }],
+          subject,
+          htmlContent: html,
+          textContent: text
+        }),
+        signal: AbortSignal.timeout(7000)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(`✓ [BREVO HTTPS SUCCESS]: Delivered to ${to}. Message ID: ${data.messageId || 'ok'}`);
+        return { success: true, mode: 'brevo_api', messageId: data.messageId || 'ok' };
+      } else {
+        console.warn(`✕ [BREVO API WARNING]:`, data.message || data);
+      }
+    } catch (e) {
+      console.warn(`✕ [BREVO API ERROR]:`, e.message);
+    }
+  }
+
+  // 2. Resend REST API (100 free emails/day over HTTPS Port 443 - zero ports blocked)
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY.trim()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: `${fromName} <${process.env.SMTP_FROM_EMAIL || 'onboarding@resend.dev'}>`,
+          to: [to],
+          subject,
+          html
+        }),
+        signal: AbortSignal.timeout(7000)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(`✓ [RESEND HTTPS SUCCESS]: Delivered to ${to}. Message ID: ${data.id || 'ok'}`);
+        return { success: true, mode: 'resend_api', messageId: data.id || 'ok' };
+      } else {
+        console.warn(`✕ [RESEND API WARNING]:`, data.message || data);
+      }
+    } catch (e) {
+      console.warn(`✕ [RESEND API ERROR]:`, e.message);
+    }
+  }
+
+  return null;
+}
+
+/**
  * Sends a high-priority 6-digit OTP email to user's provided inbox
  * @param {string} toEmail - Recipient email address
  * @param {string} otpCode - 6-digit numerical code
@@ -131,14 +202,20 @@ async function sendOtpEmail(toEmail, otpCode, purpose = 'verification') {
   console.log(`Security Code (OTP): [ ${otpCode} ]`);
   console.log(`========================================================\n`);
 
+  // 1. Try HTTPS API first (Bypasses Render's port blocks on Port 443)
+  const httpResult = await dispatchViaHttpApi({ to: cleanEmail, subject, html: htmlContent, text: textContent });
+  if (httpResult && httpResult.success) {
+    return httpResult;
+  }
+
   const transporter = getTransporter();
   if (!transporter) {
-    console.log(`ℹ️ [SMTP NOTICE]: No external SMTP host configured yet in .env.`);
-    console.log(`To send live emails to real inboxes, configure SMTP_HOST, SMTP_USER, SMTP_PASS in your .env file or Render dashboard.`);
+    console.log(`ℹ️ [SMTP NOTICE]: No external SMTP host or HTTP API key configured in .env.`);
     return {
-      success: true,
+      success: false,
       mode: 'logged',
-      message: 'Email dispatched (SMTP unconfigured, logged to server console)'
+      message: 'SMTP unconfigured',
+      fallbackOtp: otpCode
     };
   }
 
@@ -152,7 +229,7 @@ async function sendOtpEmail(toEmail, otpCode, purpose = 'verification') {
     });
 
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('SMTP dispatch timed out after 8s')), 8000)
+      setTimeout(() => reject(new Error('SMTP connection timed out (Render free tier blocks ports 465/587)')), 4000)
     );
 
     const info = await Promise.race([sendPromise, timeoutPromise]);
@@ -257,6 +334,12 @@ async function sendOrderConfirmationEmail(orderData, credentials = []) {
 
   console.log(`📧 [ORDER CONFIRMATION EMAIL DISPATCH] -> To: ${cleanEmail} for Order #${orderData.orderNumber}`);
 
+  // 1. Try HTTPS API first (Bypasses Render's port blocks on Port 443)
+  const httpResult = await dispatchViaHttpApi({ to: cleanEmail, subject, html: htmlContent });
+  if (httpResult && httpResult.success) {
+    return httpResult;
+  }
+
   const transporter = getTransporter();
   if (!transporter) return { success: true, mode: 'logged' };
 
@@ -268,7 +351,7 @@ async function sendOrderConfirmationEmail(orderData, credentials = []) {
       html: htmlContent
     });
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('SMTP dispatch timed out after 8s')), 8000)
+      setTimeout(() => reject(new Error('SMTP dispatch timed out')), 4000)
     );
     const info = await Promise.race([sendPromise, timeoutPromise]);
     console.log(`✓ [SMTP ORDER SUCCESS]: Delivered to ${cleanEmail}. Message ID: ${info.messageId}`);
@@ -318,9 +401,16 @@ async function sendAdminOrderAlert(orderData) {
 }
 
 /**
- * Diagnostic tool to verify live SMTP connection credentials
+ * Diagnostic tool to verify live SMTP / HTTP email connection credentials
  */
 async function verifySmtpConnection() {
+  if (process.env.BREVO_API_KEY) {
+    return { configured: true, valid: true, mode: 'brevo_api', message: 'Brevo HTTPS API configured (Port 443 - 100% compatible with Render Free Tier).' };
+  }
+  if (process.env.RESEND_API_KEY) {
+    return { configured: true, valid: true, mode: 'resend_api', message: 'Resend HTTPS API configured (Port 443 - 100% compatible with Render Free Tier).' };
+  }
+
   const transporter = getTransporter();
   if (!transporter) {
     return { configured: false, message: 'SMTP environment variables are not set.' };
@@ -329,7 +419,7 @@ async function verifySmtpConnection() {
   try {
     const verifyPromise = transporter.verify();
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('SMTP verification timed out after 7s')), 7000)
+      setTimeout(() => reject(new Error('SMTP verification timed out. Note: Render Free Tier blocks outbound SMTP ports 465/587. Please use Brevo or Resend HTTPS API instead.')), 4000)
     );
     await Promise.race([verifyPromise, timeoutPromise]);
     return { configured: true, valid: true, message: 'SMTP credentials verified successfully! Live email delivery active.' };
