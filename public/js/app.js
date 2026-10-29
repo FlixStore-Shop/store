@@ -1347,7 +1347,11 @@ async function performOrderLookup() {
 function openAuthModal(defaultMode = 'signin') {
   const modal = document.getElementById('authModal');
   if (modal) {
-    switchAuthMode(defaultMode);
+    if (state.user && state.token) {
+      switchAuthMode('profile');
+    } else {
+      switchAuthMode(defaultMode);
+    }
     modal.classList.add('active');
   }
 }
@@ -1366,6 +1370,7 @@ function switchAuthMode(mode) {
   const signInView = document.getElementById('authSignInView');
   const signUpView = document.getElementById('authSignUpView');
   const otpView = document.getElementById('authOtpView');
+  const profileView = document.getElementById('authProfileView');
 
   // Clear errors
   const loginErr = document.getElementById('loginErrorMsg');
@@ -1374,6 +1379,18 @@ function switchAuthMode(mode) {
   if (loginErr) loginErr.textContent = '';
   if (regErr) regErr.textContent = '';
   if (otpErr) otpErr.textContent = '';
+
+  if (mode === 'profile') {
+    if (tabsContainer) tabsContainer.style.display = 'none';
+    if (signInView) signInView.style.display = 'none';
+    if (signUpView) signUpView.style.display = 'none';
+    if (otpView) otpView.style.display = 'none';
+    if (profileView) profileView.style.display = 'block';
+    renderUserProfile();
+    return;
+  }
+
+  if (profileView) profileView.style.display = 'none';
 
   if (mode === 'signin') {
     if (tabsContainer) tabsContainer.style.display = 'flex';
@@ -1412,6 +1429,111 @@ function switchAuthMode(mode) {
   }
 }
 
+async function renderUserProfile() {
+  if (!state.user) return;
+
+  const avatarBox = document.getElementById('profileAvatarBox');
+  const nameElem = document.getElementById('profileFullName');
+  const emailElem = document.getElementById('profileEmail');
+  const phoneElem = document.getElementById('profilePhone');
+  const roleBadge = document.getElementById('profileRoleBadge');
+  const ordersList = document.getElementById('profileOrdersList');
+  const countBadge = document.getElementById('profileOrderCount');
+
+  // Set user basics
+  const initials = state.user.full_name 
+    ? state.user.full_name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() 
+    : 'U';
+  if (avatarBox) avatarBox.textContent = initials;
+  if (nameElem) nameElem.textContent = state.user.full_name || 'Customer';
+  if (emailElem) emailElem.textContent = state.user.email || '';
+  if (phoneElem) phoneElem.textContent = state.user.phone ? `Phone: ${state.user.phone}` : 'Account: Active';
+
+  if (roleBadge) {
+    if (state.user.role === 'admin') {
+      roleBadge.textContent = '👑 Admin';
+      roleBadge.style.color = '#38bdf8';
+      roleBadge.style.background = 'rgba(56, 189, 248, 0.12)';
+      roleBadge.style.borderColor = 'rgba(56, 189, 248, 0.3)';
+      roleBadge.style.cursor = 'pointer';
+      roleBadge.onclick = () => window.location.href = '/admin';
+    } else {
+      roleBadge.textContent = '✓ Verified Customer';
+      roleBadge.style.color = '#10b981';
+      roleBadge.style.background = 'rgba(52, 211, 153, 0.12)';
+      roleBadge.style.borderColor = 'rgba(52, 211, 153, 0.25)';
+      roleBadge.onclick = null;
+    }
+  }
+
+  // Fetch real order history from /api/auth/me
+  if (!state.token) return;
+
+  try {
+    const res = await fetch('/api/auth/me', {
+      headers: {
+        'Authorization': `Bearer ${state.token}`
+      }
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      logoutUser();
+      return;
+    }
+
+    const data = await res.json();
+    if (data.success && data.orders) {
+      const orders = data.orders;
+      if (countBadge) countBadge.textContent = `${orders.length} Order${orders.length === 1 ? '' : 's'}`;
+
+      if (ordersList) {
+        if (orders.length === 0) {
+          ordersList.innerHTML = `
+            <div style="text-align:center; padding:22px 14px; background:var(--bg-secondary); border-radius:var(--radius-md); border:1px dashed var(--glass-border);">
+              <div style="font-size:1.8rem; margin-bottom:6px;">✨</div>
+              <p style="margin:0 0 6px 0; font-size:0.86rem; font-weight:700; color:var(--text-primary);">No active orders yet</p>
+              <p style="margin:0 0 12px 0; font-size:0.78rem; color:var(--text-secondary);">Browse our catalog to get instant premium entertainment.</p>
+              <button class="btn-primary" style="padding:6px 14px; font-size:0.78rem;" onclick="closeAuthModal();">
+                Explore Subscriptions →
+              </button>
+            </div>
+          `;
+        } else {
+          ordersList.innerHTML = orders.map(ord => {
+            const dateStr = new Date(ord.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+            const isDelivered = ord.delivery_status === 'delivered';
+            const statusColor = isDelivered ? '#10b981' : '#f59e0b';
+            const statusBg = isDelivered ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)';
+            
+            return `
+              <div style="background:var(--bg-secondary); border:1px solid var(--glass-border); border-radius:var(--radius-md); padding:12px; margin-bottom:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <strong style="font-size:0.84rem; color:var(--accent-blue);">${ord.order_number}</strong>
+                  <span style="font-size:0.68rem; font-weight:700; color:${statusColor}; background:${statusBg}; padding:2px 6px; border-radius:4px;">
+                    ${ord.delivery_status.toUpperCase()}
+                  </span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem; color:var(--text-secondary); margin-bottom:8px;">
+                  <span>${dateStr} • ${(ord.payment_method || 'Online').toUpperCase()}</span>
+                  <strong style="color:var(--text-primary); font-size:0.82rem;">${ord.currency_symbol || '৳'}${ord.total_amount}</strong>
+                </div>
+                <button class="btn-secondary" style="width:100%; padding:6px 10px; font-size:0.76rem; justify-content:center; gap:4px;" onclick="closeAuthModal(); openTrackOrderModal('${ord.order_number}');">
+                  <span>🔑</span> View Credentials & Status
+                </button>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load profile orders:', err);
+    if (ordersList) {
+      ordersList.innerHTML = `<div style="text-align:center; padding:16px; font-size:0.8rem; color:var(--text-muted);">Unable to load orders right now.</div>`;
+    }
+  }
+}
+
 function checkAuthStatus() {
   const authBtn = document.getElementById('headerAuthBtn');
   const adminLink = document.getElementById('headerAdminLink');
@@ -1438,7 +1560,7 @@ function checkAuthStatus() {
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
       <span>${state.user.full_name.split(' ')[0]}</span>
     `;
-    authBtn.onclick = logoutUser;
+    authBtn.onclick = () => openAuthModal('profile');
   } else {
     authBtn.innerHTML = `
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
