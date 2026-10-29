@@ -75,7 +75,9 @@ async function dispatchViaHttpApi({ to, subject, html, text }) {
         console.log(`✓ [BREVO HTTPS SUCCESS]: Delivered to ${to}. Message ID: ${data.messageId || 'ok'}`);
         return { success: true, mode: 'brevo_api', messageId: data.messageId || 'ok' };
       } else {
-        console.warn(`✕ [BREVO API WARNING]:`, data.message || data);
+        const errorMsg = data.message || JSON.stringify(data);
+        console.warn(`✕ [BREVO API WARNING]:`, errorMsg);
+        return { success: false, mode: 'brevo_api', error: errorMsg };
       }
     } catch (e) {
       console.warn(`✕ [BREVO API ERROR]:`, e.message);

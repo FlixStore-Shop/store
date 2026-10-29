@@ -1223,6 +1223,16 @@ app.get('/api/admin/smtp/verify', authMiddleware('admin'), async (req, res) => {
   }
 });
 
+app.get('/api/admin/smtp/test-send', authMiddleware('admin'), async (req, res) => {
+  try {
+    const targetEmail = req.query.email || 'mridhamahmod@gmail.com';
+    const result = await sendOtpEmail(targetEmail, '778899', 'verification');
+    res.json({ success: result.success, target: targetEmail, ...result });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // -----------------------------------------------------------------------------
 // DATABASE HANDOVER & BACKUP CENTER (EXPLICIT USER REQUIREMENT)
 // -----------------------------------------------------------------------------
