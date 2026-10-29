@@ -2179,66 +2179,6 @@ body {
   transform: translateX(0);
 }
 
-/* Floating WhatsApp Button & Controls - Smartphone Present View (Standard Physical Size in 1200px Viewport) */
-@media (hover: none) and (pointer: coarse), (pointer: coarse) {
-  .floating-whatsapp-btn {
-    width: 135px !important;
-    height: 135px !important;
-    bottom: 36px !important;
-    right: 32px !important;
-    box-shadow: 0 8px 32px rgba(37, 211, 102, 0.7) !important;
-  }
-  .floating-whatsapp-btn svg {
-    width: 76px !important;
-    height: 76px !important;
-  }
-  .whatsapp-tooltip {
-    display: none !important;
-  }
-  .slider-dot {
-    width: 18px !important;
-    height: 18px !important;
-    margin: 0 6px !important;
-  }
-  .slider-dot.active {
-    width: 48px !important;
-    border-radius: 10px !important;
-  }
-}
-
-.is-mobile-view .floating-whatsapp-btn,
-.is-touch-device .floating-whatsapp-btn {
-  width: 135px !important;
-  height: 135px !important;
-  bottom: 36px !important;
-  right: 32px !important;
-  box-shadow: 0 8px 32px rgba(37, 211, 102, 0.7) !important;
-}
-
-.is-mobile-view .floating-whatsapp-btn svg,
-.is-touch-device .floating-whatsapp-btn svg {
-  width: 76px !important;
-  height: 76px !important;
-}
-
-.is-mobile-view .whatsapp-tooltip,
-.is-touch-device .whatsapp-tooltip {
-  display: none !important;
-}
-
-.is-mobile-view .slider-dot,
-.is-touch-device .slider-dot {
-  width: 18px !important;
-  height: 18px !important;
-  margin: 0 6px !important;
-}
-
-.is-mobile-view .slider-dot.active,
-.is-touch-device .slider-dot.active {
-  width: 48px !important;
-  border-radius: 10px !important;
-}
-
 /* Tier Explainer Banner in Modal */
 .tier-explainer-banner {
   background: rgba(59, 130, 246, 0.08);
@@ -2312,25 +2252,80 @@ body {
   transform: translateY(-1px);
 }
 
+/* ==========================================================================
+   MOBILE BOTTOM NAVIGATION & APP DOCK (ANDROID & IOS OPTIMIZED)
+   ========================================================================== */
+.mobile-search-section {
+  display: none;
+  padding: 10px 16px 6px;
+  position: relative;
+}
 
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(15, 19, 26, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--glass-border);
+  z-index: 999;
+  justify-content: space-around;
+  align-items: center;
+  padding: 4px 8px env(safe-area-inset-bottom, 8px);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] .mobile-bottom-nav {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.mobile-nav-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.mobile-nav-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.mobile-nav-btn.active, .mobile-nav-btn:hover {
+  color: var(--accent-blue);
+}
 
 /* ==========================================================================
    RESPONSIVE QUERIES (OPTIMIZED FOR ANDROID & MOBILE BROWSERS)
    ========================================================================== */
 @media (max-width: 1024px) {
   .hero-slide {
-    flex-direction: row;
-    padding: 36px 32px;
-    text-align: left;
+    flex-direction: column;
+    padding: 36px 24px;
+    text-align: center;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+    justify-content: center;
   }
   .hero-badge-row, .hero-pricing-box, .hero-cta-group {
-    justify-content: flex-start;
+    justify-content: center;
   }
   .hero-visual {
-    margin-top: 0;
+    margin-top: 24px;
   }
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -2348,38 +2343,50 @@ body {
 
 @media (max-width: 768px) {
   body {
-    padding-bottom: 0 !important;
+    padding-bottom: 74px; /* Space for Mobile Bottom Dock */
   }
 
-  /* Keep desktop buttons and navigation accessible */
+  /* Standard touch-friendly Floating WhatsApp Button on Mobile */
+  .floating-whatsapp-btn {
+    bottom: 80px !important;
+    right: 16px !important;
+    width: 54px !important;
+    height: 54px !important;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5) !important;
+  }
+
+  .floating-whatsapp-btn svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .whatsapp-tooltip {
+    display: none !important;
+  }
+
+  /* Desktop top bar text buttons hidden on phone (they live in bottom dock) */
   .desktop-only {
-    display: flex !important;
-    align-items: center;
-    gap: 6px;
+    display: none !important;
   }
 
   .mobile-search-section {
-    display: none !important;
+    display: block;
   }
 
   .mobile-bottom-nav {
-    display: none !important;
+    display: flex;
   }
 
   .header-search {
-    display: flex !important;
-    max-width: 320px;
-    flex: 1;
-    margin: 0 10px;
+    display: none !important;
   }
 
   .header-inner {
-    height: 68px;
-    gap: 8px;
+    height: 60px;
   }
 
   .brand-logo {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
   }
 
   .currency-select {
@@ -2388,90 +2395,132 @@ body {
   }
 
   .action-btn {
-    padding: 7px 12px;
-    font-size: 0.82rem;
+    padding: 6px 10px;
+    font-size: 0.8rem;
   }
 
-  /* Desktop-style Hero Presentation */
+  /* Smartphone Hero Presentation (Matches Image 1) */
   .hero-section {
-    padding: 24px 0 30px;
+    padding: 16px 0 20px;
   }
 
   .hero-slide {
-    padding: 32px 24px;
+    padding: 24px 16px;
     min-height: auto;
-    flex-direction: row;
-    text-align: left;
+    flex-direction: column;
+    text-align: center;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+    justify-content: center;
+  }
+
+  .hero-badge-row, .hero-pricing-box, .hero-cta-group {
+    justify-content: center;
   }
 
   .hero-title {
-    font-size: 2rem;
-    line-height: 1.25;
+    font-size: 1.75rem;
+    line-height: 1.2;
     margin-bottom: 12px;
   }
 
   .hero-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     line-height: 1.5;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
   .hero-current-price {
-    font-size: 2.2rem;
+    font-size: 1.85rem;
   }
 
   .hero-visual {
-    margin-top: 0;
-    flex-shrink: 0;
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 
   .hero-art-card {
-    width: 220px;
-    height: 220px;
-    border-radius: var(--radius-xl);
+    width: 200px;
+    height: 200px;
+    border-radius: var(--radius-lg);
   }
 
   .hero-cta-group {
-    flex-direction: row;
-    gap: 12px;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
   }
 
   .hero-cta-group button {
-    width: auto;
-    padding: 12px 20px;
+    width: 100%;
+    height: 44px;
   }
 
-  /* Keep Multi-column Grid like Desktop */
+  /* Full screen touch drawer on mobile */
+  .cart-drawer {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Full screen modal on Android */
+  .checkout-modal-box {
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  .checkout-grid {
+    grid-template-columns: 1fr !important;
+    padding: 16px !important;
+    gap: 20px !important;
+  }
+
+  .product-detail-modal-grid {
+    grid-template-columns: 1fr !important;
+    padding: 20px !important;
+    gap: 16px !important;
+  }
+
+  .detail-img-box {
+    height: 200px !important;
+  }
+
+  /* Clean readable product cards (Matches Image 1) */
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
-    gap: 20px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .product-card {
+    border-radius: var(--radius-md);
   }
 
   .category-pill {
-    padding: 8px 16px;
-    font-size: 0.85rem;
+    padding: 8px 14px;
+    font-size: 0.82rem;
   }
 
   .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .stat-card {
-    padding: 16px 20px;
+    padding: 14px 16px;
   }
 
   .footer-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 
   .footer-bottom {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
   }
 }

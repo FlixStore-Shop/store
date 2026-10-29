@@ -8,7 +8,7 @@ require('dotenv').config();
 const { db, DB_PATH, hashPassword, verifyPassword, initDatabase } = require('./db/database');
 const { createToken, verifyToken, authMiddleware } = require('./utils/auth');
 const { rateLimiter, sanitizeInput, generateOrderNumber, generateLicenseKey } = require('./utils/security');
-const { sendOtpEmail } = require('./utils/mailer');
+const { sendOtpEmail, sendOrderConfirmationEmail, sendAdminOrderAlert, verifySmtpConnection } = require('./utils/mailer');
 
 // Database initialized asynchronously on startServer()
 
@@ -479,6 +479,23 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
         item.totalPrice
       );
     }
+
+    // Dispatch customer receipt email & admin sales alert (non-blocking)
+    const orderSummary = {
+      orderId,
+      orderNumber,
+      customerName: customer_name,
+      customerEmail: customer_email,
+      customerPhone: customer_phone,
+      paymentMethod: payment_method,
+      subtotal: parseFloat(subtotalUSD.toFixed(2)),
+      discount: parseFloat(discountUSD.toFixed(2)),
+      total: parseFloat(totalUSD.toFixed(2)),
+      currency,
+      currencySymbol: currency_symbol
+    };
+    sendOrderConfirmationEmail(orderSummary, deliveredCredentials).catch(err => console.warn('Customer email delivery notice:', err.message));
+    sendAdminOrderAlert(orderSummary).catch(err => console.warn('Admin alert email notice:', err.message));
 
     // Return complete order summary and instant credentials
     res.json({
@@ -1151,6 +1168,19 @@ app.post('/api/admin/coupons', authMiddleware('admin'), async (req, res) => {
     res.json({ success: true, message: 'Coupon created successfully' });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Failed to create coupon' });
+  }
+});
+
+// -----------------------------------------------------------------------------
+// SMTP & EMAIL DELIVERY DIAGNOSTICS
+// -----------------------------------------------------------------------------
+
+app.get('/api/admin/smtp/verify', authMiddleware('admin'), async (req, res) => {
+  try {
+    const status = await verifySmtpConnection();
+    res.json({ success: status.valid || false, ...status });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 
