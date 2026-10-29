@@ -24,7 +24,7 @@ const state = {
   appliedCoupon: null,
   
   // Theme
-  theme: localStorage.getItem('flix_theme') || 'dark',
+  theme: localStorage.getItem('flix_theme') || 'light',
 
   // Current User / Auth
   user: JSON.parse(localStorage.getItem('flix_user') || 'null'),
@@ -101,6 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // Theme Management
 function initTheme() {
   document.documentElement.setAttribute('data-theme', state.theme);
+  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute('content', state.theme === 'light' ? '#ffffff' : '#0a0c10');
+  }
   const themeBtn = document.getElementById('themeToggleBtn');
   if (themeBtn) {
     themeBtn.innerHTML = state.theme === 'light' 
