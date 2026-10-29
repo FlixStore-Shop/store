@@ -28,7 +28,12 @@ let DB_PATH = '';
 
 if (isPostgres) {
   console.log('[DATABASE] Connecting to Managed Cloud PostgreSQL (Neon / Supabase)...');
-  const { Pool } = require('pg');
+  const pg = require('pg');
+  // Automatically parse PostgreSQL NUMERIC/DECIMAL (OID 1700) as Float so numbers like rating & prices aren't strings
+  pg.types.setTypeParser(1700, val => (val === null ? null : parseFloat(val)));
+  // Automatically parse BIGINT/INT8 (OID 20) as safe Integer
+  pg.types.setTypeParser(20, val => (val === null ? null : parseInt(val, 10)));
+  const { Pool } = pg;
   const pool = new Pool({
     connectionString: DATABASE_URL,
     ssl: DATABASE_URL.includes('localhost') ? false : { rejectUnauthorized: false },

@@ -312,8 +312,8 @@ function renderProducts() {
             <div class="stars">
               ${'★'.repeat(5)}
             </div>
-            <strong>${p.rating.toFixed(1)}</strong>
-            <span class="review-count">(${p.review_count})</span>
+            <strong>${Number(p.rating || 5.0).toFixed(1)}</strong>
+            <span class="review-count">(${p.review_count || 0})</span>
           </div>
 
           <div class="card-pricing-row">
@@ -640,7 +640,7 @@ function renderQuickViewDetails() {
   document.getElementById('detailCategory').textContent = p.category_name;
   document.getElementById('detailTitle').textContent = p.title;
   document.getElementById('detailTagline').textContent = p.tagline;
-  document.getElementById('detailRating').textContent = `${p.rating.toFixed(1)} ★ (${p.review_count} verified reviews)`;
+  document.getElementById('detailRating').textContent = `${Number(p.rating || 5.0).toFixed(1)} ★ (${p.review_count || 0} verified reviews)`;
   document.getElementById('detailDescription').textContent = p.description;
 
   // Features
@@ -1453,7 +1453,7 @@ async function performOrderLookup() {
           </div>
 
           <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:6px;">Customer: <strong>${order.customer_name}</strong> (${order.customer_email})</p>
-          <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:14px;">Total Paid: <strong>${order.currency_symbol}${order.total_amount.toFixed(2)}</strong> via ${order.payment_method.toUpperCase()}</p>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:14px;">Total Paid: <strong>${order.currency_symbol || '৳'}${Number(order.total_amount || 0).toFixed(2)}</strong> via ${(order.payment_method || 'Online').toUpperCase()}</p>
 
           <h5 style="font-size:0.9rem; margin-bottom:8px; color:#60a5fa;">Delivered Subscriptions & Credentials:</h5>
           ${order.credentials.map(c => `

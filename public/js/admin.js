@@ -322,9 +322,9 @@ function renderAdminProducts(products) {
         </div>
       </td>
       <td>${p.category_name}</td>
-      <td>$${p.base_price.toFixed(2)}</td>
+      <td>$${Number(p.base_price || 0).toFixed(2)}</td>
       <td><span class="badge-tag bestseller">${p.badge || 'Active'}</span></td>
-      <td>${p.rating.toFixed(1)} ★ (${p.review_count})</td>
+      <td>${Number(p.rating || 5.0).toFixed(1)} ★ (${p.review_count || 0})</td>
     </tr>
   `).join('');
 }

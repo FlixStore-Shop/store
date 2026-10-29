@@ -140,6 +140,10 @@ app.get('/api/products', async (req, res) => {
       }
       return {
         ...p,
+        base_price: parseFloat(p.base_price || 0),
+        original_price: p.original_price ? parseFloat(p.original_price) : null,
+        rating: parseFloat(p.rating || 5.0),
+        review_count: parseInt(p.review_count || 0, 10),
         features_list: features
       };
     });
@@ -183,6 +187,10 @@ app.get('/api/products/:slug', async (req, res) => {
       features = [];
     }
     product.features_list = features;
+    product.base_price = parseFloat(product.base_price || 0);
+    if (product.original_price) product.original_price = parseFloat(product.original_price);
+    product.rating = parseFloat(product.rating || 5.0);
+    product.review_count = parseInt(product.review_count || 0, 10);
 
     // Fetch all plans for this product
     const plans = await db.prepare(`
@@ -190,6 +198,14 @@ app.get('/api/products/:slug', async (req, res) => {
       WHERE product_id = ?
       ORDER BY sort_order ASC, duration_months ASC
     `).all(product.id);
+
+    const formattedPlans = plans.map(pl => ({
+      ...pl,
+      price_usd: parseFloat(pl.price_usd || 0),
+      price_bdt: parseFloat(pl.price_bdt || 0),
+      original_price_usd: pl.original_price_usd ? parseFloat(pl.original_price_usd) : null,
+      original_price_bdt: pl.original_price_bdt ? parseFloat(pl.original_price_bdt) : null
+    }));
 
     // Fetch reviews
     const reviews = await db.prepare(`
@@ -211,7 +227,7 @@ app.get('/api/products/:slug', async (req, res) => {
       success: true,
       data: {
         ...product,
-        plans,
+        plans: formattedPlans,
         reviews,
         related
       }
