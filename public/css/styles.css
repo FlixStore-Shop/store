@@ -498,7 +498,7 @@ body {
   min-height: 400px;
   position: relative;
   box-sizing: border-box;
-  opacity: 0.85;
+  opacity: 1;
   transition: opacity 0.35s ease;
 }
 
@@ -1897,7 +1897,7 @@ body {
   right: 12px;
   font-size: 1.25rem;
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 1;
 }
 
 .card-valid-status {
@@ -2399,62 +2399,187 @@ body {
     font-size: 0.8rem;
   }
 
-  /* Smartphone Hero Presentation (Matches Image 1) */
+  /* Smartphone Hero Presentation (High-Contrast, Vivid, Luminous) */
   .hero-section {
-    padding: 16px 0 20px;
+    padding: 14px 0 18px;
+  }
+
+  .hero-slider-container {
+    background: linear-gradient(145deg, #131929 0%, #0d121f 100%) !important;
+    border: 1.5px solid rgba(99, 102, 241, 0.45) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 35px rgba(99, 102, 241, 0.22) !important;
+    border-radius: var(--radius-lg) !important;
   }
 
   .hero-slide {
-    padding: 24px 16px;
-    min-height: auto;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+    padding: 22px 16px 20px !important;
+    min-height: auto !important;
+    flex-direction: column !important;
+    text-align: center !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 1 !important;
   }
 
-  .hero-badge-row, .hero-pricing-box, .hero-cta-group {
-    justify-content: center;
+  .hero-slide:nth-child(1) {
+    background: radial-gradient(circle at 50% 15%, rgba(229, 9, 20, 0.22) 0%, transparent 68%) !important;
+  }
+  .hero-slide:nth-child(2) {
+    background: radial-gradient(circle at 50% 15%, rgba(16, 185, 129, 0.22) 0%, transparent 68%) !important;
+  }
+  .hero-slide:nth-child(3) {
+    background: radial-gradient(circle at 50% 15%, rgba(245, 158, 11, 0.22) 0%, transparent 68%) !important;
+  }
+
+  .hero-badge-row {
+    margin-bottom: 12px !important;
+    gap: 6px !important;
+    justify-content: center !important;
+  }
+
+  .hero-badge {
+    font-size: 0.72rem !important;
+    padding: 3px 10px !important;
+    background: rgba(59, 130, 246, 0.25) !important;
+    border: 1px solid rgba(59, 130, 246, 0.55) !important;
+    color: #93c5fd !important;
+    font-weight: 700 !important;
+  }
+
+  .hero-deal-pill {
+    font-size: 0.72rem !important;
+    padding: 3px 10px !important;
+    background: rgba(239, 68, 68, 0.25) !important;
+    border: 1px solid rgba(239, 68, 68, 0.55) !important;
+    color: #fca5a5 !important;
+    font-weight: 700 !important;
   }
 
   .hero-title {
-    font-size: 1.75rem;
-    line-height: 1.2;
-    margin-bottom: 12px;
+    font-size: 1.55rem !important;
+    line-height: 1.22 !important;
+    margin-bottom: 10px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8) !important;
   }
 
   .hero-subtitle {
-    font-size: 0.88rem;
-    line-height: 1.5;
-    margin-bottom: 18px;
+    font-size: 0.85rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 14px !important;
+    color: #cbd5e1 !important;
+    max-width: 95% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .hero-pricing-box {
+    margin-bottom: 16px !important;
+    gap: 8px !important;
+    justify-content: center !important;
+    align-items: baseline !important;
   }
 
   .hero-current-price {
-    font-size: 1.85rem;
+    font-size: 2rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    text-shadow: 0 0 16px rgba(255, 255, 255, 0.3) !important;
   }
 
-  .hero-visual {
-    margin-top: 16px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+  .hero-original-price {
+    font-size: 1.05rem !important;
+    color: #94a3b8 !important;
+    text-decoration: line-through !important;
   }
 
-  .hero-art-card {
-    width: 200px;
-    height: 200px;
-    border-radius: var(--radius-lg);
+  .hero-savings-tag {
+    background: #059669 !important;
+    color: #ffffff !important;
+    border: 1px solid #10b981 !important;
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.4) !important;
   }
 
   .hero-cta-group {
-    flex-direction: column;
-    width: 100%;
-    gap: 10px;
+    flex-direction: row !important;
+    width: 100% !important;
+    gap: 8px !important;
+    justify-content: center !important;
   }
 
-  .hero-cta-group button {
-    width: 100%;
-    height: 44px;
+  .hero-cta-group .btn-primary {
+    flex: 1.2 !important;
+    height: 44px !important;
+    padding: 0 12px !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%) !important;
+    box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4) !important;
+    border-radius: var(--radius-sm) !important;
+    border: none !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+  }
+
+  .hero-cta-group .btn-secondary {
+    flex: 1 !important;
+    height: 44px !important;
+    padding: 0 10px !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
+    color: #ffffff !important;
+    border-radius: var(--radius-sm) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .hero-visual {
+    margin-top: 14px !important;
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .hero-art-card {
+    width: 130px !important;
+    height: 130px !important;
+    border-radius: var(--radius-md) !important;
+    background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(99, 102, 241, 0.3) !important;
+    transform: none !important;
+    padding: 16px !important;
+  }
+
+  .hero-art-card img {
+    max-width: 90% !important;
+    max-height: 85% !important;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6)) !important;
+  }
+
+  .slider-dot {
+    background: rgba(255, 255, 255, 0.35) !important;
+    width: 8px !important;
+    height: 8px !important;
+    margin: 0 4px !important;
+  }
+
+  .slider-dot.active {
+    background: #60a5fa !important;
+    width: 24px !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 8px #60a5fa !important;
   }
 
   /* Full screen touch drawer on mobile */
@@ -2489,28 +2614,211 @@ body {
     height: 200px !important;
   }
 
-  /* Clean readable product cards (Matches Image 1) */
+  /* ==========================================================================
+     DOUBLE LINES / 2-COLUMN GRID (SMARTPHONE E-COMMERCE FEED)
+     ========================================================================== */
   .products-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
   }
 
   .product-card {
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-md) !important;
+    overflow: hidden !important;
+    background: var(--bg-card) !important;
+    border: 1px solid var(--glass-border) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .product-card-top {
+    height: 110px !important;
+    padding: 10px !important;
+    position: relative !important;
+    background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .product-card-img {
+    max-height: 65px !important;
+    max-width: 80% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5)) !important;
+  }
+
+  .product-card-badges {
+    top: 6px !important;
+    left: 6px !important;
+    right: 6px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  .badge-tag {
+    font-size: 0.6rem !important;
+    padding: 2px 6px !important;
+    font-weight: 700 !important;
+    border-radius: 4px !important;
+  }
+
+  .instant-delivery-badge {
+    font-size: 0.58rem !important;
+    padding: 2px 5px !important;
+    gap: 2px !important;
+    border-radius: var(--radius-full) !important;
+  }
+
+  .instant-delivery-badge svg {
+    width: 9px !important;
+    height: 9px !important;
+  }
+
+  .product-body {
+    padding: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+  }
+
+  .product-category-name {
+    font-size: 0.62rem !important;
+    margin-bottom: 2px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
+  }
+
+  .product-title {
+    font-size: 0.86rem !important;
+    line-height: 1.25 !important;
+    font-weight: 700 !important;
+    margin-bottom: 4px !important;
+    min-height: 34px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    color: #ffffff !important;
+  }
+
+  .product-tagline {
+    display: none !important; /* Kept hidden in 2-column grid for clean uniform card heights */
+  }
+
+  .card-tier-hint {
+    gap: 3px !important;
+    margin: 3px 0 6px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+  }
+
+  .tier-badge-pill {
+    font-size: 0.58rem !important;
+    padding: 1px 5px !important;
+    border-radius: 3px !important;
+    line-height: 1.2 !important;
+  }
+
+  .product-rating-row {
+    font-size: 0.68rem !important;
+    gap: 3px !important;
+    margin-bottom: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .stars {
+    font-size: 0.68rem !important;
+    gap: 1px !important;
+  }
+
+  .review-count {
+    font-size: 0.62rem !important;
+  }
+
+  .card-pricing-row {
+    padding-top: 6px !important;
+    margin-bottom: 8px !important;
+    margin-top: auto !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 2px !important;
+    border-top: 1px solid var(--glass-border) !important;
+    display: flex !important;
+  }
+
+  .card-price-label-row {
+    gap: 4px !important;
+    align-items: center !important;
+    display: flex !important;
+  }
+
+  .card-price-label {
+    font-size: 0.6rem !important;
+    font-weight: 600 !important;
+  }
+
+  .discount-pill {
+    font-size: 0.58rem !important;
+    padding: 1px 4px !important;
+    border-radius: 3px !important;
+    font-weight: 700 !important;
+  }
+
+  .card-price-numbers {
+    gap: 4px !important;
+    align-items: baseline !important;
+    display: flex !important;
+  }
+
+  .card-price-current {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+  }
+
+  .card-price-original {
+    font-size: 0.72rem !important;
+    color: var(--text-muted) !important;
+    text-decoration: line-through !important;
+  }
+
+  .card-warranty-pill {
+    display: none !important;
+  }
+
+  .product-card-actions {
+    width: 100% !important;
+    margin-top: auto !important;
+  }
+
+  .btn-select-plan {
+    padding: 8px 6px !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    border-radius: var(--radius-sm) !important;
+    width: 100% !important;
+    justify-content: center !important;
+    gap: 4px !important;
   }
 
   .category-pill {
-    padding: 8px 14px;
-    font-size: 0.82rem;
+    padding: 7px 12px;
+    font-size: 0.78rem;
   }
 
   .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
   .stat-card {
-    padding: 14px 16px;
+    padding: 12px 14px;
   }
 
   .footer-grid {
