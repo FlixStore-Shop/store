@@ -468,9 +468,10 @@ body {
   position: relative;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  border: 1px solid var(--glass-border);
-  background: linear-gradient(135deg, rgba(24, 29, 39, 0.8) 0%, rgba(17, 20, 28, 0.95) 100%);
-  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(180deg, #10141f 0%, #090c12 100%);
+  box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   user-select: none;
   touch-action: pan-y;
   cursor: grab;
@@ -506,7 +507,6 @@ body {
   opacity: 1;
 }
 
-
 .hero-content {
   flex: 1.2;
   z-index: 2;
@@ -522,25 +522,27 @@ body {
 }
 
 .hero-badge {
-  background: rgba(59, 130, 246, 0.18);
-  border: 1px solid rgba(59, 130, 246, 0.4);
-  color: #60a5fa;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 14px;
   border-radius: var(--radius-full);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
+  backdrop-filter: blur(8px);
 }
 
 .hero-deal-pill {
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #f87171;
-  font-size: 0.8rem;
-  font-weight: 700;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  color: #38bdf8;
+  font-size: 0.75rem;
+  font-weight: 600;
   padding: 4px 12px;
   border-radius: var(--radius-full);
+  letter-spacing: 0.3px;
 }
 
 .hero-title {
@@ -548,13 +550,13 @@ body {
   font-weight: 800;
   line-height: 1.15;
   margin-bottom: 16px;
-  letter-spacing: -1px;
+  letter-spacing: -0.03em;
   color: #ffffff;
 }
 
 .hero-subtitle {
-  font-size: 1.15rem;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  color: #94a3b8;
   line-height: 1.6;
   margin-bottom: 28px;
 }
@@ -570,28 +572,70 @@ body {
   font-size: 2.4rem;
   font-weight: 800;
   color: #ffffff;
+  letter-spacing: -0.02em;
 }
 
 .hero-original-price {
-  font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.55);
+  font-size: 1.2rem;
+  color: #64748b;
   text-decoration: line-through;
 }
 
 .hero-savings-tag {
-  background: rgba(16, 185, 129, 0.2);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   padding: 4px 10px;
   border-radius: var(--radius-sm);
-  font-weight: 700;
-  font-size: 0.85rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.3px;
 }
 
 .hero-cta-group {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+}
+
+.hero-cta-group .btn-primary {
+  background: #ffffff !important;
+  color: #0b0f17 !important;
+  border: 1px solid #ffffff !important;
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.18) !important;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+  padding: 12px 24px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.hero-cta-group .btn-primary:hover {
+  background: #f1f5f9 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.28) !important;
+}
+
+.hero-cta-group .btn-primary svg {
+  stroke: #0b0f17 !important;
+}
+
+.hero-cta-group .btn-secondary {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #f1f5f9 !important;
+  font-weight: 600 !important;
+  font-size: 0.92rem !important;
+  padding: 12px 22px !important;
+  border-radius: 8px !important;
+  backdrop-filter: blur(10px) !important;
+  transition: all 0.2s ease !important;
+}
+
+.hero-cta-group .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-2px) !important;
 }
 
 .hero-visual {
@@ -604,16 +648,17 @@ body {
 }
 
 .hero-art-card {
-  width: 320px;
-  height: 320px;
+  width: 300px;
+  height: 300px;
   border-radius: var(--radius-xl);
   overflow: hidden;
   position: relative;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-  border: 1px solid var(--glass-border-hover);
+  box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
   transform: perspective(800px) rotateY(-8deg) rotateX(4deg);
   transition: transform 0.5s ease;
-  background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(15, 23, 42, 0.85) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -636,7 +681,7 @@ body {
 .hero-art-glow {
   position: absolute;
   inset: -20px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
   z-index: 1;
   pointer-events: none;
 }
@@ -652,18 +697,24 @@ body {
 }
 
 .slider-dot {
-  width: 10px;
-  height: 10px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.22);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
+}
+
+.slider-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .slider-dot.active {
-  width: 28px;
-  border-radius: 6px;
-  background: var(--accent-blue);
+  background: #ffffff;
+  width: 22px;
+  height: 7px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
 /* ==========================================================================
@@ -2399,36 +2450,27 @@ body {
     font-size: 0.8rem;
   }
 
-  /* Smartphone Hero Presentation (High-Contrast, Vivid, Luminous) */
+  /* Smartphone Hero Presentation (Ultra-Luxury Minimalist Apple/Linear Aesthetic) */
   .hero-section {
-    padding: 14px 0 18px;
+    padding: 12px 0 16px;
   }
 
   .hero-slider-container {
-    background: linear-gradient(145deg, #131929 0%, #0d121f 100%) !important;
-    border: 1.5px solid rgba(99, 102, 241, 0.45) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 35px rgba(99, 102, 241, 0.22) !important;
+    background: linear-gradient(180deg, #10141f 0%, #090c12 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
     border-radius: var(--radius-lg) !important;
   }
 
   .hero-slide {
-    padding: 22px 16px 20px !important;
+    padding: 24px 18px 20px !important;
     min-height: auto !important;
     flex-direction: column !important;
     text-align: center !important;
     align-items: center !important;
     justify-content: center !important;
     opacity: 1 !important;
-  }
-
-  .hero-slide:nth-child(1) {
-    background: radial-gradient(circle at 50% 15%, rgba(229, 9, 20, 0.22) 0%, transparent 68%) !important;
-  }
-  .hero-slide:nth-child(2) {
-    background: radial-gradient(circle at 50% 15%, rgba(16, 185, 129, 0.22) 0%, transparent 68%) !important;
-  }
-  .hero-slide:nth-child(3) {
-    background: radial-gradient(circle at 50% 15%, rgba(245, 158, 11, 0.22) 0%, transparent 68%) !important;
   }
 
   .hero-badge-row {
@@ -2438,37 +2480,39 @@ body {
   }
 
   .hero-badge {
-    font-size: 0.72rem !important;
+    font-size: 0.7rem !important;
     padding: 3px 10px !important;
-    background: rgba(59, 130, 246, 0.25) !important;
-    border: 1px solid rgba(59, 130, 246, 0.55) !important;
-    color: #93c5fd !important;
-    font-weight: 700 !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    backdrop-filter: blur(8px) !important;
   }
 
   .hero-deal-pill {
-    font-size: 0.72rem !important;
+    font-size: 0.7rem !important;
     padding: 3px 10px !important;
-    background: rgba(239, 68, 68, 0.25) !important;
-    border: 1px solid rgba(239, 68, 68, 0.55) !important;
-    color: #fca5a5 !important;
-    font-weight: 700 !important;
+    background: rgba(56, 189, 248, 0.08) !important;
+    border: 1px solid rgba(56, 189, 248, 0.22) !important;
+    color: #38bdf8 !important;
+    font-weight: 600 !important;
   }
 
   .hero-title {
     font-size: 1.55rem !important;
-    line-height: 1.22 !important;
+    line-height: 1.2 !important;
     margin-bottom: 10px !important;
     font-weight: 800 !important;
     color: #ffffff !important;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8) !important;
+    letter-spacing: -0.025em !important;
   }
 
   .hero-subtitle {
     font-size: 0.85rem !important;
     line-height: 1.45 !important;
     margin-bottom: 14px !important;
-    color: #cbd5e1 !important;
+    color: #94a3b8 !important;
     max-width: 95% !important;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -2485,24 +2529,24 @@ body {
     font-size: 2rem !important;
     font-weight: 800 !important;
     color: #ffffff !important;
-    text-shadow: 0 0 16px rgba(255, 255, 255, 0.3) !important;
+    letter-spacing: -0.02em !important;
   }
 
   .hero-original-price {
-    font-size: 1.05rem !important;
-    color: #94a3b8 !important;
+    font-size: 1rem !important;
+    color: #64748b !important;
     text-decoration: line-through !important;
   }
 
   .hero-savings-tag {
-    background: #059669 !important;
-    color: #ffffff !important;
-    border: 1px solid #10b981 !important;
-    font-size: 0.78rem !important;
-    font-weight: 800 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
     padding: 3px 8px !important;
     border-radius: 4px !important;
-    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.4) !important;
+    box-shadow: none !important;
   }
 
   .hero-cta-group {
@@ -2518,15 +2562,19 @@ body {
     padding: 0 12px !important;
     font-size: 0.85rem !important;
     font-weight: 700 !important;
-    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%) !important;
-    box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4) !important;
-    border-radius: var(--radius-sm) !important;
-    border: none !important;
-    color: #ffffff !important;
+    background: #ffffff !important;
+    color: #0b0f17 !important;
+    border: 1px solid #ffffff !important;
+    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.18) !important;
+    border-radius: 8px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 6px !important;
+  }
+
+  .hero-cta-group .btn-primary svg {
+    stroke: #0b0f17 !important;
   }
 
   .hero-cta-group .btn-secondary {
@@ -2535,10 +2583,10 @@ body {
     padding: 0 10px !important;
     font-size: 0.82rem !important;
     font-weight: 600 !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.28) !important;
-    color: #ffffff !important;
-    border-radius: var(--radius-sm) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #f1f5f9 !important;
+    border-radius: 8px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -2555,9 +2603,10 @@ body {
     width: 130px !important;
     height: 130px !important;
     border-radius: var(--radius-md) !important;
-    background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(99, 102, 241, 0.3) !important;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(15, 23, 42, 0.85) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     transform: none !important;
     padding: 16px !important;
   }
@@ -2565,21 +2614,25 @@ body {
   .hero-art-card img {
     max-width: 90% !important;
     max-height: 85% !important;
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6)) !important;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5)) !important;
+  }
+
+  .hero-art-glow {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%) !important;
   }
 
   .slider-dot {
-    background: rgba(255, 255, 255, 0.35) !important;
-    width: 8px !important;
-    height: 8px !important;
+    background: rgba(255, 255, 255, 0.22) !important;
+    width: 6px !important;
+    height: 6px !important;
     margin: 0 4px !important;
   }
 
   .slider-dot.active {
-    background: #60a5fa !important;
-    width: 24px !important;
-    border-radius: 4px !important;
-    box-shadow: 0 0 8px #60a5fa !important;
+    background: #ffffff !important;
+    width: 20px !important;
+    border-radius: 3px !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4) !important;
   }
 
   /* Full screen touch drawer on mobile */
