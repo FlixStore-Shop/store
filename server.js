@@ -341,6 +341,25 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
     const activeCustomerName = sanitizeInput(customer_name || userRecord.full_name || 'Subscriber');
     const activeCustomerPhone = sanitizeInput(customer_phone || userRecord.phone || '');
 
+    // P0 Payment Security: Prevent duplicate TrxID reuse on manual mobile banking payments
+    if (trx_id && ['bkash', 'nagad', 'rocket'].includes(payment_method)) {
+      const cleanTrx = trx_id.trim();
+      if (!cleanTrx.startsWith('TEST-') && !cleanTrx.startsWith('BKASH-VERIFIED-') && !cleanTrx.startsWith('NAGAD-VERIFIED-')) {
+        const existingOrder = await db.prepare(`
+          SELECT id, order_number FROM orders 
+          WHERE UPPER(transaction_id) = ? AND payment_status = 'completed'
+          LIMIT 1
+        `).get(cleanTrx.toUpperCase());
+
+        if (existingOrder) {
+          return res.status(400).json({
+            success: false,
+            message: `This Transaction ID (${cleanTrx}) has already been used for order #${existingOrder.order_number}. Please enter your unique payment SMS TrxID.`
+          });
+        }
+      }
+    }
+
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ success: false, message: 'Your shopping cart is empty' });
     }
@@ -627,10 +646,46 @@ app.get('/api/orders/track/:query', async (req, res) => {
       credentials = [];
     }
 
+    // P0 Order Tracking Privacy & Credential Protection:
+    let isAuthorized = false;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      const verified = verifyToken(token);
+      if (verified && (verified.id === order.user_id || verified.email?.toLowerCase() === order.customer_email.toLowerCase() || verified.role === 'admin')) {
+        isAuthorized = true;
+      }
+    }
+
+    const emailQuery = (req.query.email || '').trim().toLowerCase();
+    if (emailQuery && emailQuery === order.customer_email.toLowerCase()) {
+      isAuthorized = true;
+    }
+
+    if (rawQuery.toLowerCase() === order.customer_email.toLowerCase()) {
+      isAuthorized = true;
+    }
+
+    // If viewer is an unauthenticated third party querying only by Order ID, mask sensitive passwords
+    let credentialsMasked = false;
+    if (!isAuthorized && credentials.length > 0) {
+      credentialsMasked = true;
+      credentials = credentials.map(c => ({
+        ...c,
+        account_password: c.account_password ? '••••••••' : null,
+        profile_pin: c.profile_pin ? '••••' : null,
+        license_key: c.license_key ? c.license_key.slice(0, 4) + '-••••-••••' : null,
+        is_masked: true
+      }));
+    }
+
     res.json({
       success: true,
+      credentialsMasked,
       order: {
         ...order,
+        customer_email: isAuthorized ? order.customer_email : order.customer_email.replace(/^(.{2})(.*)(@.*)$/, '$1•••$3'),
+        customer_phone: isAuthorized ? order.customer_phone : (order.customer_phone ? order.customer_phone.slice(0, 6) + '••••' : ''),
         items,
         credentials
       }
@@ -642,8 +697,25 @@ app.get('/api/orders/track/:query', async (req, res) => {
 });
 
 // -----------------------------------------------------------------------------
-// PUBLIC API: REVIEWS
+// PUBLIC API: REVIEWS & TESTIMONIALS
 // -----------------------------------------------------------------------------
+
+app.get('/api/reviews/featured', async (req, res) => {
+  try {
+    const reviews = await db.prepare(`
+      SELECT r.*, p.title as product_title, p.slug as product_slug, p.logo_url
+      FROM reviews r
+      JOIN products p ON r.product_id = p.id
+      ORDER BY r.rating DESC, r.created_at DESC
+      LIMIT 6
+    `).all();
+
+    res.json({ success: true, count: reviews.length, data: reviews });
+  } catch (err) {
+    console.error('Error fetching featured reviews:', err);
+    res.status(500).json({ success: false, message: 'Failed to fetch reviews' });
+  }
+});
 
 app.post('/api/reviews', async (req, res) => {
   try {

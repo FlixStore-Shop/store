@@ -1440,11 +1440,14 @@ async function performOrderLookup() {
   `;
 
   try {
-    const res = await fetch(`/api/orders/track/${encodeURIComponent(query)}`);
+    const res = await fetch(`/api/orders/track/${encodeURIComponent(query)}`, {
+      headers: state.token ? { 'Authorization': `Bearer ${state.token}` } : {}
+    });
     const json = await res.json();
 
     if (json.success) {
       const order = json.order;
+      const isMasked = json.credentialsMasked;
       resultContainer.innerHTML = `
         <div style="background:var(--bg-tertiary); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:20px; margin-top:16px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -1455,7 +1458,10 @@ async function performOrderLookup() {
           <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:6px;">Customer: <strong>${order.customer_name}</strong> (${order.customer_email})</p>
           <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:14px;">Total Paid: <strong>${order.currency_symbol || '৳'}${Number(order.total_amount || 0).toFixed(2)}</strong> via ${(order.payment_method || 'Online').toUpperCase()}</p>
 
-          <h5 style="font-size:0.9rem; margin-bottom:8px; color:#60a5fa;">Delivered Subscriptions & Credentials:</h5>
+          <h5 style="font-size:0.9rem; margin-bottom:8px; color:#60a5fa; display:flex; justify-content:space-between; align-items:center;">
+            <span>Delivered Subscriptions & Credentials:</span>
+            ${isMasked ? '<span style="font-size:0.72rem; color:#f59e0b; font-weight:600;">🔒 Protected View</span>' : ''}
+          </h5>
           ${order.credentials.map(c => `
             <div style="background:var(--bg-secondary); padding:10px 14px; border-radius:8px; margin-bottom:8px; font-family:monospace; font-size:0.85rem;">
               <div style="font-weight:700; color:#ffffff; margin-bottom:4px;">${c.product_title || 'Subscription'}</div>
@@ -1466,6 +1472,13 @@ async function performOrderLookup() {
               ${c.activation_link ? `<div style="margin-top:6px;"><a href="${c.activation_link}" target="_blank" style="color:#38bdf8;">Access Activation Link</a></div>` : ''}
             </div>
           `).join('')}
+
+          ${isMasked ? `
+            <div style="margin-top:12px; padding:10px 14px; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:8px; font-size:0.78rem; color:#fcd34d; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+              <span>🔒 Passwords & PINs are masked to protect customer privacy. Sign in to view unmasked credentials.</span>
+              <button type="button" class="btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="closeTrackOrderModal(); openAuthModal('signin');">Sign In</button>
+            </div>
+          ` : ''}
         </div>
       `;
     } else {
