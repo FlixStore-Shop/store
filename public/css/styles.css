@@ -1308,7 +1308,7 @@ body {
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
-  z-index: 1000;
+  z-index: 10000;
   display: none;
   align-items: center;
   justify-content: center;
@@ -1707,6 +1707,11 @@ body {
    DIGITAL PROFILE DASHBOARD & HIGH-CLARITY SIGN OUT SYSTEM
    ========================================================================== */
 
+/* Auth & Profile Modal Content Wrapper */
+.auth-modal-content {
+  padding: 26px 24px;
+}
+
 /* Profile Top Executive Bar */
 .profile-top-bar {
   display: flex;
@@ -1714,6 +1719,7 @@ body {
   align-items: center;
   margin-bottom: 18px;
   padding-bottom: 14px;
+  padding-right: 48px;
   border-bottom: 1px solid var(--glass-border);
 }
 
@@ -2986,7 +2992,7 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
-  z-index: 9999;
+  z-index: 900;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
@@ -3736,35 +3742,216 @@ body {
     padding-top: 20px !important;
   }
 
-  /* Mobile Digital Profile & Sign Out Adaptations */
+  /* Mobile Digital Profile & Smartphone Layout Optimizations */
+  .modal-overlay {
+    padding: 12px 8px !important;
+  }
+
+  .modal-box {
+    max-height: 94vh !important;
+    border-radius: var(--radius-lg) !important;
+  }
+
+  .modal-close-btn {
+    top: 12px !important;
+    right: 12px !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .auth-modal-content {
+    padding: 16px 13px 20px 13px !important;
+  }
+
+  /* Profile Top Bar on Smartphone */
+  .profile-top-bar {
+    padding-right: 44px !important;
+    margin-bottom: 12px !important;
+    padding-bottom: 10px !important;
+    gap: 8px !important;
+  }
+
+  .profile-top-title {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 2px !important;
+    min-width: 0 !important;
+  }
+
+  .profile-top-title h3 {
+    font-size: 1.05rem !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+  }
+
+  .digital-live-badge {
+    font-size: 0.58rem !important;
+    padding: 2px 6px !important;
+  }
+
+  .btn-signout-top {
+    padding: 4px 8px !important;
+    font-size: 0.72rem !important;
+    gap: 4px !important;
+    border-radius: 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .btn-signout-top svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  /* Digital Holographic Card on Smartphone */
   .digital-member-card {
-    padding: 16px 14px !important;
+    padding: 14px 12px !important;
+    margin-bottom: 14px !important;
+    border-radius: var(--radius-md) !important;
   }
-  .digital-user-row {
-    gap: 12px !important;
+
+  .card-chip-row {
+    margin-bottom: 12px !important;
+    gap: 8px !important;
   }
-  .digital-avatar {
-    width: 48px !important;
-    height: 48px !important;
-    font-size: 1.15rem !important;
-  }
-  .digital-stats-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
+
+  .digital-chip {
     gap: 6px !important;
+    flex-shrink: 0 !important;
   }
-  .stat-matrix-tile {
-    padding: 8px 6px !important;
-    gap: 6px !important;
+
+  .digital-chip svg {
+    width: 22px !important;
+    height: 18px !important;
   }
-  .stat-matrix-icon {
-    font-size: 1.1rem !important;
-  }
-  .stat-matrix-data strong {
-    font-size: 0.78rem !important;
-  }
-  .stat-matrix-data span {
+
+  .digital-brand-text {
     font-size: 0.62rem !important;
+    letter-spacing: 0.5px !important;
+    white-space: nowrap !important;
   }
+
+  .digital-card-tier {
+    font-size: 0.60rem !important;
+    padding: 2px 7px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    letter-spacing: 0.3px !important;
+  }
+
+  .digital-user-row {
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .digital-avatar {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 1.05rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  .digital-user-name-wrap {
+    gap: 6px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .digital-user-name-wrap h4 {
+    font-size: 1.05rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .digital-role-badge {
+    font-size: 0.58rem !important;
+    padding: 1px 6px !important;
+    white-space: nowrap !important;
+  }
+
+  .digital-user-email {
+    font-size: 0.76rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .digital-user-phone {
+    font-size: 0.70rem !important;
+  }
+
+  .digital-card-footer {
+    padding-top: 10px !important;
+    gap: 6px !important;
+  }
+
+  .digital-member-id-wrap {
+    padding: 3px 8px !important;
+    gap: 5px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .digital-member-id-wrap .id-label {
+    font-size: 0.58rem !important;
+  }
+
+  .digital-member-id-wrap .id-code {
+    font-size: 0.72rem !important;
+  }
+
+  .digital-security-tag {
+    font-size: 0.64rem !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Digital Stats Matrix: 2 columns on top, 3rd tile full width below */
+  .digital-stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .stat-matrix-tile:nth-child(3) {
+    grid-column: 1 / -1 !important;
+  }
+
+  .stat-matrix-tile {
+    padding: 9px 10px !important;
+    gap: 8px !important;
+  }
+
+  .stat-matrix-icon {
+    font-size: 1.2rem !important;
+  }
+
+  .stat-matrix-data strong {
+    font-size: 0.82rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .stat-matrix-data span {
+    font-size: 0.64rem !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Subscriptions Vault Header */
+  .digital-vault-header {
+    margin-bottom: 10px !important;
+    gap: 8px !important;
+  }
+
+  .digital-vault-header h4 {
+    font-size: 0.88rem !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+  }
+
+  .vault-count-pill {
+    font-size: 0.66rem !important;
+    padding: 2px 7px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
   .profile-signout-card {
     flex-direction: column !important;
     align-items: stretch !important;
