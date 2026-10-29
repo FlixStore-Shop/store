@@ -867,12 +867,35 @@ function calculateCartTotals() {
     }
   }
 
-  const totalBDT = Math.max(0, subtotalBDT - discountBDT);
+  // ★ VIP Member Perk: 5% Auto-Discount on every product
+  let vipDiscountBDT = 0;
+  const isVipUser = state.user && (state.user.is_vip || state.user.tier === 'vip' || state.user.role === 'admin');
+  if (isVipUser) {
+    vipDiscountBDT = Math.round(subtotalBDT * 0.05);
+  }
+
+  const totalDiscountBDT = discountBDT + vipDiscountBDT;
+  const totalBDT = Math.max(0, subtotalBDT - totalDiscountBDT);
+
   const subtotalUSD = subtotalBDT / 120.0;
   const discountUSD = discountBDT / 120.0;
+  const vipDiscountUSD = vipDiscountBDT / 120.0;
+  const totalDiscountUSD = totalDiscountBDT / 120.0;
   const totalUSD = totalBDT / 120.0;
 
-  return { subtotalUSD, discountUSD, totalUSD, subtotalBDT, discountBDT, totalBDT };
+  return {
+    subtotalUSD,
+    discountUSD,
+    vipDiscountUSD,
+    totalDiscountUSD,
+    totalUSD,
+    subtotalBDT,
+    discountBDT,
+    vipDiscountBDT,
+    totalDiscountBDT,
+    totalBDT,
+    isVipUser
+  };
 }
 
 function updateCartUI() {
@@ -903,7 +926,7 @@ function updateCartUI() {
         <button class="btn-primary" onclick="closeCartDrawer()">Explore Store</button>
       </div>
     `;
-    updateDrawerFooter(0, 0, 0, 0, 0, 0);
+    updateDrawerFooter();
     return;
   }
 
@@ -929,25 +952,34 @@ function updateCartUI() {
     </div>
   `).join('');
 
-  const totals = calculateCartTotals();
-  updateDrawerFooter(totals.subtotalUSD, totals.discountUSD, totals.totalUSD, totals.subtotalBDT, totals.discountBDT, totals.totalBDT);
+  updateDrawerFooter();
 }
 
-function updateDrawerFooter(subtotalUSD, discountUSD, totalUSD, subtotalBDT, discountBDT, totalBDT) {
+function updateDrawerFooter() {
   const subtotalElem = document.getElementById('cartSubtotalDisplay');
   const discountElem = document.getElementById('cartDiscountDisplay');
   const totalElem = document.getElementById('cartTotalDisplay');
   const checkoutBtn = document.getElementById('cartCheckoutBtn');
+  const vipRow = document.getElementById('cartVipDiscountRow');
+  const vipDisplay = document.getElementById('cartVipDiscountDisplay');
 
-  const s = subtotalBDT !== undefined ? subtotalBDT : Math.round(subtotalUSD * 120);
-  const d = discountBDT !== undefined ? discountBDT : Math.round(discountUSD * 120);
-  const t = totalBDT !== undefined ? totalBDT : Math.round(totalUSD * 120);
+  const totals = calculateCartTotals();
 
-  if (subtotalElem) subtotalElem.textContent = formatPrice(s, true);
+  if (subtotalElem) subtotalElem.textContent = formatPrice(totals.subtotalBDT, true);
   if (discountElem) {
-    discountElem.textContent = d > 0 ? `-${formatPrice(d, true)}` : formatPrice(0, true);
+    discountElem.textContent = totals.discountBDT > 0 ? `-${formatPrice(totals.discountBDT, true)}` : formatPrice(0, true);
   }
-  if (totalElem) totalElem.textContent = formatPrice(t, true);
+
+  if (vipRow && vipDisplay) {
+    if (totals.vipDiscountBDT > 0) {
+      vipRow.style.display = 'flex';
+      vipDisplay.textContent = `-${formatPrice(totals.vipDiscountBDT, true)}`;
+    } else {
+      vipRow.style.display = 'none';
+    }
+  }
+
+  if (totalElem) totalElem.textContent = formatPrice(totals.totalBDT, true);
   if (checkoutBtn) {
     checkoutBtn.disabled = state.cart.length === 0;
   }
@@ -1071,6 +1103,12 @@ function renderCheckoutSummary() {
   const itemsContainer = document.getElementById('checkoutOrderItems');
   const totalDisplay = document.getElementById('checkoutFinalTotal');
   const btnTotalDisplay = document.getElementById('payBtnAmount');
+  const subtotalDisplay = document.getElementById('checkoutSubtotal');
+  const vipRow = document.getElementById('checkoutVipRow');
+  const vipDiscountDisplay = document.getElementById('checkoutVipDiscount');
+  const couponRow = document.getElementById('checkoutCouponRow');
+  const couponDiscountDisplay = document.getElementById('checkoutCouponDiscount');
+  const vipNotice = document.getElementById('vipAutoAppliedNotice');
 
   const totals = calculateCartTotals();
 
@@ -1081,6 +1119,28 @@ function renderCheckoutSummary() {
         <strong>${formatPrice((item.priceBDT || Math.round(item.priceUSD * 120)) * item.quantity, true)}</strong>
       </div>
     `).join('');
+  }
+
+  if (subtotalDisplay) subtotalDisplay.textContent = formatPrice(totals.subtotalBDT, true);
+
+  if (vipRow && vipDiscountDisplay) {
+    if (totals.vipDiscountBDT > 0) {
+      vipRow.style.display = 'flex';
+      vipDiscountDisplay.textContent = `-${formatPrice(totals.vipDiscountBDT, true)}`;
+      if (vipNotice) vipNotice.style.display = 'block';
+    } else {
+      vipRow.style.display = 'none';
+      if (vipNotice) vipNotice.style.display = 'none';
+    }
+  }
+
+  if (couponRow && couponDiscountDisplay) {
+    if (totals.discountBDT > 0) {
+      couponRow.style.display = 'flex';
+      couponDiscountDisplay.textContent = `-${formatPrice(totals.discountBDT, true)}`;
+    } else {
+      couponRow.style.display = 'none';
+    }
   }
 
   if (totalDisplay) totalDisplay.textContent = formatPrice(totals.totalBDT, true);
@@ -1588,8 +1648,15 @@ async function renderUserProfile() {
       );
       const isVip = state.user.role === 'admin' || (data.user && data.user.is_vip) || hasPaidOrders;
 
+      // Persist VIP status to session state
+      state.user = { ...state.user, is_vip: isVip };
+      localStorage.setItem('flix_user', JSON.stringify(state.user));
+      updateCartUI();
+
+      const vipBanner = document.getElementById('digitalVipPerkBanner');
+
       if (state.user.role === 'admin') {
-        // Admin keep
+        if (vipBanner) vipBanner.style.display = 'flex';
       } else if (isVip) {
         // Paid customer has unlocked VIP Member
         if (roleBadge) {
@@ -1601,10 +1668,11 @@ async function renderUserProfile() {
           passTier.className = 'digital-card-tier tier-vip';
           passTier.innerHTML = `<span>★ VIP MEMBER</span>`;
         }
-        if (tierLabel) tierLabel.textContent = 'Priority VIP';
+        if (tierLabel) tierLabel.textContent = '★ VIP (5% OFF)';
         if (tierIcon) tierIcon.textContent = '👑';
-        if (tierSub) tierSub.textContent = 'Priority Auto-Dispatch';
+        if (tierSub) tierSub.textContent = '5% Auto-Discount active';
         if (memberIdElem) memberIdElem.textContent = `FLX-VIP-${memberIdNum}`;
+        if (vipBanner) vipBanner.style.display = 'flex';
       } else {
         // Unpaid / free account -> stays Standard Member
         if (roleBadge) {
@@ -1618,8 +1686,9 @@ async function renderUserProfile() {
         }
         if (tierLabel) tierLabel.textContent = 'Standard Member';
         if (tierIcon) tierIcon.textContent = '⭐';
-        if (tierSub) tierSub.textContent = 'Upgrade on 1st Order';
+        if (tierSub) tierSub.textContent = 'Order to unlock 5% VIP Perk';
         if (memberIdElem) memberIdElem.textContent = `FLX-${memberIdNum}`;
+        if (vipBanner) vipBanner.style.display = 'none';
       }
 
       if (ordersList) {
@@ -1769,6 +1838,19 @@ function checkAuthStatus() {
   if (!authBtn) return;
 
   if (state.user && state.token) {
+    if (state.user.is_vip === undefined) {
+      fetch('/api/auth/me', { headers: { 'Authorization': `Bearer ${state.token}` } })
+        .then(r => r.json())
+        .then(d => {
+          if (d.success && d.user) {
+            state.user = { ...state.user, ...d.user };
+            localStorage.setItem('flix_user', JSON.stringify(state.user));
+            updateCartUI();
+          }
+        })
+        .catch(() => {});
+    }
+
     authBtn.innerHTML = `
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
       <span>${state.user.full_name.split(' ')[0]}</span>

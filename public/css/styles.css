@@ -2002,6 +2002,25 @@ body {
   font-weight: 600;
 }
 
+.digital-vip-banner {
+  margin-top: 12px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(217, 119, 6, 0.26) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.42);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  font-size: 0.72rem;
+  color: #fef3c7;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  animation: fadeIn 0.3s ease;
+}
+
+.digital-vip-banner strong {
+  color: #fbbf24;
+  font-weight: 800;
+}
+
 /* Digital Stats Matrix Grid (3 Columns) */
 .digital-stats-grid {
   display: grid;

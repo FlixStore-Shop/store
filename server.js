@@ -368,7 +368,33 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       }
     }
 
-    const totalUSD = Math.max(0, subtotalUSD - discountUSD);
+    // ★ VIP Member Perk: Automatic 5% discount on all products
+    let isVip = false;
+    let vipDiscountUSD = 0;
+    const cleanCustomerEmail = customer_email.trim().toLowerCase();
+
+    const userRecord = await db.prepare('SELECT * FROM users WHERE LOWER(email) = ?').get(cleanCustomerEmail);
+    if (userRecord) {
+      if (userRecord.role === 'admin' || userRecord.tier === 'vip') {
+        isVip = true;
+      } else {
+        const prevOrder = await db.prepare(`
+          SELECT id FROM orders 
+          WHERE LOWER(customer_email) = ? AND (delivery_status = 'delivered' OR total_amount > 0)
+          LIMIT 1
+        `).get(cleanCustomerEmail);
+        if (prevOrder) {
+          isVip = true;
+        }
+      }
+    }
+
+    if (isVip) {
+      vipDiscountUSD = (subtotalUSD * 0.05); // 5% VIP member discount
+    }
+
+    const totalDiscountUSD = discountUSD + vipDiscountUSD;
+    const totalUSD = Math.max(0, subtotalUSD - totalDiscountUSD);
     const orderNumber = generateOrderNumber();
 
     // Generate/Allocate Credentials for each purchased item
@@ -439,6 +465,10 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
+    const appliedPromoLabel = appliedCoupon 
+      ? (isVip ? `${appliedCoupon} + VIP 5%` : appliedCoupon)
+      : (isVip ? 'VIP_MEMBER_5%' : null);
+
     const orderRes = await insertOrder.run(
       orderNumber,
       sanitizeInput(customer_name),
@@ -450,9 +480,9 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       currency,
       currency_symbol,
       parseFloat(subtotalUSD.toFixed(2)),
-      parseFloat(discountUSD.toFixed(2)),
+      parseFloat(totalDiscountUSD.toFixed(2)),
       parseFloat(totalUSD.toFixed(2)),
-      appliedCoupon || null,
+      appliedPromoLabel,
       'delivered',
       JSON.stringify(deliveredCredentials),
       sanitizeInput(customer_notes || '')
@@ -491,7 +521,9 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       customerPhone: customer_phone,
       paymentMethod: payment_method,
       subtotal: parseFloat(subtotalUSD.toFixed(2)),
-      discount: parseFloat(discountUSD.toFixed(2)),
+      discount: parseFloat(totalDiscountUSD.toFixed(2)),
+      vipDiscount: parseFloat(vipDiscountUSD.toFixed(2)),
+      isVipMember: isVip,
       total: parseFloat(totalUSD.toFixed(2)),
       currency,
       currencySymbol: currency_symbol
@@ -502,7 +534,9 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
     // Return complete order summary and instant credentials
     res.json({
       success: true,
-      message: 'Order completed successfully! Credentials dispatched.',
+      message: isVip 
+        ? 'Order placed with your ★ VIP 5% Member Discount automatically applied!'
+        : 'Order completed successfully! Credentials dispatched.',
       order: {
         orderId,
         orderNumber,
@@ -510,7 +544,9 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
         customerEmail: customer_email,
         paymentMethod: payment_method,
         subtotal: parseFloat(subtotalUSD.toFixed(2)),
-        discount: parseFloat(discountUSD.toFixed(2)),
+        discount: parseFloat(totalDiscountUSD.toFixed(2)),
+        vipDiscount: parseFloat(vipDiscountUSD.toFixed(2)),
+        isVipMember: isVip,
         total: parseFloat(totalUSD.toFixed(2)),
         currency,
         currencySymbol: currency_symbol,

@@ -580,6 +580,10 @@
           <span>Subtotal</span>
           <strong id="cartSubtotalDisplay">৳0</strong>
         </div>
+        <div class="cart-summary-line" id="cartVipDiscountRow" style="display:none;">
+          <span style="color:#fbbf24; font-weight:700;">★ VIP Member Perk (5% OFF)</span>
+          <strong id="cartVipDiscountDisplay" style="color:#fbbf24;">-৳0</strong>
+        </div>
         <div class="cart-summary-line">
           <span>Coupon Discount</span>
           <strong id="cartDiscountDisplay" style="color:#34d399;">৳0</strong>
@@ -843,10 +847,25 @@
           </div>
 
           <div style="border-top:1px dashed var(--glass-border); padding-top:14px; margin-bottom:18px;">
+            <div id="checkoutBreakdown" style="font-size:0.86rem; margin-bottom:10px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:var(--text-secondary);">
+                <span>Subtotal</span>
+                <span id="checkoutSubtotal">৳0</span>
+              </div>
+              <div id="checkoutVipRow" style="display:none; justify-content:space-between; margin-bottom:4px; color:#fbbf24; font-weight:700;">
+                <span>★ VIP Member (5% OFF)</span>
+                <span id="checkoutVipDiscount">-৳0</span>
+              </div>
+              <div id="checkoutCouponRow" style="display:none; justify-content:space-between; margin-bottom:4px; color:#34d399; font-weight:600;">
+                <span>Coupon Discount</span>
+                <span id="checkoutCouponDiscount">-৳0</span>
+              </div>
+            </div>
             <div style="display:flex; justify-content:space-between; font-size:1.2rem; font-weight:800;">
               <span>Total Amount:</span>
               <span id="checkoutFinalTotal" style="color:#60a5fa;">৳0</span>
             </div>
+            <small id="vipAutoAppliedNotice" style="color:#fbbf24; display:none; margin-top:4px; font-weight:600;">★ VIP 5% Discount automatically applied to your order!</small>
             <small style="color:var(--text-muted); display:block; margin-top:4px;">No hidden charges. Automated dispatch included.</small>
           </div>
 
@@ -1178,6 +1197,14 @@
                 <span>Synced & Protected</span>
               </div>
             </div>
+
+            <!-- VIP Perk Banner (Active when VIP) -->
+            <div id="digitalVipPerkBanner" class="digital-vip-banner" style="display:none;">
+              <span>👑</span>
+              <div>
+                <strong>★ VIP PERK ACTIVE:</strong> Enjoy an automatic <strong>5% OFF</strong> on all products!
+              </div>
+            </div>
           </div>
 
           <!-- Digital Stat Matrix (3 Tiles) -->
@@ -1200,7 +1227,7 @@
               <div class="stat-matrix-icon" id="statTierIcon">⭐</div>
               <div class="stat-matrix-data">
                 <strong id="statTierLabel">Standard Member</strong>
-                <span id="statTierSub">Free Account</span>
+                <span id="statTierSub">Order to unlock 5% VIP Perk</span>
               </div>
             </div>
           </div>
