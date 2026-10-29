@@ -1466,7 +1466,8 @@ async function handleLoginSubmit(e) {
     const res = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: emailInput.value, password: passInput.value })
+      body: JSON.stringify({ email: emailInput.value, password: passInput.value }),
+      signal: AbortSignal.timeout(12000)
     });
     const json = await res.json();
 
@@ -1521,7 +1522,8 @@ async function handleRegisterSubmit(e) {
         email: emailInput.value,
         phone: phoneInput.value,
         password: passInput.value
-      })
+      }),
+      signal: AbortSignal.timeout(12000)
     });
     const json = await res.json();
 

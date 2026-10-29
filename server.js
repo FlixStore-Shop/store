@@ -680,8 +680,12 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
       }
     });
 
-    // Send real verification email
-    await sendOtpEmail(cleanEmail, otp, 'login');
+    // Send real verification email safely
+    try {
+      await sendOtpEmail(cleanEmail, otp, 'login');
+    } catch (mailErr) {
+      console.warn('Mail dispatch warning (login):', mailErr.message);
+    }
 
     res.json({
       success: true,
@@ -748,8 +752,12 @@ app.post('/api/auth/register', authLimiter, async (req, res) => {
       user: newUser
     });
 
-    // Send real verification email
-    await sendOtpEmail(cleanEmail, otp, 'register');
+    // Send real verification email safely (never hangs client response)
+    try {
+      await sendOtpEmail(cleanEmail, otp, 'register');
+    } catch (mailErr) {
+      console.warn('Mail dispatch warning (register):', mailErr.message);
+    }
 
     res.json({
       success: true,
@@ -853,8 +861,12 @@ app.post('/api/auth/resend-otp', authLimiter, async (req, res) => {
       user: userToUse
     });
 
-    // Send real verification email
-    await sendOtpEmail(cleanEmail, newOtp, 'verification');
+    // Send real verification email safely
+    try {
+      await sendOtpEmail(cleanEmail, newOtp, 'verification');
+    } catch (mailErr) {
+      console.warn('Mail dispatch warning (resend-otp):', mailErr.message);
+    }
 
     res.json({
       success: true,

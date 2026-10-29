@@ -3,12 +3,29 @@ const nodemailer = require('nodemailer');
 // Configure SMTP Transporter from environment variables
 function getTransporter() {
   const host = process.env.SMTP_HOST;
-  const port = parseInt(process.env.SMTP_PORT || '587', 10);
   const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  const rawPass = process.env.SMTP_PASS || '';
+  const pass = rawPass.replace(/\s+/g, ''); // Strip any accidental spaces from Google's 4x4 app password format
+  const port = parseInt(process.env.SMTP_PORT || '587', 10);
   const secure = process.env.SMTP_SECURE === 'true' || port === 465;
 
-  if (host && user && pass) {
+  if (!user || !pass) {
+    return null;
+  }
+
+  // Optimized Gmail preset: uses standard Gmail service with automatic TLS negotiation (fastest & most reliable on cloud hosts)
+  const isGmail = (host && host.includes('gmail')) || (user && user.includes('@gmail.com'));
+  if (isGmail) {
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user, pass },
+      connectionTimeout: 8000,
+      greetingTimeout: 8000,
+      socketTimeout: 10000
+    });
+  }
+
+  if (host) {
     return nodemailer.createTransport({
       host,
       port,
@@ -16,7 +33,10 @@ function getTransporter() {
       auth: { user, pass },
       tls: {
         rejectUnauthorized: false
-      }
+      },
+      connectionTimeout: 8000,
+      greetingTimeout: 8000,
+      socketTimeout: 10000
     });
   }
 
@@ -123,13 +143,19 @@ async function sendOtpEmail(toEmail, otpCode, purpose = 'verification') {
   }
 
   try {
-    const info = await transporter.sendMail({
+    const sendPromise = transporter.sendMail({
       from,
       to: cleanEmail,
       subject,
       text: textContent,
       html: htmlContent
     });
+
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('SMTP dispatch timed out after 8s')), 8000)
+    );
+
+    const info = await Promise.race([sendPromise, timeoutPromise]);
 
     console.log(`✓ [SMTP SUCCESS]: Email successfully delivered to ${cleanEmail}. Message ID: ${info.messageId}`);
     return {
@@ -235,12 +261,16 @@ async function sendOrderConfirmationEmail(orderData, credentials = []) {
   if (!transporter) return { success: true, mode: 'logged' };
 
   try {
-    const info = await transporter.sendMail({
+    const sendPromise = transporter.sendMail({
       from,
       to: cleanEmail,
       subject,
       html: htmlContent
     });
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('SMTP dispatch timed out after 8s')), 8000)
+    );
+    const info = await Promise.race([sendPromise, timeoutPromise]);
     console.log(`✓ [SMTP ORDER SUCCESS]: Delivered to ${cleanEmail}. Message ID: ${info.messageId}`);
     return { success: true, messageId: info.messageId };
   } catch (err) {
@@ -276,7 +306,11 @@ async function sendAdminOrderAlert(orderData) {
   if (!transporter) return { success: true, mode: 'logged' };
 
   try {
-    await transporter.sendMail({ from, to: adminEmail, subject, html: htmlContent });
+    const alertPromise = transporter.sendMail({ from, to: adminEmail, subject, html: htmlContent });
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Admin alert timed out after 5s')), 5000)
+    );
+    await Promise.race([alertPromise, timeoutPromise]);
     console.log(`✓ [SMTP ADMIN ALERT]: Notified ${adminEmail}`);
   } catch (e) {
     console.warn(`✕ [SMTP ADMIN ALERT ERROR]:`, e.message);
@@ -293,7 +327,11 @@ async function verifySmtpConnection() {
   }
 
   try {
-    await transporter.verify();
+    const verifyPromise = transporter.verify();
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('SMTP verification timed out after 7s')), 7000)
+    );
+    await Promise.race([verifyPromise, timeoutPromise]);
     return { configured: true, valid: true, message: 'SMTP credentials verified successfully! Live email delivery active.' };
   } catch (err) {
     return { configured: true, valid: false, message: `SMTP verification failed: ${err.message}` };
