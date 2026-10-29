@@ -1052,7 +1052,27 @@ app.get('/api/auth/me', authMiddleware(), async (req, res) => {
       };
     }));
 
-    res.json({ success: true, user, orders: enrichedOrders });
+    const paidOrders = enrichedOrders.filter(ord => 
+      ord.delivery_status === 'delivered' || 
+      (ord.total_amount && Number(ord.total_amount) > 0)
+    );
+    const isVip = user.role === 'admin' || paidOrders.length > 0;
+    const tier = user.role === 'admin' ? 'admin' : (isVip ? 'vip' : 'standard');
+
+    res.json({
+      success: true,
+      user: {
+        ...user,
+        is_vip: isVip,
+        tier
+      },
+      orders: enrichedOrders,
+      stats: {
+        totalOrders: enrichedOrders.length,
+        paidOrders: paidOrders.length,
+        isVip
+      }
+    });
   } catch (err) {
     console.error('Fetch profile error:', err);
     res.status(500).json({ success: false, message: 'Error fetching user profile' });

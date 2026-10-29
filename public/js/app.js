@@ -1512,42 +1512,51 @@ async function renderUserProfile() {
   const countPill = document.getElementById('profileOrderCountPill');
   const ordersList = document.getElementById('profileOrdersList');
   const tierLabel = document.getElementById('statTierLabel');
+  const tierIcon = document.getElementById('statTierIcon');
+  const tierSub = document.getElementById('statTierSub');
 
   // Compute clean customer initials
   const initials = state.user.full_name 
     ? state.user.full_name.trim().split(/\s+/).map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() 
     : 'U';
 
-  const memberIdCode = `FLX-${(state.user.id || 8842).toString().padStart(4, '0')}`;
+  const memberIdNum = (state.user.id || 1).toString().padStart(4, '0');
 
   if (avatarBox) avatarBox.textContent = initials || 'U';
   if (nameElem) nameElem.textContent = state.user.full_name || 'Customer';
   if (emailElem) emailElem.textContent = state.user.email || '';
   if (phoneElem) phoneElem.textContent = state.user.phone ? `Phone: ${state.user.phone}` : 'Backup Phone: Not set';
-  if (memberIdElem) memberIdElem.textContent = memberIdCode;
   if (signOutEmailElem) signOutEmailElem.textContent = state.user.email || '';
 
+  // Initial render (Default to Standard Member for regular customers until verified orders exist)
   if (state.user.role === 'admin') {
     if (roleBadge) {
       roleBadge.textContent = '👑 Admin Master';
-      roleBadge.style.color = '#38bdf8';
-      roleBadge.style.background = 'rgba(56, 189, 248, 0.15)';
-      roleBadge.style.borderColor = 'rgba(56, 189, 248, 0.35)';
-      roleBadge.style.cursor = 'pointer';
+      roleBadge.className = 'digital-role-badge role-admin';
       roleBadge.onclick = () => window.location.href = '/admin';
     }
-    if (passTier) passTier.innerHTML = `<span>👑 ADMIN PRO</span>`;
+    if (passTier) {
+      passTier.className = 'digital-card-tier tier-admin';
+      passTier.innerHTML = `<span>👑 ADMIN PRO</span>`;
+    }
     if (tierLabel) tierLabel.textContent = 'Admin Tier';
+    if (tierIcon) tierIcon.textContent = '👑';
+    if (tierSub) tierSub.textContent = 'Full System Access';
+    if (memberIdElem) memberIdElem.textContent = `FLX-ADM-${memberIdNum}`;
   } else {
     if (roleBadge) {
-      roleBadge.textContent = '✓ Verified VIP';
-      roleBadge.style.color = '#34d399';
-      roleBadge.style.background = 'rgba(52, 211, 153, 0.15)';
-      roleBadge.style.borderColor = 'rgba(52, 211, 153, 0.3)';
+      roleBadge.textContent = '✓ Verified Member';
+      roleBadge.className = 'digital-role-badge role-standard';
       roleBadge.onclick = null;
     }
-    if (passTier) passTier.innerHTML = `<span>★ VIP MEMBER</span>`;
-    if (tierLabel) tierLabel.textContent = 'Priority VIP';
+    if (passTier) {
+      passTier.className = 'digital-card-tier tier-standard';
+      passTier.innerHTML = `<span>STANDARD MEMBER</span>`;
+    }
+    if (tierLabel) tierLabel.textContent = 'Standard Member';
+    if (tierIcon) tierIcon.textContent = '⭐';
+    if (tierSub) tierSub.textContent = 'Free Account';
+    if (memberIdElem) memberIdElem.textContent = `FLX-${memberIdNum}`;
   }
 
   // Fetch real order history from /api/auth/me
@@ -1572,6 +1581,47 @@ async function renderUserProfile() {
       if (activeCountElem) activeCountElem.textContent = orderCountText;
       if (countPill) countPill.textContent = `${orders.length} Order${orders.length === 1 ? '' : 's'}`;
 
+      // Check if user has paid for subscriptions to qualify for VIP Member status
+      const hasPaidOrders = orders.some(ord => 
+        ord.delivery_status === 'delivered' || 
+        (ord.total_amount && Number(ord.total_amount) > 0)
+      );
+      const isVip = state.user.role === 'admin' || (data.user && data.user.is_vip) || hasPaidOrders;
+
+      if (state.user.role === 'admin') {
+        // Admin keep
+      } else if (isVip) {
+        // Paid customer has unlocked VIP Member
+        if (roleBadge) {
+          roleBadge.textContent = '✓ Verified VIP';
+          roleBadge.className = 'digital-role-badge role-vip';
+          roleBadge.onclick = null;
+        }
+        if (passTier) {
+          passTier.className = 'digital-card-tier tier-vip';
+          passTier.innerHTML = `<span>★ VIP MEMBER</span>`;
+        }
+        if (tierLabel) tierLabel.textContent = 'Priority VIP';
+        if (tierIcon) tierIcon.textContent = '👑';
+        if (tierSub) tierSub.textContent = 'Priority Auto-Dispatch';
+        if (memberIdElem) memberIdElem.textContent = `FLX-VIP-${memberIdNum}`;
+      } else {
+        // Unpaid / free account -> stays Standard Member
+        if (roleBadge) {
+          roleBadge.textContent = '✓ Verified Member';
+          roleBadge.className = 'digital-role-badge role-standard';
+          roleBadge.onclick = null;
+        }
+        if (passTier) {
+          passTier.className = 'digital-card-tier tier-standard';
+          passTier.innerHTML = `<span>STANDARD MEMBER</span>`;
+        }
+        if (tierLabel) tierLabel.textContent = 'Standard Member';
+        if (tierIcon) tierIcon.textContent = '⭐';
+        if (tierSub) tierSub.textContent = 'Upgrade on 1st Order';
+        if (memberIdElem) memberIdElem.textContent = `FLX-${memberIdNum}`;
+      }
+
       if (ordersList) {
         if (orders.length === 0) {
           ordersList.innerHTML = `
@@ -1579,7 +1629,7 @@ async function renderUserProfile() {
               <div style="font-size:2rem; margin-bottom:8px;">⚡</div>
               <h5 style="margin:0 0 6px 0; font-size:0.95rem; font-weight:700; color:var(--text-primary);">Your Subscriptions Vault is Ready</h5>
               <p style="margin:0 0 16px 0; font-size:0.8rem; color:var(--text-secondary); line-height:1.45;">
-                You don't have any active subscription orders under <strong>${state.user.email}</strong> yet. Browse our verified streaming and AI suite with instant automated delivery.
+                You are currently on the <strong>Standard Member</strong> tier. Activate your first subscription order to unlock credentials and automatically upgrade to <strong>★ VIP Member</strong> privileges.
               </p>
               <button type="button" class="btn-primary" style="padding:8px 18px; font-size:0.82rem;" onclick="closeAuthModal(); window.scrollTo({top: 400, behavior:'smooth'});">
                 🚀 Explore Premium Subscriptions
@@ -2115,7 +2165,7 @@ function logoutUser() {
 
 function copyMemberId() {
   const codeElem = document.getElementById('digitalPassMemberId');
-  const code = codeElem ? codeElem.textContent.trim() : 'FLX-VIP-8842';
+  const code = codeElem ? codeElem.textContent.trim() : 'FLX-0001';
   copyToClipboard(code, 'Member ID');
 }
 

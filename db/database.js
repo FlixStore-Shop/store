@@ -31,8 +31,31 @@ if (isPostgres) {
   const { Pool } = require('pg');
   const pool = new Pool({
     connectionString: DATABASE_URL,
-    ssl: DATABASE_URL.includes('localhost') ? false : { rejectUnauthorized: false }
+    ssl: DATABASE_URL.includes('localhost') ? false : { rejectUnauthorized: false },
+    max: 10,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000,
   });
+
+  pool.on('error', (err) => {
+    console.warn('[DATABASE] Idle client error on Neon pool:', err.message);
+  });
+
+  async function queryWithRetry(sql, params = [], retries = 3) {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        return await pool.query(sql, params);
+      } catch (err) {
+        const isTransient = err.code === 'ECONNRESET' || err.code === '57P01' || err.code === 'ETIMEDOUT' || err.message?.includes('Connection terminated');
+        if (isTransient && attempt < retries) {
+          console.warn(`[DATABASE] Transient error (${err.code || err.message}), retrying query (attempt ${attempt + 1}/${retries})...`);
+          await new Promise(r => setTimeout(r, 600 * attempt));
+          continue;
+        }
+        throw err;
+      }
+    }
+  }
 
   function formatPgSql(sql, isInsert = false) {
     let index = 1;
@@ -57,17 +80,17 @@ if (isPostgres) {
       return {
         async all(...params) {
           const flat = params.length === 1 && Array.isArray(params[0]) ? params[0] : params;
-          const res = await pool.query(pgSql, flat);
+          const res = await queryWithRetry(pgSql, flat);
           return res.rows;
         },
         async get(...params) {
           const flat = params.length === 1 && Array.isArray(params[0]) ? params[0] : params;
-          const res = await pool.query(pgSql, flat);
+          const res = await queryWithRetry(pgSql, flat);
           return res.rows[0] || null;
         },
         async run(...params) {
           const flat = params.length === 1 && Array.isArray(params[0]) ? params[0] : params;
-          const res = await pool.query(pgSql, flat);
+          const res = await queryWithRetry(pgSql, flat);
           return {
             lastInsertRowid: res.rows[0]?.id || 0,
             changes: res.rowCount
@@ -76,7 +99,7 @@ if (isPostgres) {
       };
     },
     async exec(sql) {
-      return await pool.query(sql);
+      return await queryWithRetry(sql);
     }
   };
 } else {
