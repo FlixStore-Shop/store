@@ -205,9 +205,11 @@ async function sendOtpEmail(toEmail, otpCode, purpose = 'verification') {
   console.log(`========================================================\n`);
 
   // 1. Try HTTPS API first (Bypasses Render's port blocks on Port 443)
-  const httpResult = await dispatchViaHttpApi({ to: cleanEmail, subject, html: htmlContent, text: textContent });
-  if (httpResult && httpResult.success) {
-    return httpResult;
+  if (process.env.BREVO_API_KEY || process.env.RESEND_API_KEY) {
+    const httpResult = await dispatchViaHttpApi({ to: cleanEmail, subject, html: htmlContent, text: textContent });
+    if (httpResult) {
+      return httpResult;
+    }
   }
 
   const transporter = getTransporter();
@@ -337,9 +339,11 @@ async function sendOrderConfirmationEmail(orderData, credentials = []) {
   console.log(`📧 [ORDER CONFIRMATION EMAIL DISPATCH] -> To: ${cleanEmail} for Order #${orderData.orderNumber}`);
 
   // 1. Try HTTPS API first (Bypasses Render's port blocks on Port 443)
-  const httpResult = await dispatchViaHttpApi({ to: cleanEmail, subject, html: htmlContent });
-  if (httpResult && httpResult.success) {
-    return httpResult;
+  if (process.env.BREVO_API_KEY || process.env.RESEND_API_KEY) {
+    const httpResult = await dispatchViaHttpApi({ to: cleanEmail, subject, html: htmlContent });
+    if (httpResult) {
+      return httpResult;
+    }
   }
 
   const transporter = getTransporter();

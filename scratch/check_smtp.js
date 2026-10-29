@@ -77,6 +77,12 @@ async function run() {
     'Authorization': `Bearer ${token}`
   });
   console.log('SMTP status:', smtpRes.body);
+
+  console.log('Triggering live test-send via Brevo to mridhamahmod@gmail.com...');
+  const sendRes = await get('https://store-q51q.onrender.com/api/admin/smtp/test-send?email=mridhamahmod@gmail.com', {
+    'Authorization': `Bearer ${token}`
+  });
+  console.log('Live test-send response:', sendRes.body);
 }
 
 run().catch(console.error);
