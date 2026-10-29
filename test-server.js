@@ -72,14 +72,47 @@ async function runTests() {
     });
     console.log('[TEST 4] /api/coupons/validate Status:', couponRes.status, 'Discount:', couponRes.body.coupon.discountPercent + '%');
 
-    // 5. Checkout Test (Real purchase)
+    // 5. Checkout Test (Compulsory Login Enforcement & Verified Purchase)
     const testItem = nflxRes.body.data.plans[0];
-    const checkoutRes = await request('/api/orders/checkout', {
+
+    // 5.1 Enforce Compulsory Login: Unauthenticated visitor must be rejected with 401
+    const blockedRes = await request('/api/orders/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: {
-        customer_name: 'Imran Khan',
-        customer_email: 'imran@example.com',
+        customer_name: 'Guest Visitor',
+        customer_email: 'guest@example.com',
+        payment_method: 'bkash',
+        items: [{ productId: nflxRes.body.data.id, planId: testItem.id, quantity: 1 }]
+      }
+    });
+    console.log('[TEST 5.1] Guest Checkout Blocked Status:', blockedRes.status, 'Requires Auth:', blockedRes.body.requiresAuth);
+
+    // 5.2 Authenticate Customer
+    let customerLogin = await request('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: { email: 'customer@flixstore.com', password: 'NewCustomer2026!', skipOtp: true }
+    });
+    if (!customerLogin.body?.token) {
+      customerLogin = await request('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: { email: 'customer@flixstore.com', password: 'Customer2026!', skipOtp: true }
+      });
+    }
+    const customerToken = customerLogin.body.token;
+
+    // 5.3 Complete Authenticated Order
+    const checkoutRes = await request('/api/orders/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${customerToken}`
+      },
+      body: {
+        customer_name: 'Rifat Chowdhury',
+        customer_email: 'customer@flixstore.com',
         customer_phone: '+8801700112233',
         payment_method: 'bkash',
         items: [{ productId: nflxRes.body.data.id, planId: testItem.id, quantity: 1 }],
@@ -88,7 +121,7 @@ async function runTests() {
         currency_symbol: '৳'
       }
     });
-    console.log('[TEST 5] /api/orders/checkout Status:', checkoutRes.status, 'Order #:', checkoutRes.body.order.orderNumber, 'Credentials Dispatched:', checkoutRes.body.order.credentials.length);
+    console.log('[TEST 5.2] Authenticated /api/orders/checkout Status:', checkoutRes.status, 'Order #:', checkoutRes.body.order.orderNumber, 'Credentials Dispatched:', checkoutRes.body.order.credentials.length);
 
     const generatedOrderNum = checkoutRes.body.order.orderNumber;
 

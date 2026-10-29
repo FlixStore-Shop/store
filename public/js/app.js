@@ -982,6 +982,11 @@ function updateDrawerFooter() {
   if (totalElem) totalElem.textContent = formatPrice(totals.totalBDT, true);
   if (checkoutBtn) {
     checkoutBtn.disabled = state.cart.length === 0;
+    if (!state.user || !state.token) {
+      checkoutBtn.innerHTML = `<span>🔐 Sign Up / In to Checkout →</span>`;
+    } else {
+      checkoutBtn.innerHTML = `<span>Proceed to Secure Checkout →</span>`;
+    }
   }
 }
 
@@ -1043,17 +1048,44 @@ function openCheckoutModal() {
   closeCartDrawer();
   if (state.cart.length === 0) return;
 
+  // Strict Rule: Sign up & login is compulsory for subscription purchase
+  if (!state.user || !state.token) {
+    state.pendingCheckoutAfterAuth = true;
+    openAuthModal('signup');
+    const notice = document.getElementById('authCheckoutNotice');
+    if (notice) notice.style.display = 'block';
+    return;
+  }
+
+  const notice = document.getElementById('authCheckoutNotice');
+  if (notice) notice.style.display = 'none';
+
   const modal = document.getElementById('checkoutModal');
   if (!modal) return;
 
-  // Pre-fill user details if logged in
-  if (state.user) {
-    const nameInput = document.getElementById('checkoutName');
-    const emailInput = document.getElementById('checkoutEmail');
-    const phoneInput = document.getElementById('checkoutPhone');
-    if (nameInput) nameInput.value = state.user.full_name || '';
-    if (emailInput) emailInput.value = state.user.email || '';
-    if (phoneInput && state.user.phone) phoneInput.value = state.user.phone;
+  // Pre-fill and lock verified customer details
+  const nameInput = document.getElementById('checkoutName');
+  const emailInput = document.getElementById('checkoutEmail');
+  const phoneInput = document.getElementById('checkoutPhone');
+  const badge = document.getElementById('checkoutEmailAccountBadge');
+  const badgeText = document.getElementById('checkoutEmailAccountBadgeText');
+
+  if (nameInput) {
+    nameInput.value = state.user.full_name || '';
+  }
+  if (emailInput) {
+    emailInput.value = state.user.email || '';
+    emailInput.readOnly = true;
+    emailInput.style.background = 'rgba(255, 255, 255, 0.05)';
+    emailInput.style.cursor = 'not-allowed';
+    emailInput.style.borderColor = 'rgba(52, 211, 153, 0.4)';
+  }
+  if (badge) {
+    badge.style.display = 'flex';
+    if (badgeText) badgeText.textContent = `Verified FlixStore Account (${state.user.email})`;
+  }
+  if (phoneInput && state.user.phone) {
+    phoneInput.value = state.user.phone;
   }
 
   const cardHolderPreview = document.getElementById('cardHolderPreview');
@@ -1199,7 +1231,7 @@ async function processOrderPayment() {
 
   const payload = {
     customer_name,
-    customer_email,
+    customer_email: (state.user && state.user.email) ? state.user.email : customer_email,
     customer_phone,
     payment_method: selectedPaymentGateway,
     items: state.cart.map(i => ({ productId: i.productId, planId: i.planId, quantity: i.quantity })),
@@ -1213,11 +1245,22 @@ async function processOrderPayment() {
   try {
     const res = await fetch('/api/orders/checkout', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(state.token ? { 'Authorization': `Bearer ${state.token}` } : {})
+      },
       body: JSON.stringify(payload)
     });
 
     const json = await res.json();
+
+    if (res.status === 401 || json.requiresAuth) {
+      alert(json.message || 'Sign up or login is compulsory to purchase subscriptions.');
+      closeCheckoutModal();
+      state.pendingCheckoutAfterAuth = true;
+      openAuthModal('signup');
+      return;
+    }
 
     if (json.success) {
       // Clear Cart
@@ -1448,6 +1491,10 @@ function openAuthModal(defaultMode = 'signin') {
       switchAuthMode('profile');
     } else {
       switchAuthMode(defaultMode);
+      const notice = document.getElementById('authCheckoutNotice');
+      if (notice) {
+        notice.style.display = state.pendingCheckoutAfterAuth ? 'block' : 'none';
+      }
     }
     modal.classList.add('active');
   }
@@ -1456,6 +1503,8 @@ function openAuthModal(defaultMode = 'signin') {
 function closeAuthModal() {
   const modal = document.getElementById('authModal');
   if (modal) modal.classList.remove('active');
+  const notice = document.getElementById('authCheckoutNotice');
+  if (notice) notice.style.display = 'none';
 }
 
 function switchAuthMode(mode) {
@@ -2205,6 +2254,16 @@ function completeAuthentication(json) {
 
   closeAuthModal();
   checkAuthStatus();
+
+  // If customer was proceeding to checkout, resume checkout seamlessly!
+  if (state.pendingCheckoutAfterAuth) {
+    state.pendingCheckoutAfterAuth = false;
+    showNotification('✓ Account verified! Continuing to checkout...', 'success');
+    setTimeout(() => {
+      openCheckoutModal();
+    }, 250);
+    return;
+  }
 
   // If admin, jump to admin dashboard
   if (json.user.role === 'admin') {

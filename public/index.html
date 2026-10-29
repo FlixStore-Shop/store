@@ -669,6 +669,9 @@
           <div class="form-group">
             <label>Email Address (For instant credential dispatch) *</label>
             <input type="email" id="checkoutEmail" class="form-input" placeholder="name@example.com" required>
+            <div id="checkoutEmailAccountBadge" style="display:none; margin-top:4px; font-size:0.75rem; color:#34d399; align-items:center; gap:4px;">
+              <span>🔒</span> <span id="checkoutEmailAccountBadgeText">Verified FlixStore Account</span>
+            </div>
           </div>
 
           <div class="form-group">
@@ -959,6 +962,14 @@
 
       <div class="auth-modal-content">
         
+        <!-- Compulsory Checkout Notice -->
+        <div id="authCheckoutNotice" style="display:none; margin-bottom:16px; padding:12px 14px; border-radius:10px; background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.3); font-size:0.84rem; color:#93c5fd; line-height:1.45;">
+          <div style="font-weight:700; display:flex; align-items:center; gap:6px; margin-bottom:3px; color:#60a5fa;">
+            <span>🔐</span> <span>Sign Up Compulsory for Purchase</span>
+          </div>
+          <span>An account is strictly required to secure your subscription credentials, track renewals, and activate your personal Digital Pass.</span>
+        </div>
+
         <!-- Segmented Tab Switcher (Sign In vs Create Account) -->
         <div id="authTabsContainer" class="auth-tabs">
           <button type="button" class="auth-tab-btn active" id="tabSignInBtn" onclick="switchAuthMode('signin')">Sign In</button>

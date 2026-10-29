@@ -282,6 +282,32 @@ app.post('/api/coupons/validate', async (req, res) => {
 
 app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
   try {
+    // 1. Compulsory Sign Up & Login Enforcement
+    let authUser = null;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      authUser = verifyToken(token);
+    }
+
+    if (!authUser) {
+      return res.status(401).json({
+        success: false,
+        requiresAuth: true,
+        message: 'Sign up and login is compulsory to purchase subscriptions. Please create an account or sign in to complete your order.'
+      });
+    }
+
+    // Verify account exists in users table
+    const userRecord = await db.prepare('SELECT * FROM users WHERE id = ?').get(authUser.id);
+    if (!userRecord) {
+      return res.status(401).json({
+        success: false,
+        requiresAuth: true,
+        message: 'Account not found. Please sign up or login again.'
+      });
+    }
+
     const {
       customer_name,
       customer_email,
@@ -295,15 +321,9 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       customer_notes
     } = req.body;
 
-    // Validate customer inputs
-    if (!customer_name || !customer_email) {
-      return res.status(400).json({ success: false, message: 'Please provide your full name and valid email address' });
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(customer_email.trim())) {
-      return res.status(400).json({ success: false, message: 'Please provide a valid email format' });
-    }
+    const activeCustomerEmail = userRecord.email.trim().toLowerCase();
+    const activeCustomerName = sanitizeInput(customer_name || userRecord.full_name || 'Subscriber');
+    const activeCustomerPhone = sanitizeInput(customer_phone || userRecord.phone || '');
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ success: false, message: 'Your shopping cart is empty' });
@@ -371,21 +391,17 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
     // ★ VIP Member Perk: Automatic 5% discount on all products
     let isVip = false;
     let vipDiscountUSD = 0;
-    const cleanCustomerEmail = customer_email.trim().toLowerCase();
 
-    const userRecord = await db.prepare('SELECT * FROM users WHERE LOWER(email) = ?').get(cleanCustomerEmail);
-    if (userRecord) {
-      if (userRecord.role === 'admin' || userRecord.tier === 'vip') {
+    if (userRecord.role === 'admin' || userRecord.tier === 'vip') {
+      isVip = true;
+    } else {
+      const prevOrder = await db.prepare(`
+        SELECT id FROM orders 
+        WHERE (LOWER(customer_email) = ? OR user_id = ?) AND (delivery_status = 'delivered' OR total_amount > 0)
+        LIMIT 1
+      `).get(activeCustomerEmail, userRecord.id);
+      if (prevOrder) {
         isVip = true;
-      } else {
-        const prevOrder = await db.prepare(`
-          SELECT id FROM orders 
-          WHERE LOWER(customer_email) = ? AND (delivery_status = 'delivered' OR total_amount > 0)
-          LIMIT 1
-        `).get(cleanCustomerEmail);
-        if (prevOrder) {
-          isVip = true;
-        }
       }
     }
 
@@ -455,14 +471,14 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       deliveredCredentials.push(itemCredential);
     }
 
-    // Insert Order into DB
+    // Insert Order into DB (explicitly linking user_id)
     const insertOrder = db.prepare(`
       INSERT INTO orders (
-        order_number, customer_name, customer_email, customer_phone,
+        order_number, user_id, customer_name, customer_email, customer_phone,
         payment_method, payment_status, transaction_id, currency, currency_symbol,
         subtotal, discount, total_amount, coupon_code, delivery_status,
         delivered_credentials, customer_notes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const appliedPromoLabel = appliedCoupon 
@@ -471,9 +487,10 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
 
     const orderRes = await insertOrder.run(
       orderNumber,
-      sanitizeInput(customer_name),
-      sanitizeInput(customer_email),
-      sanitizeInput(customer_phone || ''),
+      userRecord.id,
+      activeCustomerName,
+      activeCustomerEmail,
+      activeCustomerPhone,
       payment_method || 'card',
       'completed',
       trx_id || `TRX-${crypto.randomBytes(4).toString('hex').toUpperCase()}`,
@@ -516,9 +533,10 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
     const orderSummary = {
       orderId,
       orderNumber,
-      customerName: customer_name,
-      customerEmail: customer_email,
-      customerPhone: customer_phone,
+      userId: userRecord.id,
+      customerName: activeCustomerName,
+      customerEmail: activeCustomerEmail,
+      customerPhone: activeCustomerPhone,
       paymentMethod: payment_method,
       subtotal: parseFloat(subtotalUSD.toFixed(2)),
       discount: parseFloat(totalDiscountUSD.toFixed(2)),
@@ -540,8 +558,9 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       order: {
         orderId,
         orderNumber,
-        customerName: customer_name,
-        customerEmail: customer_email,
+        userId: userRecord.id,
+        customerName: activeCustomerName,
+        customerEmail: activeCustomerEmail,
         paymentMethod: payment_method,
         subtotal: parseFloat(subtotalUSD.toFixed(2)),
         discount: parseFloat(totalDiscountUSD.toFixed(2)),
@@ -1069,9 +1088,9 @@ app.get('/api/auth/me', authMiddleware(), async (req, res) => {
 
     const orders = await db.prepare(`
       SELECT * FROM orders
-      WHERE LOWER(customer_email) = ?
+      WHERE user_id = ? OR LOWER(customer_email) = ?
       ORDER BY created_at DESC
-    `).all(user.email.toLowerCase());
+    `).all(user.id, user.email.toLowerCase());
 
     const enrichedOrders = await Promise.all(orders.map(async (ord) => {
       let credentials = [];
