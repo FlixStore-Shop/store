@@ -688,16 +688,20 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
       console.warn('Mail dispatch warning (login):', mailErr.message);
     }
 
-    const emailSent = mailResult && mailResult.success;
+    const isTest = process.env.NODE_ENV === 'test' || req.headers['x-test-mode'] === 'true';
+    if (!mailResult.success && !isTest) {
+      return res.status(500).json({
+        success: false,
+        message: 'Could not deliver verification email to your inbox. Please check your Brevo API key in Render settings.'
+      });
+    }
+
     res.json({
       success: true,
       requiresOtp: true,
       email: cleanEmail,
-      emailSent,
-      message: emailSent
-        ? 'Verification code sent to your email address'
-        : 'Outbound SMTP port blocked on Render free tier. Verification code generated.',
-      demoOtp: (!emailSent || process.env.NODE_ENV === 'test' || req.headers['x-test-mode']) ? otp : undefined,
+      message: 'Verification code sent to your email address',
+      demoOtp: isTest ? otp : undefined,
       user: {
         role: user.role
       }
@@ -765,16 +769,20 @@ app.post('/api/auth/register', authLimiter, async (req, res) => {
       console.warn('Mail dispatch warning (register):', mailErr.message);
     }
 
-    const emailSent = mailResult && mailResult.success;
+    const isTest = process.env.NODE_ENV === 'test' || req.headers['x-test-mode'] === 'true';
+    if (!mailResult.success && !isTest) {
+      return res.status(500).json({
+        success: false,
+        message: 'Could not deliver verification email to your inbox. Please check your Brevo API key in Render settings.'
+      });
+    }
+
     res.json({
       success: true,
       requiresOtp: true,
       email: cleanEmail,
-      emailSent,
-      message: emailSent
-        ? 'Account created! Please check your email inbox for your 6-digit verification code.'
-        : 'Account created! Outbound SMTP port is restricted on Render free tier. Your verification code is provided.',
-      demoOtp: (!emailSent || process.env.NODE_ENV === 'test' || req.headers['x-test-mode']) ? otp : undefined,
+      message: 'Account created! Please check your email inbox for your 6-digit verification code.',
+      demoOtp: isTest ? otp : undefined,
       user: {
         role: 'customer'
       }
@@ -879,14 +887,18 @@ app.post('/api/auth/resend-otp', authLimiter, async (req, res) => {
       console.warn('Mail dispatch warning (resend-otp):', mailErr.message);
     }
 
-    const emailSent = mailResult && mailResult.success;
+    const isTest = process.env.NODE_ENV === 'test' || req.headers['x-test-mode'] === 'true';
+    if (!mailResult.success && !isTest) {
+      return res.status(500).json({
+        success: false,
+        message: 'Could not deliver verification email to your inbox. Please try again or contact support.'
+      });
+    }
+
     res.json({
       success: true,
-      emailSent,
-      message: emailSent
-        ? 'A fresh 6-digit verification code has been dispatched to your email.'
-        : 'Outbound SMTP port blocked on Render free tier. Fresh verification code generated.',
-      demoOtp: (!emailSent || process.env.NODE_ENV === 'test' || req.headers['x-test-mode']) ? newOtp : undefined
+      message: 'A fresh 6-digit verification code has been dispatched to your email.',
+      demoOtp: isTest ? newOtp : undefined
     });
   } catch (err) {
     console.error('Resend OTP error:', err);

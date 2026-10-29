@@ -49,7 +49,7 @@ function getTransporter() {
  */
 async function dispatchViaHttpApi({ to, subject, html, text }) {
   const fromName = process.env.SMTP_FROM_NAME || 'FlixStore Security';
-  const fromEmail = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER || 'no-reply@flixstore.org';
+  const fromEmail = process.env.BREVO_SENDER_EMAIL || process.env.SMTP_USER || process.env.SMTP_FROM_EMAIL || 'mridhamahmod@gmail.com';
 
   // 1. Brevo REST API (300 free emails/day over HTTPS Port 443 - zero ports blocked)
   if (process.env.BREVO_API_KEY) {

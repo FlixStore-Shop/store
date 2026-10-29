@@ -1570,7 +1570,7 @@ function checkAuthStatus() {
   }
 }
 
-// Helper: Transition to OTP verification screen with smart delivery notice
+// Helper: Transition to OTP verification screen
 function updateOtpUiState(json) {
   state.pendingOtpEmail = json.email;
   const emailTarget = document.getElementById('otpEmailTarget');
@@ -1579,20 +1579,15 @@ function updateOtpUiState(json) {
   const noticeElem = document.getElementById('otpDeliveryNotice');
   const otpInput = document.getElementById('otpCodeInput');
 
-  if (json.demoOtp) {
-    if (noticeElem) {
-      noticeElem.innerHTML = `⚠️ <strong>Notice:</strong> Outbound SMTP is restricted on Render's free tier.<br>Your verification code is: <strong style="color:var(--accent-blue); font-size:1.15rem; letter-spacing:3px;">${json.demoOtp}</strong>`;
-      noticeElem.style.background = 'rgba(245, 158, 11, 0.12)';
-      noticeElem.style.border = '1px solid rgba(245, 158, 11, 0.35)';
-      noticeElem.style.color = 'var(--text-primary)';
-    }
-    if (otpInput) otpInput.value = json.demoOtp;
-  } else if (noticeElem) {
-    noticeElem.innerHTML = `Please check your inbox (and spam folder). Enter the verification code below:`;
+  if (noticeElem) {
+    noticeElem.innerHTML = `Please check your email inbox (and spam folder). Enter the 6-digit code below:`;
     noticeElem.style.background = 'rgba(59,130,246,0.08)';
     noticeElem.style.border = '1px solid rgba(59,130,246,0.22)';
     noticeElem.style.color = 'var(--text-secondary)';
-    if (otpInput) otpInput.value = '';
+  }
+  if (otpInput) {
+    otpInput.value = '';
+    setTimeout(() => otpInput.focus(), 100);
   }
 
   switchAuthMode('otp');
@@ -1757,14 +1752,6 @@ async function handleResendOtp() {
     const json = await res.json();
 
     if (json.success) {
-      if (json.demoOtp) {
-        const noticeElem = document.getElementById('otpDeliveryNotice');
-        if (noticeElem) {
-          noticeElem.innerHTML = `⚠️ <strong>Notice:</strong> Outbound SMTP is restricted on Render's free tier.<br>Your fresh verification code is: <strong style="color:var(--accent-blue); font-size:1.15rem; letter-spacing:3px;">${json.demoOtp}</strong>`;
-        }
-        const otpInput = document.getElementById('otpCodeInput');
-        if (otpInput) otpInput.value = json.demoOtp;
-      }
       if (errElem) {
         errElem.style.color = '#34d399';
         errElem.textContent = '✓ A new verification code was sent to your email inbox!';
