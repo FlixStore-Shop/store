@@ -1979,19 +1979,23 @@ app.post('/api/neon/storage/test', async (req, res) => {
 // -----------------------------------------------------------------------------
 
 app.get('/product/:slug', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(path.join(__dirname, 'public', 'product.html'));
 });
 
 app.get('/product', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(path.join(__dirname, 'public', 'product.html'));
 });
 
 app.get('/admin', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 // Fallback for SPA
 app.use((req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
