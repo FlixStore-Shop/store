@@ -106,13 +106,18 @@ function renderProductDetails() {
   
   const badgeTag = document.getElementById('pdpBadgeTag');
   if (badgeTag) {
-    badgeTag.textContent = p.badge || 'Verified';
-    badgeTag.className = `badge-tag ${p.badge ? p.badge.toLowerCase().replace(/[^a-z]/g, '') : 'pro'}`;
+    const rawBadge = p.badge && p.badge.trim() ? p.badge.trim() : 'Official Verified';
+    badgeTag.textContent = rawBadge;
+    const badgeClass = rawBadge.toLowerCase().replace(/[^a-z0-9]/g, '');
+    badgeTag.className = `badge-tag ${badgeClass || 'official'}`;
   }
 
   const deliveryBadge = document.getElementById('pdpDeliveryBadge');
   if (deliveryBadge) {
-    deliveryBadge.textContent = p.delivery_time || '⚡ 60s Instant Delivery';
+    let dText = p.delivery_time ? p.delivery_time.trim() : '60s Instant Delivery';
+    if (dText.toLowerCase() === 'instant') dText = '60s Instant Delivery';
+    if (!dText.startsWith('⚡')) dText = `⚡ ${dText}`;
+    deliveryBadge.textContent = dText;
   }
 
   // 3.1 Atmospheric Brand Glow
@@ -123,14 +128,20 @@ function renderProductDetails() {
       glow.style.background = 'radial-gradient(circle, rgba(229, 9, 20, 0.28) 0%, rgba(0,0,0,0) 70%)';
     } else if (slug.includes('spotify') || slug.includes('chorki')) {
       glow.style.background = 'radial-gradient(circle, rgba(29, 185, 84, 0.28) 0%, rgba(0,0,0,0) 70%)';
-    } else if (slug.includes('chatgpt') || slug.includes('claude') || slug.includes('ai')) {
+    } else if (slug.includes('chatgpt') || slug.includes('claude') || slug.includes('ai') || slug.includes('openai')) {
       glow.style.background = 'radial-gradient(circle, rgba(16, 163, 127, 0.28) 0%, rgba(0,0,0,0) 70%)';
-    } else if (slug.includes('prime') || slug.includes('disney')) {
+    } else if (slug.includes('hbo') || slug.includes('max')) {
+      glow.style.background = 'radial-gradient(circle, rgba(114, 18, 219, 0.28) 0%, rgba(0,0,0,0) 70%)';
+    } else if (slug.includes('prime') || slug.includes('disney') || slug.includes('nordvpn')) {
       glow.style.background = 'radial-gradient(circle, rgba(0, 168, 225, 0.28) 0%, rgba(0,0,0,0) 70%)';
-    } else if (slug.includes('canva') || slug.includes('adobe')) {
+    } else if (slug.includes('canva') || slug.includes('adobe') || slug.includes('midjourney')) {
       glow.style.background = 'radial-gradient(circle, rgba(139, 92, 246, 0.28) 0%, rgba(0,0,0,0) 70%)';
-    } else if (slug.includes('youtube')) {
+    } else if (slug.includes('youtube') || slug.includes('apple')) {
       glow.style.background = 'radial-gradient(circle, rgba(255, 0, 0, 0.28) 0%, rgba(0,0,0,0) 70%)';
+    } else if (slug.includes('crunchyroll')) {
+      glow.style.background = 'radial-gradient(circle, rgba(244, 117, 33, 0.28) 0%, rgba(0,0,0,0) 70%)';
+    } else {
+      glow.style.background = 'radial-gradient(circle, rgba(59, 130, 246, 0.28) 0%, rgba(0,0,0,0) 70%)';
     }
   }
 
