@@ -115,6 +115,25 @@ function renderProductDetails() {
     deliveryBadge.textContent = p.delivery_time || '⚡ 60s Instant Delivery';
   }
 
+  // 3.1 Atmospheric Brand Glow
+  const glow = document.querySelector('.pdp-showcase-glow');
+  if (glow && p.slug) {
+    const slug = p.slug.toLowerCase();
+    if (slug.includes('netflix') || slug.includes('hoichoi')) {
+      glow.style.background = 'radial-gradient(circle, rgba(229, 9, 20, 0.28) 0%, rgba(0,0,0,0) 70%)';
+    } else if (slug.includes('spotify') || slug.includes('chorki')) {
+      glow.style.background = 'radial-gradient(circle, rgba(29, 185, 84, 0.28) 0%, rgba(0,0,0,0) 70%)';
+    } else if (slug.includes('chatgpt') || slug.includes('claude') || slug.includes('ai')) {
+      glow.style.background = 'radial-gradient(circle, rgba(16, 163, 127, 0.28) 0%, rgba(0,0,0,0) 70%)';
+    } else if (slug.includes('prime') || slug.includes('disney')) {
+      glow.style.background = 'radial-gradient(circle, rgba(0, 168, 225, 0.28) 0%, rgba(0,0,0,0) 70%)';
+    } else if (slug.includes('canva') || slug.includes('adobe')) {
+      glow.style.background = 'radial-gradient(circle, rgba(139, 92, 246, 0.28) 0%, rgba(0,0,0,0) 70%)';
+    } else if (slug.includes('youtube')) {
+      glow.style.background = 'radial-gradient(circle, rgba(255, 0, 0, 0.28) 0%, rgba(0,0,0,0) 70%)';
+    }
+  }
+
   // 4. Header Info (Right)
   const catPill = document.getElementById('pdpCategoryPill');
   if (catPill) catPill.textContent = p.category_name;
@@ -246,7 +265,7 @@ function renderDurationOptions() {
         <div class="pdp-duration-meta">
           <span>${plan.device_limit || '1 Device'}</span>
           <span>•</span>
-          <span style="color:#34d399;">✓ Instant</span>
+          <span class="pdp-instant-pill">✓ Instant</span>
         </div>
       </div>
     `;
@@ -393,7 +412,7 @@ function renderInstructionsTab() {
   const inst = productState.product.instructions || 'Credentials and login details will be instantly generated and saved into your Digital Pass.';
   container.innerHTML = `
     <div class="pdp-instructions-card">
-      <div style="font-weight:700; color:#60a5fa; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+      <div class="pdp-instructions-header">
         <span style="font-size:1.2rem;">📋</span> Activation Steps & Instructions:
       </div>
       <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:16px;">${inst}</p>
@@ -440,7 +459,7 @@ function renderReviewsTab() {
           <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
             <div>
               <div style="font-weight:700; color:var(--text-primary); font-size:0.95rem;">${r.author_name}</div>
-              <div style="font-size:0.75rem; color:#34d399;">✓ Verified Buyer</div>
+              <div class="pdp-review-verified">✓ Verified Buyer</div>
             </div>
             <div style="color:#fbbf24; font-size:0.85rem;">${'★'.repeat(r.rating || 5)}</div>
           </div>
@@ -506,7 +525,7 @@ function renderRelatedProducts() {
           <div class="product-category-name" style="font-size:0.75rem;">${p.category_name}</div>
           <h4 class="product-title" style="font-size:1rem; margin:4px 0 8px;">${p.title}</h4>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-            <div style="font-weight:800; color:#60a5fa; font-size:1.1rem;">${formatPrice(offerPriceBDT, true)}</div>
+            <div class="pdp-related-price">${formatPrice(offerPriceBDT, true)}</div>
             <a href="/product/${p.slug}" class="btn-secondary" style="padding:5px 10px; font-size:0.75rem; text-decoration:none;">View Plan →</a>
           </div>
         </div>

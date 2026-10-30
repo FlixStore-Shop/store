@@ -202,7 +202,7 @@
       </div>
 
       <!-- 404 Error State -->
-      <div id="pdpErrorState" style="display:none; text-align:center; padding:90px 20px; background:var(--bg-card); border:1px solid var(--glass-border); border-radius:20px; max-width:600px; margin:0 auto 40px;">
+      <div id="pdpErrorState" class="pdp-error-card" style="display:none;">
         <div style="font-size:3.5rem; margin-bottom:16px;">🔍</div>
         <h2 style="font-size:1.6rem; margin-bottom:10px;">Subscription Not Found</h2>
         <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:24px;">
@@ -259,11 +259,11 @@
             </div>
 
             <!-- Customer Happiness Score Box -->
-            <div style="background:var(--bg-card); border:1px solid var(--glass-border); border-radius:16px; padding:18px; display:flex; align-items:center; gap:14px;">
-              <div style="font-size:2rem; font-weight:800; color:#fbbf24;">4.9</div>
+            <div class="pdp-score-card">
+              <div class="pdp-score-number">4.9</div>
               <div>
-                <div style="color:#fbbf24; font-size:0.9rem; letter-spacing:2px;">★★★★★</div>
-                <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:2px;">Based on 4,800+ verified Bangladeshi streamers</div>
+                <div class="pdp-score-stars">★★★★★</div>
+                <div class="pdp-score-label">Based on 4,800+ verified Bangladeshi streamers</div>
               </div>
             </div>
 
@@ -282,7 +282,7 @@
                 <strong id="pdpRatingScore" style="color:var(--text-primary);">4.9</strong>
                 <span id="pdpReviewCount" style="color:var(--text-secondary); font-size:0.8rem;">(128 verified reviews)</span>
                 <span style="color:var(--text-muted);">•</span>
-                <span style="color:#34d399; font-weight:600; font-size:0.8rem;">✓ In Stock</span>
+                <span class="pdp-in-stock-pill">✓ In Stock</span>
               </div>
 
               <p id="pdpProductDescription" class="pdp-desc">
@@ -358,16 +358,16 @@
             <!-- Payment Gateways Accepted -->
             <div class="pdp-gateways-row">
               <span>Accepted:</span>
-              <span style="color:#ffffff; font-weight:600;">bKash</span>
+              <span class="pdp-gateway-item">bKash</span>
               <span>•</span>
-              <span style="color:#ffffff; font-weight:600;">Nagad</span>
+              <span class="pdp-gateway-item">Nagad</span>
               <span>•</span>
-              <span style="color:#ffffff; font-weight:600;">Rocket</span>
+              <span class="pdp-gateway-item">Rocket</span>
               <span>•</span>
-              <span style="color:#ffffff; font-weight:600;">Cards / Stripe</span>
+              <span class="pdp-gateway-item">Cards / Stripe</span>
               <span>•</span>
-              <span style="color:#ffffff; font-weight:600;">USDT Crypto</span>
-              <span style="margin-left:auto; color:#34d399;">🔒 0% Extra Fee</span>
+              <span class="pdp-gateway-item">USDT Crypto</span>
+              <span class="pdp-gateway-zero-fee">🔒 0% Extra Fee</span>
             </div>
 
           </div>
@@ -417,17 +417,17 @@
                   At FlixStore, customer trust is our #1 asset. Every single digital subscription purchase is backed by our complete replacement warranty for the entire validity period of your plan.
                 </p>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin-top:20px;">
-                  <div style="background:rgba(255,255,255,0.02); border:1px solid var(--glass-border); border-radius:12px; padding:16px;">
-                    <div style="font-weight:700; color:#34d399; margin-bottom:4px;">✓ Zero Downtime Policy</div>
-                    <p style="font-size:0.82rem; color:var(--text-secondary); margin:0; line-height:1.5;">If password resets or access drops, we restore or replace credentials within minutes.</p>
+                  <div class="pdp-warranty-card">
+                    <div class="pdp-warranty-title green">✓ Zero Downtime Policy</div>
+                    <p class="pdp-warranty-desc">If password resets or access drops, we restore or replace credentials within minutes.</p>
                   </div>
-                  <div style="background:rgba(255,255,255,0.02); border:1px solid var(--glass-border); border-radius:12px; padding:16px;">
-                    <div style="font-weight:700; color:#60a5fa; margin-bottom:4px;">✓ 24/7 Priority Support</div>
-                    <p style="font-size:0.82rem; color:var(--text-secondary); margin:0; line-height:1.5;">Direct helpline on official WhatsApp (+8801343546958) with average response under 5 mins.</p>
+                  <div class="pdp-warranty-card">
+                    <div class="pdp-warranty-title blue">✓ 24/7 Priority Support</div>
+                    <p class="pdp-warranty-desc">Direct helpline on official WhatsApp (+8801343546958) with average response under 5 mins.</p>
                   </div>
-                  <div style="background:rgba(255,255,255,0.02); border:1px solid var(--glass-border); border-radius:12px; padding:16px;">
-                    <div style="font-weight:700; color:#fbbf24; margin-bottom:4px;">✓ Money-Back Assurance</div>
-                    <p style="font-size:0.82rem; color:var(--text-secondary); margin:0; line-height:1.5;">If we are unable to resolve any credential delivery issue, you receive a full refund.</p>
+                  <div class="pdp-warranty-card">
+                    <div class="pdp-warranty-title amber">✓ Money-Back Assurance</div>
+                    <p class="pdp-warranty-desc">If we are unable to resolve any credential delivery issue, you receive a full refund.</p>
                   </div>
                 </div>
               </div>
