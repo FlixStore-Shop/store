@@ -4422,8 +4422,8 @@ body {
 
   --pdp-showcase-bg: radial-gradient(circle at 50% 30%, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.95) 100%);
   --pdp-showcase-glow: radial-gradient(circle, rgba(59, 130, 246, 0.28) 0%, rgba(0, 0, 0, 0) 70%);
-  --pdp-img-bg: rgba(15, 23, 42, 0.6);
-  --pdp-img-border: rgba(255, 255, 255, 0.12);
+  --pdp-img-bg: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+  --pdp-img-border: rgba(255, 255, 255, 0.15);
   --pdp-img-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
 
   --pdp-active-bg: linear-gradient(135deg, rgba(37, 99, 235, 0.24) 0%, rgba(59, 130, 246, 0.12) 100%);
@@ -4486,9 +4486,9 @@ body {
 
   --pdp-showcase-bg: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
   --pdp-showcase-glow: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
-  --pdp-img-bg: #ffffff;
-  --pdp-img-border: #e2e8f0;
-  --pdp-img-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.1);
+  --pdp-img-bg: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+  --pdp-img-border: #334155;
+  --pdp-img-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.35);
 
   --pdp-active-bg: #eff6ff;
   --pdp-active-border: #2563eb;
@@ -4634,8 +4634,9 @@ body {
   box-shadow: var(--pdp-img-shadow);
   margin-bottom: 20px;
   background: var(--pdp-img-bg);
-  padding: 10px;
+  padding: 16px;
   border: 1px solid var(--pdp-img-border);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
   transition: all 0.25s ease;
 }
 
