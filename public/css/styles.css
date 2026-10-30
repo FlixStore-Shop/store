@@ -4585,60 +4585,16 @@ body {
 
 .pdp-main-grid {
   display: grid;
-  grid-template-columns: 1fr 1.35fr;
-  gap: 36px;
+  grid-template-columns: 340px 1fr;
+  gap: 32px;
   align-items: flex-start;
   margin-bottom: 48px;
-}
-
-@media (max-width: 900px) {
-  .pdp-main-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 32px;
-  }
-
-  .pdp-media-column {
-    display: contents;
-    position: static;
-  }
-
-  .pdp-showcase-card {
-    order: 1;
-    padding: 24px 16px;
-    border-radius: 16px;
-  }
-
-  .pdp-showcase-img {
-    width: 110px;
-    height: 110px;
-    margin-bottom: 14px;
-    border-radius: 18px;
-  }
-
-  .pdp-info-column {
-    order: 2;
-    padding: 24px 18px;
-    border-radius: 16px;
-  }
-
-  .pdp-trust-card {
-    order: 3;
-    border-radius: 16px;
-  }
-
-  .pdp-score-card {
-    order: 4;
-    border-radius: 16px;
-  }
 }
 
 /* Media Column (Left) */
 .pdp-media-column {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   position: sticky;
   top: 90px;
 }
@@ -4681,6 +4637,50 @@ body {
   padding: 10px;
   border: 1px solid var(--pdp-img-border);
   transition: all 0.25s ease;
+}
+
+/* Tablet & Moderate Widths (769px to 1024px): Side-by-side presentation */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .pdp-main-grid {
+    grid-template-columns: 260px 1fr;
+    gap: 20px;
+  }
+  .pdp-showcase-card {
+    padding: 24px 16px;
+  }
+  .pdp-showcase-img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Mobile Screens (<= 768px): Vertical flow with purchasing engine first */
+@media (max-width: 768px) {
+  .pdp-main-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .pdp-media-column {
+    position: static;
+    width: 100%;
+  }
+  .pdp-showcase-card {
+    padding: 24px 16px;
+    border-radius: 16px;
+  }
+  .pdp-showcase-img {
+    width: 110px;
+    height: 110px;
+    margin-bottom: 14px;
+    border-radius: 18px;
+  }
+  .pdp-info-column {
+    padding: 24px 18px;
+    border-radius: 16px;
+  }
 }
 
 .pdp-media-badges {

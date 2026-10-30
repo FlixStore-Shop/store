@@ -185,10 +185,15 @@ function renderTierTabs() {
   const plans = productState.product.plans || [];
   const uniqueTiers = Array.from(new Set(plans.map(pl => pl.tier_type)));
 
+  const secWrapper = container.closest('div');
+  const hintBox = document.getElementById('pdpTierHintBox');
+
   if (uniqueTiers.length <= 1) {
-    container.style.display = 'none';
+    if (secWrapper) secWrapper.style.display = 'none';
+    if (hintBox) hintBox.style.display = 'none';
     return;
   }
+  if (secWrapper) secWrapper.style.display = 'block';
   container.style.display = 'flex';
 
   const tierMeta = {
@@ -214,7 +219,6 @@ function renderTierTabs() {
   }).join('');
 
   // Update explainer hint
-  const hintBox = document.getElementById('pdpTierHintBox');
   if (hintBox) {
     const activeMeta = tierMeta[productState.selectedTier];
     if (activeMeta && activeMeta.hint) {
