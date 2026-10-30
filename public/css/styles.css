@@ -5203,8 +5203,8 @@ body {
 .pdp-actions-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 22px;
 }
 
 .pdp-btn-row {
@@ -5212,42 +5212,56 @@ body {
   gap: 12px;
 }
 
-@media (max-width: 600px) {
-  .pdp-btn-row {
-    flex-direction: column;
-  }
-}
-
 .pdp-buy-now-btn {
   flex: 1.4;
-  height: 50px;
+  height: 52px;
   font-size: 1rem;
-  font-weight: 700;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  font-weight: 800;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: #ffffff;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35);
-  transition: all 0.2s ease;
+  gap: 10px;
+  box-shadow: 0 6px 20px -2px rgba(37, 99, 235, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .pdp-buy-now-btn:hover {
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 10px 28px -2px rgba(37, 99, 235, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.pdp-buy-now-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
+}
+
+.pdp-btn-icon {
+  flex-shrink: 0;
+}
+
+.pdp-btn-arrow {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.pdp-buy-now-btn:hover .pdp-btn-arrow {
+  transform: translateX(3px);
 }
 
 .pdp-add-cart-btn {
   flex: 1;
-  height: 50px;
-  font-size: 0.95rem;
+  height: 52px;
+  font-size: 0.98rem;
   font-weight: 700;
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--pdp-cart-btn-bg);
   color: var(--pdp-cart-btn-text);
   border: 1.5px solid var(--pdp-cart-btn-border);
@@ -5255,69 +5269,204 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: all 0.2s ease;
+  gap: 10px;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .pdp-add-cart-btn:hover {
   background: var(--pdp-cart-btn-hover);
-  border-color: rgba(59, 130, 246, 0.4);
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.pdp-add-cart-btn:active {
+  transform: translateY(0);
+}
+
+[data-theme="light"] .pdp-add-cart-btn {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+[data-theme="light"] .pdp-add-cart-btn:hover {
+  background: #f8fafc;
+  border-color: #2563eb;
+  color: #1d4ed8;
 }
 
 .pdp-whatsapp-btn {
   width: 100%;
-  height: 44px;
-  border-radius: 12px;
-  background: rgba(37, 211, 102, 0.1);
-  border: 1px solid rgba(37, 211, 102, 0.3);
+  min-height: 48px;
+  padding: 10px 18px;
+  border-radius: 14px;
+  background: rgba(37, 211, 102, 0.08);
+  border: 1px solid rgba(37, 211, 102, 0.28);
   color: #25D366;
-  font-size: 0.88rem;
-  font-weight: 600;
   text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.2s ease;
+  justify-content: space-between;
+  gap: 10px;
+  transition: all 0.22s ease;
+  box-shadow: 0 2px 10px rgba(37, 211, 102, 0.08);
 }
 
 .pdp-whatsapp-btn:hover {
-  background: rgba(37, 211, 102, 0.2);
+  background: rgba(37, 211, 102, 0.16);
+  border-color: #25D366;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.18);
 }
 
 [data-theme="light"] .pdp-whatsapp-btn {
   background: #f0fdf4;
-  border: 1.5px solid #86efac;
+  border: 1px solid #86efac;
   color: #15803d;
-  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.05);
 }
 
 [data-theme="light"] .pdp-whatsapp-btn:hover {
   background: #dcfce7;
-  border-color: #4ade80;
+  border-color: #22c55e;
+  color: #166534;
+}
+
+.pdp-wa-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.pdp-wa-icon {
+  flex-shrink: 0;
+  color: #25D366;
+}
+
+.pdp-wa-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: rgba(37, 211, 102, 0.18);
+  color: #25D366;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .pdp-wa-badge {
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .pdp-gateways-row {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 10px;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  flex-wrap: wrap;
   padding-top: 14px;
   border-top: 1px solid var(--pdp-card-border);
+  flex-wrap: wrap;
 }
 
-.pdp-gateway-item {
-  color: var(--pdp-gateway-text);
+.pdp-gateways-title {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.pdp-gateways-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pdp-gw-badge {
+  font-size: 0.72rem;
   font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--pdp-subtle-bg);
+  border: 1px solid var(--pdp-subtle-border);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .pdp-gw-badge {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #334155;
 }
 
 .pdp-gateway-zero-fee {
-  margin-left: auto;
-  color: var(--pdp-tag-green-text);
+  font-size: 0.72rem;
   font-weight: 700;
+  color: var(--pdp-tag-green-text);
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--pdp-tag-green-bg);
+  border: 1px solid var(--pdp-tag-green-border);
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .pdp-actions-container {
+    gap: 10px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .pdp-btn-row {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .pdp-buy-now-btn {
+    width: 100% !important;
+    height: 50px !important;
+    font-size: 0.94rem !important;
+  }
+
+  .pdp-add-cart-btn {
+    width: 100% !important;
+    height: 48px !important;
+    font-size: 0.92rem !important;
+  }
+
+  .pdp-whatsapp-btn {
+    height: 46px !important;
+    padding: 8px 14px !important;
+  }
+
+  .pdp-wa-left {
+    font-size: 0.82rem !important;
+    gap: 8px !important;
+  }
+
+  .pdp-wa-badge {
+    font-size: 0.68rem !important;
+    padding: 2px 7px !important;
+  }
+
+  .pdp-gateways-row {
+    gap: 6px !important;
+    padding-top: 12px !important;
+  }
+
+  .pdp-gw-badge {
+    font-size: 0.68rem !important;
+    padding: 2px 6px !important;
+  }
+
+  .pdp-gateway-zero-fee {
+    font-size: 0.68rem !important;
+    padding: 2px 6px !important;
+    margin-left: auto !important;
+  }
 }
 
 /* Tabs Section */
