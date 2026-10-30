@@ -1950,20 +1950,28 @@ function updateOtpUiState(json) {
   const otpInput = document.getElementById('otpCodeInput');
 
   if (noticeElem) {
-    noticeElem.innerHTML = `Please check your email inbox (and spam folder). Enter the 6-digit code below:`;
-    noticeElem.style.background = 'rgba(59,130,246,0.08)';
-    noticeElem.style.border = '1px solid rgba(59,130,246,0.22)';
-    noticeElem.style.color = 'var(--text-secondary)';
+    if (json.demoOtp) {
+      noticeElem.innerHTML = `⚠️ <strong>Notice:</strong> Outbound email delivery restricted on host.<br>Your verification code is: <strong style="color:#60a5fa; font-size:1.15rem; letter-spacing:3px;">${json.demoOtp}</strong>`;
+      noticeElem.style.background = 'rgba(245, 158, 11, 0.12)';
+      noticeElem.style.border = '1px solid rgba(245, 158, 11, 0.35)';
+      noticeElem.style.color = 'var(--text-primary)';
+      if (otpInput) otpInput.value = json.demoOtp;
+    } else {
+      noticeElem.innerHTML = `Please check your email <strong>Inbox</strong> and <strong>Spam/Junk folder</strong>. Enter the 6-digit code below:`;
+      noticeElem.style.background = 'rgba(59,130,246,0.08)';
+      noticeElem.style.border = '1px solid rgba(59,130,246,0.22)';
+      noticeElem.style.color = 'var(--text-secondary)';
+      if (otpInput) otpInput.value = '';
+    }
   }
   if (otpInput) {
-    otpInput.value = '';
     setTimeout(() => otpInput.focus(), 100);
   }
 
   switchAuthMode('otp');
 }
 
-// 1. Submit Sign In -> Dispatches 6-Digit OTP
+// 1. Submit Sign In -> Dispatches 6-Digit OTP or Authenticates
 async function handleLoginSubmit(e) {
   e.preventDefault();
   const emailInput = document.getElementById('loginEmail');
@@ -1981,7 +1989,7 @@ async function handleLoginSubmit(e) {
     const res = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: emailInput.value, password: passInput.value }),
+      body: JSON.stringify({ email: emailInput.value.trim(), password: passInput.value }),
       signal: AbortSignal.timeout(12000)
     });
     const json = await res.json();
@@ -1995,7 +2003,8 @@ async function handleLoginSubmit(e) {
       }
     } else {
       if (errElem) {
-        errElem.innerHTML = `Invalid email or password. <a href="javascript:void(0)" onclick="switchAuthMode('forgot')" style="color:#60a5fa; font-weight:700; text-decoration:underline;">Forgot Password?</a> or <a href="javascript:void(0)" onclick="switchAuthMode('signup')" style="color:#60a5fa; font-weight:700; text-decoration:underline;">Create Account</a>`;
+        const errorMsg = json.message || 'Invalid email or password.';
+        errElem.innerHTML = `${errorMsg} <a href="javascript:void(0)" onclick="switchAuthMode('forgot')" style="color:#60a5fa; font-weight:700; text-decoration:underline;">Forgot Password?</a> or <a href="javascript:void(0)" onclick="switchAuthMode('signup')" style="color:#60a5fa; font-weight:700; text-decoration:underline;">Create Account</a>`;
       }
     }
   } catch (err) {
@@ -2093,6 +2102,10 @@ async function handleForgotRequest(e) {
       if (step1) step1.style.display = 'none';
       if (step2) step2.style.display = 'block';
       if (emailTarget) emailTarget.textContent = json.email;
+      if (json.demoOtp) {
+        const codeInput = document.getElementById('resetOtpCode');
+        if (codeInput) codeInput.value = json.demoOtp;
+      }
       setTimeout(() => {
         const codeInput = document.getElementById('resetOtpCode');
         if (codeInput) codeInput.focus();
@@ -2232,9 +2245,17 @@ async function handleResendOtp() {
     const json = await res.json();
 
     if (json.success) {
+      if (json.demoOtp) {
+        const otpInput = document.getElementById('otpCodeInput');
+        if (otpInput) otpInput.value = json.demoOtp;
+        const noticeElem = document.getElementById('otpDeliveryNotice');
+        if (noticeElem) {
+          noticeElem.innerHTML = `⚠️ <strong>Notice:</strong> Outbound email restricted. Your code is: <strong style="color:#60a5fa; font-size:1.15rem; letter-spacing:3px;">${json.demoOtp}</strong>`;
+        }
+      }
       if (errElem) {
         errElem.style.color = '#34d399';
-        errElem.textContent = '✓ A new verification code was sent to your email inbox!';
+        errElem.textContent = '✓ Verification code sent! Please check your Inbox and Spam folder.';
         setTimeout(() => { if (errElem) { errElem.style.color = '#f87171'; errElem.textContent = ''; } }, 4500);
       }
 
