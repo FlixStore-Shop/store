@@ -4,18 +4,19 @@
    ========================================================================== */
 
 :root {
-  --bg-primary: #0a0c10;
-  --bg-secondary: #11141c;
-  --bg-tertiary: #181d27;
-  --bg-card: rgba(22, 27, 38, 0.75);
-  --bg-card-hover: rgba(30, 37, 52, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-hover: rgba(255, 255, 255, 0.2);
-  --glass-highlight: rgba(255, 255, 255, 0.04);
+  /* FlixStore Premium Design System - Light Mode Exclusive */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: rgba(255, 255, 255, 0.98);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-border-hover: rgba(0, 0, 0, 0.15);
+  --glass-highlight: rgba(0, 0, 0, 0.02);
   
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
   
   --accent-blue: #3b82f6;
   --accent-purple: #8b5cf6;
@@ -26,10 +27,10 @@
   --accent-amber: #f59e0b;
   
   --gradient-brand: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
-  --gradient-glow: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+  --gradient-glow: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
   --gradient-netflix: linear-gradient(135deg, #e50914 0%, #b81d24 100%);
   --gradient-ai: linear-gradient(135deg, #10a37f 0%, #059669 100%);
-  --gradient-card: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  --gradient-card: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -37,10 +38,10 @@
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
-  --shadow-glow: 0 0 35px -5px rgba(59, 130, 246, 0.3);
-  --shadow-neon: 0 0 25px rgba(139, 92, 246, 0.4);
+  --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 30px -5px rgba(59, 130, 246, 0.15);
+  --shadow-neon: 0 0 25px rgba(139, 92, 246, 0.2);
 
   --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
@@ -3359,14 +3360,6 @@ body {
   background: #ffffff;
 }
 
-[data-theme="dark"] .comparison-table th.sticky-col {
-  background: #161c28;
-}
-
-[data-theme="dark"] .comparison-table td.sticky-col {
-  background: #0f141f;
-}
-
 /* FAQ Accordion */
 .faq-section {
   padding: 40px 0 70px;
@@ -4482,67 +4475,67 @@ body {
    ============================================================================= */
 
 :root {
-  /* PDP Specific Theme Tokens - Dark Mode (Default) */
-  --pdp-card-bg: rgba(22, 27, 38, 0.78);
-  --pdp-card-border: rgba(255, 255, 255, 0.08);
-  --pdp-card-shadow: 0 14px 36px -8px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  /* PDP Specific Theme Tokens - Light Mode Exclusive */
+  --pdp-card-bg: #ffffff;
+  --pdp-card-border: #e2e8f0;
+  --pdp-card-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.07), 0 2px 8px -2px rgba(15, 23, 42, 0.04);
   
-  --pdp-subtle-bg: rgba(255, 255, 255, 0.03);
-  --pdp-subtle-border: rgba(255, 255, 255, 0.08);
-  --pdp-subtle-hover: rgba(255, 255, 255, 0.06);
+  --pdp-subtle-bg: #f8fafc;
+  --pdp-subtle-border: #e2e8f0;
+  --pdp-subtle-hover: #f1f5f9;
 
-  --pdp-showcase-bg: radial-gradient(circle at 50% 30%, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.95) 100%);
-  --pdp-showcase-glow: radial-gradient(circle, rgba(59, 130, 246, 0.28) 0%, rgba(0, 0, 0, 0) 70%);
+  --pdp-showcase-bg: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  --pdp-showcase-glow: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
   --pdp-img-bg: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
-  --pdp-img-border: rgba(255, 255, 255, 0.15);
-  --pdp-img-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  --pdp-img-border: #334155;
+  --pdp-img-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.35);
 
-  --pdp-active-bg: linear-gradient(135deg, rgba(37, 99, 235, 0.24) 0%, rgba(59, 130, 246, 0.12) 100%);
-  --pdp-active-border: #3b82f6;
-  --pdp-active-text: #ffffff;
-  --pdp-active-glow: 0 0 22px rgba(59, 130, 246, 0.32);
+  --pdp-active-bg: #eff6ff;
+  --pdp-active-border: #2563eb;
+  --pdp-active-text: #1d4ed8;
+  --pdp-active-glow: 0 4px 16px rgba(37, 99, 235, 0.15);
 
-  --pdp-price-box-bg: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(30, 41, 59, 0.65) 100%);
-  --pdp-price-box-border: rgba(59, 130, 246, 0.3);
-  --pdp-price-box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --pdp-price-box-bg: linear-gradient(135deg, #f0f7ff 0%, #f8fafc 100%);
+  --pdp-price-box-border: #bfdbfe;
+  --pdp-price-box-shadow: 0 6px 20px rgba(37, 99, 235, 0.06);
 
-  --pdp-price-text: #60a5fa;
+  --pdp-price-text: #1d4ed8;
   --pdp-price-orig: #64748b;
-  --pdp-accent-pill: #38bdf8;
+  --pdp-accent-pill: #0284c7;
 
-  --pdp-tag-green-bg: rgba(16, 185, 129, 0.16);
-  --pdp-tag-green-text: #34d399;
-  --pdp-tag-green-border: rgba(16, 185, 129, 0.3);
+  --pdp-tag-green-bg: #dcfce7;
+  --pdp-tag-green-text: #15803d;
+  --pdp-tag-green-border: #bbf7d0;
 
-  --pdp-tag-amber-bg: rgba(245, 158, 11, 0.14);
-  --pdp-tag-amber-text: #fbbf24;
-  --pdp-tag-amber-border: rgba(245, 158, 11, 0.32);
+  --pdp-tag-amber-bg: #fef3c7;
+  --pdp-tag-amber-text: #92400e;
+  --pdp-tag-amber-border: #fde68a;
 
-  --pdp-tag-red-bg: rgba(239, 68, 68, 0.16);
-  --pdp-tag-red-text: #f87171;
-  --pdp-tag-red-border: rgba(239, 68, 68, 0.3);
+  --pdp-tag-red-bg: #fee2e2;
+  --pdp-tag-red-text: #b91c1c;
+  --pdp-tag-red-border: #fecaca;
 
-  --pdp-cart-btn-bg: rgba(255, 255, 255, 0.06);
-  --pdp-cart-btn-border: rgba(255, 255, 255, 0.14);
-  --pdp-cart-btn-text: #f8fafc;
-  --pdp-cart-btn-hover: rgba(255, 255, 255, 0.12);
+  --pdp-cart-btn-bg: #f8fafc;
+  --pdp-cart-btn-border: #cbd5e1;
+  --pdp-cart-btn-text: #0f172a;
+  --pdp-cart-btn-hover: #f1f5f9;
 
-  --pdp-tab-nav-bg: rgba(255, 255, 255, 0.02);
-  --pdp-tab-nav-border: var(--glass-border);
-  --pdp-tab-btn-text: #94a3b8;
-  --pdp-tab-btn-hover: #f8fafc;
-  --pdp-tab-active-bg: rgba(59, 130, 246, 0.08);
-  --pdp-tab-active-text: #60a5fa;
-  --pdp-tab-active-border: #3b82f6;
+  --pdp-tab-nav-bg: #f8fafc;
+  --pdp-tab-nav-border: #e2e8f0;
+  --pdp-tab-btn-text: #475569;
+  --pdp-tab-btn-hover: #0f172a;
+  --pdp-tab-active-bg: #ffffff;
+  --pdp-tab-active-text: #1d4ed8;
+  --pdp-tab-active-border: #2563eb;
 
-  --pdp-info-card-bg: rgba(255, 255, 255, 0.025);
-  --pdp-info-card-border: rgba(255, 255, 255, 0.07);
+  --pdp-info-card-bg: #f8fafc;
+  --pdp-info-card-border: #e2e8f0;
 
-  --pdp-tier-hint-bg: rgba(59, 130, 246, 0.08);
-  --pdp-tier-hint-border: #3b82f6;
-  --pdp-tier-hint-text: #93c5fd;
+  --pdp-tier-hint-bg: #eff6ff;
+  --pdp-tier-hint-border: #2563eb;
+  --pdp-tier-hint-text: #1e40af;
 
-  --pdp-gateway-text: #e2e8f0;
+  --pdp-gateway-text: #0f172a;
 }
 
 [data-theme="light"] {

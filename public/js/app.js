@@ -23,8 +23,8 @@ const state = {
   cart: JSON.parse(localStorage.getItem('flix_cart') || '[]'),
   appliedCoupon: null,
   
-  // Theme
-  theme: localStorage.getItem('flix_theme') || 'light',
+  // Theme (Light Mode Exclusive)
+  theme: 'light',
 
   // Current User / Auth
   user: JSON.parse(localStorage.getItem('flix_user') || 'null'),
@@ -35,7 +35,8 @@ const state = {
   selectedPlan: null
 };
 
-// Force BDT currency
+// Force Light Theme & BDT Currency
+localStorage.setItem('flix_theme', 'light');
 localStorage.setItem('flix_currency', 'BDT');
 
 // Formatting Helper: BDT Exclusive
@@ -98,24 +99,19 @@ document.addEventListener('DOMContentLoaded', () => {
   checkAuthStatus();
 });
 
-// Theme Management
+// Theme Management (Light Mode Exclusive)
 function initTheme() {
-  document.documentElement.setAttribute('data-theme', state.theme);
+  state.theme = 'light';
+  localStorage.setItem('flix_theme', 'light');
+  document.documentElement.setAttribute('data-theme', 'light');
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
   if (metaThemeColor) {
-    metaThemeColor.setAttribute('content', state.theme === 'light' ? '#ffffff' : '#0a0c10');
-  }
-  const themeBtn = document.getElementById('themeToggleBtn');
-  if (themeBtn) {
-    themeBtn.innerHTML = state.theme === 'light' 
-      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'
-      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
+    metaThemeColor.setAttribute('content', '#ffffff');
   }
 }
 
 function toggleTheme() {
-  state.theme = state.theme === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('flix_theme', state.theme);
+  // Website is exclusively Light Mode
   initTheme();
 }
 
