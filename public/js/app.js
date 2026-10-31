@@ -309,8 +309,8 @@ function renderProducts() {
 
             <div class="product-body">
               <div class="product-category-name">${p.category_name || 'Premium'}</div>
-              <h3 class="product-title" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer;">${p.title || 'Subscription'}</h3>
-              <p class="product-tagline">${p.tagline || ''}</p>
+              <h3 class="product-title" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer; ${p.title_align && p.title_align !== 'left' ? `text-align: ${p.title_align};` : ''}">${(p.title || 'Subscription').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')}</h3>
+              <p class="product-tagline">${(p.tagline || '').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')}</p>
 
               ${tierChipsHTML}
 

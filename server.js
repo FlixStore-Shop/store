@@ -1426,6 +1426,8 @@ app.post('/api/admin/products', authMiddleware('admin'), async (req, res) => {
       is_bestseller,
       features_list,
       instructions,
+      title_align,
+      desc_align,
       plans,
       initial_vault_item
     } = req.body;
@@ -1446,12 +1448,16 @@ app.post('/api/admin/products', authMiddleware('admin'), async (req, res) => {
     const origPriceNum = original_price ? parseFloat(original_price) : parseFloat((basePriceNum * 1.35).toFixed(2));
     const origPriceBdtNum = original_price_bdt ? parseFloat(original_price_bdt) : Math.round(origPriceNum * 120);
 
+    const titleAlign = (title_align === 'center' || title_align === 'right') ? title_align : 'left';
+    const descAlign = (desc_align === 'center' || desc_align === 'justify' || desc_align === 'right') ? desc_align : 'left';
+
     const insertProd = db.prepare(`
       INSERT INTO products (
         category_id, title, slug, tagline, description, logo_url, badge,
         base_price, original_price, original_price_bdt, delivery_time, warranty, rating, review_count,
-        stock_status, is_featured, is_trending, is_bestseller, features_list, instructions
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        stock_status, is_featured, is_trending, is_bestseller, features_list, instructions,
+        title_align, desc_align
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const result = await insertProd.run(
@@ -1479,7 +1485,9 @@ app.post('/api/admin/products', authMiddleware('admin'), async (req, res) => {
         'Full Duration Replacement Warranty',
         'Instant Credentials Vault Dispatch'
       ]),
-      instructions || 'Login at official platform with provided credentials. Do not change master account credentials.'
+      instructions || 'Login at official platform with provided credentials. Do not change master account credentials.',
+      titleAlign,
+      descAlign
     );
 
     const productId = Number(result.lastInsertRowid);

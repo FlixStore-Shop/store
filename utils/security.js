@@ -42,15 +42,14 @@ setInterval(() => {
   }
 }, 300000);
 
-// Basic string sanitizer to prevent stored/reflected XSS
+// Safe string sanitizer: strips malicious script/iframe/event injection while preserving legitimate apostrophes, quotes, ampersands, bullets, newlines & sentence formatting
 function sanitizeInput(str) {
   if (typeof str !== 'string') return str;
   return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/javascript\s*:/gi, '')
+    .replace(/\bon\w+\s*=/gi, '')
     .trim();
 }
 

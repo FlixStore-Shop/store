@@ -151,10 +151,18 @@ function renderProductDetails() {
   if (catPill) catPill.textContent = p.category_name;
 
   const titleElem = document.getElementById('pdpProductTitle');
-  if (titleElem) titleElem.textContent = p.title;
+  if (titleElem) {
+    const cleanTitle = (p.title || '').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+    titleElem.textContent = cleanTitle;
+    if (p.title_align) {
+      titleElem.style.textAlign = p.title_align;
+      titleElem.classList.remove('align-center', 'align-right');
+      if (p.title_align !== 'left') titleElem.classList.add(`align-${p.title_align}`);
+    }
+  }
 
   const taglineElem = document.getElementById('pdpProductTagline');
-  if (taglineElem) taglineElem.textContent = p.tagline || '';
+  if (taglineElem) taglineElem.textContent = (p.tagline || '').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&');
 
   const ratingScore = document.getElementById('pdpRatingScore');
   const reviewCount = document.getElementById('pdpReviewCount');
@@ -162,7 +170,15 @@ function renderProductDetails() {
   if (reviewCount) reviewCount.textContent = `(${p.review_count || 128} verified reviews)`;
 
   const descElem = document.getElementById('pdpProductDescription');
-  if (descElem) descElem.textContent = p.description || '';
+  if (descElem) {
+    const cleanDesc = (p.description || '').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+    descElem.textContent = cleanDesc;
+    if (p.desc_align) {
+      descElem.style.textAlign = p.desc_align;
+      descElem.classList.remove('align-center', 'align-justify', 'align-right');
+      if (p.desc_align !== 'left') descElem.classList.add(`align-${p.desc_align}`);
+    }
+  }
 
   // 5. Render Tiers & Durations
   renderTierTabs();

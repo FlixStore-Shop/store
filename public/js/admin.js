@@ -692,6 +692,81 @@ function handleTitleInput(val) {
   syncLivePreview();
 }
 
+function setTitleAlign(align) {
+  const hidden = document.getElementById('prodTitleAlign');
+  const input = document.getElementById('prodTitleInput');
+  if (hidden) hidden.value = align;
+  if (input) input.style.textAlign = align;
+
+  const btnLeft = document.getElementById('btnTitleAlignLeft');
+  const btnCenter = document.getElementById('btnTitleAlignCenter');
+  if (btnLeft) btnLeft.classList.toggle('active', align === 'left');
+  if (btnCenter) btnCenter.classList.toggle('active', align === 'center');
+
+  syncLivePreview();
+}
+
+function formatTitleCase() {
+  const input = document.getElementById('prodTitleInput');
+  if (!input || !input.value) return;
+  input.value = input.value.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  handleTitleInput(input.value);
+}
+
+function setDescAlign(align) {
+  const hidden = document.getElementById('prodDescAlign');
+  const textarea = document.getElementById('prodDescInput');
+  if (hidden) hidden.value = align;
+  if (textarea) textarea.style.textAlign = align;
+
+  const btnLeft = document.getElementById('btnDescAlignLeft');
+  const btnCenter = document.getElementById('btnDescAlignCenter');
+  const btnJustify = document.getElementById('btnDescAlignJustify');
+  if (btnLeft) btnLeft.classList.toggle('active', align === 'left');
+  if (btnCenter) btnCenter.classList.toggle('active', align === 'center');
+  if (btnJustify) btnJustify.classList.toggle('active', align === 'justify');
+
+  const label = document.getElementById('prevDescAlignLabel');
+  if (label) {
+    const formatted = align.charAt(0).toUpperCase() + align.slice(1);
+    label.textContent = `${formatted} Aligned`;
+  }
+
+  syncLivePreview();
+}
+
+function insertDescSnippet(snippet) {
+  const textarea = document.getElementById('prodDescInput');
+  if (!textarea) return;
+
+  const start = textarea.selectionStart ?? textarea.value.length;
+  const end = textarea.selectionEnd ?? textarea.value.length;
+  const text = textarea.value;
+
+  textarea.value = text.substring(0, start) + snippet + text.substring(end);
+  const newPos = start + snippet.length;
+  textarea.focus();
+  textarea.setSelectionRange(newPos, newPos);
+
+  syncLivePreview();
+}
+
+function insertFeaturesTemplate() {
+  const textarea = document.getElementById('prodDescInput');
+  if (!textarea) return;
+  const template = "• Instant automated account delivery within 60 seconds\n• Works directly in Bangladesh without VPN\n• High quality streaming with 4K UHD support\n• 100% full duration replacement warranty with 24/7 support";
+  textarea.value = (textarea.value ? textarea.value.trim() + "\n\n" : "") + template;
+  syncLivePreview();
+}
+
+function clearDescriptionBox() {
+  const textarea = document.getElementById('prodDescInput');
+  if (textarea) {
+    textarea.value = '';
+    syncLivePreview();
+  }
+}
+
 function handleSlugInput(val) {
   studioSlugManuallyEdited = Boolean(val && val.trim().length > 0);
   syncLivePreview();
@@ -944,6 +1019,10 @@ function syncLivePreview() {
   const prevDisc = document.getElementById('prevDiscountPill');
   const prevWarr = document.getElementById('prevWarrantyLabel');
 
+  const titleAlign = document.getElementById('prodTitleAlign')?.value || 'left';
+  const desc = (document.getElementById('prodDescInput')?.value || '').trim();
+  const descAlign = document.getElementById('prodDescAlign')?.value || 'left';
+
   if (prevImg) prevImg.src = logo;
   if (prevBadge) {
     prevBadge.textContent = badge;
@@ -952,9 +1031,24 @@ function syncLivePreview() {
   }
   if (prevDelivery) prevDelivery.textContent = delivery;
   if (prevCat) prevCat.textContent = catText;
-  if (prevTitle) prevTitle.textContent = title;
+  if (prevTitle) {
+    prevTitle.textContent = title;
+    prevTitle.style.textAlign = titleAlign;
+  }
   if (prevTagline) prevTagline.textContent = tagline;
   if (prevWarr) prevWarr.textContent = warranty.includes('Warranty') ? warranty : `${warranty} Warranty`;
+
+  const prevDesc = document.getElementById('prevCardDesc');
+  if (prevDesc) {
+    if (desc) {
+      prevDesc.textContent = desc;
+      prevDesc.style.color = '#cbd5e1';
+    } else {
+      prevDesc.textContent = '(Type in the description box to preview formatted sentences, bullets, and alignment in real-time)';
+      prevDesc.style.color = '#64748b';
+    }
+    prevDesc.style.textAlign = descAlign;
+  }
 
   if (prevTiers) {
     if (studioPlans.length === 0) {
@@ -1037,11 +1131,19 @@ function openAddProductModal() {
   renderBrandPresets();
 
   if (studioPlans.length === 0) {
-    selectBrandPreset('netflix');
-  } else {
-    syncLivePreview();
+    studioPlans = [
+      { id: 'plan_1', name: '1 Month Premium Plan', tier: 'private', months: 1, label: '1 Month', bdt: 299, usd: 2.50, origBdt: 500, origUsd: 4.20, devices: '1 Device', popular: false, features: 'Full Access • 60s Automated Delivery' }
+    ];
+    renderPlansList();
   }
 
+  // Set default alignment cleanly
+  const titleAlign = document.getElementById('prodTitleAlign')?.value || 'left';
+  const descAlign = document.getElementById('prodDescAlign')?.value || 'left';
+  setTitleAlign(titleAlign);
+  setDescAlign(descAlign);
+
+  syncLivePreview();
   modal.style.display = 'flex';
 }
 
@@ -1088,10 +1190,15 @@ async function handleCreateProduct(e) {
   const featuresText = document.getElementById('prodFeaturesInput')?.value || '';
   const featuresList = featuresText.split('\n').map(s => s.trim()).filter(Boolean);
 
+  const titleAlign = document.getElementById('prodTitleAlign')?.value || 'left';
+  const descAlign = document.getElementById('prodDescAlign')?.value || 'left';
+
   const payload = {
     category_id: categoryId,
     title,
     slug,
+    title_align: titleAlign,
+    desc_align: descAlign,
     tagline: (form.tagline?.value || '').trim(),
     description: (form.description?.value || '').trim(),
     logo_url: (form.logo_url?.value || '/assets/brands/netflix.svg').trim(),

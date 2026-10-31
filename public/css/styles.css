@@ -5301,12 +5301,42 @@ body {
 }
 
 .pdp-desc {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.75 !important;
   margin-bottom: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--pdp-card-border);
+  white-space: pre-line !important;
+  word-break: break-word !important;
+}
+
+.pdp-desc.align-center {
+  text-align: center !important;
+}
+
+.pdp-desc.align-justify {
+  text-align: justify !important;
+}
+
+.pdp-desc.align-right {
+  text-align: right !important;
+}
+
+.pdp-title.align-center {
+  text-align: center !important;
+}
+
+.pdp-title.align-right {
+  text-align: right !important;
+}
+
+.product-title.align-center {
+  text-align: center !important;
+}
+
+.product-title.align-right {
+  text-align: right !important;
 }
 
 /* Tier Selection */
