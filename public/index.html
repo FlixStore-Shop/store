@@ -40,7 +40,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/css/styles.css?v=3.6">
+  <link rel="stylesheet" href="/css/styles.css?v=3.8">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><polygon points='5 3 19 12 5 21 5 3'></polygon></svg>">
 </head>
 <body>
@@ -347,9 +347,10 @@
       
       <!-- Quick Sort Filter Pills Bar (One-Tap Fast Filtering) -->
       <div class="quick-sort-bar">
-        <span class="quick-sort-label">Sort By:</span>
+        <span class="quick-sort-label">Sort:</span>
         <button type="button" class="quick-sort-pill active" data-sort="featured">✨ Featured</button>
-        <button type="button" class="quick-sort-pill" data-sort="name_asc">🔤 Alphabetical (A → Z)</button>
+        <button type="button" class="quick-sort-pill" data-sort="name_asc">🔤 A → Z</button>
+        <button type="button" class="quick-sort-pill" data-sort="name_desc">🔤 Z → A</button>
         <button type="button" class="quick-sort-pill" data-sort="price_asc">💵 Lowest Price</button>
         <button type="button" class="quick-sort-pill" data-sort="rating">⭐ Top Rated</button>
       </div>
@@ -363,7 +364,7 @@
         <h2>Explore Premium Subscriptions</h2>
         <p id="productsCountDisplay">Showing all verified subscription plans</p>
       </div>
-      <div class="section-actions">
+      <div class="section-actions" style="display:none;">
         <select id="sortSelect" class="sort-select">
           <option value="featured">✨ Featured & Bestsellers</option>
           <option value="name_asc">🔤 Alphabetical (A → Z)</option>
@@ -1614,6 +1615,6 @@
   </a>
 
   <!-- Core App Logic -->
-  <script src="/js/app.js?v=3.5"></script>
+  <script src="/js/app.js?v=3.8"></script>
 </body>
 </html>

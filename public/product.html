@@ -40,10 +40,10 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/css/styles.css?v=3.6">
+  <link rel="stylesheet" href="/css/styles.css?v=3.8">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><polygon points='5 3 19 12 5 21 5 3'></polygon></svg>">
 </head>
-<body>
+<body class="pdp-page">
 
   <!-- Ambient Glow Light Accents -->
   <div class="ambient-glow"></div>
@@ -273,39 +273,23 @@
               </div>
             </div>
 
-            <!-- 3. Dynamic Price Summary Box -->
-            <div class="pdp-price-summary-box">
-              <div class="pdp-price-main-row">
-                <div style="display:flex; align-items:baseline;">
-                  <span id="pdpCurrentPrice" class="pdp-current-price">৳0</span>
-                  <span id="pdpOriginalPrice" class="pdp-original-price">৳0</span>
-                </div>
-                <span id="pdpSavingsTag" class="pdp-savings-tag" style="display:none;">Save ৳0</span>
-              </div>
-
-              <div class="pdp-plan-features-row">
-                <span id="pdpSelectedPlanSummary" style="font-weight:700; color:var(--text-primary);">1 Month • Private PIN Profile</span>
-              </div>
-
-              <div class="pdp-plan-features-row" style="color:var(--text-secondary); font-size:0.78rem;">
-                <span id="pdpDeviceLimitSummary">1 Dedicated Device • 4K Ultra HD • Full Warranty</span>
-              </div>
-
-              <!-- VIP Member Benefit Alert -->
-              <div id="pdpVipDiscountNotice" class="pdp-vip-notice" style="display:none;">
-                <span>👑</span>
-                <span>VIP Member Perk: Automatic 5% extra discount applied at checkout!</span>
-              </div>
+            <!-- Fast Order Guarantee Micro-Row (Clean, zero duplicate pricing) -->
+            <div class="pdp-micro-guarantee">
+              <span class="micro-guar-item"><span class="micro-guar-icon">🛡️</span> 100% Full Warranty</span>
+              <span class="micro-guar-dot">•</span>
+              <span class="micro-guar-item"><span class="micro-guar-icon">⚡</span> Automated 60s Dispatch</span>
+              <span class="micro-guar-dot">•</span>
+              <span class="micro-guar-item"><span class="micro-guar-icon">🔒</span> 0% Fee</span>
             </div>
 
-            <!-- 4. Action Buttons -->
+            <!-- 3. Direct Purchase Action Buttons -->
             <div class="pdp-actions-container">
               <div class="pdp-btn-row">
                 <button type="button" class="pdp-buy-now-btn" onclick="pdpBuyNow()">
                   <svg class="pdp-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                   </svg>
-                  <span class="pdp-btn-text">Instant Buy &mdash; Direct Checkout</span>
+                  <span id="pdpBuyBtnLabel" class="pdp-btn-text">Instant Buy &mdash; Direct Checkout</span>
                   <svg class="pdp-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -321,15 +305,18 @@
                 </button>
               </div>
 
-              <a id="pdpWhatsAppInquiryBtn" href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="pdp-whatsapp-btn">
-                <div class="pdp-wa-left">
-                  <svg class="pdp-wa-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                    <path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.97.567 3.81 1.545 5.373L2 22l4.757-1.514A9.972 9.972 0 0 0 12.031 22C17.567 22 22 17.505 22 12.031 22 6.495 17.567 2 12.031 2zm5.792 14.288c-.244.686-1.22 1.307-1.745 1.365-.487.054-1.12.079-3.626-.957-3.197-1.32-5.267-4.57-5.426-4.783-.16-.213-1.294-1.722-1.294-3.284 0-1.562.819-2.332 1.109-2.651.29-.319.633-.399.844-.399.21 0 .422 0 .607.01.196.01.458-.074.717.55.264.633.9 2.197.978 2.357.079.16.132.348.026.56-.105.213-.158.348-.316.533-.159.186-.334.415-.477.557-.16.16-.328.334-.141.655.186.32.827 1.367 1.775 2.212 1.222 1.088 2.253 1.424 2.573 1.583.32.16.507.133.693-.08.187-.213.794-.925 1.006-1.242.211-.318.423-.265.714-.159.29.106 1.848.872 2.165 1.03.317.16.529.238.608.37.079.133.079.768-.165 1.454z"/>
-                  </svg>
-                  <span>Have questions? <strong>Chat on WhatsApp</strong></span>
-                </div>
-                <span class="pdp-wa-badge"><span class="pdp-pulse-dot"></span>24/7 Live</span>
-              </a>
+              <!-- Coupon Code Hint Strip -->
+              <div class="pdp-coupon-hint">
+                <span>💡 Use promo code <strong>FLIXVIP</strong> at checkout for <strong>15% OFF</strong></span>
+              </div>
+
+              <!-- Discrete Support Inquiry -->
+              <div class="pdp-inquiry-link-row">
+                <a id="pdpWhatsAppInquiryBtn" href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="pdp-inquiry-link">
+                  <span>💬 Questions about this plan?</span>
+                  <strong>Chat on WhatsApp →</strong>
+                </a>
+              </div>
             </div>
 
             <!-- Payment Gateways Accepted -->
@@ -369,15 +356,6 @@
                   <span><strong>24/7 Helpline:</strong> Direct assistance via official WhatsApp.</span>
                 </li>
               </ul>
-            </div>
-
-            <!-- Customer Happiness Score Box -->
-            <div class="pdp-score-card" style="margin-top:16px;">
-              <div class="pdp-score-number">4.9</div>
-              <div>
-                <div class="pdp-score-stars">★★★★★</div>
-                <div class="pdp-score-label">Based on 4,800+ verified Bangladeshi streamers</div>
-              </div>
             </div>
 
           </div>
@@ -1361,7 +1339,7 @@
   </a>
 
   <!-- Scripts -->
-  <script src="/js/app.js?v=3.2"></script>
-  <script src="/js/product.js?v=3.2"></script>
+  <script src="/js/app.js?v=3.8"></script>
+  <script src="/js/product.js?v=3.8"></script>
 </body>
 </html>

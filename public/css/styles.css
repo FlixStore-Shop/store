@@ -5551,6 +5551,90 @@ body {
   font-weight: 600;
 }
 
+/* Fast Order Guarantee Micro-Strip */
+.pdp-micro-guarantee {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 10px 16px;
+  background: rgba(37, 99, 235, 0.05);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  border-radius: 12px;
+  margin-bottom: 18px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .pdp-micro-guarantee {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+
+.pdp-micro-guarantee .micro-guar-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.pdp-micro-guarantee .micro-guar-icon {
+  font-size: 0.9rem;
+}
+
+.pdp-micro-guarantee .micro-guar-dot {
+  color: #cbd5e1;
+  font-weight: bold;
+}
+
+/* Coupon Hint Strip */
+.pdp-coupon-hint {
+  text-align: center;
+  padding: 8px 14px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px dashed rgba(245, 158, 11, 0.35);
+  border-radius: 10px;
+  font-size: 0.78rem;
+  color: #d97706;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .pdp-coupon-hint {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.3);
+  background: rgba(251, 191, 36, 0.08);
+}
+
+/* Discrete Support Inquiry */
+.pdp-inquiry-link-row {
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+.pdp-inquiry-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #16a34a;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.pdp-inquiry-link strong {
+  text-decoration: underline;
+  color: #15803d;
+}
+
+.pdp-inquiry-link:hover {
+  color: #15803d;
+}
+
 /* Action Buttons */
 .pdp-actions-container {
   display: flex;
@@ -5979,23 +6063,26 @@ body {
   white-space: nowrap;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
-  font-size: 0.88rem;
-  font-weight: 800;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
-  white-space: nowrap;
-}
 
 @media (max-width: 768px) {
-  .pdp-sticky-bar {
-    display: flex;
+  /* Eliminate duplicate bottom bars on mobile PDP */
+  body.pdp-page .mobile-bottom-nav {
+    display: none !important;
   }
 
-  .flix-toast {
-    bottom: 125px !important;
+  body.pdp-page .pdp-sticky-bar {
+    display: flex;
+    bottom: 0 !important;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body.pdp-page .flix-toast {
+    bottom: 75px !important;
+  }
+
+  /* Hide redundant trust card on mobile (covered by micro-guarantee strip & tabs) */
+  body.pdp-page .pdp-trust-card {
+    display: none !important;
   }
 }
 

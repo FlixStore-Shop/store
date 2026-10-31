@@ -298,6 +298,21 @@ function selectPdpPlan(planId) {
   }
 }
 
+function getCleanPlanTitle(plan) {
+  if (!plan) return '';
+  const name = (plan.plan_name || '').trim();
+  const duration = (plan.duration_label || '').trim();
+  if (!duration) return name;
+  if (!name) return duration;
+  
+  // If plan_name already contains or starts with duration, strip the repetitive part:
+  const strippedName = name.replace(/^(\d+\s*(?:Month|Year|Day)s?)\s*[-–•:]*\s*/i, '').trim();
+  if (strippedName && strippedName.toLowerCase() !== duration.toLowerCase()) {
+    return `${duration} • ${strippedName}`;
+  }
+  return duration;
+}
+
 function updateSelectedPlanPricing() {
   const plan = productState.selectedPlan;
   if (!plan) return;
@@ -332,12 +347,21 @@ function updateSelectedPlanPricing() {
     }
   }
 
+  // Clean, non-repetitive plan title
+  const cleanTitle = getCleanPlanTitle(plan);
+
   if (planNameDisplay) {
-    planNameDisplay.textContent = `${plan.plan_name} • ${plan.duration_label}`;
+    planNameDisplay.textContent = cleanTitle;
   }
 
   if (deviceLimitDisplay) {
     deviceLimitDisplay.textContent = `${plan.device_limit || '1 Device'} • 4K UHD • Full Warranty`;
+  }
+
+  // Update dynamic Buy Now CTA button label with offer price
+  const buyBtnLabel = document.getElementById('pdpBuyBtnLabel');
+  if (buyBtnLabel) {
+    buyBtnLabel.innerHTML = `Instant Buy &mdash; ${formatPrice(offerBdt, true)}`;
   }
 
   // Check VIP Status for discount alert
@@ -357,13 +381,13 @@ function updateSelectedPlanPricing() {
   // Update sticky bottom purchase bar details
   const stickyPlan = document.getElementById('pdpStickyPlanName');
   const stickyPrice = document.getElementById('pdpStickyPrice');
-  if (stickyPlan) stickyPlan.textContent = `${plan.plan_name} • ${plan.duration_label}`;
+  if (stickyPlan) stickyPlan.textContent = cleanTitle;
   if (stickyPrice) stickyPrice.textContent = formatPrice(offerBdt, true);
 
   // Update WhatsApp inquiry link
   const waBtn = document.getElementById('pdpWhatsAppInquiryBtn');
   if (waBtn) {
-    const text = encodeURIComponent(`Hello FlixStore! I am interested in purchasing ${productState.product.title} - ${plan.plan_name} (${plan.duration_label}) for ${formatPrice(offerBdt, true)}.`);
+    const text = encodeURIComponent(`Hello FlixStore! I am interested in purchasing ${productState.product.title} - ${cleanTitle} for ${formatPrice(offerBdt, true)}.`);
     waBtn.href = `https://wa.me/8801343546958?text=${text}`;
   }
 }
