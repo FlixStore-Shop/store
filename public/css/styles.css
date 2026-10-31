@@ -3671,28 +3671,117 @@ body {
   background: rgba(99, 102, 241, 0.1);
 }
 
+/* ==========================================================================
+   QUICK SORT BAR & PILLS (ONE-TAP SMARTPHONE FILTERING)
+   ========================================================================== */
+.quick-sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 16px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.quick-sort-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.quick-sort-label {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.quick-sort-pill {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.9) 100%);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 1px 3px rgba(15, 23, 42, 0.04);
+  user-select: none;
+}
+
+.quick-sort-pill:hover {
+  background: #ffffff;
+  color: var(--text-primary);
+  border-color: rgba(148, 163, 184, 0.85);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 3px 8px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.quick-sort-pill.active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 50%),
+              linear-gradient(135deg, #2563eb 0%, #4f46e5 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 0 3px 12px rgba(37, 99, 235, 0.35) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================================================================
+   3D LIQUID GLOSS CAPSULE ACTION BUTTON (HIGH-CONVERSION CTAs)
+   ========================================================================== */
 .btn-select-plan {
   width: 100%;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.08) 48%, rgba(0, 0, 0, 0.04) 50%, rgba(0, 0, 0, 0.14) 100%),
-              linear-gradient(135deg, #4f46e5 0%, #7c3aed 45%, #d946ef 100%) !important;
+  text-decoration: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.12) 48%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0.12) 100%),
+              linear-gradient(135deg, #2563eb 0%, #4f46e5 45%, #7c3aed 100%) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.35) !important;
-  padding: 11px 16px;
-  border-radius: var(--radius-md);
-  font-weight: 700;
-  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  padding: 11px 18px;
+  border-radius: 999px !important;
+  font-weight: 800;
+  font-size: 0.88rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 7px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8),
-              inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.2),
-              0 4px 16px -1px rgba(124, 58, 237, 0.42) !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  white-space: nowrap !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95),
+              inset 0 -2px 3px 0 rgba(0, 0, 0, 0.22),
+              0 4px 18px -1px rgba(79, 70, 229, 0.45) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+}
+
+.btn-select-plan .btn-plan-icon {
+  color: #fbbf24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 1px 3px rgba(245, 158, 11, 0.5));
+  flex-shrink: 0;
+}
+
+.btn-select-plan .btn-plan-text {
+  letter-spacing: 0.3px;
+  line-height: 1;
+}
+
+.btn-select-plan .btn-plan-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
 }
 
 .btn-select-plan::after {
@@ -3702,18 +3791,22 @@ body {
   left: -100%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   transform: skewX(-20deg);
   transition: left 0.6s ease;
   pointer-events: none;
 }
 
 .btn-select-plan:hover {
-  filter: brightness(1.06);
+  filter: brightness(1.08);
   transform: translateY(-1.5px);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
-              inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.2),
-              0 8px 24px -2px rgba(124, 58, 237, 0.55) !important;
+  box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1),
+              inset 0 -2px 3px 0 rgba(0, 0, 0, 0.22),
+              0 8px 24px -2px rgba(79, 70, 229, 0.6) !important;
+}
+
+.btn-select-plan:hover .btn-plan-arrow {
+  transform: translateX(4px);
 }
 
 .btn-select-plan:hover::after,
@@ -3722,9 +3815,9 @@ body {
 }
 
 .btn-select-plan:active {
-  transform: scale(0.98);
+  transform: scale(0.96) !important;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
-              0 2px 6px rgba(124, 58, 237, 0.3) !important;
+              0 2px 6px rgba(79, 70, 229, 0.35) !important;
 }
 
 /* ==========================================================================
@@ -4326,25 +4419,59 @@ body {
     margin-top: auto !important;
   }
 
+  .quick-sort-bar {
+    padding: 2px 0 12px !important;
+    gap: 6px !important;
+  }
+
+  .quick-sort-label {
+    font-size: 0.68rem !important;
+  }
+
+  .quick-sort-pill {
+    padding: 5px 11px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+  }
+
   .btn-select-plan {
-    padding: 10px 8px !important;
+    height: 38px !important;
+    padding: 0 10px !important;
     font-size: 0.78rem !important;
     font-weight: 800 !important;
-    border-radius: 12px !important;
+    border-radius: 999px !important;
     width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
     justify-content: center !important;
-    gap: 5px !important;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.08) 48%, rgba(0, 0, 0, 0.04) 50%, rgba(0, 0, 0, 0.14) 100%),
-                linear-gradient(135deg, #4f46e5 0%, #7c3aed 45%, #d946ef 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.35) !important;
-    box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8),
-                inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.2),
-                0 3px 12px rgba(124, 58, 237, 0.38) !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.12) 48%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0.12) 100%),
+                linear-gradient(135deg, #2563eb 0%, #4f46e5 45%, #7c3aed 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95),
+                inset 0 -2px 3px 0 rgba(0, 0, 0, 0.22),
+                0 3px 12px rgba(79, 70, 229, 0.42) !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28) !important;
   }
 
+  .btn-select-plan .btn-plan-icon svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .btn-select-plan .btn-plan-text {
+    white-space: nowrap !important;
+    letter-spacing: 0.2px !important;
+  }
+
+  .btn-select-plan .btn-plan-arrow svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
   .btn-select-plan:active {
-    transform: scale(0.97) !important;
+    transform: scale(0.96) !important;
   }
 
   .category-pill {

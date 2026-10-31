@@ -40,7 +40,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/css/styles.css?v=3.5">
+  <link rel="stylesheet" href="/css/styles.css?v=3.6">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><polygon points='5 3 19 12 5 21 5 3'></polygon></svg>">
 </head>
 <body>
@@ -338,11 +338,20 @@
     </div>
   </section>
 
-  <!-- Category Filter Pills Bar -->
+  <!-- Category Filter Pills Bar & Quick Sort Bar -->
   <section class="category-nav-section">
     <div class="container">
       <div id="categoryPillsBar" class="category-pills-bar">
         <!-- Rendered dynamically by app.js -->
+      </div>
+      
+      <!-- Quick Sort Filter Pills Bar (One-Tap Fast Filtering) -->
+      <div class="quick-sort-bar">
+        <span class="quick-sort-label">Sort By:</span>
+        <button type="button" class="quick-sort-pill active" data-sort="featured">✨ Featured</button>
+        <button type="button" class="quick-sort-pill" data-sort="name_asc">🔤 Alphabetical (A → Z)</button>
+        <button type="button" class="quick-sort-pill" data-sort="price_asc">💵 Lowest Price</button>
+        <button type="button" class="quick-sort-pill" data-sort="rating">⭐ Top Rated</button>
       </div>
     </div>
   </section>
@@ -357,9 +366,11 @@
       <div class="section-actions">
         <select id="sortSelect" class="sort-select">
           <option value="featured">✨ Featured & Bestsellers</option>
-          <option value="rating">⭐ Highest Rated</option>
+          <option value="name_asc">🔤 Alphabetical (A → Z)</option>
+          <option value="name_desc">🔤 Alphabetical (Z → A)</option>
           <option value="price_asc">💵 Price: Low to High</option>
           <option value="price_desc">💎 Price: High to Low</option>
+          <option value="rating">⭐ Highest Rated</option>
         </select>
       </div>
     </div>
@@ -1603,6 +1614,6 @@
   </a>
 
   <!-- Core App Logic -->
-  <script src="/js/app.js?v=3.2"></script>
+  <script src="/js/app.js?v=3.5"></script>
 </body>
 </html>

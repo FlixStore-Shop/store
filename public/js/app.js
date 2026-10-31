@@ -227,7 +227,11 @@ function applyFilters() {
   }
 
   // Sorting
-  if (state.sortBy === 'price_asc') {
+  if (state.sortBy === 'name_asc') {
+    list.sort((a, b) => (a.title || '').localeCompare(b.title || '', undefined, { sensitivity: 'base' }));
+  } else if (state.sortBy === 'name_desc') {
+    list.sort((a, b) => (b.title || '').localeCompare(a.title || '', undefined, { sensitivity: 'base' }));
+  } else if (state.sortBy === 'price_asc') {
     list.sort((a, b) => a.base_price - b.base_price);
   } else if (state.sortBy === 'price_desc') {
     list.sort((a, b) => b.base_price - a.base_price);
@@ -336,9 +340,14 @@ function renderProducts() {
               </div>
 
               <div class="product-card-actions">
-                <a href="/product/${p.slug}" class="btn-select-plan" style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;">
-                  <span>⚡ Select Plan & Duration</span>
-                  <span style="font-size:0.85rem; opacity:0.9;">→</span>
+                <a href="/product/${p.slug}" class="btn-select-plan">
+                  <span class="btn-plan-icon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  </span>
+                  <span class="btn-plan-text">Select Plan</span>
+                  <span class="btn-plan-arrow">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  </span>
                 </a>
               </div>
             </div>
@@ -351,7 +360,10 @@ function renderProducts() {
             <div class="product-body" style="padding: 20px;">
               <h3>${p.title || 'Subscription'}</h3>
               <p>${p.tagline || ''}</p>
-              <a href="/product/${p.slug || ''}" class="btn-select-plan" style="text-decoration:none; display:inline-block; text-align:center;">View Details →</a>
+              <a href="/product/${p.slug || ''}" class="btn-select-plan">
+                <span class="btn-plan-text">Select Plan</span>
+                <span class="btn-plan-arrow">→</span>
+              </a>
             </div>
           </div>
         `;
@@ -2362,14 +2374,34 @@ function copyMemberId() {
 // EVENT LISTENERS
 // -----------------------------------------------------------------------------
 
+function updateQuickSortPills(activeSort) {
+  document.querySelectorAll('.quick-sort-pill').forEach(p => {
+    p.classList.toggle('active', p.getAttribute('data-sort') === activeSort);
+  });
+}
+
 function initEventListeners() {
   const sortSelect = document.getElementById('sortSelect');
   if (sortSelect) {
     sortSelect.addEventListener('change', (e) => {
       state.sortBy = e.target.value;
+      updateQuickSortPills(state.sortBy);
       applyFilters();
     });
   }
+
+  // Quick Sort Pills Listener
+  document.querySelectorAll('.quick-sort-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const sortVal = pill.getAttribute('data-sort');
+      if (sortVal) {
+        state.sortBy = sortVal;
+        if (sortSelect) sortSelect.value = sortVal;
+        updateQuickSortPills(sortVal);
+        applyFilters();
+      }
+    });
+  });
 
   // FAQ Accordion
   document.querySelectorAll('.faq-question').forEach(q => {
