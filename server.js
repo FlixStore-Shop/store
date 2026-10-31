@@ -345,9 +345,15 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
     const activeCustomerName = sanitizeInput(customer_name || userRecord.full_name || 'Subscriber');
     const activeCustomerPhone = sanitizeInput(customer_phone || userRecord.phone || '');
 
-    // P0 Payment Security: Prevent duplicate TrxID reuse on manual mobile banking payments
+    // P0 Payment Security: Validate format & prevent duplicate TrxID reuse on manual mobile banking payments
     if (trx_id && ['bkash', 'nagad', 'rocket'].includes(payment_method)) {
       const cleanTrx = trx_id.trim();
+      if (cleanTrx.length > 0 && cleanTrx.length < 5) {
+        return res.status(400).json({
+          success: false,
+          message: 'Please provide a valid transaction ID received from your payment SMS.'
+        });
+      }
       if (!cleanTrx.startsWith('TEST-') && !cleanTrx.startsWith('BKASH-VERIFIED-') && !cleanTrx.startsWith('NAGAD-VERIFIED-')) {
         const existingOrder = await db.prepare(`
           SELECT id, order_number FROM orders 
@@ -467,25 +473,29 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       let itemCredential = null;
 
       if (vaultItem) {
-        // Mark credential as used
-        await db.prepare(`
+        // Atomic optimistic lock: claim only if still available to prevent race condition
+        const claimResult = await db.prepare(`
           UPDATE credential_vault
           SET is_used = 1
-          WHERE id = ?
+          WHERE id = ? AND is_used = 0
         `).run(vaultItem.id);
 
-        itemCredential = {
-          product_title: item.productTitle,
-          plan_name: item.planName,
-          credential_type: vaultItem.credential_type,
-          account_email: vaultItem.account_email,
-          account_password: vaultItem.account_password,
-          profile_name: vaultItem.profile_name,
-          profile_pin: vaultItem.profile_pin,
-          license_key: vaultItem.license_key,
-          activation_link: vaultItem.activation_link,
-          instructions: vaultItem.special_instructions || item.instructions || 'Login with provided credentials.'
-        };
+        const isClaimed = db.isPostgres ? (claimResult && claimResult.rowCount > 0) : (claimResult && claimResult.changes > 0);
+
+        if (isClaimed) {
+          itemCredential = {
+            product_title: item.productTitle,
+            plan_name: item.planName,
+            credential_type: vaultItem.credential_type,
+            account_email: vaultItem.account_email,
+            account_password: vaultItem.account_password,
+            profile_name: vaultItem.profile_name,
+            profile_pin: vaultItem.profile_pin,
+            license_key: vaultItem.license_key,
+            activation_link: vaultItem.activation_link,
+            instructions: vaultItem.special_instructions || item.instructions || 'Login with provided credentials.'
+          };
+        }
       } else {
         // Fallback: Automated Key Provisioning generator
         const brandCode = item.productSlug.split('-')[0].toUpperCase();
@@ -783,8 +793,19 @@ app.post('/api/reviews', reviewLimiter, async (req, res) => {
 // In-Memory OTP Store: email -> { otp, expiresAt, attempts, user }
 const otpStore = new Map();
 
+// Periodic prune to prevent memory leaks from expired OTP attempts
+setInterval(() => {
+  const now = Date.now();
+  for (const [email, record] of otpStore.entries()) {
+    if (now > record.expiresAt) {
+      otpStore.delete(email);
+    }
+  }
+}, 300000);
+
+// Cryptographically secure 6-digit OTP generator
 function generateOtp() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  return crypto.randomInt(100000, 1000000).toString();
 }
 
 // Customer / Admin Login
@@ -880,7 +901,7 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
       requiresOtp: true,
       email: cleanEmail,
       message: 'Verification code sent to your email address',
-      demoOtp: isTest ? otp : (mailResult.success ? undefined : otp),
+      demoOtp: isTest ? otp : undefined,
       user: {
         role: user.role
       }
@@ -1072,7 +1093,7 @@ app.post('/api/auth/resend-otp', authLimiter, async (req, res) => {
     res.json({
       success: true,
       message: 'A fresh 6-digit verification code has been dispatched. Please check your inbox and spam folder.',
-      demoOtp: (isTest || !mailResult.success) ? newOtp : undefined
+      demoOtp: isTest ? newOtp : undefined
     });
   } catch (err) {
     console.error('Resend OTP error:', err);
@@ -1118,7 +1139,7 @@ app.post('/api/auth/forgot-password', authLimiter, async (req, res) => {
       requiresOtp: true,
       email: cleanEmail,
       message: 'Password reset code dispatched! Please check your email inbox and spam folder.',
-      demoOtp: (isTest || !mailResult.success) ? otp : undefined
+      demoOtp: isTest ? otp : undefined
     });
   } catch (err) {
     console.error('Forgot password error:', err);
