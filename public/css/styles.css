@@ -947,8 +947,7 @@ body {
   position: relative;
   height: 180px;
   overflow: hidden;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-bottom: 1px solid #e2e8f0;
+  background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -962,7 +961,7 @@ body {
   height: auto;
   object-fit: contain;
   transition: transform 0.4s ease;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.06));
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
 }
 
 .product-card:hover .product-card-img {
@@ -1178,8 +1177,8 @@ body {
 }
 
 [data-theme="light"] .product-card-top {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-bottom: 1px solid #e2e8f0;
+  background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 [data-theme="light"] .product-card {
@@ -1510,9 +1509,9 @@ body {
   border-radius: var(--radius-lg);
   overflow: hidden;
   height: 280px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--glass-border);
   position: relative;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3997,8 +3996,8 @@ body {
     height: 110px !important;
     padding: 10px !important;
     position: relative !important;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
-    border-bottom: 1px solid #e2e8f0 !important;
+    background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -4523,10 +4522,10 @@ body {
   --pdp-subtle-hover: #f1f5f9;
 
   --pdp-showcase-bg: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-  --pdp-showcase-glow: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
-  --pdp-img-bg: #ffffff;
-  --pdp-img-border: #e2e8f0;
-  --pdp-img-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06);
+  --pdp-showcase-glow: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+  --pdp-img-bg: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+  --pdp-img-border: #334155;
+  --pdp-img-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.35);
 
   --pdp-active-bg: #eff6ff;
   --pdp-active-border: #2563eb;
@@ -4587,10 +4586,10 @@ body {
   --pdp-subtle-hover: #f1f5f9;
 
   --pdp-showcase-bg: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-  --pdp-showcase-glow: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
-  --pdp-img-bg: #ffffff;
-  --pdp-img-border: #e2e8f0;
-  --pdp-img-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06);
+  --pdp-showcase-glow: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+  --pdp-img-bg: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+  --pdp-img-border: #334155;
+  --pdp-img-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.35);
 
   --pdp-active-bg: #eff6ff;
   --pdp-active-border: #2563eb;
@@ -4734,9 +4733,9 @@ body {
   height: 130px;
   padding: 18px 24px;
   border-radius: 20px;
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+  background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
   margin-bottom: 20px;
   position: relative;
   z-index: 2;
@@ -4745,8 +4744,7 @@ body {
 
 .pdp-showcase-badge:hover {
   transform: translateY(-2px) scale(1.02);
-  border-color: #3b82f6 !important;
-  box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.12), 0 0 12px rgba(59, 130, 246, 0.08) !important;
+  box-shadow: 0 20px 42px -6px rgba(0, 0, 0, 0.55), 0 0 25px rgba(59, 130, 246, 0.25) !important;
 }
 
 .pdp-showcase-img {
@@ -4755,7 +4753,7 @@ body {
   width: auto !important;
   height: auto !important;
   object-fit: contain !important;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.06)) !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4)) !important;
   margin: 0 !important;
   padding: 0 !important;
   background: transparent !important;
