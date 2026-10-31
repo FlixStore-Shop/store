@@ -1415,71 +1415,158 @@ app.post('/api/admin/products', authMiddleware('admin'), async (req, res) => {
       badge,
       base_price,
       original_price,
+      original_price_bdt,
+      delivery_time,
+      warranty,
+      rating,
+      review_count,
+      stock_status,
+      is_featured,
+      is_trending,
+      is_bestseller,
       features_list,
       instructions,
-      plans
+      plans,
+      initial_vault_item
     } = req.body;
 
     if (!title || !slug || !base_price || !category_id) {
       return res.status(400).json({ success: false, message: 'Title, slug, base price, and category are required' });
     }
 
+    const cleanSlug = slug.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+
+    // Check slug collision
+    const existing = await db.prepare('SELECT id FROM products WHERE slug = ?').get(cleanSlug);
+    if (existing) {
+      return res.status(400).json({ success: false, message: `A product with slug "${cleanSlug}" already exists. Please choose a unique slug.` });
+    }
+
+    const basePriceNum = parseFloat(base_price);
+    const origPriceNum = original_price ? parseFloat(original_price) : parseFloat((basePriceNum * 1.35).toFixed(2));
+    const origPriceBdtNum = original_price_bdt ? parseFloat(original_price_bdt) : Math.round(origPriceNum * 120);
+
     const insertProd = db.prepare(`
       INSERT INTO products (
         category_id, title, slug, tagline, description, logo_url, badge,
-        base_price, original_price, delivery_time, warranty, rating, review_count,
+        base_price, original_price, original_price_bdt, delivery_time, warranty, rating, review_count,
         stock_status, is_featured, is_trending, is_bestseller, features_list, instructions
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Instant', 'Full Duration Warranty', 5.0, 1, 'in_stock', 1, 0, 0, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const result = await insertProd.run(
-      category_id,
+      parseInt(category_id, 10),
       sanitizeInput(title),
-      sanitizeInput(slug.toLowerCase()),
+      cleanSlug,
       sanitizeInput(tagline || ''),
       sanitizeInput(description || ''),
-      logo_url || 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500',
-      badge || 'New',
-      parseFloat(base_price),
-      original_price ? parseFloat(original_price) : parseFloat(base_price) * 1.5,
-      JSON.stringify(features_list || []),
-      instructions || 'Login with provided credentials.'
+      logo_url || '/assets/brands/netflix.svg',
+      badge || 'Official Verified',
+      basePriceNum,
+      origPriceNum,
+      origPriceBdtNum,
+      sanitizeInput(delivery_time || '60s Instant Delivery'),
+      sanitizeInput(warranty || 'Full Duration Warranty'),
+      rating ? parseFloat(rating) : 4.9,
+      review_count ? parseInt(review_count, 10) : 128,
+      stock_status || 'in_stock',
+      is_featured ? 1 : 0,
+      is_trending ? 1 : 0,
+      is_bestseller ? 1 : 0,
+      JSON.stringify(Array.isArray(features_list) && features_list.length > 0 ? features_list : [
+        '4K Ultra HD & HDR Streaming',
+        'Works directly in Bangladesh without VPN',
+        'Full Duration Replacement Warranty',
+        'Instant Credentials Vault Dispatch'
+      ]),
+      instructions || 'Login at official platform with provided credentials. Do not change master account credentials.'
     );
 
-    const productId = result.lastInsertRowid;
+    const productId = Number(result.lastInsertRowid);
 
-    // Insert Plans if provided
-    if (plans && Array.isArray(plans)) {
+    // Insert Plans
+    if (plans && Array.isArray(plans) && plans.length > 0) {
       const insertPlan = db.prepare(`
         INSERT INTO product_plans (
           product_id, plan_name, tier_type, duration_months, duration_label,
-          price_usd, price_bdt, original_price_usd, is_popular, device_limit, plan_features, sort_order
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          price_usd, price_bdt, original_price_usd, original_price_bdt, is_popular, device_limit, plan_features, sort_order
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
 
       let order = 1;
       for (const pl of plans) {
+        const planUsd = parseFloat(pl.price_usd || pl.usd || basePriceNum);
+        const planBdt = parseFloat(pl.price_bdt || pl.bdt || Math.round(planUsd * 120));
+        const planOrigUsd = parseFloat(pl.original_price_usd || pl.orig || (planUsd * 1.35).toFixed(2));
+        const planOrigBdt = parseFloat(pl.original_price_bdt || Math.round(planOrigUsd * 120));
+
         await insertPlan.run(
           productId,
-          pl.name || 'Standard Plan',
-          pl.tier || 'private',
-          pl.months || 1,
-          pl.label || '1 Month',
-          parseFloat(pl.usd || base_price),
-          parseFloat(pl.bdt || base_price * 120),
-          parseFloat(pl.orig || base_price * 1.5),
-          pl.popular ? 1 : 0,
-          pl.devices || '1 Device',
-          pl.features || 'Standard access',
+          sanitizeInput(pl.plan_name || pl.name || '1 Month Dedicated'),
+          sanitizeInput(pl.tier_type || pl.tier || 'private'),
+          parseInt(pl.duration_months || pl.months || 1, 10),
+          sanitizeInput(pl.duration_label || pl.label || '1 Month'),
+          planUsd,
+          planBdt,
+          planOrigUsd,
+          planOrigBdt,
+          (pl.is_popular || pl.popular) ? 1 : 0,
+          sanitizeInput(pl.device_limit || pl.devices || '1 Device'),
+          sanitizeInput(pl.plan_features || pl.features || 'Full Premium Access'),
           order++
         );
       }
+    } else {
+      // Default standard fallback plan
+      const insertPlan = db.prepare(`
+        INSERT INTO product_plans (
+          product_id, plan_name, tier_type, duration_months, duration_label,
+          price_usd, price_bdt, original_price_usd, original_price_bdt, is_popular, device_limit, plan_features, sort_order
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      await insertPlan.run(
+        productId,
+        '1 Month Dedicated (PIN Profile)',
+        'private',
+        1,
+        '1 Month',
+        basePriceNum,
+        Math.round(basePriceNum * 120),
+        parseFloat((basePriceNum * 1.35).toFixed(2)),
+        Math.round(basePriceNum * 1.35 * 120),
+        1,
+        '1 Device',
+        'Private PIN Profile • 4K UHD • Full Warranty',
+        1
+      );
     }
 
-    res.json({ success: true, message: 'Product created successfully', productId });
+    // Optional Initial Stock into Credential Vault
+    if (initial_vault_item && (initial_vault_item.account_email || initial_vault_item.license_key || initial_vault_item.activation_link)) {
+      const insertVault = db.prepare(`
+        INSERT INTO credential_vault (
+          product_id, credential_type, account_email, account_password,
+          profile_name, profile_pin, license_key, activation_link, special_instructions, is_used
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+      `);
+
+      await insertVault.run(
+        productId,
+        initial_vault_item.credential_type || 'account',
+        sanitizeInput(initial_vault_item.account_email || ''),
+        initial_vault_item.account_password || '',
+        sanitizeInput(initial_vault_item.profile_name || 'Profile 1'),
+        sanitizeInput(initial_vault_item.profile_pin || ''),
+        sanitizeInput(initial_vault_item.license_key || ''),
+        sanitizeInput(initial_vault_item.activation_link || ''),
+        sanitizeInput(initial_vault_item.special_instructions || instructions || 'Use provided credentials to log in.')
+      );
+    }
+
+    res.json({ success: true, message: `Subscription "${title}" created and published successfully!`, productId });
   } catch (err) {
     console.error('Error creating product:', err);
-    res.status(500).json({ success: false, message: 'Failed to create product' });
+    res.status(500).json({ success: false, message: 'Failed to create product: ' + err.message });
   }
 });
 

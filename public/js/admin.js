@@ -611,9 +611,438 @@ async function deleteProduct(productId, title) {
   }
 }
 
+// =============================================================================
+// SUBSCRIPTION CREATOR STUDIO (EXECUTIVE EDITION v2.0)
+// =============================================================================
+
+const BRAND_PRESETS = [
+  { id: 'netflix', name: 'Netflix', logo: '/assets/brands/netflix.svg', cat: 1, title: 'Netflix Premium 4K UHD', tagline: 'Ultra HD 4K • Private Profile with PIN • Direct BD Streaming', badge: 'Official Verified', presetType: 'streaming' },
+  { id: 'prime', name: 'Prime Video', logo: '/assets/brands/prime-video.svg', cat: 1, title: 'Amazon Prime Video 4K', tagline: 'Full HD / 4K UHD • Private Profile • Ad-Free', badge: 'Hot Deal', presetType: 'streaming' },
+  { id: 'disney', name: 'Disney+', logo: '/assets/brands/disney-plus.svg', cat: 1, title: 'Disney+ Premium 4K UHD', tagline: 'Disney, Pixar, Marvel, Star Wars & Nat Geo • 4K HDR', badge: 'Family Choice', presetType: 'streaming' },
+  { id: 'spotify', name: 'Spotify', logo: '/assets/brands/spotify.svg', cat: 4, title: 'Spotify Premium Individual', tagline: 'Ad-Free Music • High Quality Audio • Offline Downloads', badge: 'Music #1', presetType: 'streaming' },
+  { id: 'youtube', name: 'YouTube', logo: '/assets/brands/youtube-premium.svg', cat: 4, title: 'YouTube Premium + Music', tagline: 'Ad-Free Video • Background Play • Includes YouTube Music', badge: 'Bestseller', presetType: 'streaming' },
+  { id: 'chatgpt', name: 'ChatGPT Plus', logo: '/assets/brands/chatgpt.svg', cat: 3, title: 'ChatGPT Plus (GPT-4o & Canvas)', tagline: 'Unlimited GPT-4o, DALL-E 3, Advanced Voice & Web Browsing', badge: 'AI Superpower', presetType: 'ai' },
+  { id: 'claude', name: 'Claude Pro', logo: '/assets/brands/claude-ai.svg', cat: 3, title: 'Claude Pro (Opus & Sonnet 3.5)', tagline: 'Claude 3.5 Sonnet & Haiku • 5x More Usage • Project Artifacts', badge: 'Top For Coders', presetType: 'ai' },
+  { id: 'midjourney', name: 'Midjourney', logo: '/assets/brands/midjourney.svg', cat: 3, title: 'Midjourney Standard Plan', tagline: 'Fast GPU Hours • Relax GPU Generation • Commercial Terms', badge: 'Creative AI', presetType: 'ai' },
+  { id: 'canva', name: 'Canva Pro', logo: '/assets/brands/canva.svg', cat: 5, title: 'Canva Pro (Team / Lifetime)', tagline: '100M+ Premium Stock Photos, Videos & Audio • Background Remover', badge: 'Great Value', presetType: 'software' },
+  { id: 'adobe', name: 'Adobe CC', logo: '/assets/brands/adobe-creative-cloud.svg', cat: 5, title: 'Adobe Creative Cloud All Apps', tagline: 'Photoshop, Illustrator, Premiere Pro, After Effects • 100GB Cloud', badge: 'Pro Suite', presetType: 'software' },
+  { id: 'crunchyroll', name: 'Crunchyroll', logo: '/assets/brands/crunchyroll.svg', cat: 1, title: 'Crunchyroll Mega Fan', tagline: 'Simulcast Anime • No Ads • Offline Viewing • 4 Concurrent Streams', badge: 'Anime Top', presetType: 'streaming' },
+  { id: 'nordvpn', name: 'NordVPN', logo: '/assets/brands/nordvpn.svg', cat: 6, title: 'NordVPN Ultimate Security', tagline: 'Ultra-Fast VPN • Threat Protection • Meshnet • 10 Devices', badge: 'Fastest VPN', presetType: 'software' },
+  { id: 'm365', name: 'Microsoft 365', logo: '/assets/brands/microsoft-365.svg', cat: 5, title: 'Microsoft 365 Family / Pro', tagline: 'Word, Excel, PowerPoint • 1TB OneDrive Cloud Storage', badge: 'Productivity Pro', presetType: 'software' },
+  { id: 'googleone', name: 'Google One', logo: '/assets/brands/google-one.svg', cat: 5, title: 'Google One 2TB Cloud Storage', tagline: '2TB Cloud Storage for Google Drive, Gmail & Photos • Family Sharing', badge: 'Cloud Storage', presetType: 'software' },
+  { id: 'hbomax', name: 'HBO Max', logo: '/assets/brands/hbo-max.svg', cat: 1, title: 'HBO Max (Max) Ultimate 4K', tagline: 'Warner Bros, HBO Originals, DC Universe & 4K UHD Streams', badge: 'HBO Exclusive', presetType: 'streaming' },
+  { id: 'applemusic', name: 'Apple Music', logo: '/assets/brands/apple-music.svg', cat: 4, title: 'Apple Music Lossless + Spatial', tagline: 'Spatial Audio with Dolby Atmos • 100 Million Songs • Lossless', badge: 'Lossless Audio', presetType: 'streaming' },
+  { id: 'chorki', name: 'Chorki', logo: '/assets/brands/chorki.png', cat: 2, title: 'Chorki Premium Bengali OTT', tagline: 'Exclusive Bengali Movies, Original Web Series & Films', badge: 'Bengali Top', presetType: 'streaming' },
+  { id: 'hoichoi', name: 'Hoichoi', logo: '/assets/brands/hoichoi.png', cat: 2, title: 'Hoichoi TV Premium Bengali', tagline: 'Top Bengali Web Series, World Digital Premieres & Classics', badge: 'Dhaka Favorite', presetType: 'streaming' }
+];
+
+let studioPlans = [];
+let studioSlugManuallyEdited = false;
+let studioPlanCounter = 0;
+
+function renderBrandPresets() {
+  const container = document.getElementById('brandPresetsContainer');
+  if (!container) return;
+  container.innerHTML = BRAND_PRESETS.map(b => `
+    <div class="brand-preset-chip" data-id="${b.id}" onclick="selectBrandPreset('${b.id}')">
+      <img src="${b.logo}" alt="${b.name}" onerror="this.style.display='none'">
+      <span>${b.name}</span>
+    </div>
+  `).join('');
+}
+
+function selectBrandPreset(brandId) {
+  const preset = BRAND_PRESETS.find(b => b.id === brandId);
+  if (!preset) return;
+
+  document.querySelectorAll('.brand-preset-chip').forEach(c => {
+    c.classList.toggle('active', c.getAttribute('data-id') === brandId);
+  });
+
+  const titleInput = document.getElementById('prodTitleInput');
+  const slugInput = document.getElementById('prodSlugInput');
+  const logoInput = document.getElementById('prodLogoInput');
+  const catSelect = document.getElementById('prodCategorySelect');
+  const taglineInput = document.getElementById('prodTaglineInput');
+  const badgeInput = document.getElementById('prodBadgeInput');
+
+  if (logoInput) logoInput.value = preset.logo;
+  if (catSelect) catSelect.value = String(preset.cat);
+  if (badgeInput) badgeInput.value = preset.badge;
+  if (taglineInput) taglineInput.value = preset.tagline;
+  if (titleInput) {
+    titleInput.value = preset.title;
+    if (!studioSlugManuallyEdited && slugInput) {
+      slugInput.value = generateSlug(preset.title);
+    }
+  }
+
+  if (preset.presetType) {
+    loadPlanPreset(preset.presetType);
+  }
+
+  syncLivePreview();
+}
+
+function handleTitleInput(val) {
+  if (!studioSlugManuallyEdited) {
+    const slugInput = document.getElementById('prodSlugInput');
+    if (slugInput) slugInput.value = generateSlug(val);
+  }
+  syncLivePreview();
+}
+
+function handleSlugInput(val) {
+  studioSlugManuallyEdited = Boolean(val && val.trim().length > 0);
+  syncLivePreview();
+}
+
+function generateSlug(text) {
+  return String(text || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function setBadge(val) {
+  const input = document.getElementById('prodBadgeInput');
+  if (input) {
+    input.value = val;
+    syncLivePreview();
+  }
+}
+
+function setDelivery(val) {
+  const input = document.getElementById('prodDeliveryInput');
+  if (input) {
+    input.value = val;
+    syncLivePreview();
+  }
+}
+
+function setWarranty(val) {
+  const input = document.getElementById('prodWarrantyInput');
+  if (input) {
+    input.value = val;
+    syncLivePreview();
+  }
+}
+
+function toggleVaultPrestock(checked) {
+  const fields = document.getElementById('vaultPrestockFields');
+  if (fields) fields.style.display = checked ? 'block' : 'none';
+  syncLivePreview();
+}
+
+function addPlanRow(planData = null) {
+  studioPlanCounter++;
+  const plan = planData || {
+    id: `plan_${Date.now()}_${studioPlanCounter}`,
+    name: '1 Month Private PIN Profile',
+    tier: 'private',
+    months: 1,
+    label: '1 Month',
+    bdt: 349,
+    usd: 2.99,
+    origBdt: 550,
+    origUsd: 4.50,
+    devices: '1 Device',
+    popular: false,
+    features: '4K Ultra HD • PIN Locked • 1 Screen'
+  };
+
+  studioPlans.push(plan);
+  renderPlansList();
+  syncLivePreview();
+}
+
+function removePlanRow(planId) {
+  if (studioPlans.length <= 1) {
+    showToast('A product must have at least one subscription plan.', 'error');
+    return;
+  }
+  studioPlans = studioPlans.filter(p => p.id !== planId);
+  renderPlansList();
+  syncLivePreview();
+}
+
+function updatePlanField(planId, field, value) {
+  const plan = studioPlans.find(p => p.id === planId);
+  if (!plan) return;
+
+  if (field === 'bdt') {
+    const num = parseFloat(value) || 0;
+    plan.bdt = num;
+    plan.usd = parseFloat((num / 120).toFixed(2));
+    if (!plan.origBdt || plan.origBdt <= plan.bdt) {
+      plan.origBdt = Math.round(num * 1.35);
+      plan.origUsd = parseFloat((plan.origBdt / 120).toFixed(2));
+    }
+  } else if (field === 'usd') {
+    const num = parseFloat(value) || 0;
+    plan.usd = num;
+    plan.bdt = Math.round(num * 120);
+    if (!plan.origUsd || plan.origUsd <= plan.usd) {
+      plan.origUsd = parseFloat((num * 1.35).toFixed(2));
+      plan.origBdt = Math.round(plan.origUsd * 120);
+    }
+  } else if (field === 'origBdt') {
+    const num = parseFloat(value) || 0;
+    plan.origBdt = num;
+    plan.origUsd = parseFloat((num / 120).toFixed(2));
+  } else if (field === 'origUsd') {
+    const num = parseFloat(value) || 0;
+    plan.origUsd = num;
+    plan.origBdt = Math.round(num * 120);
+  } else if (field === 'months') {
+    plan.months = parseInt(value, 10) || 1;
+  } else if (field === 'popular') {
+    plan.popular = Boolean(value);
+  } else {
+    plan[field] = value;
+  }
+
+  const rowEl = document.getElementById(`plan_row_${planId}`);
+  if (rowEl) {
+    const bdtIn = rowEl.querySelector('.input-plan-bdt');
+    const usdIn = rowEl.querySelector('.input-plan-usd');
+    const origBdtIn = rowEl.querySelector('.input-plan-orig-bdt');
+    const origUsdIn = rowEl.querySelector('.input-plan-orig-usd');
+    if (bdtIn && field !== 'bdt') bdtIn.value = plan.bdt;
+    if (usdIn && field !== 'usd') usdIn.value = plan.usd;
+    if (origBdtIn && field !== 'origBdt') origBdtIn.value = plan.origBdt;
+    if (origUsdIn && field !== 'origUsd') origUsdIn.value = plan.origUsd;
+  }
+
+  syncLivePreview();
+}
+
+function renderPlansList() {
+  const container = document.getElementById('plansListContainer');
+  const countBadge = document.getElementById('planCountBadge');
+  if (!container) return;
+
+  if (countBadge) countBadge.textContent = `${studioPlans.length} ${studioPlans.length === 1 ? 'Plan' : 'Plans'}`;
+
+  container.innerHTML = studioPlans.map((p, idx) => `
+    <div class="plan-item-card" id="plan_row_${p.id}">
+      <div class="plan-item-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:0.75rem; font-weight:700; color:#94a3b8; background:rgba(255,255,255,0.06); padding:2px 8px; border-radius:6px;">#${idx + 1}</span>
+          <strong style="font-size:0.86rem; color:#f8fafc;">${p.name || 'Custom Plan'}</strong>
+          ${p.popular ? '<span style="font-size:0.68rem; background:#8b5cf6; color:#fff; padding:1px 6px; border-radius:10px; font-weight:700;">POPULAR</span>' : ''}
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <label style="font-size:0.74rem; color:#cbd5e1; display:flex; align-items:center; gap:4px; cursor:pointer;">
+            <input type="checkbox" ${p.popular ? 'checked' : ''} onchange="updatePlanField('${p.id}', 'popular', this.checked)">
+            <span>Mark Popular</span>
+          </label>
+          <button type="button" onclick="removePlanRow('${p.id}')" style="background:none; border:none; color:#ef4444; font-size:0.85rem; cursor:pointer; padding:2px 6px;" title="Remove this plan">🗑️</button>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.4fr 0.9fr 0.9fr; gap:8px; margin-bottom:8px;">
+        <div>
+          <label style="font-size:0.72rem; color:#94a3b8;">Plan Name</label>
+          <input type="text" class="form-input" style="padding:6px 10px; font-size:0.8rem;" value="${p.name}" oninput="updatePlanField('${p.id}', 'name', this.value)">
+        </div>
+        <div>
+          <label style="font-size:0.72rem; color:#94a3b8;">Duration Months</label>
+          <input type="number" min="0" max="60" class="form-input" style="padding:6px 10px; font-size:0.8rem;" value="${p.months}" oninput="updatePlanField('${p.id}', 'months', this.value)">
+        </div>
+        <div>
+          <label style="font-size:0.72rem; color:#94a3b8;">Duration Label</label>
+          <input type="text" class="form-input" style="padding:6px 10px; font-size:0.8rem;" value="${p.label}" oninput="updatePlanField('${p.id}', 'label', this.value)">
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:8px; margin-bottom:8px;">
+        <div>
+          <label style="font-size:0.72rem; color:#94a3b8;">Tier Type</label>
+          <select class="form-input" style="padding:6px 10px; font-size:0.8rem;" onchange="updatePlanField('${p.id}', 'tier', this.value)">
+            <option value="private" ${p.tier === 'private' ? 'selected' : ''}>Private Profile (PIN locked)</option>
+            <option value="shared" ${p.tier === 'shared' ? 'selected' : ''}>Shared Screen Access</option>
+            <option value="family" ${p.tier === 'family' ? 'selected' : ''}>Full Account (Family/Private)</option>
+            <option value="license" ${p.tier === 'license' ? 'selected' : ''}>License Key / Serial / Invite</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:0.72rem; color:#94a3b8;">Device / Screen Limit</label>
+          <input type="text" class="form-input" style="padding:6px 10px; font-size:0.8rem;" value="${p.devices || '1 Device'}" oninput="updatePlanField('${p.id}', 'devices', this.value)">
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px;">
+        <div>
+          <label style="font-size:0.72rem; color:#34d399; font-weight:700;">Price (৳ BDT) *</label>
+          <input type="number" step="1" class="form-input input-plan-bdt" style="padding:6px 10px; font-size:0.82rem; font-weight:700; color:#34d399;" value="${p.bdt}" oninput="updatePlanField('${p.id}', 'bdt', this.value)">
+        </div>
+        <div>
+          <label style="font-size:0.72rem; color:#38bdf8; font-weight:700;">Price ($ USD) *</label>
+          <input type="number" step="0.01" class="form-input input-plan-usd" style="padding:6px 10px; font-size:0.82rem; font-weight:700; color:#38bdf8;" value="${p.usd}" oninput="updatePlanField('${p.id}', 'usd', this.value)">
+        </div>
+        <div>
+          <label style="font-size:0.72rem; color:#94a3b8;">Original (৳ BDT)</label>
+          <input type="number" step="1" class="form-input input-plan-orig-bdt" style="padding:6px 10px; font-size:0.82rem;" value="${p.origBdt || ''}" oninput="updatePlanField('${p.id}', 'origBdt', this.value)">
+        </div>
+        <div>
+          <label style="font-size:0.72rem; color:#94a3b8;">Original ($ USD)</label>
+          <input type="number" step="0.01" class="form-input input-plan-orig-usd" style="padding:6px 10px; font-size:0.82rem;" value="${p.origUsd || ''}" oninput="updatePlanField('${p.id}', 'origUsd', this.value)">
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadPlanPreset(type) {
+  studioPlans = [];
+  if (type === 'streaming') {
+    studioPlans = [
+      { id: 'plan_1', name: '1 Month Private PIN Profile', tier: 'private', months: 1, label: '1 Month', bdt: 349, usd: 2.99, origBdt: 550, origUsd: 4.50, devices: '1 Screen (4K UHD)', popular: false, features: '4K Ultra HD • PIN Locked • 1 Screen' },
+      { id: 'plan_2', name: '3 Months Private PIN Profile', tier: 'private', months: 3, label: '3 Months', bdt: 999, usd: 8.49, origBdt: 1650, origUsd: 13.99, devices: '1 Screen (4K UHD)', popular: true, features: '4K Ultra HD • PIN Locked • 3 Months Warranty' },
+      { id: 'plan_3', name: '6 Months Private PIN Profile', tier: 'private', months: 6, label: '6 Months', bdt: 1899, usd: 15.99, origBdt: 3300, origUsd: 27.99, devices: '1 Screen (4K UHD)', popular: false, features: '4K Ultra HD • PIN Locked • 6 Months Warranty' },
+      { id: 'plan_4', name: '12 Months Private PIN Profile', tier: 'private', months: 12, label: '1 Year', bdt: 3499, usd: 28.99, origBdt: 6600, origUsd: 54.99, devices: '1 Screen (4K UHD)', popular: false, features: 'Full 1-Year Ultra HD Access • Guaranteed Uptime' }
+    ];
+  } else if (type === 'ai') {
+    studioPlans = [
+      { id: 'plan_1', name: '1 Month Shared Screen Access', tier: 'shared', months: 1, label: '1 Mo Shared', bdt: 499, usd: 4.20, origBdt: 850, origUsd: 7.20, devices: '1 Device', popular: false, features: 'Shared Screen • Fast Processing • Instant Vault' },
+      { id: 'plan_2', name: '1 Month Private Dedicated Account', tier: 'private', months: 1, label: '1 Mo Private', bdt: 2399, usd: 19.99, origBdt: 2900, origUsd: 24.50, devices: 'Your Email / Private', popular: true, features: 'Private Dedicated Account • Full Privacy • Max Rate Limits' },
+      { id: 'plan_3', name: '1 Year Full Pro Membership', tier: 'private', months: 12, label: '1 Year Pro', bdt: 21999, usd: 184.99, origBdt: 29999, origUsd: 250.00, devices: 'Dedicated Account', popular: false, features: '12 Months Guaranteed Pro Access • Priority Support' }
+    ];
+  } else if (type === 'software') {
+    studioPlans = [
+      { id: 'plan_1', name: '1 Month Pro License', tier: 'license', months: 1, label: '1 Month', bdt: 299, usd: 2.50, origBdt: 499, origUsd: 4.20, devices: '1 Device', popular: false, features: 'Official License Key • 30 Days Access' },
+      { id: 'plan_2', name: '1 Year Pro License Key', tier: 'license', months: 12, label: '1 Year', bdt: 1499, usd: 12.50, origBdt: 3500, origUsd: 29.50, devices: 'Multi-Device Support', popular: true, features: 'Full 1-Year License Key • Official Activation' },
+      { id: 'plan_3', name: 'Lifetime Commercial License', tier: 'license', months: 0, label: 'Lifetime', bdt: 2999, usd: 24.99, origBdt: 6500, origUsd: 55.00, devices: 'Lifetime Validity', popular: false, features: 'One-Time Payment • Lifetime Valid Key & Updates' }
+    ];
+  }
+  renderPlansList();
+  syncLivePreview();
+}
+
+function syncLivePreview() {
+  const title = (document.getElementById('prodTitleInput')?.value || 'Subscription Title').trim();
+  const tagline = (document.getElementById('prodTaglineInput')?.value || '').trim();
+  const logo = (document.getElementById('prodLogoInput')?.value || '/assets/brands/netflix.svg').trim();
+  const badge = (document.getElementById('prodBadgeInput')?.value || 'Official Verified').trim();
+  const delivery = (document.getElementById('prodDeliveryInput')?.value || '60s Instant Delivery').trim();
+  const warranty = (document.getElementById('prodWarrantyInput')?.value || 'Full Duration Warranty').trim();
+  const catSelect = document.getElementById('prodCategorySelect');
+  const catText = catSelect && catSelect.selectedIndex >= 0 ? catSelect.options[catSelect.selectedIndex].text : 'OTT & Streaming';
+
+  const prevImg = document.getElementById('prevCardImg');
+  const prevBadge = document.getElementById('prevCardBadge');
+  const prevDelivery = document.getElementById('prevCardDeliveryText');
+  const prevCat = document.getElementById('prevCardCat');
+  const prevTitle = document.getElementById('prevCardTitle');
+  const prevTagline = document.getElementById('prevCardTagline');
+  const prevTiers = document.getElementById('prevCardTiers');
+  const prevOffer = document.getElementById('prevOfferPrice');
+  const prevOrig = document.getElementById('prevOrigPrice');
+  const prevDisc = document.getElementById('prevDiscountPill');
+  const prevWarr = document.getElementById('prevWarrantyLabel');
+
+  if (prevImg) prevImg.src = logo;
+  if (prevBadge) {
+    prevBadge.textContent = badge;
+    const cleanBadgeClass = badge.toLowerCase().replace(/[^a-z0-9]/g, '');
+    prevBadge.className = `badge-tag ${cleanBadgeClass || 'officialverified'}`;
+  }
+  if (prevDelivery) prevDelivery.textContent = delivery;
+  if (prevCat) prevCat.textContent = catText;
+  if (prevTitle) prevTitle.textContent = title;
+  if (prevTagline) prevTagline.textContent = tagline;
+  if (prevWarr) prevWarr.textContent = warranty.includes('Warranty') ? warranty : `${warranty} Warranty`;
+
+  if (prevTiers) {
+    if (studioPlans.length === 0) {
+      prevTiers.innerHTML = '<span class="tier-chip active">1 Month</span>';
+    } else {
+      prevTiers.innerHTML = studioPlans.map((p, idx) => `
+        <span class="tier-chip ${idx === 0 ? 'active' : ''}">${p.label || `${p.months} Mo`}</span>
+      `).join('');
+    }
+  }
+
+  let minBdt = Infinity;
+  let minUsd = Infinity;
+  let maxBdt = 0;
+  let minOrigBdt = 0;
+
+  if (studioPlans.length > 0) {
+    for (const p of studioPlans) {
+      const bdt = parseFloat(p.bdt) || 0;
+      const usd = parseFloat(p.usd) || 0;
+      if (bdt < minBdt) {
+        minBdt = bdt;
+        minUsd = usd;
+        minOrigBdt = parseFloat(p.origBdt) || Math.round(bdt * 1.35);
+      }
+      if (bdt > maxBdt) maxBdt = bdt;
+    }
+  } else {
+    minBdt = 349;
+    minUsd = 2.99;
+    maxBdt = 349;
+    minOrigBdt = 550;
+  }
+
+  if (prevOffer) prevOffer.textContent = `৳ ${minBdt}`;
+  if (prevOrig) {
+    if (minOrigBdt > minBdt) {
+      prevOrig.textContent = `৳ ${minOrigBdt}`;
+      prevOrig.style.display = 'inline';
+    } else {
+      prevOrig.style.display = 'none';
+    }
+  }
+  if (prevDisc) {
+    if (minOrigBdt > minBdt) {
+      const disc = Math.round(((minOrigBdt - minBdt) / minOrigBdt) * 100);
+      prevDisc.textContent = `${disc}% OFF`;
+      prevDisc.style.display = 'inline-block';
+    } else {
+      prevDisc.style.display = 'none';
+    }
+  }
+
+  const metaBase = document.getElementById('metaBasePrice');
+  const metaPlans = document.getElementById('metaPlanCount');
+  const metaRange = document.getElementById('metaPriceRange');
+  const metaVault = document.getElementById('metaVaultStatus');
+
+  if (metaBase) metaBase.textContent = `৳ ${minBdt} ($${minUsd.toFixed(2)})`;
+  if (metaPlans) metaPlans.textContent = `${studioPlans.length} ${studioPlans.length === 1 ? 'Plan' : 'Plans'} Configured`;
+  if (metaRange) metaRange.textContent = minBdt === maxBdt ? `৳ ${minBdt}` : `৳ ${minBdt} – ৳ ${maxBdt}`;
+  
+  const vaultEnabled = document.getElementById('enableVaultPrestockToggle')?.checked;
+  if (metaVault) {
+    if (vaultEnabled) {
+      metaVault.textContent = '1 Credential Ready for Vault';
+      metaVault.style.color = '#34d399';
+    } else {
+      metaVault.textContent = 'None (Will Add Later)';
+      metaVault.style.color = '#94a3b8';
+    }
+  }
+}
+
 function openAddProductModal() {
   const modal = document.getElementById('addProductModal');
-  if (modal) modal.style.display = 'flex';
+  if (!modal) return;
+
+  studioSlugManuallyEdited = false;
+  renderBrandPresets();
+
+  if (studioPlans.length === 0) {
+    selectBrandPreset('netflix');
+  } else {
+    syncLivePreview();
+  }
+
+  modal.style.display = 'flex';
 }
 
 function closeAddProductModal() {
@@ -624,20 +1053,97 @@ function closeAddProductModal() {
 async function handleCreateProduct(e) {
   e.preventDefault();
   const form = e.target;
+  const submitBtn = document.getElementById('submitProductBtn');
+
+  if (studioPlans.length === 0) {
+    showToast('Please add at least one subscription plan tier.', 'error');
+    return;
+  }
+
+  const title = form.title.value.trim();
+  const slug = form.slug.value.trim().toLowerCase();
+  const categoryId = parseInt(form.category_id.value, 10);
+
+  if (!title || !slug || !categoryId) {
+    showToast('Please fill in Title, Slug, and Category.', 'error');
+    return;
+  }
+
+  let minUsd = Infinity;
+  let minBdt = Infinity;
+  let minOrigUsd = 0;
+  let minOrigBdt = 0;
+
+  for (const p of studioPlans) {
+    const usd = parseFloat(p.usd) || 0;
+    const bdt = parseFloat(p.bdt) || 0;
+    if (usd < minUsd) {
+      minUsd = usd;
+      minBdt = bdt;
+      minOrigUsd = parseFloat(p.origUsd) || parseFloat((usd * 1.35).toFixed(2));
+      minOrigBdt = parseFloat(p.origBdt) || Math.round(minOrigUsd * 120);
+    }
+  }
+
+  const featuresText = document.getElementById('prodFeaturesInput')?.value || '';
+  const featuresList = featuresText.split('\n').map(s => s.trim()).filter(Boolean);
+
   const payload = {
-    category_id: parseInt(form.category_id.value, 10),
-    title: form.title.value.trim(),
-    slug: form.slug.value.trim().toLowerCase(),
-    tagline: form.tagline.value.trim(),
-    description: form.description.value.trim(),
-    logo_url: form.logo_url.value.trim(),
-    badge: form.badge.value.trim(),
-    base_price: parseFloat(form.base_price.value),
-    original_price: parseFloat(form.base_price.value * 1.5),
-    plans: [
-      { name: '1 Month Standard', tier: 'private', months: 1, label: '1 Month', usd: parseFloat(form.base_price.value), bdt: parseFloat(form.base_price.value) * 120 }
-    ]
+    category_id: categoryId,
+    title,
+    slug,
+    tagline: (form.tagline?.value || '').trim(),
+    description: (form.description?.value || '').trim(),
+    logo_url: (form.logo_url?.value || '/assets/brands/netflix.svg').trim(),
+    badge: (form.badge?.value || 'Official Verified').trim(),
+    delivery_time: (form.delivery_time?.value || '60s Instant Delivery').trim(),
+    warranty: (form.warranty?.value || 'Full Duration Warranty').trim(),
+    stock_status: form.stock_status?.value || 'in_stock',
+    base_price: minUsd,
+    original_price: minOrigUsd,
+    original_price_bdt: minOrigBdt,
+    is_featured: Boolean(document.getElementById('prodIsFeatured')?.checked),
+    is_trending: Boolean(document.getElementById('prodIsTrending')?.checked),
+    is_bestseller: Boolean(document.getElementById('prodIsBestseller')?.checked),
+    features_list: featuresList,
+    instructions: (document.getElementById('prodInstructionsInput')?.value || '').trim(),
+    plans: studioPlans.map(p => ({
+      plan_name: p.name,
+      tier_type: p.tier,
+      duration_months: parseInt(p.months, 10) || 1,
+      duration_label: p.label,
+      price_usd: parseFloat(p.usd) || minUsd,
+      price_bdt: parseFloat(p.bdt) || minBdt,
+      original_price_usd: parseFloat(p.origUsd) || minOrigUsd,
+      original_price_bdt: parseFloat(p.origBdt) || minOrigBdt,
+      is_popular: Boolean(p.popular),
+      device_limit: p.devices || '1 Device',
+      plan_features: p.features || 'Full Premium Access'
+    }))
   };
+
+  const vaultToggle = document.getElementById('enableVaultPrestockToggle');
+  if (vaultToggle && vaultToggle.checked) {
+    const credType = document.getElementById('vaultCredType')?.value || 'profile_pin';
+    const email = document.getElementById('vaultEmail')?.value.trim();
+    const password = document.getElementById('vaultPassword')?.value.trim();
+    const profilePin = document.getElementById('vaultProfilePin')?.value.trim();
+
+    if (email || password || profilePin) {
+      payload.initial_vault_item = {
+        credential_type: credType,
+        account_email: email,
+        account_password: password,
+        profile_pin: profilePin,
+        special_instructions: payload.instructions
+      };
+    }
+  }
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span>⏳ Publishing Subscription...</span>';
+  }
 
   try {
     const res = await fetch('/api/admin/products', {
@@ -650,14 +1156,20 @@ async function handleCreateProduct(e) {
     });
     const json = await res.json();
     if (json.success) {
-      showToast('Subscription product created successfully!');
+      showToast('🎉 Subscription product published successfully!', 'success');
       closeAddProductModal();
       loadProductsList();
     } else {
-      alert(`Error: ${json.message}`);
+      alert(`Error publishing subscription: ${json.message}`);
     }
   } catch (err) {
     console.error('Create product error:', err);
+    showToast('Network error while publishing product', 'error');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span>🚀 Publish Subscription to Catalog</span>';
+    }
   }
 }
 

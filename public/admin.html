@@ -300,6 +300,229 @@
       gap: 10px;
       z-index: 10000;
     }
+
+    /* ==========================================================================
+       SUBSCRIPTION CREATOR STUDIO (EXECUTIVE EDITION)
+       ========================================================================== */
+    .studio-modal-box {
+      max-width: 1160px !important;
+      width: 96vw !important;
+      max-height: 92vh !important;
+      padding: 24px 28px !important;
+      background: #0d121f !important;
+      border: 1px solid rgba(139, 92, 246, 0.3) !important;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9) !important;
+      border-radius: 18px !important;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .studio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+    }
+
+    .studio-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(56, 189, 248, 0.25));
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #c084fc;
+    }
+
+    .studio-layout {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 24px;
+      overflow-y: auto;
+      padding-right: 8px;
+      max-height: calc(92vh - 110px);
+    }
+
+    .studio-layout::-webkit-scrollbar {
+      width: 6px;
+    }
+    .studio-layout::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+    .studio-layout::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+    .studio-layout::-webkit-scrollbar-thumb:hover {
+      background: rgba(139, 92, 246, 0.4);
+    }
+
+    @media (max-width: 980px) {
+      .studio-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .studio-section {
+      background: rgba(17, 24, 39, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+    }
+
+    .studio-section-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 8px;
+    }
+
+    .brand-presets-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+      max-height: 110px;
+      overflow-y: auto;
+      padding: 6px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .brand-preset-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.76rem;
+      color: #e2e8f0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .brand-preset-chip:hover {
+      background: rgba(139, 92, 246, 0.25);
+      border-color: #8b5cf6;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .brand-preset-chip.active {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(56, 189, 248, 0.3));
+      border-color: #a855f7;
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.35);
+    }
+
+    .brand-preset-chip img {
+      width: 15px;
+      height: 15px;
+      object-fit: contain;
+    }
+
+    .quick-pill-btn {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .quick-pill-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+
+    .btn-preset-quick {
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      color: #c084fc;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-preset-quick:hover {
+      background: #8b5cf6;
+      color: #ffffff;
+    }
+
+    .plan-item-card {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      transition: border-color 0.2s ease;
+    }
+
+    .plan-item-card:hover {
+      border-color: rgba(139, 92, 246, 0.35);
+    }
+
+    .plan-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-add-plan {
+      width: 100%;
+      border: 1px dashed rgba(139, 92, 246, 0.4);
+      background: rgba(139, 92, 246, 0.06);
+      color: #c084fc;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-add-plan:hover {
+      background: rgba(139, 92, 246, 0.15);
+      border-color: #a855f7;
+      color: #ffffff;
+    }
+
+    .preview-sticky-wrap {
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
   </style>
 </head>
 <body>
@@ -870,65 +1093,341 @@
     </div>
   </div>
 
-  <!-- Add Product Modal -->
+  <!-- Executive Subscription Creator Studio Modal -->
   <div id="addProductModal" class="modal-overlay" style="display:none;" onclick="closeAddProductModal()">
-    <div class="modal-box" style="max-width:640px; padding:30px;" onclick="event.stopPropagation()">
-      <button class="modal-close-btn" onclick="closeAddProductModal()">✕</button>
-      <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:16px;">Publish New Subscription Product</h3>
-
-      <form onsubmit="handleCreateProduct(event)">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
-          <div class="form-group">
-            <label>Category</label>
-            <select name="category_id" class="form-input">
-              <option value="1">OTT & Streaming</option>
-              <option value="2">Regional Bengali OTT</option>
-              <option value="3">AI & Productivity</option>
-              <option value="4">Music & Audio</option>
-              <option value="5">Cloud & Creative</option>
-              <option value="6">VPN & Security</option>
-            </select>
+    <div class="modal-box studio-modal-box" onclick="event.stopPropagation()">
+      <div class="studio-header">
+        <div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <span class="studio-badge">✨ SUBSCRIPTION CREATOR STUDIO v2.0</span>
+            <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:2px 8px; border-radius:12px;">Auto Multi-Tier & Pricing Sync</span>
           </div>
-          <div class="form-group">
-            <label>Badge Tag</label>
-            <input type="text" name="badge" class="form-input" placeholder="e.g. Bestseller, Hot Deal" value="New">
+          <h2 style="font-size:1.35rem; font-weight:800; margin:0; color:#f8fafc;">Publish Subscription Offering</h2>
+          <p style="font-size:0.82rem; color:#94a3b8; margin:4px 0 0;">
+            Define multi-tier plans, brand assets, real-time BDT (৳) & USD ($) pricing, warranty SLAs, and preview storefront card live.
+          </p>
+        </div>
+        <button class="modal-close-btn" onclick="closeAddProductModal()" style="position:static;">✕</button>
+      </div>
+
+      <form id="createProductForm" onsubmit="handleCreateProduct(event)">
+        <div class="studio-layout">
+          
+          <!-- LEFT COLUMN: Configurations & Builders -->
+          <div class="studio-form-col">
+
+            <!-- 1. Brand & General Info -->
+            <div class="studio-section">
+              <div class="studio-section-title">
+                <span>🏷️ 1. Brand Identity & General Details</span>
+                <span style="font-size:0.72rem; color:#94a3b8;">Required Fields *</span>
+              </div>
+
+              <!-- Brand Logo Presets Catalogue -->
+              <div style="margin-bottom:12px;">
+                <label style="display:flex; justify-content:space-between; font-size:0.78rem; font-weight:600; color:#cbd5e1; margin-bottom:6px;">
+                  <span>Quick Brand Presets (1-Click Fill)</span>
+                  <span style="color:#a855f7; font-size:0.72rem;">Click to auto-populate logo & templates</span>
+                </label>
+                <div class="brand-presets-grid" id="brandPresetsContainer">
+                  <!-- Populated dynamically via JS -->
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label>Subscription Title *</label>
+                  <input type="text" id="prodTitleInput" name="title" class="form-input" placeholder="e.g. Netflix Premium 4K UHD" required oninput="handleTitleInput(this.value)">
+                </div>
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label>Slug (URL Key) *</label>
+                  <input type="text" id="prodSlugInput" name="slug" class="form-input" placeholder="e.g. netflix-premium-4k-uhd" required oninput="handleSlugInput(this.value)">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label>Category *</label>
+                  <select id="prodCategorySelect" name="category_id" class="form-input" onchange="syncLivePreview()">
+                    <option value="1">OTT & Streaming</option>
+                    <option value="2">Regional Bengali OTT</option>
+                    <option value="3">AI & Productivity</option>
+                    <option value="4">Music & Audio</option>
+                    <option value="5">Cloud & Creative</option>
+                    <option value="6">VPN & Security</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label>Logo Asset URL *</label>
+                  <input type="text" id="prodLogoInput" name="logo_url" class="form-input" placeholder="/assets/brands/netflix.svg" required oninput="syncLivePreview()">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:12px;">
+                <label>Tagline / Highlights</label>
+                <input type="text" id="prodTaglineInput" name="tagline" class="form-input" placeholder="Ultra HD 4K • Private Profile with PIN • Direct BD Streaming" oninput="syncLivePreview()">
+              </div>
+
+              <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:12px;">
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label>Store Badge Tag</label>
+                  <input type="text" id="prodBadgeInput" name="badge" class="form-input" placeholder="e.g. Official Verified" value="Official Verified" oninput="syncLivePreview()">
+                  <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:6px;">
+                    <button type="button" class="quick-pill-btn" onclick="setBadge('Official Verified')">Official</button>
+                    <button type="button" class="quick-pill-btn" onclick="setBadge('Bestseller')">Bestseller</button>
+                    <button type="button" class="quick-pill-btn" onclick="setBadge('Hot Deal')">Hot Deal</button>
+                    <button type="button" class="quick-pill-btn" onclick="setBadge('Top Pick')">Top Pick</button>
+                    <button type="button" class="quick-pill-btn" onclick="setBadge('Ultra HD 4K')">4K UHD</button>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label>Stock Status</label>
+                  <select id="prodStockStatusSelect" name="stock_status" class="form-input" onchange="syncLivePreview()">
+                    <option value="in_stock">✅ In Stock (Instant Dispatch)</option>
+                    <option value="limited">⚠️ Limited Stock Available</option>
+                    <option value="pre_order">⏳ Pre-Order / Restocking</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Description (Details, Features & Access Rules)</label>
+                <textarea id="prodDescInput" name="description" class="form-input" style="height:60px; resize:vertical; font-size:0.83rem; line-height:1.4;" placeholder="Provide comprehensive package details, benefits, device compatibility, and terms..."></textarea>
+              </div>
+            </div>
+
+            <!-- 2. Multi-Plan Pricing Builder -->
+            <div class="studio-section">
+              <div class="studio-section-title">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span>💳 2. Subscription Plans & Duration Tiers</span>
+                  <span id="planCountBadge" style="background:#8b5cf6; color:#fff; font-size:0.72rem; padding:1px 8px; border-radius:10px; font-weight:700;">0 Plans</span>
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <button type="button" class="btn-preset-quick" onclick="loadPlanPreset('streaming')" title="1, 3, 6, 12 Month standard streaming tiers">
+                    ⚡ Streaming
+                  </button>
+                  <button type="button" class="btn-preset-quick" onclick="loadPlanPreset('ai')" title="Shared vs Dedicated AI tiers">
+                    ⚡ AI Tools
+                  </button>
+                  <button type="button" class="btn-preset-quick" onclick="loadPlanPreset('software')" title="Monthly, Annual & Lifetime tiers">
+                    ⚡ Software
+                  </button>
+                </div>
+              </div>
+
+              <div id="plansListContainer">
+                <!-- Dynamically injected plan row cards -->
+              </div>
+
+              <button type="button" class="btn-add-plan" onclick="addPlanRow()">
+                <span>+</span> Add Custom Duration Plan
+              </button>
+            </div>
+
+            <!-- 3. Delivery SLAs, Warranty & Visibility -->
+            <div class="studio-section">
+              <div class="studio-section-title">
+                <span>🛡️ 3. Delivery SLA, Warranty & Discovery Badging</span>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+                <div class="form-group">
+                  <label>Delivery Guarantee SLA</label>
+                  <input type="text" id="prodDeliveryInput" name="delivery_time" class="form-input" value="60s Instant Delivery" oninput="syncLivePreview()">
+                  <div style="display:flex; gap:4px; margin-top:4px;">
+                    <button type="button" class="quick-pill-btn" onclick="setDelivery('60s Instant Delivery')">60s Vault</button>
+                    <button type="button" class="quick-pill-btn" onclick="setDelivery('5-15 Mins Fast Delivery')">5-15m</button>
+                    <button type="button" class="quick-pill-btn" onclick="setDelivery('Within 1 Hour')">1 Hour</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Replacement Warranty</label>
+                  <input type="text" id="prodWarrantyInput" name="warranty" class="form-input" value="Full Duration Warranty" oninput="syncLivePreview()">
+                  <div style="display:flex; gap:4px; margin-top:4px;">
+                    <button type="button" class="quick-pill-btn" onclick="setWarranty('Full Duration Warranty')">Full Term</button>
+                    <button type="button" class="quick-pill-btn" onclick="setWarranty('30 Days Warranty')">30 Days</button>
+                    <button type="button" class="quick-pill-btn" onclick="setWarranty('1 Year Replacement')">1 Year</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:12px;">
+                <label>Key Features Checklist (1 feature per line)</label>
+                <textarea id="prodFeaturesInput" class="form-input" style="height:65px; resize:vertical; font-size:0.82rem; font-family:monospace;" placeholder="4K Ultra HD & HDR Streaming&#10;Works directly in Bangladesh without VPN&#10;Full Duration Replacement Warranty&#10;Instant Digital Vault Delivery"></textarea>
+              </div>
+
+              <div class="form-group" style="margin-bottom:14px;">
+                <label>Buyer Activation Instructions</label>
+                <textarea id="prodInstructionsInput" class="form-input" style="height:50px; resize:vertical; font-size:0.82rem;" placeholder="Login at official platform using provided credentials. Do not change master account credentials."></textarea>
+              </div>
+
+              <!-- Visibility & Promotion Toggles -->
+              <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; background:rgba(0,0,0,0.25); padding:10px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+                <label style="display:flex; align-items:center; gap:8px; font-size:0.82rem; cursor:pointer; color:#e2e8f0;">
+                  <input type="checkbox" id="prodIsFeatured" style="width:16px; height:16px; accent-color:#8b5cf6;" checked>
+                  <span>⭐ Featured Item</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:0.82rem; cursor:pointer; color:#e2e8f0;">
+                  <input type="checkbox" id="prodIsTrending" style="width:16px; height:16px; accent-color:#38bdf8;" checked>
+                  <span>🔥 Trending Now</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:0.82rem; cursor:pointer; color:#e2e8f0;">
+                  <input type="checkbox" id="prodIsBestseller" style="width:16px; height:16px; accent-color:#fbbf24;">
+                  <span>👑 Top Bestseller</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 4. Optional Direct Vault Pre-Stocking -->
+            <div class="studio-section">
+              <div class="studio-section-title" style="margin-bottom:8px;">
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin:0; font-size:0.92rem; color:#f8fafc;">
+                  <input type="checkbox" id="enableVaultPrestockToggle" onchange="toggleVaultPrestock(this.checked)" style="width:16px; height:16px; accent-color:#10b981;">
+                  <span>🔐 Pre-Stock Initial Inventory into Vault (Optional)</span>
+                </label>
+                <span style="font-size:0.72rem; color:#10b981; font-weight:600;">Immediate Auto-Dispatch Ready</span>
+              </div>
+              <p style="font-size:0.77rem; color:#94a3b8; margin:0 0 10px;">
+                Check this box to automatically inject your first account or license key into the Credential Vault during creation.
+              </p>
+
+              <div id="vaultPrestockFields" style="display:none; background:rgba(16, 185, 129, 0.05); border:1px solid rgba(16, 185, 129, 0.2); padding:14px; border-radius:8px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                  <div class="form-group">
+                    <label>Credential Type</label>
+                    <select id="vaultCredType" class="form-input">
+                      <option value="profile_pin">Private Profile PIN (Streaming)</option>
+                      <option value="email_password">Email & Password Login</option>
+                      <option value="license_key">Digital License Key / Serial</option>
+                      <option value="activation_link">Activation / Team Invite Link</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Account Email / Username</label>
+                    <input type="text" id="vaultEmail" class="form-input" placeholder="e.g. premium.user@flixstore.app">
+                  </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                  <div class="form-group">
+                    <label>Password</label>
+                    <input type="text" id="vaultPassword" class="form-input" placeholder="Master or profile pass">
+                  </div>
+                  <div class="form-group">
+                    <label>Profile Name & PIN / Key</label>
+                    <input type="text" id="vaultProfilePin" class="form-input" placeholder="Profile 3 | PIN: 8492">
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
-        </div>
 
-        <div class="form-group">
-          <label>Subscription Title *</label>
-          <input type="text" name="title" class="form-input" placeholder="e.g. Disney+ Premium 4K UHD" required>
-        </div>
+          <!-- RIGHT COLUMN: Sticky Live Storefront Card Preview & Actions -->
+          <div class="studio-preview-col">
+            <div class="preview-sticky-wrap">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <span style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:#38bdf8; display:flex; align-items:center; gap:6px;">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#38bdf8; box-shadow:0 0 8px #38bdf8;"></span>
+                  Live Storefront Preview
+                </span>
+                <span style="font-size:0.75rem; color:#94a3b8;">Updates in Real-Time</span>
+              </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
-          <div class="form-group">
-            <label>Slug (URL key) *</label>
-            <input type="text" name="slug" class="form-input" placeholder="e.g. disney-plus-premium" required>
+              <!-- Replicated FlixStore Product Card -->
+              <div class="product-card" id="studioLiveCardPreview" style="margin:0; box-shadow:0 12px 35px rgba(0,0,0,0.5);">
+                <div class="product-card-top">
+                  <img id="prevCardImg" src="/assets/brands/netflix.svg" alt="Preview" class="product-card-img">
+                  <div class="product-card-badges">
+                    <span id="prevCardBadge" class="badge-tag officialverified">Official Verified</span>
+                    <span id="prevCardDelivery" class="instant-delivery-badge">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                      <span id="prevCardDeliveryText">60s Instant Delivery</span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="product-body">
+                  <div id="prevCardCat" class="product-category-name">OTT & Streaming</div>
+                  <h3 id="prevCardTitle" class="product-title">Netflix Premium 4K UHD</h3>
+                  <p id="prevCardTagline" class="product-tagline">Ultra HD 4K • Private Profile with PIN • Direct BD Streaming</p>
+
+                  <div id="prevCardTiers" class="product-tier-chips">
+                    <span class="tier-chip active">1 Month</span>
+                    <span class="tier-chip">3 Months</span>
+                    <span class="tier-chip">6 Months</span>
+                    <span class="tier-chip">1 Year</span>
+                  </div>
+
+                  <div class="product-rating-row">
+                    <div class="stars">★★★★★</div>
+                    <strong>4.9</strong>
+                    <span class="review-count">(128)</span>
+                  </div>
+
+                  <div class="card-pricing-row">
+                    <div class="card-pricing-main">
+                      <div class="card-price-label-row">
+                        <span class="card-price-label">Offer Starts</span>
+                        <span id="prevDiscountPill" class="discount-pill">36% OFF</span>
+                      </div>
+                      <div class="card-price-numbers">
+                        <span id="prevOfferPrice" class="card-price-current">৳ 349</span>
+                        <span id="prevOrigPrice" class="card-price-original" title="Official Market Price">৳ 550</span>
+                      </div>
+                    </div>
+                    <div class="card-warranty-pill" title="Full Duration Replacement Warranty">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                      <span id="prevWarrantyLabel">Full Warranty</span>
+                    </div>
+                  </div>
+
+                  <div class="product-card-actions">
+                    <div class="btn-select-plan" style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; cursor:default; pointer-events:none;">
+                      <span>⚡ Select Plan & Duration</span>
+                      <span style="font-size:0.85rem; opacity:0.9;">→</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Metadata Diagnostics Box -->
+              <div style="background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:14px; font-size:0.8rem;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#cbd5e1;">
+                  <span>Base Catalog Price:</span>
+                  <strong id="metaBasePrice" style="color:#38bdf8;">৳ 349 ($2.91)</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#cbd5e1;">
+                  <span>Active Plan Tiers:</span>
+                  <strong id="metaPlanCount" style="color:#a855f7;">4 Plans Configured</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#cbd5e1;">
+                  <span>Price Range:</span>
+                  <strong id="metaPriceRange" style="color:#34d399;">৳ 349 – ৳ 3,499</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; color:#cbd5e1;">
+                  <span>Initial Vault Inventory:</span>
+                  <strong id="metaVaultStatus" style="color:#94a3b8;">None (Will Add Later)</strong>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div>
+                <button type="submit" id="submitProductBtn" class="btn-primary" style="width:100%; height:48px; font-size:0.95rem; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px;">
+                  <span>🚀 Publish Subscription to Catalog</span>
+                </button>
+                <button type="button" onclick="closeAddProductModal()" class="btn-secondary" style="width:100%; height:38px; margin-top:8px; font-size:0.85rem; justify-content:center;">
+                  Cancel & Discard
+                </button>
+              </div>
+
+            </div>
           </div>
-          <div class="form-group">
-            <label>Base Price ($ USD / ~120 ৳ BDT) *</label>
-            <input type="number" step="0.01" name="base_price" class="form-input" placeholder="2.99" required>
-          </div>
-        </div>
 
-        <div class="form-group">
-          <label>Tagline</label>
-          <input type="text" name="tagline" class="form-input" placeholder="Short highlight punchline">
         </div>
-
-        <div class="form-group">
-          <label>Description</label>
-          <textarea name="description" class="form-input" style="height:70px; resize:none; padding:8px 12px;"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Brand Logo URL</label>
-          <input type="url" name="logo_url" class="form-input" value="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500">
-        </div>
-
-        <button type="submit" class="btn-primary" style="width:100%; height:44px; margin-top:10px;">
-          Publish Subscription to Catalog
-        </button>
       </form>
     </div>
   </div>
