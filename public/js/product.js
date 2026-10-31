@@ -35,6 +35,7 @@ async function initProductPage() {
   }
 
   await loadProductData(productState.slug);
+  initStickyPurchaseBarObserver();
 }
 
 async function loadProductData(slug) {
@@ -340,11 +341,10 @@ function updateSelectedPlanPricing() {
   }
 
   // Check VIP Status for discount alert
-  const token = localStorage.getItem('token');
+  const user = (typeof state !== 'undefined' && state?.user) || JSON.parse(localStorage.getItem('flix_user') || 'null');
   const vipAlert = document.getElementById('pdpVipDiscountNotice');
   if (vipAlert) {
-    // If user is signed in, check if VIP
-    const isVip = state && state.currentUser && state.currentUser.is_vip;
+    const isVip = user && (user.role === 'admin' || user.tier === 'vip' || user.is_vip);
     if (isVip) {
       vipAlert.style.display = 'flex';
       vipAlert.innerHTML = `<span>👑</span> <span><strong>VIP Member Benefit:</strong> Automatic 5% extra discount applied at checkout!</span>`;
@@ -354,11 +354,36 @@ function updateSelectedPlanPricing() {
     }
   }
 
+  // Update sticky bottom purchase bar details
+  const stickyPlan = document.getElementById('pdpStickyPlanName');
+  const stickyPrice = document.getElementById('pdpStickyPrice');
+  if (stickyPlan) stickyPlan.textContent = `${plan.plan_name} • ${plan.duration_label}`;
+  if (stickyPrice) stickyPrice.textContent = formatPrice(offerBdt, true);
+
   // Update WhatsApp inquiry link
   const waBtn = document.getElementById('pdpWhatsAppInquiryBtn');
   if (waBtn) {
     const text = encodeURIComponent(`Hello FlixStore! I am interested in purchasing ${productState.product.title} - ${plan.plan_name} (${plan.duration_label}) for ${formatPrice(offerBdt, true)}.`);
     waBtn.href = `https://wa.me/8801343546958?text=${text}`;
+  }
+}
+
+function initStickyPurchaseBarObserver() {
+  const actionsContainer = document.querySelector('.pdp-actions-container');
+  const stickyBar = document.getElementById('pdpStickyPurchaseBar');
+  if (!actionsContainer || !stickyBar) return;
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+          stickyBar.classList.add('visible');
+        } else {
+          stickyBar.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(actionsContainer);
   }
 }
 

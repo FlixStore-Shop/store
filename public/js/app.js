@@ -2045,7 +2045,12 @@ async function handleRegisterSubmit(e) {
     const json = await res.json();
 
     if (json.success) {
-      updateOtpUiState(json);
+      if (json.requiresOtp) {
+        updateOtpUiState(json);
+      } else {
+        completeAuthentication(json);
+        showNotification('✓ Account created successfully! Welcome to FlixStore.', 'success');
+      }
     } else {
       if (errElem) {
         if (json.message && json.message.toLowerCase().includes('already exists')) {
