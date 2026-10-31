@@ -181,8 +181,11 @@ async function runTests() {
     const neonHealthRes = await request('/api/neon/health');
     console.log('[TEST 10] /api/neon/health Status:', neonHealthRes.status, 'Postgres:', neonHealthRes.body.services.postgres.status, 'S3:', neonHealthRes.body.services.objectStorage.status, 'Realtime:', neonHealthRes.body.services.realtime.status);
 
-    // 11. Neon Object Storage End-to-End
-    const neonStorageRes = await request('/api/neon/storage/test', { method: 'POST' });
+    // 11. Neon Object Storage End-to-End (Authenticated Admin Test)
+    const neonStorageRes = await request('/api/neon/storage/test', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${adminToken}` }
+    });
     console.log('[TEST 11] /api/neon/storage/test Status:', neonStorageRes.status, 'Bucket:', neonStorageRes.body.bucket, 'Success:', neonStorageRes.body.success);
 
     console.log('\n>>> ALL 11 TESTS PASSED WITH 100% SUCCESS! <<<\n');

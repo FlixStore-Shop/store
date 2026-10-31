@@ -1,6 +1,16 @@
 const crypto = require('node:crypto');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'flixstore_ultra_secure_secret_key_2026_x89a3';
+// Cryptographically secure secret key management
+let JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  if (process.env.NODE_ENV === 'production') {
+    console.warn('⚠️ [SECURITY WARNING]: JWT_SECRET is not set in environment variables! Generating dynamic per-instance secret.');
+    JWT_SECRET = crypto.randomBytes(48).toString('hex');
+  } else {
+    // Deterministic fallback for test suites and local development
+    JWT_SECRET = 'flixstore_dev_secret_key_2026_x89a3';
+  }
+}
 
 // Create base64url encoded token
 function createToken(payload, expiresInHours = 24) {
@@ -32,7 +42,10 @@ function verifyToken(token) {
       .update(`${encodedHeader}.${encodedPayload}`)
       .digest('base64url');
 
-    if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSig))) {
+    const sigBuf = Buffer.from(signature);
+    const expBuf = Buffer.from(expectedSig);
+
+    if (sigBuf.length !== expBuf.length || !crypto.timingSafeEqual(sigBuf, expBuf)) {
       return null;
     }
 

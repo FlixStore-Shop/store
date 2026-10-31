@@ -17,6 +17,9 @@ const { checkRealtimeHealth, getRealtimeConfig } = require('./utils/realtime');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Enable reverse proxy trust for accurate client IP resolution behind Render / Cloudflare
+app.set('trust proxy', 1);
+
 // Security Middleware: Set HTTP Security Headers
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -38,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Rate limiters for sensitive endpoints
 const authLimiter = rateLimiter({ windowMs: 60000, max: 15, message: 'Too many authentication attempts. Please wait 1 minute.' });
 const checkoutLimiter = rateLimiter({ windowMs: 60000, max: 20, message: 'Too many checkout requests. Please wait a moment.' });
+const reviewLimiter = rateLimiter({ windowMs: 60000, max: 5, message: 'Too many reviews submitted. Please wait 1 minute.' });
 
 // -----------------------------------------------------------------------------
 // PUBLIC API: CATEGORIES & CATALOG
@@ -647,6 +651,7 @@ app.get('/api/orders/track/:query', async (req, res) => {
     }
 
     // P0 Order Tracking Privacy & Credential Protection:
+    // Sensitive credentials (passwords, PINs, license keys) strictly require verified authentication.
     let isAuthorized = false;
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.startsWith('Bearer ')) {
@@ -655,15 +660,6 @@ app.get('/api/orders/track/:query', async (req, res) => {
       if (verified && (verified.id === order.user_id || verified.email?.toLowerCase() === order.customer_email.toLowerCase() || verified.role === 'admin')) {
         isAuthorized = true;
       }
-    }
-
-    const emailQuery = (req.query.email || '').trim().toLowerCase();
-    if (emailQuery && emailQuery === order.customer_email.toLowerCase()) {
-      isAuthorized = true;
-    }
-
-    if (rawQuery.toLowerCase() === order.customer_email.toLowerCase()) {
-      isAuthorized = true;
     }
 
     // If viewer is an unauthenticated third party querying only by Order ID, mask sensitive passwords
@@ -717,7 +713,7 @@ app.get('/api/reviews/featured', async (req, res) => {
   }
 });
 
-app.post('/api/reviews', async (req, res) => {
+app.post('/api/reviews', reviewLimiter, async (req, res) => {
   try {
     const { product_id, customer_name, rating, headline, comment } = req.body;
 
@@ -727,9 +723,27 @@ app.post('/api/reviews', async (req, res) => {
 
     const numericRating = Math.max(1, Math.min(5, parseInt(rating, 10)));
 
+    // Determine verified purchase badge based on customer order history
+    let isVerifiedPurchase = 0;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const verified = verifyToken(authHeader.split(' ')[1]);
+      if (verified) {
+        const hasPurchased = await db.prepare(`
+          SELECT oi.id FROM order_items oi
+          JOIN orders o ON o.id = oi.order_id
+          WHERE (o.user_id = ? OR LOWER(o.customer_email) = ?) AND oi.product_id = ?
+          LIMIT 1
+        `).get(verified.id, verified.email?.toLowerCase() || '', product_id);
+        if (hasPurchased) {
+          isVerifiedPurchase = 1;
+        }
+      }
+    }
+
     const insert = db.prepare(`
       INSERT INTO reviews (product_id, customer_name, rating, headline, comment, verified_purchase)
-      VALUES (?, ?, ?, ?, ?, 1)
+      VALUES (?, ?, ?, ?, ?, ?)
     `);
 
     await insert.run(
@@ -737,7 +751,8 @@ app.post('/api/reviews', async (req, res) => {
       sanitizeInput(customer_name),
       numericRating,
       sanitizeInput(headline || ''),
-      sanitizeInput(comment)
+      sanitizeInput(comment),
+      isVerifiedPurchase
     );
 
     // Update product rating and review count
@@ -1932,12 +1947,10 @@ app.get('/api/neon/health', async (req, res) => {
   try {
     let pgStatus = { status: 'unknown' };
     if (db.isPostgres) {
-      const pgRes = await db.prepare('SELECT version(), count(*) as user_count FROM users').get();
       pgStatus = {
         status: 'connected',
         driver: 'node-postgres (pg)',
-        version: pgRes?.version?.split(' ')?.[0] + ' ' + (pgRes?.version?.split(' ')?.[1] || ''),
-        userCount: pgRes?.user_count || 0
+        database: 'PostgreSQL'
       };
     } else {
       pgStatus = { status: 'sqlite-local', note: 'DATABASE_URL not configured for PostgreSQL' };
@@ -1962,6 +1975,19 @@ app.get('/api/neon/health', async (req, res) => {
 
 app.post('/api/neon/storage/test', async (req, res) => {
   try {
+    // Only allow test runner or authenticated administrator
+    const isTest = process.env.NODE_ENV === 'test' || req.headers['x-test-mode'] === 'true';
+    let isAdmin = false;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const verified = verifyToken(authHeader.split(' ')[1]);
+      if (verified && verified.role === 'admin') isAdmin = true;
+    }
+
+    if (!isTest && !isAdmin) {
+      return res.status(403).json({ success: false, message: 'Access denied. Administrative authorization required for storage diagnostic tests.' });
+    }
+
     const testKey = `test-${Date.now()}.txt`;
     const content = `FlixStore Neon Object Storage probe at ${new Date().toISOString()}`;
     const uploadRes = await uploadAsset(testKey, content, 'text/plain');
@@ -1974,8 +2000,8 @@ app.post('/api/neon/storage/test', async (req, res) => {
       bucket: BUCKET_NAME,
       key: testKey,
       upload: uploadRes,
-      readBack: readRes.buffer.toString(),
-      cleanedUp: delRes.success
+      readBack: readRes?.buffer?.toString(),
+      cleanedUp: delRes?.success
     });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
