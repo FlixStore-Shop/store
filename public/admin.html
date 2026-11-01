@@ -999,7 +999,9 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="allOrdersTableBody"></tbody>
+              <tbody id="allOrdersTableBody">
+                <tr><td colspan="7" style="text-align:center; padding:24px; color:#64748b;">Loading orders...</td></tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -1013,7 +1015,7 @@
           <div class="admin-card-header">
             <div>
               <h3 class="admin-card-title"><span>🎬</span> Subscription Catalog Management</h3>
-              <p style="color:#94a3b8; font-size:0.8rem; margin:4px 0 0 0;">Control base prices, durations, promotional badges, and category tags.</p>
+              <p style="color:#64748b; font-size:0.8rem; margin:4px 0 0 0;">Control base prices, durations, promotional badges, and category tags.</p>
             </div>
             <div style="display:flex; gap:10px;">
               <input type="text" id="productSearchInput" class="filter-search-input" placeholder="Search subscriptions..." oninput="filterProductsTable()">
@@ -1033,7 +1035,9 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="adminProductsTableBody"></tbody>
+              <tbody id="adminProductsTableBody">
+                <tr><td colspan="6" style="text-align:center; padding:24px; color:#64748b;">Loading subscription catalog...</td></tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -1054,7 +1058,7 @@
           <div class="admin-card-header">
             <div>
               <h3 class="admin-card-title"><span>🔑</span> Pre-Stocked Credential Vault</h3>
-              <p style="color:#94a3b8; font-size:0.8rem; margin:4px 0 0 0;">When a customer places an order, the system pulls an available account or key from this vault instantly.</p>
+              <p style="color:#64748b; font-size:0.8rem; margin:4px 0 0 0;">When a customer places an order, the system pulls an available account or key from this vault instantly.</p>
             </div>
             <div style="display:flex; gap:10px;">
               <select id="vaultFilterStatus" class="form-input" style="width:auto; padding:8px 12px;" onchange="filterVaultTable()">
@@ -1080,7 +1084,9 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="adminVaultTableBody"></tbody>
+              <tbody id="adminVaultTableBody">
+                <tr><td colspan="8" style="text-align:center; padding:24px; color:#64748b;">Loading credential vault...</td></tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -1094,7 +1100,7 @@
           <div class="admin-card-header">
             <div>
               <h3 class="admin-card-title"><span>👥</span> Customer Accounts & Membership Tiers</h3>
-              <p style="color:#94a3b8; font-size:0.8rem; margin:4px 0 0 0;">Inspect registered users, manage VIP member privileges, and communicate directly via WhatsApp.</p>
+              <p style="color:#64748b; font-size:0.8rem; margin:4px 0 0 0;">Inspect registered users, manage VIP member privileges, and communicate directly via WhatsApp.</p>
             </div>
             <div style="display:flex; gap:10px;">
               <input type="text" id="customerSearchInput" class="filter-search-input" placeholder="Search customer name, email, phone..." oninput="filterCustomersTable()">
@@ -1116,7 +1122,9 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="adminCustomersTableBody"></tbody>
+              <tbody id="adminCustomersTableBody">
+                <tr><td colspan="8" style="text-align:center; padding:24px; color:#64748b;">Loading customer accounts...</td></tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -1130,7 +1138,7 @@
           <div class="admin-card-header">
             <div>
               <h3 class="admin-card-title"><span>🏷️</span> Promotional Campaigns & Coupons</h3>
-              <p style="color:#94a3b8; font-size:0.8rem; margin:4px 0 0 0;">Create percentage or fixed USD discounts with spending thresholds.</p>
+              <p style="color:#64748b; font-size:0.8rem; margin:4px 0 0 0;">Create percentage or fixed USD discounts with spending thresholds.</p>
             </div>
             <button class="btn-primary" onclick="openAddCouponModal()">+ Create Coupon</button>
           </div>
@@ -1147,7 +1155,9 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="adminCouponsTableBody"></tbody>
+              <tbody id="adminCouponsTableBody">
+                <tr><td colspan="6" style="text-align:center; padding:24px; color:#64748b;">Loading promo coupons...</td></tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -1777,6 +1787,6 @@
     </div>
   </div>
 
-  <script src="/js/admin.js?v=4.6"></script>
+  <script src="/js/admin.js?v=4.7"></script>
 </body>
 </html>

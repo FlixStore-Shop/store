@@ -1390,13 +1390,13 @@ app.delete('/api/admin/orders/:id', authMiddleware('admin'), async (req, res) =>
 app.get('/api/admin/products', authMiddleware('admin'), async (req, res) => {
   try {
     const products = await db.prepare(`
-      SELECT p.*, c.name as category_name
+      SELECT p.*, COALESCE(c.name, 'General') as category_name
       FROM products p
-      JOIN categories c ON p.category_id = c.id
+      LEFT JOIN categories c ON p.category_id = c.id
       ORDER BY p.id DESC
     `).all();
 
-    res.json({ success: true, products });
+    res.json({ success: true, products: products || [] });
   } catch (err) {
     console.error('Error fetching admin products:', err);
     res.status(500).json({ success: false, message: 'Failed to fetch products' });

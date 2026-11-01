@@ -38,11 +38,87 @@ function showToast(message, isError = false) {
   }, 3500);
 }
 
-// Check admin authentication
-function checkAdminAuth() {
+// Centralized authenticated API caller with auto 401 interception
+async function fetchAdminApi(endpoint, options = {}) {
+  if (!adminState.token) {
+    handleSessionExpired('Please log in with administrator credentials.');
+    return null;
+  }
+
+  const headers = {
+    'Authorization': `Bearer ${adminState.token}`,
+    ...(options.headers || {})
+  };
+
+  try {
+    const res = await fetch(endpoint, { ...options, headers });
+    
+    if (res.status === 401) {
+      console.warn(`Admin session unauthorized for [${endpoint}]. Prompting login.`);
+      handleSessionExpired('Your administrator session has expired. Please unlock the console.');
+      return null;
+    }
+
+    const json = await res.json();
+    if (json && json.success === false && json.message && (json.message.includes('expired') || json.message.includes('Authentication') || json.message.includes('Access denied'))) {
+      handleSessionExpired(json.message);
+      return null;
+    }
+
+    return json;
+  } catch (err) {
+    console.error(`API Error [${endpoint}]:`, err);
+    return null;
+  }
+}
+
+function handleSessionExpired(msg = 'Session expired. Please log in again.') {
+  adminState.token = null;
+  adminState.user = null;
+  localStorage.removeItem('flix_admin_token');
+  localStorage.removeItem('flix_token');
+  localStorage.removeItem('flix_user');
+
+  const errElem = document.getElementById('adminLoginError');
+  if (errElem) errElem.textContent = msg;
+
+  showAdminLoginModal();
+  showToast(msg, true);
+}
+
+// Check admin authentication with live session validation
+async function checkAdminAuth() {
   if (!adminState.token || !adminState.user || adminState.user.role !== 'admin') {
     showAdminLoginModal();
-  } else {
+    return;
+  }
+
+  // Pre-fill user label immediately for instant UI feedback
+  updateAdminUserHeader();
+
+  // Validate session against backend
+  try {
+    const res = await fetch('/api/auth/me', {
+      headers: { 'Authorization': `Bearer ${adminState.token}` }
+    });
+
+    if (res.status === 401) {
+      handleSessionExpired('Your administrator session has expired. Please unlock the console.');
+      return;
+    }
+
+    const json = await res.json();
+    if (json && json.success && json.user?.role === 'admin') {
+      adminState.user = json.user;
+      localStorage.setItem('flix_user', JSON.stringify(json.user));
+      hideAdminLoginModal();
+      updateAdminUserHeader();
+      loadDashboardData();
+    } else {
+      handleSessionExpired('Administrator credentials required.');
+    }
+  } catch (err) {
+    console.warn('Session verification network error, attempting offline cache:', err);
     hideAdminLoginModal();
     updateAdminUserHeader();
     loadDashboardData();
@@ -187,22 +263,16 @@ async function loadDashboardData() {
 }
 
 async function loadOverviewStats() {
-  if (!adminState.token) return;
-
-  try {
-    const res = await fetch('/api/admin/stats', {
-      headers: { 'Authorization': `Bearer ${adminState.token}` }
-    });
-    const json = await res.json();
-
-    if (json.success) {
-      adminState.stats = json.stats;
-      renderKPIs(json.stats);
+  const json = await fetchAdminApi('/api/admin/stats');
+  if (json && json.success && json.stats) {
+    adminState.stats = json.stats;
+    renderKPIs(json.stats);
+    if (json.stats.recentOrders) {
       renderRecentOrders(json.stats.recentOrders);
+    }
+    if (json.stats.categoryStats) {
       renderCategorySales(json.stats.categoryStats);
     }
-  } catch (err) {
-    console.error('Error fetching admin stats:', err);
   }
 }
 
@@ -297,21 +367,19 @@ function renderCategorySales(catStats) {
 // -----------------------------------------------------------------------------
 
 async function loadOrdersList() {
-  if (!adminState.token) return;
+  const tableBody = document.getElementById('allOrdersTableBody');
+  if (tableBody && (!adminState.orders || adminState.orders.length === 0)) {
+    tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:#64748b;">Loading customer orders...</td></tr>';
+  }
 
-  try {
-    const res = await fetch('/api/admin/orders', {
-      headers: { 'Authorization': `Bearer ${adminState.token}` }
-    });
-    const json = await res.json();
+  const json = await fetchAdminApi('/api/admin/orders');
+  if (json && json.success && json.orders) {
+    adminState.orders = json.orders;
+    adminState.filteredOrders = json.orders;
+    renderAllOrders(json.orders);
 
-    if (json.success) {
-      adminState.orders = json.orders;
-      adminState.filteredOrders = json.orders;
-      renderAllOrders(json.orders);
-    }
-  } catch (err) {
-    console.error('Error fetching orders:', err);
+    const ordersCountBadge = document.getElementById('navOrdersCount');
+    if (ordersCountBadge) ordersCountBadge.textContent = json.orders.length;
   }
 }
 
@@ -408,44 +476,26 @@ async function deleteOrder(orderId, orderNumber) {
     return;
   }
 
-  try {
-    const res = await fetch(`/api/admin/orders/${orderId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${adminState.token}`
-      }
-    });
-    const json = await res.json();
-    if (json.success) {
-      showToast(json.message || `Order #${orderNumber} removed`, 'success');
-      loadOrdersList();
-      loadAdminStats();
-    } else {
-      showToast(json.message || 'Failed to delete order', 'error');
-    }
-  } catch (err) {
-    console.error('Delete order error:', err);
-    showToast('Network error deleting order', 'error');
+  const json = await fetchAdminApi(`/api/admin/orders/${orderId}`, { method: 'DELETE' });
+  if (json && json.success) {
+    showToast(json.message || `Order #${orderNumber} removed`, false);
+    loadOrdersList();
+    loadOverviewStats();
+  } else if (json) {
+    showToast(json.message || 'Failed to delete order', true);
   }
 }
 
 async function updateOrderStatus(orderId, newStatus) {
-  try {
-    const res = await fetch(`/api/admin/orders/${orderId}/status`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${adminState.token}`
-      },
-      body: JSON.stringify({ delivery_status: newStatus })
-    });
-    const json = await res.json();
-    if (json.success) {
-      showToast(`Order #${orderId} marked as ${newStatus}!`);
-    }
-  } catch (err) {
-    console.error('Status update error:', err);
-    showToast('Failed to update status', true);
+  const json = await fetchAdminApi(`/api/admin/orders/${orderId}/status`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ delivery_status: newStatus })
+  });
+  if (json && json.success) {
+    showToast(`Order #${orderId} marked as ${newStatus}!`, false);
+  } else if (json) {
+    showToast(json.message || 'Failed to update status', true);
   }
 }
 
@@ -522,27 +572,26 @@ function closeCredentialsViewer() {
 // -----------------------------------------------------------------------------
 
 async function loadProductsList() {
-  if (!adminState.token) return;
+  const tableBody = document.getElementById('adminProductsTableBody');
+  if (tableBody && (!adminState.products || adminState.products.length === 0)) {
+    tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px; color:#64748b;">Loading subscription catalog...</td></tr>';
+  }
 
-  try {
-    const res = await fetch('/api/admin/products', {
-      headers: { 'Authorization': `Bearer ${adminState.token}` }
-    });
-    const json = await res.json();
-    if (json.success) {
-      adminState.products = json.products;
-      renderAdminProducts(json.products);
-      populateVaultProductDropdown(json.products);
-    }
-  } catch (err) {
-    console.error('Fetch products error:', err);
+  const json = await fetchAdminApi('/api/admin/products');
+  if (json && json.success && json.products) {
+    adminState.products = json.products;
+    renderAdminProducts(json.products);
+    populateVaultProductDropdown(json.products);
+
+    const productsCountBadge = document.getElementById('navProductsCount');
+    if (productsCountBadge) productsCountBadge.textContent = json.products.length;
   }
 }
 
 function filterProductsTable() {
   const input = document.getElementById('productSearchInput');
   const q = input ? input.value.trim().toLowerCase() : '';
-  const filtered = adminState.products.filter(p => !q || p.title.toLowerCase().includes(q) || p.slug.toLowerCase().includes(q));
+  const filtered = adminState.products.filter(p => !q || (p.title && p.title.toLowerCase().includes(q)) || (p.slug && p.slug.toLowerCase().includes(q)));
   renderAdminProducts(filtered);
 }
 
@@ -550,20 +599,26 @@ function renderAdminProducts(products) {
   const tableBody = document.getElementById('adminProductsTableBody');
   if (!tableBody) return;
 
+  if (!products || products.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:32px; color:#64748b;">No matching subscriptions found in catalog.</td></tr>`;
+    return;
+  }
+
   tableBody.innerHTML = products.map(p => {
     const priceBDT = Math.round(Number(p.base_price || 0) * 120);
+    const safeTitle = (p.title || '').replace(/'/g, "\\'");
     return `
       <tr>
         <td>
           <div style="display:flex; align-items:center; gap:12px;">
-            <img src="${p.logo_url}" style="width:38px; height:38px; border-radius:8px; object-fit:cover; border:1px solid var(--admin-border);">
+            <img src="${p.logo_url || '/assets/brands/netflix.svg'}" onerror="this.src='/assets/brands/netflix.svg'" style="width:38px; height:38px; border-radius:8px; object-fit:cover; border:1px solid var(--admin-border);">
             <div>
               <strong style="color:#0f172a;">${p.title}</strong>
               <div style="color:#64748b; font-size:0.75rem; font-family:monospace;">${p.slug}</div>
             </div>
           </div>
         </td>
-        <td><span class="badge-pill">${p.category_name}</span></td>
+        <td><span class="badge-pill">${p.category_name || 'General'}</span></td>
         <td>
           <strong>$${Number(p.base_price || 0).toFixed(2)}</strong>
           <span style="font-size:0.76rem; color:#64748b;">(~৳${priceBDT})</span>
@@ -575,7 +630,7 @@ function renderAdminProducts(products) {
             <a href="/#productsGrid" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem;">
               View
             </a>
-            <button onclick="deleteProduct(${p.id}, '${p.title.replace(/'/g, "\\'")}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" title="Delete Subscription">
+            <button onclick="deleteProduct(${p.id}, '${safeTitle}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" title="Delete Subscription">
               🗑️ Delete
             </button>
           </div>
@@ -590,24 +645,13 @@ async function deleteProduct(productId, title) {
     return;
   }
 
-  try {
-    const res = await fetch(`/api/admin/products/${productId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${adminState.token}`
-      }
-    });
-    const json = await res.json();
-    if (json.success) {
-      showToast(json.message || 'Product removed successfully', 'success');
-      loadProductsList();
-      loadAdminStats();
-    } else {
-      showToast(json.message || 'Failed to remove product', 'error');
-    }
-  } catch (err) {
-    console.error('Delete product error:', err);
-    showToast('Network error removing product', 'error');
+  const json = await fetchAdminApi(`/api/admin/products/${productId}`, { method: 'DELETE' });
+  if (json && json.success) {
+    showToast(json.message || 'Product removed successfully', false);
+    loadProductsList();
+    loadOverviewStats();
+  } else if (json) {
+    showToast(json.message || 'Failed to remove product', true);
   }
 }
 
@@ -1253,25 +1297,22 @@ async function handleCreateProduct(e) {
   }
 
   try {
-    const res = await fetch('/api/admin/products', {
+    const json = await fetchAdminApi('/api/admin/products', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${adminState.token}`
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    const json = await res.json();
-    if (json.success) {
-      showToast('🎉 Subscription product published successfully!', 'success');
+    if (json && json.success) {
+      showToast('🎉 Subscription product published successfully!', false);
       closeAddProductModal();
       loadProductsList();
-    } else {
+      loadOverviewStats();
+    } else if (json) {
       alert(`Error publishing subscription: ${json.message}`);
     }
   } catch (err) {
     console.error('Create product error:', err);
-    showToast('Network error while publishing product', 'error');
+    showToast('Network error while publishing product', true);
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
@@ -1285,20 +1326,16 @@ async function handleCreateProduct(e) {
 // -----------------------------------------------------------------------------
 
 async function loadVaultList() {
-  if (!adminState.token) return;
+  const tableBody = document.getElementById('adminVaultTableBody');
+  if (tableBody && (!adminState.vault || adminState.vault.length === 0)) {
+    tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:24px; color:#64748b;">Loading credential vault...</td></tr>';
+  }
 
-  try {
-    const res = await fetch('/api/admin/vault', {
-      headers: { 'Authorization': `Bearer ${adminState.token}` }
-    });
-    const json = await res.json();
-    if (json.success) {
-      adminState.vault = json.vault;
-      renderAdminVault(json.vault);
-      checkVaultLowStock(json.vault);
-    }
-  } catch (err) {
-    console.error('Fetch vault error:', err);
+  const json = await fetchAdminApi('/api/admin/vault');
+  if (json && json.success && json.vault) {
+    adminState.vault = json.vault;
+    renderAdminVault(json.vault);
+    checkVaultLowStock(json.vault);
   }
 }
 
@@ -1373,24 +1410,13 @@ async function deleteVaultItem(vaultId) {
     return;
   }
 
-  try {
-    const res = await fetch(`/api/admin/vault/${vaultId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${adminState.token}`
-      }
-    });
-    const json = await res.json();
-    if (json.success) {
-      showToast(json.message || 'Vault item removed', 'success');
-      loadVaultInventory();
-      loadAdminStats();
-    } else {
-      showToast(json.message || 'Failed to remove vault item', 'error');
-    }
-  } catch (err) {
-    console.error('Delete vault item error:', err);
-    showToast('Network error removing vault item', 'error');
+  const json = await fetchAdminApi(`/api/admin/vault/${vaultId}`, { method: 'DELETE' });
+  if (json && json.success) {
+    showToast(json.message || 'Vault item removed', false);
+    loadVaultList();
+    loadOverviewStats();
+  } else if (json) {
+    showToast(json.message || 'Failed to remove vault item', true);
   }
 }
 
@@ -1425,25 +1451,19 @@ async function handleAddVaultItem(e) {
     special_instructions: form.special_instructions.value.trim() || null
   };
 
-  try {
-    const res = await fetch('/api/admin/vault', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${adminState.token}`
-      },
-      body: JSON.stringify(payload)
-    });
-    const json = await res.json();
-    if (json.success) {
-      showToast('Credential stocked into vault!');
-      closeAddVaultModal();
-      loadVaultList();
-    } else {
-      alert(`Error: ${json.message}`);
-    }
-  } catch (err) {
-    console.error('Vault stocking error:', err);
+  const json = await fetchAdminApi('/api/admin/vault', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if (json && json.success) {
+    showToast('Credential stocked into vault!');
+    closeAddVaultModal();
+    form.reset();
+    loadVaultList();
+    loadOverviewStats();
+  } else if (json) {
+    alert(`Error: ${json.message}`);
   }
 }
 
@@ -1452,21 +1472,17 @@ async function handleAddVaultItem(e) {
 // -----------------------------------------------------------------------------
 
 async function loadCustomersList() {
-  if (!adminState.token) return;
+  const tableBody = document.getElementById('adminCustomersTableBody');
+  if (tableBody && (!adminState.customers || adminState.customers.length === 0)) {
+    tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:24px; color:#64748b;">Loading customer accounts...</td></tr>';
+  }
 
-  try {
-    const res = await fetch('/api/admin/users', {
-      headers: { 'Authorization': `Bearer ${adminState.token}` }
-    });
-    const json = await res.json();
-    if (json.success) {
-      adminState.customers = json.users;
-      renderCustomers(json.users);
-      const navBadge = document.getElementById('navUsersCount');
-      if (navBadge) navBadge.textContent = `${json.users.length}`;
-    }
-  } catch (err) {
-    console.error('Fetch users error:', err);
+  const json = await fetchAdminApi('/api/admin/users');
+  if (json && json.success && json.users) {
+    adminState.customers = json.users;
+    renderCustomers(json.users);
+    const navBadge = document.getElementById('navUsersCount');
+    if (navBadge) navBadge.textContent = `${json.users.length}`;
   }
 }
 
@@ -1543,44 +1559,27 @@ async function deleteCustomer(userId, email) {
     return;
   }
 
-  try {
-    const res = await fetch(`/api/admin/users/${userId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${adminState.token}`
-      }
-    });
-    const json = await res.json();
-    if (json.success) {
-      showToast(json.message || 'Customer removed', 'success');
-      loadCustomersList();
-      loadAdminStats();
-    } else {
-      showToast(json.message || 'Failed to remove customer', 'error');
-    }
-  } catch (err) {
-    console.error('Delete customer error:', err);
-    showToast('Network error removing customer', 'error');
+  const json = await fetchAdminApi(`/api/admin/users/${userId}`, { method: 'DELETE' });
+  if (json && json.success) {
+    showToast(json.message || 'Customer removed', false);
+    loadCustomersList();
+    loadOverviewStats();
+  } else if (json) {
+    showToast(json.message || 'Failed to remove customer', true);
   }
 }
 
 async function updateUserRole(userId, newRole) {
-  try {
-    const res = await fetch(`/api/admin/users/${userId}/role`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${adminState.token}`
-      },
-      body: JSON.stringify({ role: newRole })
-    });
-    const json = await res.json();
-    if (json.success) {
-      showToast(`User role updated to ${newRole}`);
-      loadCustomersList();
-    }
-  } catch (err) {
-    showToast('Failed to update role', true);
+  const json = await fetchAdminApi(`/api/admin/users/${userId}/role`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ role: newRole })
+  });
+  if (json && json.success) {
+    showToast(`User role updated to ${newRole}`, false);
+    loadCustomersList();
+  } else if (json) {
+    showToast(json.message || 'Failed to update user role', true);
   }
 }
 
@@ -1589,18 +1588,17 @@ async function updateUserRole(userId, newRole) {
 // -----------------------------------------------------------------------------
 
 async function loadCouponsList() {
-  if (!adminState.token) return;
+  const tableBody = document.getElementById('adminCouponsTableBody');
+  if (tableBody && (!adminState.coupons || adminState.coupons.length === 0)) {
+    tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px; color:#64748b;">Loading promotional coupons...</td></tr>';
+  }
 
-  try {
-    const res = await fetch('/api/admin/coupons', {
-      headers: { 'Authorization': `Bearer ${adminState.token}` }
-    });
-    const json = await res.json();
-    if (json.success) {
-      renderAdminCoupons(json.coupons);
-    }
-  } catch (err) {
-    console.error('Fetch coupons error:', err);
+  const json = await fetchAdminApi('/api/admin/coupons');
+  if (json && json.success && json.coupons) {
+    adminState.coupons = json.coupons;
+    renderAdminCoupons(json.coupons);
+    const couponsCountBadge = document.getElementById('navCouponsCount');
+    if (couponsCountBadge) couponsCountBadge.textContent = `${json.coupons.length}`;
   }
 }
 
@@ -1640,23 +1638,12 @@ async function deleteCoupon(couponId, code) {
     return;
   }
 
-  try {
-    const res = await fetch(`/api/admin/coupons/${couponId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${adminState.token}`
-      }
-    });
-    const json = await res.json();
-    if (json.success) {
-      showToast(json.message || 'Coupon deleted successfully', 'success');
-      loadCouponsList();
-    } else {
-      showToast(json.message || 'Failed to delete coupon', 'error');
-    }
-  } catch (err) {
-    console.error('Delete coupon error:', err);
-    showToast('Network error deleting coupon', 'error');
+  const json = await fetchAdminApi(`/api/admin/coupons/${couponId}`, { method: 'DELETE' });
+  if (json && json.success) {
+    showToast(json.message || 'Coupon deleted successfully', false);
+    loadCouponsList();
+  } else if (json) {
+    showToast(json.message || 'Failed to delete coupon', true);
   }
 }
 
@@ -1681,25 +1668,18 @@ async function handleCreateCoupon(e) {
     max_uses: parseInt(form.max_uses.value || 1000, 10)
   };
 
-  try {
-    const res = await fetch('/api/admin/coupons', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${adminState.token}`
-      },
-      body: JSON.stringify(payload)
-    });
-    const json = await res.json();
-    if (json.success) {
-      showToast('Coupon created!');
-      closeAddCouponModal();
-      loadCouponsList();
-    } else {
-      alert(`Error: ${json.message}`);
-    }
-  } catch (err) {
-    console.error('Coupon creation error:', err);
+  const json = await fetchAdminApi('/api/admin/coupons', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if (json && json.success) {
+    showToast('Coupon created!');
+    closeAddCouponModal();
+    form.reset();
+    loadCouponsList();
+  } else if (json) {
+    alert(`Error: ${json.message}`);
   }
 }
 
