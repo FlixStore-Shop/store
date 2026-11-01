@@ -213,7 +213,7 @@ function renderKPIs(stats) {
   const vaultElem = document.getElementById('statAvailableVault');
 
   const totalBDT = Math.round(stats.totalRevenue * 120);
-  if (revElem) revElem.innerHTML = `৳${totalBDT.toLocaleString()} <span style="font-size:0.85rem; color:#94a3b8; font-weight:600;">($${Number(stats.totalRevenue).toFixed(2)})</span>`;
+  if (revElem) revElem.innerHTML = `৳${totalBDT.toLocaleString()} <span style="font-size:0.85rem; color:#64748b; font-weight:600;">($${Number(stats.totalRevenue).toFixed(2)})</span>`;
   if (ordElem) ordElem.textContent = stats.totalOrders.toLocaleString();
   if (prodElem) prodElem.textContent = stats.activeProducts;
   if (vaultElem) vaultElem.textContent = stats.availableVaultKeys;
@@ -230,7 +230,7 @@ function renderRecentOrders(orders) {
   if (!tableBody) return;
 
   if (!orders || orders.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:#94a3b8;">No recent orders placed yet.</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:#64748b;">No recent orders placed yet.</td></tr>`;
     return;
   }
 
@@ -241,10 +241,10 @@ function renderRecentOrders(orders) {
 
     return `
       <tr>
-        <td><strong style="color:#60a5fa;">#${o.order_number}</strong></td>
+        <td><strong style="color:#2563eb;">#${o.order_number}</strong></td>
         <td>
           <div style="font-weight:700;">${o.customer_name}</div>
-          <div style="font-size:0.75rem; color:#94a3b8;">${o.customer_email}</div>
+          <div style="font-size:0.75rem; color:#64748b;">${o.customer_email}</div>
         </td>
         <td><strong>৳${amountBDT.toLocaleString()}</strong></td>
         <td><span class="gateway-pill ${gwClass}">${o.payment_method}</span></td>
@@ -268,7 +268,7 @@ function renderCategorySales(catStats) {
   if (!container || !catStats) return;
 
   if (catStats.length === 0) {
-    container.innerHTML = '<div style="color:#94a3b8; font-size:0.82rem; padding:10px 0;">No category sales data yet.</div>';
+    container.innerHTML = '<div style="color:#64748b; font-size:0.82rem; padding:10px 0;">No category sales data yet.</div>';
     return;
   }
 
@@ -282,9 +282,9 @@ function renderCategorySales(catStats) {
       <div>
         <div style="display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:4px;">
           <span><strong>${c.name}</strong> (${c.items_sold} sold)</span>
-          <span style="color:#60a5fa; font-weight:700;">৳${revBDT.toLocaleString()}</span>
+          <span style="color:#2563eb; font-weight:700;">৳${revBDT.toLocaleString()}</span>
         </div>
-        <div style="height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
+        <div style="height:6px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:3px; overflow:hidden;">
           <div style="width:${pct}%; height:100%; background:linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius:3px;"></div>
         </div>
       </div>
@@ -346,7 +346,7 @@ function renderAllOrders(orders) {
   if (!tableBody) return;
 
   if (!orders || orders.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#94a3b8;">No matching customer orders found.</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#64748b;">No matching customer orders found.</td></tr>`;
     return;
   }
 
@@ -359,24 +359,24 @@ function renderAllOrders(orders) {
     return `
       <tr>
         <td>
-          <strong style="color:#60a5fa; font-size:0.9rem;">#${o.order_number}</strong>
-          <div style="font-size:0.72rem; color:#94a3b8;">ID: ${o.id}</div>
+          <strong style="color:#2563eb; font-size:0.9rem;">#${o.order_number}</strong>
+          <div style="font-size:0.72rem; color:#64748b;">ID: ${o.id}</div>
         </td>
         <td>
           <div style="font-weight:700;">${o.customer_name}</div>
-          <div style="font-size:0.78rem; color:#cbd5e1;">${o.customer_email}</div>
-          ${o.customer_phone ? `<div style="font-size:0.74rem; color:#94a3b8;">📞 ${o.customer_phone}</div>` : ''}
+          <div style="font-size:0.78rem; color:#64748b;">${o.customer_email}</div>
+          ${o.customer_phone ? `<div style="font-size:0.74rem; color:#64748b;">📞 ${o.customer_phone}</div>` : ''}
         </td>
         <td>
           <strong style="font-size:0.95rem;">৳${amountBDT.toLocaleString()}</strong>
-          <div style="font-size:0.72rem; color:#94a3b8;">$${Number(o.total_amount).toFixed(2)} USD</div>
+          <div style="font-size:0.72rem; color:#64748b;">$${Number(o.total_amount).toFixed(2)} USD</div>
         </td>
         <td>
           <span class="gateway-pill ${gwClass}">${o.payment_method}</span>
-          <div style="font-size:0.74rem; color:#94a3b8; font-family:monospace; margin-top:3px;" title="Transaction ID">${o.transaction_id || 'AUTO'}</div>
+          <div style="font-size:0.74rem; color:#64748b; font-family:monospace; margin-top:3px;" title="Transaction ID">${o.transaction_id || 'AUTO'}</div>
         </td>
         <td>
-          <select onchange="updateOrderStatus(${o.id}, this.value)" style="background:var(--admin-bg-base); color:#ffffff; border:1px solid var(--admin-border); padding:5px 8px; border-radius:6px; font-size:0.78rem; cursor:pointer;">
+          <select onchange="updateOrderStatus(${o.id}, this.value)" style="background:#ffffff; color:#0f172a; border:1px solid #cbd5e1; padding:5px 8px; border-radius:6px; font-size:0.78rem; cursor:pointer;">
             <option value="delivered" ${o.delivery_status === 'delivered' ? 'selected' : ''}>● Delivered</option>
             <option value="processing" ${o.delivery_status === 'processing' ? 'selected' : ''}>⏳ Processing</option>
             <option value="pending" ${o.delivery_status === 'pending' ? 'selected' : ''}>⚠️ Pending</option>
@@ -389,11 +389,11 @@ function renderAllOrders(orders) {
               🔑 View Keys
             </button>
             ${cleanPhone ? `
-              <a href="https://wa.me/${cleanPhone}?text=Hello%20${encodeURIComponent(o.customer_name)}%2C%20this%20is%20FlixStore%20Support%20regarding%20Order%20${encodeURIComponent(o.order_number)}" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#10b981; border-color:rgba(16,185,129,0.3); text-decoration:none;" title="Chat via WhatsApp">
+              <a href="https://wa.me/${cleanPhone}?text=Hello%20${encodeURIComponent(o.customer_name)}%2C%20this%20is%20FlixStore%20Support%20regarding%20Order%20${encodeURIComponent(o.order_number)}" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#059669; border-color:#a7f3d0; background:#ecfdf5; text-decoration:none;" title="Chat via WhatsApp">
                 💬 WhatsApp
               </a>
             ` : ''}
-            <button onclick="deleteOrder(${o.id}, '${o.order_number}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.06);" title="Delete Order Record">
+            <button onclick="deleteOrder(${o.id}, '${o.order_number}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" title="Delete Order Record">
               🗑️
             </button>
           </div>
@@ -491,17 +491,17 @@ function viewOrderCredentials(encodedJson) {
     if (!modal || !container) return;
 
     if (creds.length === 0) {
-      container.innerHTML = '<div style="color:#94a3b8; padding:20px; text-align:center;">No specific credentials assigned to this order.</div>';
+      container.innerHTML = '<div style="color:#64748b; padding:20px; text-align:center;">No specific credentials assigned to this order.</div>';
     } else {
       container.innerHTML = creds.map(c => `
-        <div style="background:var(--admin-bg-base); border:1px solid var(--admin-border); padding:16px; border-radius:10px; margin-bottom:12px; font-family:monospace; font-size:0.86rem;">
-          <div style="font-weight:700; color:#38bdf8; margin-bottom:8px; font-size:0.95rem;">${c.product_title || 'Subscription'} (${c.plan_name || 'Plan'})</div>
-          ${c.account_email ? `<div style="margin-bottom:4px;">Email: <strong style="color:#ffffff;">${c.account_email}</strong></div>` : ''}
-          ${c.account_password ? `<div style="margin-bottom:4px;">Password: <strong style="color:#ffffff;">${c.account_password}</strong></div>` : ''}
-          ${c.profile_pin ? `<div style="margin-bottom:4px;">Profile PIN: <strong style="color:#f59e0b;">${c.profile_pin}</strong></div>` : ''}
-          ${c.license_key ? `<div style="margin-bottom:4px;">License Key: <strong style="color:#10b981;">${c.license_key}</strong></div>` : ''}
-          ${c.activation_link ? `<div style="margin-top:6px;"><a href="${c.activation_link}" target="_blank" style="color:#38bdf8; text-decoration:none;">🔗 Open Activation Portal &rarr;</a></div>` : ''}
-          <div style="font-size:0.76rem; color:#94a3b8; margin-top:8px; border-top:1px dashed var(--admin-border); padding-top:6px;">Instructions: ${c.instructions || 'Standard access'}</div>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; color:#0f172a; padding:16px; border-radius:10px; margin-bottom:12px; font-family:monospace; font-size:0.86rem;">
+          <div style="font-weight:700; color:#0284c7; margin-bottom:8px; font-size:0.95rem;">${c.product_title || 'Subscription'} (${c.plan_name || 'Plan'})</div>
+          ${c.account_email ? `<div style="margin-bottom:4px;">Email: <strong style="color:#0f172a;">${c.account_email}</strong></div>` : ''}
+          ${c.account_password ? `<div style="margin-bottom:4px;">Password: <strong style="color:#0f172a;">${c.account_password}</strong></div>` : ''}
+          ${c.profile_pin ? `<div style="margin-bottom:4px;">Profile PIN: <strong style="color:#b45309;">${c.profile_pin}</strong></div>` : ''}
+          ${c.license_key ? `<div style="margin-bottom:4px;">License Key: <strong style="color:#059669;">${c.license_key}</strong></div>` : ''}
+          ${c.activation_link ? `<div style="margin-top:6px;"><a href="${c.activation_link}" target="_blank" style="color:#0284c7; text-decoration:none;">🔗 Open Activation Portal &rarr;</a></div>` : ''}
+          <div style="font-size:0.76rem; color:#64748b; margin-top:8px; border-top:1px dashed #cbd5e1; padding-top:6px;">Instructions: ${c.instructions || 'Standard access'}</div>
         </div>
       `).join('');
     }
@@ -558,24 +558,24 @@ function renderAdminProducts(products) {
           <div style="display:flex; align-items:center; gap:12px;">
             <img src="${p.logo_url}" style="width:38px; height:38px; border-radius:8px; object-fit:cover; border:1px solid var(--admin-border);">
             <div>
-              <strong style="color:#ffffff;">${p.title}</strong>
-              <div style="color:#94a3b8; font-size:0.75rem; font-family:monospace;">${p.slug}</div>
+              <strong style="color:#0f172a;">${p.title}</strong>
+              <div style="color:#64748b; font-size:0.75rem; font-family:monospace;">${p.slug}</div>
             </div>
           </div>
         </td>
         <td><span class="badge-pill">${p.category_name}</span></td>
         <td>
           <strong>$${Number(p.base_price || 0).toFixed(2)}</strong>
-          <span style="font-size:0.76rem; color:#94a3b8;">(~৳${priceBDT})</span>
+          <span style="font-size:0.76rem; color:#64748b;">(~৳${priceBDT})</span>
         </td>
         <td><span class="badge-tag bestseller">${p.badge || 'Active'}</span></td>
-        <td><strong style="color:#fbbf24;">${Number(p.rating || 5.0).toFixed(1)} ★</strong> (${p.review_count || 0})</td>
+        <td><strong style="color:#d97706;">${Number(p.rating || 5.0).toFixed(1)} ★</strong> (${p.review_count || 0})</td>
         <td>
           <div style="display:flex; gap:6px; align-items:center;">
             <a href="/#productsGrid" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem;">
               View
             </a>
-            <button onclick="deleteProduct(${p.id}, '${p.title.replace(/'/g, "\\'")}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.06);" title="Delete Subscription">
+            <button onclick="deleteProduct(${p.id}, '${p.title.replace(/'/g, "\\'")}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" title="Delete Subscription">
               🗑️ Delete
             </button>
           </div>
@@ -905,37 +905,37 @@ function renderPlansList() {
     <div class="plan-item-card" id="plan_row_${p.id}">
       <div class="plan-item-header">
         <div style="display:flex; align-items:center; gap:8px;">
-          <span style="font-size:0.75rem; font-weight:700; color:#94a3b8; background:rgba(255,255,255,0.06); padding:2px 8px; border-radius:6px;">#${idx + 1}</span>
-          <strong style="font-size:0.86rem; color:#f8fafc;">${p.name || 'Custom Plan'}</strong>
-          ${p.popular ? '<span style="font-size:0.68rem; background:#8b5cf6; color:#fff; padding:1px 6px; border-radius:10px; font-weight:700;">POPULAR</span>' : ''}
+          <span style="font-size:0.75rem; font-weight:700; color:#475569; background:#f1f5f9; border:1px solid #e2e8f0; padding:2px 8px; border-radius:6px;">#${idx + 1}</span>
+          <strong style="font-size:0.86rem; color:#0f172a;">${p.name || 'Custom Plan'}</strong>
+          ${p.popular ? '<span style="font-size:0.68rem; background:#6366f1; color:#fff; padding:1px 6px; border-radius:10px; font-weight:700;">POPULAR</span>' : ''}
         </div>
         <div style="display:flex; align-items:center; gap:8px;">
-          <label style="font-size:0.74rem; color:#cbd5e1; display:flex; align-items:center; gap:4px; cursor:pointer;">
+          <label style="font-size:0.74rem; color:#334155; display:flex; align-items:center; gap:4px; cursor:pointer;">
             <input type="checkbox" ${p.popular ? 'checked' : ''} onchange="updatePlanField('${p.id}', 'popular', this.checked)">
             <span>Mark Popular</span>
           </label>
-          <button type="button" onclick="removePlanRow('${p.id}')" style="background:none; border:none; color:#ef4444; font-size:0.85rem; cursor:pointer; padding:2px 6px;" title="Remove this plan">🗑️</button>
+          <button type="button" onclick="removePlanRow('${p.id}')" style="background:none; border:none; color:#dc2626; font-size:0.85rem; cursor:pointer; padding:2px 6px;" title="Remove this plan">🗑️</button>
         </div>
       </div>
 
       <div style="display:grid; grid-template-columns:1.4fr 0.9fr 0.9fr; gap:8px; margin-bottom:8px;">
         <div>
-          <label style="font-size:0.72rem; color:#94a3b8;">Plan Name</label>
+          <label style="font-size:0.72rem; color:#475569;">Plan Name</label>
           <input type="text" class="form-input" style="padding:6px 10px; font-size:0.8rem;" value="${p.name}" oninput="updatePlanField('${p.id}', 'name', this.value)">
         </div>
         <div>
-          <label style="font-size:0.72rem; color:#94a3b8;">Duration Months</label>
+          <label style="font-size:0.72rem; color:#475569;">Duration Months</label>
           <input type="number" min="0" max="60" class="form-input" style="padding:6px 10px; font-size:0.8rem;" value="${p.months}" oninput="updatePlanField('${p.id}', 'months', this.value)">
         </div>
         <div>
-          <label style="font-size:0.72rem; color:#94a3b8;">Duration Label</label>
+          <label style="font-size:0.72rem; color:#475569;">Duration Label</label>
           <input type="text" class="form-input" style="padding:6px 10px; font-size:0.8rem;" value="${p.label}" oninput="updatePlanField('${p.id}', 'label', this.value)">
         </div>
       </div>
 
       <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:8px; margin-bottom:8px;">
         <div>
-          <label style="font-size:0.72rem; color:#94a3b8;">Tier Type</label>
+          <label style="font-size:0.72rem; color:#475569;">Tier Type</label>
           <select class="form-input" style="padding:6px 10px; font-size:0.8rem;" onchange="updatePlanField('${p.id}', 'tier', this.value)">
             <option value="private" ${p.tier === 'private' ? 'selected' : ''}>Private Profile (PIN locked)</option>
             <option value="shared" ${p.tier === 'shared' ? 'selected' : ''}>Shared Screen Access</option>
@@ -944,26 +944,26 @@ function renderPlansList() {
           </select>
         </div>
         <div>
-          <label style="font-size:0.72rem; color:#94a3b8;">Device / Screen Limit</label>
+          <label style="font-size:0.72rem; color:#475569;">Device / Screen Limit</label>
           <input type="text" class="form-input" style="padding:6px 10px; font-size:0.8rem;" value="${p.devices || '1 Device'}" oninput="updatePlanField('${p.id}', 'devices', this.value)">
         </div>
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px;">
         <div>
-          <label style="font-size:0.72rem; color:#34d399; font-weight:700;">Price (৳ BDT) *</label>
-          <input type="number" step="1" class="form-input input-plan-bdt" style="padding:6px 10px; font-size:0.82rem; font-weight:700; color:#34d399;" value="${p.bdt}" oninput="updatePlanField('${p.id}', 'bdt', this.value)">
+          <label style="font-size:0.72rem; color:#059669; font-weight:700;">Price (৳ BDT) *</label>
+          <input type="number" step="1" class="form-input input-plan-bdt" style="padding:6px 10px; font-size:0.82rem; font-weight:700; color:#059669;" value="${p.bdt}" oninput="updatePlanField('${p.id}', 'bdt', this.value)">
         </div>
         <div>
-          <label style="font-size:0.72rem; color:#38bdf8; font-weight:700;">Price ($ USD) *</label>
-          <input type="number" step="0.01" class="form-input input-plan-usd" style="padding:6px 10px; font-size:0.82rem; font-weight:700; color:#38bdf8;" value="${p.usd}" oninput="updatePlanField('${p.id}', 'usd', this.value)">
+          <label style="font-size:0.72rem; color:#0284c7; font-weight:700;">Price ($ USD) *</label>
+          <input type="number" step="0.01" class="form-input input-plan-usd" style="padding:6px 10px; font-size:0.82rem; font-weight:700; color:#0284c7;" value="${p.usd}" oninput="updatePlanField('${p.id}', 'usd', this.value)">
         </div>
         <div>
-          <label style="font-size:0.72rem; color:#94a3b8;">Original (৳ BDT)</label>
+          <label style="font-size:0.72rem; color:#475569;">Original (৳ BDT)</label>
           <input type="number" step="1" class="form-input input-plan-orig-bdt" style="padding:6px 10px; font-size:0.82rem;" value="${p.origBdt || ''}" oninput="updatePlanField('${p.id}', 'origBdt', this.value)">
         </div>
         <div>
-          <label style="font-size:0.72rem; color:#94a3b8;">Original ($ USD)</label>
+          <label style="font-size:0.72rem; color:#475569;">Original ($ USD)</label>
           <input type="number" step="0.01" class="form-input input-plan-orig-usd" style="padding:6px 10px; font-size:0.82rem;" value="${p.origUsd || ''}" oninput="updatePlanField('${p.id}', 'origUsd', this.value)">
         </div>
       </div>
@@ -1042,7 +1042,7 @@ function syncLivePreview() {
   if (prevDesc) {
     if (desc) {
       prevDesc.textContent = desc;
-      prevDesc.style.color = '#cbd5e1';
+      prevDesc.style.color = '#1e293b';
     } else {
       prevDesc.textContent = '(Type in the description box to preview formatted sentences, bullets, and alignment in real-time)';
       prevDesc.style.color = '#64748b';
@@ -1115,10 +1115,10 @@ function syncLivePreview() {
   if (metaVault) {
     if (vaultEnabled) {
       metaVault.textContent = '1 Credential Ready for Vault';
-      metaVault.style.color = '#34d399';
+      metaVault.style.color = '#059669';
     } else {
       metaVault.textContent = 'None (Will Add Later)';
-      metaVault.style.color = '#94a3b8';
+      metaVault.style.color = '#64748b';
     }
   }
 }
@@ -1342,25 +1342,25 @@ function renderAdminVault(vault) {
   if (!tableBody) return;
 
   if (vault.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#94a3b8;">No credentials stocked in vault yet.</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#64748b;">No credentials stocked in vault yet.</td></tr>`;
     return;
   }
 
   tableBody.innerHTML = vault.map(v => `
     <tr>
-      <td style="color:#94a3b8; font-family:monospace;">#${v.id}</td>
+      <td style="color:#64748b; font-family:monospace;">#${v.id}</td>
       <td><strong>${v.product_title}</strong></td>
       <td><span class="badge-pill">${v.credential_type}</span></td>
-      <td><code style="color:#60a5fa;">${v.account_email || v.license_key || 'Direct Activation Link'}</code></td>
-      <td>${v.account_password ? `<span style="font-family:monospace; color:#cbd5e1;" title="Password">${v.account_password}</span>` : '-'}</td>
-      <td><strong style="color:#fbbf24;">${v.profile_pin || '-'}</strong></td>
+      <td><code style="color:#2563eb;">${v.account_email || v.license_key || 'Direct Activation Link'}</code></td>
+      <td>${v.account_password ? `<span style="font-family:monospace; color:#334155;" title="Password">${v.account_password}</span>` : '-'}</td>
+      <td><strong style="color:#b45309;">${v.profile_pin || '-'}</strong></td>
       <td>
         <span class="badge-tag ${v.is_used ? 'hot' : 'bestseller'}" style="font-size:0.72rem;">
           ${v.is_used ? '● ASSIGNED' : '✓ AVAILABLE'}
         </span>
       </td>
       <td>
-        <button onclick="deleteVaultItem(${v.id})" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.06);" title="Remove Inventory Item">
+        <button onclick="deleteVaultItem(${v.id})" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" title="Remove Inventory Item">
           🗑️
         </button>
       </td>
@@ -1487,7 +1487,7 @@ function renderCustomers(users) {
   if (!tableBody) return;
 
   if (users.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#94a3b8;">No registered customers found.</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#64748b;">No registered customers found.</td></tr>`;
     return;
   }
 
@@ -1500,10 +1500,10 @@ function renderCustomers(users) {
 
     return `
       <tr>
-        <td><strong style="color:#60a5fa; font-family:monospace;">${memberId}</strong></td>
+        <td><strong style="color:#2563eb; font-family:monospace;">${memberId}</strong></td>
         <td>
           <div style="font-weight:700;">${u.full_name}</div>
-          <div style="font-size:0.76rem; color:#94a3b8;">${u.email}</div>
+          <div style="font-size:0.76rem; color:#64748b;">${u.email}</div>
         </td>
         <td>${u.phone || '<span style="color:#64748b;">Not set</span>'}</td>
         <td><strong style="font-size:0.95rem;">${u.order_count}</strong></td>
@@ -1514,7 +1514,7 @@ function renderCustomers(users) {
           </span>
         </td>
         <td>
-          <select onchange="updateUserRole(${u.id}, this.value)" style="background:var(--admin-bg-base); color:#ffffff; border:1px solid var(--admin-border); padding:4px 8px; border-radius:6px; font-size:0.75rem;">
+          <select onchange="updateUserRole(${u.id}, this.value)" style="background:#ffffff; color:#0f172a; border:1px solid #cbd5e1; padding:4px 8px; border-radius:6px; font-size:0.75rem;">
             <option value="customer" ${u.role === 'customer' ? 'selected' : ''}>Customer</option>
             <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin Master</option>
           </select>
@@ -1522,12 +1522,12 @@ function renderCustomers(users) {
         <td>
           <div style="display:flex; gap:6px; align-items:center;">
             ${cleanPhone ? `
-              <a href="https://wa.me/${cleanPhone}?text=Hello%20${encodeURIComponent(u.full_name)}%2C%20greetings%20from%20FlixStore%20Management!" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#10b981; border-color:rgba(16,185,129,0.3); text-decoration:none;">
+              <a href="https://wa.me/${cleanPhone}?text=Hello%20${encodeURIComponent(u.full_name)}%2C%20greetings%20from%20FlixStore%20Management!" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#059669; border-color:#a7f3d0; background:#ecfdf5; text-decoration:none;">
                 💬 WhatsApp
               </a>
             ` : '<span style="color:#64748b; font-size:0.75rem;">No WhatsApp</span>'}
             ${u.email !== 'admin@flixstore.com' ? `
-              <button onclick="deleteCustomer(${u.id}, '${u.email}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.06);" title="Remove Customer">
+              <button onclick="deleteCustomer(${u.id}, '${u.email}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" title="Remove Customer">
                 🗑️
               </button>
             ` : ''}
@@ -1612,21 +1612,21 @@ function renderAdminCoupons(coupons) {
     const pct = Math.min(100, Math.round((c.used_count / Math.max(1, c.max_uses)) * 100));
     return `
       <tr>
-        <td><strong style="color:#a855f7; font-family:monospace; font-size:0.95rem;">${c.code}</strong></td>
-        <td><strong style="color:#34d399;">${c.discount_percent > 0 ? `${c.discount_percent}% OFF` : `$${c.discount_amount_usd} OFF`}</strong></td>
+        <td><strong style="color:#7c3aed; font-family:monospace; font-size:0.95rem;">${c.code}</strong></td>
+        <td><strong style="color:#059669;">${c.discount_percent > 0 ? `${c.discount_percent}% OFF` : `$${c.discount_amount_usd} OFF`}</strong></td>
         <td>${c.min_spend_usd > 0 ? `$${c.min_spend_usd}` : 'No Minimum'}</td>
         <td style="min-width:180px;">
           <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:3px;">
             <span>${c.used_count} used</span>
-            <span style="color:#94a3b8;">${c.max_uses} max</span>
+            <span style="color:#64748b;">${c.max_uses} max</span>
           </div>
-          <div style="height:5px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden;">
-            <div style="width:${pct}%; height:100%; background:#a855f7;"></div>
+          <div style="height:5px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:3px; overflow:hidden;">
+            <div style="width:${pct}%; height:100%; background:#7c3aed;"></div>
           </div>
         </td>
         <td><span class="badge-tag ${c.is_active ? 'bestseller' : 'hot'}">${c.is_active ? 'ACTIVE' : 'EXPIRED'}</span></td>
         <td>
-          <button onclick="deleteCoupon(${c.id}, '${c.code}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.06);" title="Delete Coupon">
+          <button onclick="deleteCoupon(${c.id}, '${c.code}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" title="Delete Coupon">
             🗑️ Delete
           </button>
         </td>
@@ -1722,7 +1722,7 @@ async function testNeonStorage() {
     const res = await fetch('/api/neon/storage/test', { method: 'POST' });
     const json = await res.json();
     if (json.success) {
-      if (resultElem) resultElem.innerHTML = `✓ Uploaded: <a href="${json.url}" target="_blank" style="color:#38bdf8;">${json.key}</a>`;
+      if (resultElem) resultElem.innerHTML = `✓ Uploaded: <a href="${json.url}" target="_blank" style="color:#0284c7; font-weight:600;">${json.key}</a>`;
       showToast('S3 test successful!');
     } else {
       if (resultElem) resultElem.textContent = `✕ Failed: ${json.message}`;
