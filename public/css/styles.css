@@ -967,8 +967,8 @@ body {
 /* 3D Hologram Card */
 .card-3d-hologram {
   position: relative;
-  width: 275px;
-  height: 200px;
+  width: 320px;
+  height: 225px;
   border-radius: 18px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(15, 23, 42, 0.85) 100%);
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -1060,14 +1060,16 @@ body {
   justify-content: center;
   position: relative;
   z-index: 3;
-  padding: 16px;
+  padding: 12px 18px;
 }
 
 .holo-emblem-main {
-  max-width: 90px;
-  max-height: 80px;
+  max-width: 185px;
+  max-height: 115px;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.65));
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.7));
 }
 
 .dual-core {
@@ -1564,13 +1566,13 @@ body {
 
 .product-card-top {
   position: relative;
-  height: 180px;
+  height: 205px;
   overflow: hidden;
   background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 16px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 0 rgba(0, 0, 0, 0.4);
 }
@@ -1588,13 +1590,13 @@ body {
 }
 
 .product-card-img {
-  max-width: 82%;
-  max-height: 75%;
+  max-width: 90%;
+  max-height: 86%;
   width: auto;
   height: auto;
   object-fit: contain;
   transition: transform 0.4s ease;
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
 }
 
 .product-card:hover .product-card-img {
@@ -2163,12 +2165,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  padding: 16px;
 }
 
 .detail-img-box img {
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 92%;
+  max-height: 88%;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -4606,8 +4608,8 @@ body {
     flex-direction: column !important;
     align-items: flex-start !important;
     justify-content: center !important;
-    flex: 1.15 !important;
-    max-width: 58% !important;
+    flex: 1.05 !important;
+    max-width: 53% !important;
     height: 100% !important;
     z-index: 3 !important;
     text-align: left !important;
@@ -4704,8 +4706,8 @@ body {
 
   /* Right Column: 3D Holographic Stage on 3:2 Mobile Banner */
   .hero-visual {
-    flex: 0.85 !important;
-    max-width: 42% !important;
+    flex: 0.95 !important;
+    max-width: 47% !important;
     height: 100% !important;
     display: flex !important;
     align-items: center !important;
@@ -4716,8 +4718,8 @@ body {
   }
 
   .hero-3d-stage {
-    width: 135px !important;
-    height: 135px !important;
+    width: 155px !important;
+    height: 155px !important;
     position: relative !important;
     display: flex !important;
     align-items: center !important;
@@ -4726,15 +4728,15 @@ body {
   }
 
   .holo-ambient-aura {
-    width: 120px !important;
-    height: 120px !important;
-    filter: blur(22px) !important;
+    width: 145px !important;
+    height: 145px !important;
+    filter: blur(25px) !important;
   }
 
   .card-3d-hologram {
-    width: 110px !important;
-    height: 82px !important;
-    border-radius: 11px !important;
+    width: 142px !important;
+    height: 110px !important;
+    border-radius: 13px !important;
     transform: rotateY(-8deg) rotateX(5deg) !important;
     animation: float3DMobile 4s ease-in-out infinite !important;
   }
@@ -4745,12 +4747,20 @@ body {
   }
 
   .holo-brand-core {
-    padding: 4px !important;
+    padding: 6px 8px !important;
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .holo-emblem-main {
-    max-width: 44px !important;
-    max-height: 40px !important;
+    max-width: 116px !important;
+    max-height: 70px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.75)) !important;
   }
 
   .dual-core {
@@ -4758,12 +4768,12 @@ body {
   }
 
   .holo-emblem-dual {
-    max-width: 32px !important;
-    max-height: 28px !important;
+    max-width: 48px !important;
+    max-height: 42px !important;
   }
 
   .ott-img {
-    max-height: 24px !important;
+    max-height: 38px !important;
   }
 
   .holo-brand-plus {
@@ -4785,17 +4795,17 @@ body {
   }
 
   .chip-top-left {
-    top: 2px !important;
-    left: -6px !important;
+    top: -2px !important;
+    left: -7px !important;
   }
 
   .chip-top-right {
-    top: 2px !important;
-    right: -6px !important;
+    top: -2px !important;
+    right: -7px !important;
   }
 
   .chip-bottom-center {
-    bottom: -8px !important;
+    bottom: -9px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     animation: chipHoverCenterMobile 4.2s infinite ease-in-out !important;
@@ -4807,19 +4817,19 @@ body {
   }
 
   .holo-pedestal {
-    bottom: -2px !important;
-    width: 110px !important;
-    height: 22px !important;
+    bottom: -3px !important;
+    width: 130px !important;
+    height: 24px !important;
   }
 
   .holo-ring {
-    width: 100px !important;
-    height: 26px !important;
+    width: 120px !important;
+    height: 28px !important;
   }
 
   .holo-beam-up {
-    width: 65px !important;
-    height: 35px !important;
+    width: 80px !important;
+    height: 38px !important;
   }
 
   /* Dots on 3:2 Mobile Banner */
@@ -4905,8 +4915,8 @@ body {
   }
 
   .product-card-top {
-    height: 115px !important;
-    padding: 10px !important;
+    height: 140px !important;
+    padding: 8px 10px !important;
     position: relative !important;
     background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -4931,8 +4941,8 @@ body {
   }
 
   .product-card-img {
-    max-height: 68px !important;
-    max-width: 82% !important;
+    max-height: 98px !important;
+    max-width: 90% !important;
     width: auto !important;
     height: auto !important;
     object-fit: contain !important;
