@@ -493,6 +493,8 @@ body {
 
 .hero-slider-container {
   position: relative;
+  aspect-ratio: 3 / 2;
+  max-height: 480px;
   border-radius: var(--radius-xl);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -518,6 +520,7 @@ body {
 .hero-slider-track {
   display: flex;
   width: 100%;
+  height: 100%;
   transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1);
   will-change: transform;
 }
@@ -526,11 +529,12 @@ body {
   flex: 0 0 100%;
   width: 100%;
   min-width: 100%;
+  height: 100%;
+  min-height: 0;
   display: flex;
-  padding: 48px 52px;
+  padding: 40px 48px;
   align-items: center;
   justify-content: space-between;
-  min-height: 420px;
   position: relative;
   box-sizing: border-box;
   opacity: 1;
@@ -4402,176 +4406,251 @@ body {
     font-size: 0.8rem;
   }
 
-  /* Smartphone Hero Presentation (Digital 3D Cyber-Hologram Showcase) */
+  /* Smartphone Hero Presentation (Strict 3:2 Ratio Cyber-Hologram Showcase) */
   .hero-section {
-    padding: 14px 0 16px !important;
+    padding: 10px 0 14px !important;
   }
 
   .hero-slider-container {
+    aspect-ratio: 3 / 2 !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
     background-color: #070a13 !important;
     background-image: 
       radial-gradient(circle at 82% 24%, rgba(59, 130, 246, 0.22) 0%, transparent 55%),
       radial-gradient(circle at 18% 76%, rgba(139, 92, 246, 0.2) 0%, transparent 55%),
       linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px) !important;
-    background-size: 100% 100%, 100% 100%, 26px 26px, 26px 26px !important;
+    background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     border-top: 1px solid rgba(255, 255, 255, 0.28) !important;
-    box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.82), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.82), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
     border-radius: var(--radius-lg) !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+
+  .hero-slider-track {
+    height: 100% !important;
+    display: flex !important;
   }
 
   .hero-slide {
-    padding: 20px 14px 18px !important;
-    min-height: auto !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    aspect-ratio: 3 / 2 !important;
     display: flex !important;
-    flex-direction: column !important;
-    text-align: center !important;
+    flex-direction: row !important;
     align-items: center !important;
-    justify-content: center !important;
-    opacity: 1 !important;
-    gap: 0 !important;
+    justify-content: space-between !important;
+    padding: 12px 14px 14px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    text-align: left !important;
+    gap: 6px !important;
+    position: relative !important;
   }
 
-  /* Unrolls hero-content so its children are sorted alongside the 3D Hologram stage! */
+  /* Left Column: Offer, Headline, Price, 3D Button */
   .hero-content {
-    display: contents !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    flex: 1.15 !important;
+    max-width: 58% !important;
+    height: 100% !important;
+    z-index: 3 !important;
+    text-align: left !important;
   }
 
   .hero-badge-row {
-    order: 1 !important;
-    margin-bottom: 10px !important;
-    gap: 6px !important;
-    justify-content: center !important;
+    margin-bottom: 5px !important;
+    gap: 4px !important;
+    justify-content: flex-start !important;
   }
 
   .hero-beacon-pill {
-    font-size: 0.66rem !important;
-    padding: 3px 9px !important;
-    letter-spacing: 0.4px !important;
-  }
-
-  .hero-badge {
-    font-size: 0.66rem !important;
-    padding: 3px 9px !important;
+    font-size: 0.60rem !important;
+    padding: 2px 7px !important;
     letter-spacing: 0.3px !important;
   }
 
+  .hero-badge {
+    display: none !important;
+  }
+
   .hero-title {
-    order: 2 !important;
-    font-size: 1.62rem !important;
-    line-height: 1.18 !important;
-    margin-bottom: 8px !important;
+    font-size: 1.18rem !important;
+    line-height: 1.15 !important;
+    margin-bottom: 6px !important;
     font-weight: 800 !important;
     letter-spacing: -0.025em !important;
-    text-align: center !important;
-    max-width: 95% !important;
+    text-align: left !important;
+    max-width: 100% !important;
   }
 
   .hero-subtitle {
-    order: 3 !important;
-    display: block !important;
-    font-size: 0.82rem !important;
-    line-height: 1.35 !important;
-    margin: 0 auto 10px !important;
-    color: #cbd5e1 !important;
-    max-width: 90% !important;
-    text-align: center !important;
+    display: none !important;
   }
 
-  /* 3D Holographic Stage on Mobile (Centered hero visual!) */
-  .hero-visual {
-    order: 4 !important;
-    margin: 4px 0 16px !important;
-    display: flex !important;
-    justify-content: center !important;
+  .hero-pricing-box {
+    margin-bottom: 8px !important;
+    gap: 6px !important;
+    justify-content: flex-start !important;
+    align-items: baseline !important;
+  }
+
+  .hero-current-price {
+    font-size: 1.55rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .hero-original-price {
+    font-size: 0.85rem !important;
+    color: #64748b !important;
+    text-decoration: line-through !important;
+  }
+
+  .hero-savings-tag {
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+  }
+
+  /* 3D Tactile Instant Buy Button */
+  .hero-cta-group {
+    flex-direction: row !important;
     width: 100% !important;
-    perspective: 800px !important;
+    gap: 6px !important;
+    justify-content: flex-start !important;
+  }
+
+  .hero-cta-group .btn-primary {
+    height: 35px !important;
+    padding: 0 12px !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    border-radius: 7px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    white-space: nowrap !important;
+    box-shadow: 0 3px 0 #94a3b8, 0 8px 18px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .hero-cta-group .btn-primary svg {
+    width: 14px !important;
+    height: 14px !important;
+    stroke: #0b0f19 !important;
+  }
+
+  .hero-cta-group .btn-secondary {
+    display: none !important;
+  }
+
+  /* Right Column: 3D Holographic Stage on 3:2 Mobile Banner */
+  .hero-visual {
+    flex: 0.85 !important;
+    max-width: 42% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    margin: 0 !important;
+    perspective: 700px !important;
   }
 
   .hero-3d-stage {
-    width: 250px !important;
-    height: 155px !important;
-    perspective: 800px !important;
+    width: 135px !important;
+    height: 135px !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    perspective: 700px !important;
   }
 
   .holo-ambient-aura {
-    width: 180px !important;
-    height: 180px !important;
-    filter: blur(35px) !important;
+    width: 120px !important;
+    height: 120px !important;
+    filter: blur(22px) !important;
   }
 
   .card-3d-hologram {
-    width: 195px !important;
-    height: 135px !important;
-    border-radius: 14px !important;
-    transform: rotateY(-6deg) rotateX(4deg) !important;
-    animation: float3DMobile 4.5s ease-in-out infinite !important;
+    width: 110px !important;
+    height: 82px !important;
+    border-radius: 11px !important;
+    transform: rotateY(-8deg) rotateX(5deg) !important;
+    animation: float3DMobile 4s ease-in-out infinite !important;
   }
 
   @keyframes float3DMobile {
-    0%, 100% { transform: rotateY(-6deg) rotateX(4deg) translateY(0px); }
-    50% { transform: rotateY(-3deg) rotateX(2deg) translateY(-5px); }
+    0%, 100% { transform: rotateY(-8deg) rotateX(5deg) translateY(0px); }
+    50% { transform: rotateY(-4deg) rotateX(2deg) translateY(-4px); }
   }
 
   .holo-brand-core {
-    padding: 8px !important;
+    padding: 4px !important;
   }
 
   .holo-emblem-main {
-    max-width: 65px !important;
-    max-height: 55px !important;
-  }
-
-  .dual-core {
-    gap: 8px !important;
-  }
-
-  .holo-emblem-dual {
-    max-width: 48px !important;
+    max-width: 44px !important;
     max-height: 40px !important;
   }
 
+  .dual-core {
+    gap: 5px !important;
+  }
+
+  .holo-emblem-dual {
+    max-width: 32px !important;
+    max-height: 28px !important;
+  }
+
   .ott-img {
-    max-height: 34px !important;
+    max-height: 24px !important;
   }
 
   .holo-brand-plus {
-    font-size: 1.1rem !important;
+    font-size: 0.85rem !important;
   }
 
   .holo-card-footer {
-    padding: 6px 10px !important;
-    font-size: 0.62rem !important;
-    letter-spacing: 0.5px !important;
+    padding: 3px 6px !important;
+    font-size: 0.50rem !important;
+    letter-spacing: 0.4px !important;
     background: rgba(0, 0, 0, 0.65) !important;
   }
 
   .holo-chip {
-    padding: 3px 9px !important;
-    font-size: 0.66rem !important;
-    gap: 5px !important;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+    padding: 2px 6px !important;
+    font-size: 0.58rem !important;
+    gap: 3px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
   }
 
   .chip-top-left {
-    top: 6px !important;
+    top: 2px !important;
     left: -6px !important;
-    animation-delay: 0.3s !important;
   }
 
   .chip-top-right {
-    top: 6px !important;
+    top: 2px !important;
     right: -6px !important;
-    animation-delay: 0.8s !important;
   }
 
   .chip-bottom-center {
-    bottom: -10px !important;
+    bottom: -8px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     animation: chipHoverCenterMobile 4.2s infinite ease-in-out !important;
-    animation-delay: 1.5s !important;
   }
 
   @keyframes chipHoverCenterMobile {
@@ -4580,107 +4659,44 @@ body {
   }
 
   .holo-pedestal {
-    bottom: 0px !important;
-    width: 160px !important;
-    height: 30px !important;
+    bottom: -2px !important;
+    width: 110px !important;
+    height: 22px !important;
   }
 
   .holo-ring {
-    width: 145px !important;
-    height: 36px !important;
+    width: 100px !important;
+    height: 26px !important;
   }
 
   .holo-beam-up {
-    width: 95px !important;
-    height: 48px !important;
+    width: 65px !important;
+    height: 35px !important;
   }
 
-  /* Pricing Row on Mobile */
-  .hero-pricing-box {
-    order: 5 !important;
-    margin-bottom: 14px !important;
-    gap: 8px !important;
-    justify-content: center !important;
-    align-items: baseline !important;
-  }
-
-  .hero-current-price {
-    font-size: 2.05rem !important;
-    font-weight: 800 !important;
-    color: #ffffff !important;
-    letter-spacing: -0.02em !important;
-  }
-
-  .hero-original-price {
-    font-size: 1rem !important;
-    color: #64748b !important;
-    text-decoration: line-through !important;
-  }
-
-  .hero-savings-tag {
-    font-size: 0.72rem !important;
-    font-weight: 700 !important;
-    padding: 3px 8px !important;
-    border-radius: 4px !important;
-  }
-
-  /* 3D Tactile Buttons on Mobile */
-  .hero-cta-group {
-    order: 6 !important;
-    flex-direction: row !important;
-    width: 100% !important;
-    gap: 8px !important;
-    justify-content: center !important;
-  }
-
-  .hero-cta-group .btn-primary {
-    flex: 1.25 !important;
-    height: 44px !important;
-    padding: 0 12px !important;
-    font-size: 0.86rem !important;
-    font-weight: 700 !important;
-    border-radius: 8px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 6px !important;
-  }
-
-  .hero-cta-group .btn-primary svg {
-    stroke: #0b0f19 !important;
-  }
-
-  .hero-cta-group .btn-secondary {
-    flex: 1 !important;
-    height: 44px !important;
-    padding: 0 10px !important;
-    font-size: 0.84rem !important;
-    font-weight: 600 !important;
-    border-radius: 8px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
+  /* Dots on 3:2 Mobile Banner */
   .hero-controls {
-    position: static !important;
-    margin-top: 14px !important;
-    justify-content: center !important;
+    position: absolute !important;
+    bottom: 6px !important;
+    left: 14px !important;
+    margin-top: 0 !important;
+    justify-content: flex-start !important;
+    z-index: 10 !important;
   }
 
   .slider-dot {
-    background: rgba(255, 255, 255, 0.22) !important;
-    width: 6px !important;
-    height: 6px !important;
-    margin: 0 3px !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    width: 5px !important;
+    height: 5px !important;
+    margin: 0 2px !important;
   }
 
   .slider-dot.active {
     background: linear-gradient(90deg, #38bdf8 0%, #818cf8 100%) !important;
-    width: 20px !important;
-    height: 6px !important;
+    width: 16px !important;
+    height: 5px !important;
     border-radius: 999px !important;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.6) !important;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.6) !important;
   }
 
   /* Full screen touch drawer on mobile */
