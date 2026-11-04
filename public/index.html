@@ -40,7 +40,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/css/styles.css?v=4.5">
+  <link rel="stylesheet" href="/css/styles.css?v=4.9">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><polygon points='5 3 19 12 5 21 5 3'></polygon></svg>">
 </head>
 <body>
@@ -181,101 +181,215 @@
         <div class="hero-slider-track" id="heroSliderTrack">
 
           <!-- Slide 1: Netflix 4K -->
-          <div class="hero-slide active">
+          <div class="hero-slide active" data-slide-theme="netflix">
             <div class="hero-content">
               <div class="hero-badge-row">
-                <span class="hero-badge">Cinema Experience</span>
-                <span class="hero-deal-pill">⚡ Instant Activation</span>
+                <span class="hero-beacon-pill"><span class="beacon-dot"></span> LIVE INVENTORY • 60s DISPATCH</span>
+                <span class="hero-badge hero-badge-netflix">🎬 4K UHD Cinema</span>
               </div>
-              <h1 class="hero-title">Netflix Premium 4K Ultra HD</h1>
+              <h1 class="hero-title">
+                Netflix Premium <span class="gradient-netflix">4K Ultra HD</span>
+              </h1>
               <p class="hero-subtitle">
-                Unlimited blockbusters, award-winning series, HDR10 & Spatial Audio. Enjoy your own private PIN-locked profile with 100% replacement warranty.
+                Unlimited blockbusters, award-winning series, HDR10 & Spatial Audio with your private PIN profile.
               </p>
+              <div class="hero-feature-matrix">
+                <span class="matrix-pill">✦ Private PIN Profile</span>
+                <span class="matrix-pill">✦ 4K HDR10 & Atmos</span>
+                <span class="matrix-pill">✦ 100% Replacement Warranty</span>
+              </div>
               <div class="hero-pricing-box">
                 <span class="hero-current-price" data-bdt="299">৳299</span>
                 <span class="hero-original-price" data-bdt="600">৳600/mo</span>
-                <span class="hero-savings-tag">Save 50%</span>
+                <span class="hero-savings-tag cyber-tag-netflix">Save 50%</span>
               </div>
               <div class="hero-cta-group">
-                <button class="btn-primary" onclick="quickAddToCart('netflix-premium-4k-uhd')">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <button class="btn-primary hero-btn-gloss" onclick="quickAddToCart('netflix-premium-4k-uhd')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                   Get Instant Access
                 </button>
-                <button class="btn-secondary" onclick="openProductDetail('netflix-premium-4k-uhd')">
+                <button class="btn-secondary hero-btn-glass" onclick="openProductDetail('netflix-premium-4k-uhd')">
                   View Plan Tiers
                 </button>
               </div>
             </div>
             <div class="hero-visual">
-              <div class="hero-art-glow"></div>
-              <div class="hero-art-card">
-                <img src="/assets/brands/netflix-icon.svg" alt="Netflix 4K">
+              <div class="hero-3d-stage">
+                <div class="holo-ambient-aura aura-netflix"></div>
+                <div class="card-3d-hologram">
+                  <div class="holo-sheen-beam"></div>
+                  <span class="holo-reticle holo-reticle-tl"></span>
+                  <span class="holo-reticle holo-reticle-tr"></span>
+                  <span class="holo-reticle holo-reticle-bl"></span>
+                  <span class="holo-reticle holo-reticle-br"></span>
+                  <div class="holo-brand-core">
+                    <img src="/assets/brands/netflix-icon.svg" alt="Netflix 4K" class="holo-emblem-main">
+                  </div>
+                  <div class="holo-card-footer">
+                    <span class="holo-status-dot dot-netflix"></span>
+                    <span class="holo-status-text">OFFICIAL • 4K UHD STREAMING</span>
+                  </div>
+                </div>
+                <div class="holo-chip chip-top-right">
+                  <span class="chip-glow-dot dot-crimson"></span>
+                  <span class="chip-label">4K HDR10</span>
+                </div>
+                <div class="holo-chip chip-bottom-left">
+                  <span class="chip-icon">🔒</span>
+                  <span class="chip-label">Private PIN</span>
+                </div>
+                <div class="holo-chip chip-bottom-right">
+                  <span class="chip-icon">🛡️</span>
+                  <span class="chip-label">100% Warranty</span>
+                </div>
+                <div class="holo-pedestal">
+                  <div class="holo-ring ring-netflix"></div>
+                  <div class="holo-beam-up beam-netflix"></div>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Slide 2: ChatGPT Plus & Claude Pro -->
-          <div class="hero-slide">
+          <div class="hero-slide" data-slide-theme="ai">
             <div class="hero-content">
               <div class="hero-badge-row">
-                <span class="hero-badge">Next-Gen Intelligence</span>
-                <span class="hero-deal-pill">⚡ GPT-4o & Claude 3.5</span>
+                <span class="hero-beacon-pill"><span class="beacon-dot"></span> AI ENGINES ONLINE • 60s DISPATCH</span>
+                <span class="hero-badge hero-badge-ai">🧠 Next-Gen Intelligence</span>
               </div>
-              <h1 class="hero-title">ChatGPT Plus & Claude Pro Suite</h1>
+              <h1 class="hero-title">
+                ChatGPT Plus & <span class="gradient-ai">Claude Pro Suite</span>
+              </h1>
               <p class="hero-subtitle">
-                Unlock the world's most advanced reasoning AI, Canvas interactive workspace, DALL-E 3 image generation, and 200K context code analysis.
+                Unlock reasoning AI, Canvas interactive workspace, DALL-E 3 image generation & 200K context code analysis.
               </p>
+              <div class="hero-feature-matrix">
+                <span class="matrix-pill">✦ GPT-4o & Claude 3.5</span>
+                <span class="matrix-pill">✦ Canvas & DALL-E 3</span>
+                <span class="matrix-pill">✦ 200K Context Window</span>
+              </div>
               <div class="hero-pricing-box">
                 <span class="hero-current-price" data-bdt="499">৳499</span>
                 <span class="hero-original-price" data-bdt="1200">৳1,200/mo</span>
-                <span class="hero-savings-tag">Save 58%</span>
+                <span class="hero-savings-tag cyber-tag-ai">Save 58%</span>
               </div>
               <div class="hero-cta-group">
-                <button class="btn-primary" onclick="quickAddToCart('chatgpt-plus-openai')">
+                <button class="btn-primary hero-btn-gloss" onclick="quickAddToCart('chatgpt-plus-openai')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                   Get ChatGPT Plus
                 </button>
-                <button class="btn-secondary" onclick="openProductDetail('claude-pro-anthropic')">
+                <button class="btn-secondary hero-btn-glass" onclick="openProductDetail('claude-pro-anthropic')">
                   Explore Claude Pro
                 </button>
               </div>
             </div>
             <div class="hero-visual">
-              <div class="hero-art-glow"></div>
-              <div class="hero-art-card">
-                <img src="/assets/brands/chatgpt.svg" alt="AI Models">
+              <div class="hero-3d-stage">
+                <div class="holo-ambient-aura aura-ai"></div>
+                <div class="card-3d-hologram">
+                  <div class="holo-sheen-beam"></div>
+                  <span class="holo-reticle holo-reticle-tl"></span>
+                  <span class="holo-reticle holo-reticle-tr"></span>
+                  <span class="holo-reticle holo-reticle-bl"></span>
+                  <span class="holo-reticle holo-reticle-br"></span>
+                  <div class="holo-brand-core dual-core">
+                    <img src="/assets/brands/chatgpt.svg" alt="ChatGPT Plus" class="holo-emblem-dual">
+                    <span class="holo-brand-plus">+</span>
+                    <img src="/assets/brands/claude-ai.svg" alt="Claude Pro" class="holo-emblem-dual">
+                  </div>
+                  <div class="holo-card-footer">
+                    <span class="holo-status-dot dot-ai"></span>
+                    <span class="holo-status-text">DUAL AI LICENSES • ACTIVE</span>
+                  </div>
+                </div>
+                <div class="holo-chip chip-top-right">
+                  <span class="chip-glow-dot dot-cyan"></span>
+                  <span class="chip-label">GPT-4o & Claude</span>
+                </div>
+                <div class="holo-chip chip-bottom-left">
+                  <span class="chip-icon">🎨</span>
+                  <span class="chip-label">DALL-E 3 & Canvas</span>
+                </div>
+                <div class="holo-chip chip-bottom-right">
+                  <span class="chip-icon">⚡</span>
+                  <span class="chip-label">200K Context</span>
+                </div>
+                <div class="holo-pedestal">
+                  <div class="holo-ring ring-ai"></div>
+                  <div class="holo-beam-up beam-ai"></div>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Slide 3: Regional Bengali OTT (Hoichoi & Chorki) -->
-          <div class="hero-slide">
+          <div class="hero-slide" data-slide-theme="ott">
             <div class="hero-content">
               <div class="hero-badge-row">
-                <span class="hero-badge">Bengali Entertainment</span>
-                <span class="hero-deal-pill">⚡ 1,000+ Blockbusters</span>
+                <span class="hero-beacon-pill"><span class="beacon-dot"></span> BENGALI VAULT • 60s DISPATCH</span>
+                <span class="hero-badge hero-badge-ott">🍿 Bengali Entertainment</span>
               </div>
-              <h1 class="hero-title">Hoichoi & Chorki Premium</h1>
+              <h1 class="hero-title">
+                Hoichoi & Chorki <span class="gradient-ott">Premium OTT</span>
+              </h1>
               <p class="hero-subtitle">
-                Feluda, Byomkesh, Syndicate, Pett Kata Shaw and 1,000+ Bengali blockbuster movies & exclusive original series in Full HD.
+                Feluda, Byomkesh, Syndicate, Pett Kata Shaw and 1,000+ Bengali blockbuster movies & exclusive series.
               </p>
+              <div class="hero-feature-matrix">
+                <span class="matrix-pill">✦ 1,000+ Bengali Movies</span>
+                <span class="matrix-pill">✦ Exclusive Originals</span>
+                <span class="matrix-pill">✦ Ad-Free Full HD</span>
+              </div>
               <div class="hero-pricing-box">
                 <span class="hero-current-price" data-bdt="150">৳150</span>
                 <span class="hero-original-price" data-bdt="400">৳400/mo</span>
-                <span class="hero-savings-tag">Save 62%</span>
+                <span class="hero-savings-tag cyber-tag-ott">Save 62%</span>
               </div>
               <div class="hero-cta-group">
-                <button class="btn-primary" onclick="quickAddToCart('hoichoi-premium')">
+                <button class="btn-primary hero-btn-gloss" onclick="quickAddToCart('hoichoi-premium')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                   Watch Bengali Hits
                 </button>
-                <button class="btn-secondary" onclick="openProductDetail('chorki-premium')">
+                <button class="btn-secondary hero-btn-glass" onclick="openProductDetail('chorki-premium')">
                   View Chorki Plans
                 </button>
               </div>
             </div>
             <div class="hero-visual">
-              <div class="hero-art-glow"></div>
-              <div class="hero-art-card">
-                <img src="/assets/brands/hoichoi.png" alt="Hoichoi & Chorki">
+              <div class="hero-3d-stage">
+                <div class="holo-ambient-aura aura-ott"></div>
+                <div class="card-3d-hologram">
+                  <div class="holo-sheen-beam"></div>
+                  <span class="holo-reticle holo-reticle-tl"></span>
+                  <span class="holo-reticle holo-reticle-tr"></span>
+                  <span class="holo-reticle holo-reticle-bl"></span>
+                  <span class="holo-reticle holo-reticle-br"></span>
+                  <div class="holo-brand-core dual-core">
+                    <img src="/assets/brands/hoichoi.png" alt="Hoichoi" class="holo-emblem-dual ott-img">
+                    <span class="holo-brand-plus ott-plus">+</span>
+                    <img src="/assets/brands/chorki.png" alt="Chorki" class="holo-emblem-dual ott-img">
+                  </div>
+                  <div class="holo-card-footer">
+                    <span class="holo-status-dot dot-ott"></span>
+                    <span class="holo-status-text">OFFICIAL BENGALI OTT COMBO</span>
+                  </div>
+                </div>
+                <div class="holo-chip chip-top-right">
+                  <span class="chip-glow-dot dot-amber"></span>
+                  <span class="chip-label">1,000+ Movies</span>
+                </div>
+                <div class="holo-chip chip-bottom-left">
+                  <span class="chip-icon">🇧🇩</span>
+                  <span class="chip-label">BD Originals</span>
+                </div>
+                <div class="holo-chip chip-bottom-right">
+                  <span class="chip-icon">✨</span>
+                  <span class="chip-label">Ad-Free FHD</span>
+                </div>
+                <div class="holo-pedestal">
+                  <div class="holo-ring ring-ott"></div>
+                  <div class="holo-beam-up beam-ott"></div>
+                </div>
               </div>
             </div>
           </div>
