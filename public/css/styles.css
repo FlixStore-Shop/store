@@ -712,24 +712,27 @@ body {
 }
 
 .cyber-tag-netflix {
-  background: rgba(229, 9, 20, 0.15);
-  border-color: rgba(229, 9, 20, 0.35);
-  color: #fca5a5;
-  box-shadow: 0 0 10px rgba(229, 9, 20, 0.2);
+  background: rgba(229, 9, 20, 0.22);
+  border-color: rgba(239, 68, 68, 0.55);
+  color: #fecaca;
+  box-shadow: 0 0 12px rgba(229, 9, 20, 0.35);
+  text-shadow: 0 0 8px rgba(229, 9, 20, 0.5);
 }
 
 .cyber-tag-ai {
-  background: rgba(56, 189, 248, 0.15);
-  border-color: rgba(56, 189, 248, 0.35);
-  color: #7dd3fc;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+  background: rgba(56, 189, 248, 0.22);
+  border-color: rgba(56, 189, 248, 0.55);
+  color: #bae6fd;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
 }
 
 .cyber-tag-ott {
-  background: rgba(245, 158, 11, 0.15);
-  border-color: rgba(245, 158, 11, 0.35);
-  color: #fde68a;
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+  background: rgba(245, 158, 11, 0.22);
+  border-color: rgba(245, 158, 11, 0.55);
+  color: #fef08a;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
 }
 
 /* 3D Tactile Buttons */
@@ -1036,27 +1039,34 @@ body {
   animation: chipHover 4s infinite ease-in-out;
 }
 
-.chip-top-right {
-  top: 16px;
-  right: 6px;
+.chip-top-left {
+  top: 14px;
+  left: -12px;
   animation-delay: 0.2s;
 }
 
-.chip-bottom-left {
-  bottom: 24px;
-  left: 6px;
-  animation-delay: 1.2s;
+.chip-top-right {
+  top: 14px;
+  right: -12px;
+  animation-delay: 0.8s;
 }
 
-.chip-bottom-right {
-  bottom: 12px;
-  right: 18px;
-  animation-delay: 2.2s;
+.chip-bottom-center {
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: chipHoverCenter 4.2s infinite ease-in-out;
+  animation-delay: 1.6s;
 }
 
 @keyframes chipHover {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-5px); }
+}
+
+@keyframes chipHoverCenter {
+  0%, 100% { transform: translate(-50%, 0px); }
+  50% { transform: translate(-50%, -5px); }
 }
 
 .chip-glow-dot {
@@ -4460,28 +4470,19 @@ body {
 
   .hero-subtitle {
     order: 3 !important;
-    display: none !important; /* Micro-feature matrix pills replace long text on smartphone */
-  }
-
-  .hero-feature-matrix {
-    order: 3 !important;
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 5px !important;
-    margin-bottom: 12px !important;
-  }
-
-  .matrix-pill {
-    font-size: 0.66rem !important;
-    padding: 3px 7px !important;
-    border-radius: 5px !important;
+    display: block !important;
+    font-size: 0.82rem !important;
+    line-height: 1.35 !important;
+    margin: 0 auto 10px !important;
+    color: #cbd5e1 !important;
+    max-width: 90% !important;
+    text-align: center !important;
   }
 
   /* 3D Holographic Stage on Mobile (Centered hero visual!) */
   .hero-visual {
     order: 4 !important;
-    margin: 4px 0 14px !important;
+    margin: 4px 0 16px !important;
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
@@ -4540,30 +4541,42 @@ body {
   }
 
   .holo-card-footer {
-    padding: 5px 8px !important;
-    font-size: 0.58rem !important;
-    letter-spacing: 0.4px !important;
+    padding: 6px 10px !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0.5px !important;
+    background: rgba(0, 0, 0, 0.65) !important;
   }
 
   .holo-chip {
-    padding: 3px 8px !important;
-    font-size: 0.65rem !important;
-    gap: 4px !important;
+    padding: 3px 9px !important;
+    font-size: 0.66rem !important;
+    gap: 5px !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+  }
+
+  .chip-top-left {
+    top: 6px !important;
+    left: -6px !important;
+    animation-delay: 0.3s !important;
   }
 
   .chip-top-right {
     top: 6px !important;
-    right: 0px !important;
+    right: -6px !important;
+    animation-delay: 0.8s !important;
   }
 
-  .chip-bottom-left {
-    bottom: 12px !important;
-    left: -4px !important;
+  .chip-bottom-center {
+    bottom: -10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    animation: chipHoverCenterMobile 4.2s infinite ease-in-out !important;
+    animation-delay: 1.5s !important;
   }
 
-  .chip-bottom-right {
-    bottom: 6px !important;
-    right: 4px !important;
+  @keyframes chipHoverCenterMobile {
+    0%, 100% { transform: translate(-50%, 0px); }
+    50% { transform: translate(-50%, -3px); }
   }
 
   .holo-pedestal {
