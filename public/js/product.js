@@ -261,7 +261,7 @@ function renderTierTabs() {
 
   const tierMeta = {
     'shared': { label: 'Shared Screen', icon: '👥', hint: 'Most economical option. 1 device at a time.' },
-    'private': { label: 'Private PIN Profile', icon: '🔒', hint: 'Your dedicated profile locked with custom 4-digit PIN. 100% private watch history & recommendations.' },
+    'private': { label: 'Private Profile', icon: '🔒', hint: 'Your dedicated profile locked with custom 4-digit PIN. 100% private watch history & recommendations.' },
     'family': { label: 'Full Family Account', icon: '👨‍👩‍👧‍👦', hint: 'All profiles unlocked. Share with family/friends across up to 5 devices.' },
     'license': { label: 'Direct License Key', icon: '🔑', hint: 'Official software license key with automated instant activation.' }
   };
@@ -269,12 +269,10 @@ function renderTierTabs() {
   container.innerHTML = uniqueTiers.map(t => {
     const meta = tierMeta[t] || { label: t.toUpperCase(), icon: '⚡', hint: '' };
     const isActive = productState.selectedTier === t;
-    const isPopular = plans.some(pl => pl.tier_type === t && pl.is_popular);
     return `
       <button type="button" class="pdp-tier-btn ${isActive ? 'active' : ''}" onclick="selectPdpTier('${t}')" aria-label="Select ${escapeHtml(meta.label)} tier">
         <span class="pdp-tier-icon">${meta.icon}</span>
         <span class="pdp-tier-label">${meta.label}</span>
-        ${isPopular ? '<span class="pdp-tier-pill">Popular</span>' : ''}
       </button>
     `;
   }).join('');
@@ -362,6 +360,9 @@ function getCleanPlanTitle(plan) {
   
   // Remove parenthetical tier repetition: e.g. "Personal (Private PIN)" -> "Personal"
   name = name.replace(/\s*\([^)]*\)/g, '').trim();
+  
+  // Simplify "Private PIN Profile" -> "Private Profile"
+  name = name.replace(/Private\s+PIN\s+Profile/i, 'Private Profile');
   
   // If empty or identical to duration, return just duration
   if (!name || name.toLowerCase() === duration.toLowerCase()) {

@@ -327,7 +327,7 @@ function renderProducts() {
         const tiers = (p.all_tier_types && typeof p.all_tier_types === 'string') ? p.all_tier_types.split(',') : [];
         let tierChipsHTML = '<div class="card-tier-hint">';
         if (tiers.includes('shared')) tierChipsHTML += '<span class="tier-badge-pill shared">👥 Shared</span>';
-        if (tiers.includes('private')) tierChipsHTML += '<span class="tier-badge-pill private">🔒 Private PIN</span>';
+        if (tiers.includes('private')) tierChipsHTML += '<span class="tier-badge-pill private">🔒 Private Profile</span>';
         if (tiers.includes('family')) tierChipsHTML += '<span class="tier-badge-pill family">👨‍👩‍👧‍👦 Full Account</span>';
         if (tiers.includes('license')) tierChipsHTML += '<span class="tier-badge-pill license">🔑 License Key</span>';
         if (tiers.length === 0) tierChipsHTML += '<span class="tier-badge-pill pro">⚡ Instant Access</span>';
@@ -743,7 +743,7 @@ function renderQuickViewDetails() {
       if (plan.tier_type === 'shared') {
         tierBadge = '<span class="badge-tag essential" style="margin-right:6px;">👥 Shared Screen</span>';
       } else if (plan.tier_type === 'private') {
-        tierBadge = '<span class="badge-tag pro" style="margin-right:6px;">🔒 Private PIN Profile</span>';
+        tierBadge = '<span class="badge-tag pro" style="margin-right:6px;">🔒 Private Profile</span>';
       } else if (plan.tier_type === 'family') {
         tierBadge = '<span class="badge-tag bestseller" style="margin-right:6px;">👨‍👩‍👧‍👦 Family / Full</span>';
       } else if (plan.tier_type === 'license') {
