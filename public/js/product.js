@@ -104,7 +104,7 @@ function renderProductDetails() {
 
   // 3. Media Column (Left)
   const logoImg = document.getElementById('pdpProductLogo');
-  if (logoImg) logoImg.src = p.logo_url;
+  if (logoImg) logoImg.src = p.logo_url ? p.logo_url + '?v=2' : '';
   
   const badgeTag = document.getElementById('pdpBadgeTag');
   if (badgeTag) {
@@ -596,7 +596,7 @@ function renderRelatedProducts() {
     return `
       <div class="product-card" onclick="window.location.href='/product/${p.slug}'" style="cursor:pointer;">
         <div class="product-card-top">
-          <img src="${p.logo_url}" alt="${p.title}" class="product-card-img" loading="lazy">
+          <img src="${p.logo_url ? p.logo_url + '?v=2' : ''}" alt="${p.title}" class="product-card-img" loading="lazy">
           <div class="product-card-gradient"></div>
           <div class="product-card-badges">
             <span class="badge-tag pro">${p.badge || 'Verified'}</span>

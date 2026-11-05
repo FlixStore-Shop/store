@@ -37,27 +37,5 @@ console.log('[OK] crunchyroll.svg updated for dark theme contrast');
 console.log('[OK] Microsoft 365 official fluent ribbon confirmed');
 
 // 7. Create Netflix + Prime Video combo banner from actual files
-const nflxSvg = fs.readFileSync(path.join(brandDir, 'netflix.svg'), 'utf-8');
-const primeSvg = fs.readFileSync(path.join(brandDir, 'prime-video.svg'), 'utf-8');
-
-// Build clean combo SVG using the actual Netflix and Prime Video paths
-const comboSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="100%" height="100%">
-  <rect width="800" height="360" fill="#0b0f19"/>
-  <!-- Left Netflix -->
-  <g transform="translate(60, 60)">
-    <svg width="300" height="240" viewBox="0 0 1024 276.742">
-      ${nflxSvg.replace(/<\?xml[^>]*\?>|<svg[^>]*>|<\/svg>/g, '')}
-    </svg>
-  </g>
-  <!-- Center Plus -->
-  <text x="400" y="200" font-family="-apple-system, sans-serif" font-size="52" font-weight="900" fill="#FBBF24" text-anchor="middle">+</text>
-  <!-- Right Prime Video -->
-  <g transform="translate(440, 60)">
-    <svg width="300" height="240" viewBox="0 0 800.3 246.3">
-      ${primeSvg.replace(/<\?xml[^>]*\?>|<svg[^>]*>|<\/svg>/g, '')}
-    </svg>
-  </g>
-</svg>`;
-
-fs.writeFileSync(path.join(brandDir, 'netflix-primevideo-combo.svg'), comboSvg, 'utf-8');
-console.log('[OK] netflix-primevideo-combo.svg created using actual Netflix & Prime Video files');
+// netflix-primevideo-combo.svg uses high-resolution stacked artwork with transparent background
+console.log('[INFO] netflix-primevideo-combo.svg preserved in high-resolution stacked design');

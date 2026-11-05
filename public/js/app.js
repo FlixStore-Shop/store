@@ -296,7 +296,7 @@ function renderProducts() {
         return `
           <div class="product-card" data-slug="${p.slug}">
             <div class="product-card-top" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer;">
-              <img src="${p.logo_url || '/assets/logos/default.png'}" alt="${p.title || 'Subscription'}" class="product-card-img" loading="lazy">
+              <img src="${p.logo_url ? p.logo_url + '?v=2' : '/assets/logos/default.png'}" alt="${p.title || 'Subscription'}" class="product-card-img" loading="lazy">
               <div class="product-card-gradient"></div>
               <div class="product-card-badges">
                 <span class="badge-tag ${badgeClass}">${p.badge || 'Verified'}</span>
@@ -657,7 +657,7 @@ function renderQuickViewDetails() {
   const p = state.selectedProduct;
   if (!p) return;
 
-  document.getElementById('detailProductImg').src = p.logo_url;
+  document.getElementById('detailProductImg').src = p.logo_url ? p.logo_url + '?v=2' : '';
   document.getElementById('detailCategory').textContent = p.category_name;
   document.getElementById('detailTitle').textContent = p.title;
   document.getElementById('detailTagline').textContent = p.tagline;
