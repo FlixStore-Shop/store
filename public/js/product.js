@@ -36,6 +36,10 @@ async function initProductPage() {
 
   await loadProductData(productState.slug);
   initStickyPurchaseBarObserver();
+
+  if (typeof window.initFloatingMobileNav === 'function') {
+    window.initFloatingMobileNav();
+  }
 }
 
 async function loadProductData(slug) {
@@ -419,8 +423,10 @@ function initStickyPurchaseBarObserver() {
       entries.forEach(entry => {
         if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
           stickyBar.classList.add('visible');
+          document.body.classList.add('pdp-sticky-active');
         } else {
           stickyBar.classList.remove('visible');
+          document.body.classList.remove('pdp-sticky-active');
         }
       });
     }, { threshold: 0.1 });

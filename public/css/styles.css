@@ -6984,19 +6984,34 @@ body {
 }
 
 @media (max-width: 768px) {
-  /* Eliminate duplicate bottom bars on mobile PDP */
+  /* Floating bottom nav enabled across all pages including PDP */
   body.pdp-page .mobile-bottom-nav {
-    display: none !important;
+    display: flex !important;
   }
 
   body.pdp-page .pdp-sticky-bar {
     display: flex;
+    bottom: 76px !important;
+    padding-bottom: 8px !important;
+    transition: bottom 0.38s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s ease !important;
+  }
+
+  body.pdp-page.mobile-nav-hidden .pdp-sticky-bar {
     bottom: 0 !important;
     padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
   }
 
+  /* Coordinate WhatsApp button on PDP when sticky purchase bar is active */
+  body.pdp-page.pdp-sticky-active .floating-whatsapp-btn {
+    bottom: 144px !important;
+  }
+
+  body.pdp-page.pdp-sticky-active.mobile-nav-hidden .floating-whatsapp-btn {
+    bottom: 78px !important;
+  }
+
   body.pdp-page .flix-toast {
-    bottom: 75px !important;
+    bottom: 80px !important;
   }
 
   /* Hide redundant trust card on mobile (covered by micro-guarantee strip & tabs) */

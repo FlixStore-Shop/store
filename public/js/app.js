@@ -2524,6 +2524,8 @@ function initFloatingMobileNav() {
   scheduleHide();
 }
 
+window.initFloatingMobileNav = initFloatingMobileNav;
+
 // -----------------------------------------------------------------------------
 // INTERACTIVE CREDIT CARD & LUHN VALIDATION
 // -----------------------------------------------------------------------------
