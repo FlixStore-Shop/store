@@ -58,10 +58,11 @@ async function loadProductData(slug) {
     // Set initial plan & tier
     const plans = json.data.plans || [];
     if (plans.length > 0) {
-      // Prefer private PIN if available, otherwise first plan's tier
+      // Prefer popular plan if available, then private PIN, otherwise first plan's tier
+      const popularPlan = plans.find(pl => pl.is_popular);
       const privatePlan = plans.find(pl => pl.tier_type === 'private');
-      productState.selectedPlan = privatePlan || plans[0];
-      productState.selectedTier = productState.selectedPlan.tier_type || 'private';
+      productState.selectedPlan = popularPlan || privatePlan || plans[0];
+      productState.selectedTier = productState.selectedPlan.tier_type || 'shared';
     }
 
     renderProductDetails();
@@ -223,7 +224,7 @@ function renderTierTabs() {
   container.innerHTML = uniqueTiers.map(t => {
     const meta = tierMeta[t] || { label: t.toUpperCase(), icon: '⚡', hint: '' };
     const isActive = productState.selectedTier === t;
-    const isPopular = t === 'private';
+    const isPopular = plans.some(pl => pl.tier_type === t && pl.is_popular);
     return `
       <button type="button" class="pdp-tier-btn ${isActive ? 'active' : ''}" onclick="selectPdpTier('${t}')">
         <span class="pdp-tier-icon">${meta.icon}</span>
@@ -250,9 +251,9 @@ function renderTierTabs() {
 function selectPdpTier(tier) {
   productState.selectedTier = tier;
   
-  // Pick first plan matching this tier
+  // Pick popular plan in this tier, or first matching plan
   const plans = productState.product.plans || [];
-  const matchingPlan = plans.find(pl => pl.tier_type === tier);
+  const matchingPlan = plans.find(pl => pl.tier_type === tier && pl.is_popular) || plans.find(pl => pl.tier_type === tier);
   if (matchingPlan) {
     productState.selectedPlan = matchingPlan;
   }

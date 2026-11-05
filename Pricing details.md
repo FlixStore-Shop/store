@@ -63,8 +63,11 @@ Youtube Premium pricing details:
 
 Netflix+PrimeVideo Combo pricing details:
 
-* Netflix+PrimeVideo 399tk validity 1 month
-* Netflix+PrimeVideo 1150tk validity 3 month
+* Netflix+PrimeVideo Shared 399tk validity 1 month (regular 499tk)
+* Netflix+PrimeVideo Shared 1150tk validity 3 month (regular 1350tk)
+* Netflix+PrimeVideo Private PIN 599tk validity 1 month (regular 650tk)
+* Netflix+PrimeVideo Private PIN 1699tk validity 3 month (regular 1950tk)
+
 
 
 

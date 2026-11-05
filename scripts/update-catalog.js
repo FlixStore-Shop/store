@@ -500,9 +500,10 @@ const catalog = [
     title: 'Netflix + Prime Video Combo Pack',
     tagline: 'Dual Cinema Bundle: 4K UHD Netflix + Amazon Prime Originals',
     description: 'The ultimate entertainment super-bundle. Stream all Netflix 4K Originals (Stranger Things, Squid Game, Wednesday) along with Amazon Prime Video blockbuster movies and exclusive series (The Boys, Rings of Power, Fallout, Reacher) in one unified package with 100% full-duration warranty.',
-    logo_url: '/assets/brands/netflix-primevideo-combo.svg',    base_price: 3.33,
-    original_price: 16.25,
-    original_price_bdt: 1950,
+    logo_url: '/assets/brands/netflix-primevideo-combo.svg',
+    base_price: 3.33,
+    original_price: 4.16,
+    original_price_bdt: 499,
     rating: 4.99,
     review_count: 320,
     is_featured: 1,
@@ -517,8 +518,10 @@ const catalog = [
     ]),
     instructions: 'You will receive separate login credentials for both Netflix 4K and Prime Video. Log in on your devices and start streaming immediately.',
     plans: [
-      { name: '1 Month - Combo Pack', tier: 'shared', months: 1, label: '1 Month (Netflix + Prime)', usd: 3.33, bdt: 399, orig_usd: 16.25, orig_bdt: 1950, popular: 1, devices: '1 Screen Each', features: 'Netflix 4K UHD + Amazon Prime Video, 1 Screen each, Full Warranty' },
-      { name: '3 Months - Combo Pack', tier: 'private', months: 3, label: '3 Months (Netflix + Prime)', usd: 9.58, bdt: 1150, orig_usd: 48.75, orig_bdt: 5850, popular: 0, devices: '1 Screen Each', features: '90 Days continuous dual streaming, 80% Super Saver, Full Warranty' }
+      { name: '1 Month - Shared Screen', tier: 'shared', months: 1, label: '1 Month (Netflix + Prime)', usd: 3.33, bdt: 399, orig_usd: 4.16, orig_bdt: 499, popular: 0, devices: '1 Screen Each (Shared)', features: 'Netflix 4K UHD + Amazon Prime Video, 1 Screen each, Full Warranty' },
+      { name: '3 Months - Shared Screen', tier: 'shared', months: 3, label: '3 Months (Netflix + Prime)', usd: 9.58, bdt: 1150, orig_usd: 11.25, orig_bdt: 1350, popular: 1, devices: '1 Screen Each (Shared)', features: '90 Days continuous dual streaming, 1 Screen each, Full Warranty' },
+      { name: '1 Month - Private PIN Profile', tier: 'private', months: 1, label: '1 Month (Netflix + Prime)', usd: 4.99, bdt: 599, orig_usd: 5.42, orig_bdt: 650, popular: 0, devices: '1 Screen Each (Private PIN)', features: 'Private PIN-locked profile on Netflix + Prime Video, 100% Private Watch History' },
+      { name: '3 Months - Private PIN Profile', tier: 'private', months: 3, label: '3 Months (Netflix + Prime)', usd: 14.16, bdt: 1699, orig_usd: 16.25, orig_bdt: 1950, popular: 1, devices: '1 Screen Each (Private PIN)', features: '90 Days dedicated PIN profile on Netflix + Prime Video, Full Warranty' }
     ],
     vault: [
       { type: 'account', email: 'combo.dual@flixstore-auth.com', pass: 'DualStream#2026x', profile: 'Combo User', pin: '5120', instr: 'Netflix: Profile 1 (PIN 5120) | Prime Video: Log in with delivered credentials.' }
@@ -728,20 +731,20 @@ async function syncCatalog(targetDb) {
       cat.id,
       p.title,
       p.slug,
-      p.tagline,
-      p.description,
-      p.logo_url,
-      p.badge,
-      p.base_price,
-      p.original_price,
-      p.original_price_bdt,
-      p.rating,
-      p.review_count,
-      p.is_featured,
-      p.is_trending,
-      p.is_bestseller,
-      p.features_list,
-      p.instructions
+      p.tagline || null,
+      p.description || null,
+      p.logo_url || null,
+      p.badge || null,
+      p.base_price || 0,
+      p.original_price || null,
+      p.original_price_bdt || null,
+      p.rating || 5,
+      p.review_count || 0,
+      p.is_featured ? 1 : 0,
+      p.is_trending ? 1 : 0,
+      p.is_bestseller ? 1 : 0,
+      p.features_list || '[]',
+      p.instructions || null
     );
 
     const prod = await db.prepare('SELECT id FROM products WHERE slug = ?').get(p.slug);
@@ -756,15 +759,15 @@ async function syncCatalog(targetDb) {
         prod.id,
         pl.name,
         pl.tier,
-        pl.months,
-        pl.label,
-        pl.usd,
-        pl.bdt,
-        pl.orig_usd,
-        pl.orig_bdt,
-        pl.popular,
-        pl.devices,
-        pl.features,
+        pl.months || 1,
+        pl.label || pl.name,
+        pl.usd || 0,
+        pl.bdt || 0,
+        pl.orig_usd || null,
+        pl.orig_bdt || null,
+        pl.popular ? 1 : 0,
+        pl.devices || '1 Device',
+        pl.features || '',
         sortOrder
       );
       totalPlansProcessed++;
