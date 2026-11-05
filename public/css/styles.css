@@ -6473,51 +6473,68 @@ body {
   padding: 10px 24px;
   border-radius: 9999px;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  background: #ffffff;
-  color: #111827;
-  border: 1.5px solid #111827;
-  transition: all 0.16s ease;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 48%, #f1f5f9 100%);
+  color: #1e293b;
+  border: 1.5px solid #cbd5e1;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   user-select: none;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 1),
+              inset 0 -1px 2px 0 rgba(0, 0, 0, 0.04),
+              0 2px 6px rgba(15, 23, 42, 0.05);
+  position: relative;
+  overflow: hidden;
 }
 
 .pdp-duration-pill:hover {
-  background: #f9fafb;
-  border-color: #000000;
-  color: #000000;
+  background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+  border-color: #3b82f6;
+  color: #1d4ed8;
+  transform: translateY(-1.5px);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 1),
+              0 6px 14px rgba(37, 99, 235, 0.16);
 }
 
 .pdp-duration-pill.active {
-  background: #000000 !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.1) 48%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0.14) 100%),
+              linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%) !important;
   color: #ffffff !important;
-  border-color: #000000 !important;
-  font-weight: 600;
+  border: 1.5px solid rgba(255, 255, 255, 0.45) !important;
+  font-weight: 700;
+  box-shadow: inset 0 1.5px 1.5px rgba(255, 255, 255, 0.85),
+              inset 0 -1.5px 2px rgba(0, 0, 0, 0.2),
+              0 6px 20px -2px rgba(37, 99, 235, 0.48) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
 }
 
 [data-theme="dark"] .pdp-duration-pill {
-  background: #1e293b;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
   color: #e2e8f0;
-  border-color: #475569;
+  border-color: #334155;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .pdp-duration-pill:hover {
-  background: #334155;
-  border-color: #94a3b8;
+  background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+  border-color: #60a5fa;
+  color: #93c5fd;
 }
 
 [data-theme="dark"] .pdp-duration-pill.active {
-  background: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #ffffff !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.08) 48%, rgba(0, 0, 0, 0.15) 100%),
+              linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 6px 22px rgba(37, 99, 235, 0.55) !important;
 }
 
 /* =============================================================================
-   PDP QUANTITY & ACTION BUTTONS (MATCHING DEMO PHOTO 2)
+   PDP QUANTITY & ACTION BUTTONS (3D LIQUID GLOSS PROFESSIONAL CAPSULES)
    ============================================================================= */
 .pdp-actions-container {
   display: flex;
@@ -6539,20 +6556,22 @@ body {
   justify-content: space-between;
   width: 130px;
   min-width: 125px;
-  height: 50px;
-  border: 1.5px solid #d1d5db;
+  height: 52px;
+  border: 1.5px solid #cbd5e1;
   border-radius: 9999px;
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 48%, #f1f5f9 100%);
   padding: 0 14px;
   box-sizing: border-box;
   flex-shrink: 0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 1),
+              inset 0 -1px 2px 0 rgba(0, 0, 0, 0.04),
+              0 3px 10px rgba(15, 23, 42, 0.05);
 }
 
 .pdp-qty-btn {
   background: none;
   border: none;
-  color: #4b5563;
+  color: #475569;
   width: 28px;
   height: 28px;
   display: flex;
@@ -6560,13 +6579,13 @@ body {
   justify-content: center;
   cursor: pointer;
   border-radius: 50%;
-  transition: all 0.15s ease;
+  transition: all 0.16s ease;
   padding: 0;
 }
 
 .pdp-qty-btn:hover {
-  color: #000000;
-  background: #f3f4f6;
+  color: #1d4ed8;
+  background: rgba(37, 99, 235, 0.12);
 }
 
 .pdp-qty-btn:active {
@@ -6575,8 +6594,8 @@ body {
 
 .pdp-qty-number {
   font-size: 1.05rem;
-  font-weight: 700;
-  color: #111827;
+  font-weight: 800;
+  color: #0f172a;
   user-select: none;
   text-align: center;
   min-width: 24px;
@@ -6584,64 +6603,116 @@ body {
 
 .pdp-add-to-cart-pill {
   flex: 1;
-  height: 50px;
+  height: 52px;
   border-radius: 9999px;
-  background: #e5e7eb;
-  color: #111827;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 48%, #e2e8f0 100%);
+  color: #0f172a;
   font-size: 0.98rem;
-  font-weight: 600;
-  border: none;
+  font-weight: 700;
+  border: 1.5px solid #cbd5e1;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.16s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  gap: 8px;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1),
+              inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.06),
+              0 4px 14px rgba(15, 23, 42, 0.07);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.pdp-add-to-cart-pill .pdp-pill-icon {
+  color: #2563eb;
+  transition: transform 0.2s ease;
 }
 
 .pdp-add-to-cart-pill:hover {
-  background: #dbe0e6;
-  color: #000000;
-  transform: translateY(-1px);
+  background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+  border-color: #3b82f6;
+  color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1),
+              0 8px 22px rgba(37, 99, 235, 0.18);
+}
+
+.pdp-add-to-cart-pill:hover .pdp-pill-icon {
+  transform: scale(1.1);
 }
 
 .pdp-add-to-cart-pill:active {
-  background: #d1d5db;
   transform: translateY(0);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .pdp-buy-it-now-pill {
   width: 100%;
   height: 52px;
   border-radius: 9999px;
-  background: #000000;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.12) 48%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0.14) 100%),
+              linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%) !important;
   color: #ffffff;
   font-size: 1.05rem;
-  font-weight: 700;
-  border: none;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.16s ease;
-  letter-spacing: 0.2px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  gap: 8px;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.3px;
+  box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.9),
+              inset 0 -2px 3px 0 rgba(0, 0, 0, 0.22),
+              0 6px 24px -2px rgba(37, 99, 235, 0.5) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.pdp-buy-it-now-pill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.pdp-buy-it-now-pill:hover::after,
+.pdp-buy-it-now-pill:active::after {
+  left: 140%;
 }
 
 .pdp-buy-it-now-pill:hover {
-  background: #1f2937;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
-  transform: translateY(-1px);
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
+              inset 0 -2px 3px 0 rgba(0, 0, 0, 0.24),
+              0 10px 28px -2px rgba(37, 99, 235, 0.65) !important;
+}
+
+.pdp-buy-it-now-pill:hover .pdp-btn-arrow {
+  transform: translateX(3px);
 }
 
 .pdp-buy-it-now-pill:active {
-  background: #111827;
-  transform: translateY(0);
+  transform: scale(0.98);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
+              0 2px 8px rgba(37, 99, 235, 0.35) !important;
 }
 
 [data-theme="dark"] .pdp-qty-stepper {
-  background: #1e293b;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
   border-color: #334155;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .pdp-qty-btn {
@@ -6658,21 +6729,29 @@ body {
 }
 
 [data-theme="dark"] .pdp-add-to-cart-pill {
-  background: #334155;
+  background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
   color: #f8fafc;
+  border-color: #475569;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .pdp-add-to-cart-pill:hover {
-  background: #475569;
+  background: linear-gradient(180deg, #475569 0%, #334155 100%);
+  border-color: #60a5fa;
+  color: #ffffff;
 }
 
 [data-theme="dark"] .pdp-buy-it-now-pill {
-  background: #ffffff;
-  color: #0f172a;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.08) 48%, rgba(0, 0, 0, 0.15) 100%),
+              linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.6) !important;
 }
 
 [data-theme="dark"] .pdp-buy-it-now-pill:hover {
-  background: #f1f5f9;
+  filter: brightness(1.1);
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.75) !important;
 }
 
 /* Price Summary Box */

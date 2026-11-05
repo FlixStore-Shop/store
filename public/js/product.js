@@ -425,7 +425,7 @@ function updateSelectedPlanPricing() {
   // Update dynamic Buy Now CTA button label with offer price
   const buyBtnLabel = document.getElementById('pdpBuyBtnLabel');
   if (buyBtnLabel) {
-    buyBtnLabel.innerHTML = `Instant Buy &mdash; ${formatPrice(offerBdt, true)}`;
+    buyBtnLabel.innerHTML = `Buy It Now &mdash; ${formatPrice(offerBdt, true)}`;
   }
 
   // Check VIP Status for discount alert
