@@ -171,11 +171,16 @@ async function initDatabase() {
   // Ensure default admin & categories exist
   await seedBaseData();
 
-  // Ensure all 20 verified subscriptions are synced
+  // Ensure all 20 verified subscriptions and updated plans are synced
   try {
     const prodCount = await db.prepare('SELECT COUNT(*) as count FROM products').get();
-    if (!prodCount || Number(prodCount.count) < 20) {
-      console.log(`[CATALOG SYNC] Detected ${prodCount ? prodCount.count : 0}/20 products. Synchronizing full 20-product catalog...`);
+    const comboPlans = await db.prepare(`
+      SELECT COUNT(*) as count FROM product_plans 
+      WHERE product_id = (SELECT id FROM products WHERE slug = 'netflix-primevideo-combo')
+    `).get();
+
+    if (!prodCount || Number(prodCount.count) < 20 || !comboPlans || Number(comboPlans.count) < 4) {
+      console.log(`[CATALOG SYNC] Syncing full catalog (Products: ${prodCount ? prodCount.count : 0}/20, Combo Plans: ${comboPlans ? comboPlans.count : 0}/4)...`);
       const { syncCatalog } = require('../scripts/update-catalog');
       await syncCatalog(db);
     }
