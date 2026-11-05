@@ -2423,6 +2423,51 @@ function initEventListeners() {
 }
 
 // -----------------------------------------------------------------------------
+// TRUST FEATURE SMOOTH SCROLL & INTERACTIVE HIGHLIGHT
+// -----------------------------------------------------------------------------
+
+function scrollToTrustFeature(featureKey) {
+  const mapping = {
+    delivery: { cardId: 'trust-instant-delivery', theme: 'trust-highlight-blue', faqId: 'faq-delivery' },
+    warranty: { cardId: 'trust-100-guarantee', theme: 'trust-highlight-emerald', faqId: 'faq-warranty' },
+    payments: { cardId: 'trust-secure-payments', theme: 'trust-highlight-purple', faqId: 'faq-payments' },
+    support:  { cardId: 'trust-247-support', theme: 'trust-highlight-amber', faqId: 'faq-support' }
+  };
+
+  const target = mapping[featureKey];
+  if (!target) return;
+
+  const cardEl = document.getElementById(target.cardId);
+  if (!cardEl) return;
+
+  // Center the card smoothly in the viewport
+  cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  // Clear existing active highlights
+  document.querySelectorAll('.why-card').forEach(c => {
+    c.classList.remove('trust-highlight-blue', 'trust-highlight-emerald', 'trust-highlight-purple', 'trust-highlight-amber');
+  });
+
+  // Trigger high-visibility animated halo pulse after scrolling starts
+  setTimeout(() => {
+    cardEl.classList.add(target.theme);
+    setTimeout(() => {
+      cardEl.classList.remove(target.theme);
+    }, 2600);
+  }, 300);
+
+  // If there's an associated FAQ question, open it
+  if (target.faqId) {
+    const faqEl = document.getElementById(target.faqId);
+    if (faqEl && !faqEl.classList.contains('active')) {
+      faqEl.classList.add('active');
+    }
+  }
+}
+
+window.scrollToTrustFeature = scrollToTrustFeature;
+
+// -----------------------------------------------------------------------------
 // INTERACTIVE CREDIT CARD & LUHN VALIDATION
 // -----------------------------------------------------------------------------
 
