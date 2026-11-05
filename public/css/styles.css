@@ -185,12 +185,22 @@ body {
 .brand-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
   text-decoration: none;
   color: var(--text-primary);
-  font-weight: 800;
-  font-size: 1.4rem;
-  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+
+.brand-logo-img {
+  height: 38px;
+  width: auto;
+  max-width: 250px;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.22s ease;
+}
+
+.brand-logo:hover .brand-logo-img {
+  transform: scale(1.02);
 }
 
 .brand-icon-box {
@@ -4707,8 +4717,9 @@ body {
     height: 60px;
   }
 
-  .brand-logo {
-    font-size: 1.15rem;
+  .brand-logo-img {
+    height: 27px !important;
+    max-width: 190px !important;
   }
 
   .currency-select {
