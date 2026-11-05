@@ -9,8 +9,19 @@ const productState = {
   product: null,
   selectedTier: '',
   selectedPlan: null,
+  quantity: 1,
   activeTab: 'features'
 };
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   initProductPage();
@@ -285,28 +296,22 @@ function renderDurationOptions() {
 
   container.innerHTML = visiblePlans.map(plan => {
     const isSelected = productState.selectedPlan && productState.selectedPlan.id === plan.id;
-    const offerBdt = plan.price_bdt || Math.round(plan.price_usd * 120);
-    const origBdt = plan.original_price_bdt || (plan.original_price_usd ? Math.round(plan.original_price_usd * 120) : null);
-    const discountPercent = (origBdt && origBdt > offerBdt) ? Math.round((1 - offerBdt / origBdt) * 100) : 0;
+    const durationText = plan.duration_label || '1 Month';
 
     return `
-      <div class="pdp-duration-card ${isSelected ? 'selected' : ''}" onclick="selectPdpPlan(${plan.id})">
-        <div class="pdp-duration-header">
-          <div class="pdp-duration-title">${plan.duration_label}</div>
-          ${discountPercent > 0 ? `<span class="discount-pill">${discountPercent}% OFF</span>` : ''}
-        </div>
-        <div class="pdp-duration-price-row">
-          <div class="pdp-duration-offer">${formatPrice(offerBdt, true)}</div>
-          ${origBdt && origBdt > offerBdt ? `<div class="pdp-duration-orig">${formatPrice(origBdt, true)}</div>` : ''}
-        </div>
-        <div class="pdp-duration-meta">
-          <span>${plan.device_limit || '1 Device'}</span>
-          <span>•</span>
-          <span class="pdp-instant-pill">✓ Instant</span>
-        </div>
-      </div>
+      <button type="button" 
+        class="pdp-duration-pill ${isSelected ? 'active' : ''}" 
+        onclick="selectPdpPlan(${plan.id})"
+        aria-label="Select ${escapeHtml(durationText)} duration">
+        ${escapeHtml(durationText)}
+      </button>
     `;
   }).join('');
+
+  const durationLabel = document.getElementById('pdpSelectedDurationLabel');
+  if (durationLabel && productState.selectedPlan) {
+    durationLabel.textContent = productState.selectedPlan.duration_label || '1 Month';
+  }
 }
 
 function selectPdpPlan(planId) {
@@ -361,11 +366,16 @@ function updateSelectedPlanPricing() {
 
   if (savingsDisplay) {
     if (saveAmount > 0) {
-      savingsDisplay.textContent = `Save ৳${saveAmount.toLocaleString()} (${discountPercent}% OFF)`;
-      savingsDisplay.style.display = 'inline-block';
+      savingsDisplay.textContent = `${discountPercent}% OFF • Save ৳${saveAmount.toLocaleString()}`;
+      savingsDisplay.style.display = 'inline-flex';
     } else {
       savingsDisplay.style.display = 'none';
     }
+  }
+
+  const durationLabel = document.getElementById('pdpSelectedDurationLabel');
+  if (durationLabel) {
+    durationLabel.textContent = plan.duration_label || '1 Month';
   }
 
   // Clean, non-repetitive plan title
@@ -438,15 +448,25 @@ function initStickyPurchaseBarObserver() {
 // CART & BUY NOW ACTIONS
 // -----------------------------------------------------------------------------
 
+function pdpAdjustQty(delta) {
+  const current = productState.quantity || 1;
+  const newQty = Math.max(1, Math.min(10, current + delta));
+  productState.quantity = newQty;
+  const qtyEl = document.getElementById('pdpQtyValue');
+  if (qtyEl) qtyEl.textContent = newQty;
+}
+
 function pdpAddToCart() {
   if (!productState.product || !productState.selectedPlan) return;
-  addToCart(productState.product, productState.selectedPlan);
+  const qty = productState.quantity || 1;
+  addToCart(productState.product, productState.selectedPlan, qty);
   openCartDrawer();
 }
 
 function pdpBuyNow() {
   if (!productState.product || !productState.selectedPlan) return;
-  addToCart(productState.product, productState.selectedPlan);
+  const qty = productState.quantity || 1;
+  addToCart(productState.product, productState.selectedPlan, qty);
   openCheckoutModal();
 }
 

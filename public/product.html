@@ -40,7 +40,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/css/styles.css?v=6.0">
+  <link rel="stylesheet" href="/css/styles.css?v=6.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><polygon points='5 3 19 12 5 21 5 3'></polygon></svg>">
 </head>
 <body class="pdp-page">
@@ -247,14 +247,22 @@
 
               <p id="pdpProductDescription" class="pdp-desc">
                 Stream unlimited movies and TV series in stunning 4K Ultra HD resolution with Dolby Atmos spatial audio.
+              <p id="pdpProductDescription" class="pdp-desc">
+                Stream unlimited movies and TV series in stunning 4K Ultra HD resolution with Dolby Atmos spatial audio.
               </p>
             </div>
 
+            <!-- Prominent Price Showcase Row -->
+            <div class="pdp-price-hero-strip">
+              <span id="pdpCurrentPrice" class="pdp-price-hero-amount">৳0</span>
+              <span id="pdpOriginalPrice" class="pdp-price-hero-orig" style="display:none;">৳0</span>
+              <span id="pdpSavingsTag" class="pdp-price-hero-badge" style="display:none;">Save 0%</span>
+            </div>
+
             <!-- 1. Subscription Tier Selector -->
-            <div style="margin-bottom:20px;">
+            <div id="pdpTierSection" style="margin-bottom:20px;">
               <div class="pdp-section-label">
-                <span>1. Select Account Tier</span>
-                <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">Step 1 of 2</span>
+                <span>Select Account Tier</span>
               </div>
               <div id="pdpTierTabs" class="pdp-tier-tabs">
                 <!-- Dynamically populated -->
@@ -262,18 +270,18 @@
               <div id="pdpTierHintBox" class="pdp-tier-hint" style="display:none;"></div>
             </div>
 
-            <!-- 2. Validity / Duration Selector -->
-            <div style="margin-bottom:24px;">
-              <div class="pdp-section-label">
-                <span>2. Select Validity Duration</span>
-                <span style="font-size:0.75rem; color:#34d399; font-weight:600;">Longer = Bigger Savings</span>
+            <!-- 2. Validity / Duration Selector (Matching Demo Photo 2) -->
+            <div class="pdp-duration-section" style="margin-bottom:20px;">
+              <div class="pdp-duration-header-row">
+                <span class="pdp-duration-label-title">Plan Duration:</span>
+                <span id="pdpSelectedDurationLabel" class="pdp-duration-label-active">1 Month</span>
               </div>
-              <div id="pdpDurationGrid" class="pdp-duration-grid">
-                <!-- Dynamically populated -->
+              <div id="pdpDurationGrid" class="pdp-duration-pills-row">
+                <!-- Dynamically populated capsule pills -->
               </div>
             </div>
 
-            <!-- Fast Order Guarantee Micro-Row (Clean, zero duplicate pricing) -->
+            <!-- Fast Order Guarantee Micro-Row -->
             <div class="pdp-micro-guarantee">
               <span class="micro-guar-item"><span class="micro-guar-icon">🛡️</span> 100% Full Warranty</span>
               <span class="micro-guar-dot">•</span>
@@ -282,35 +290,40 @@
               <span class="micro-guar-item"><span class="micro-guar-icon">🔒</span> 0% Fee</span>
             </div>
 
-            <!-- 3. Direct Purchase Action Buttons -->
+            <!-- 3. Direct Purchase Actions (Matching Demo Photo 2) -->
             <div class="pdp-actions-container">
-              <div class="pdp-btn-row">
-                <button type="button" class="pdp-buy-now-btn" onclick="pdpBuyNow()">
-                  <svg class="pdp-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                  </svg>
-                  <span id="pdpBuyBtnLabel" class="pdp-btn-text">Instant Buy &mdash; Direct Checkout</span>
-                  <svg class="pdp-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </button>
-                <button type="button" class="pdp-add-cart-btn" onclick="pdpAddToCart()">
-                  <svg class="pdp-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="21" r="1"></circle>
-                    <circle cx="20" cy="21" r="1"></circle>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                  </svg>
-                  <span class="pdp-btn-text">Add to Cart</span>
+              <!-- Quantity Stepper + Add To Cart Pill -->
+              <div class="pdp-qty-cart-row">
+                <div class="pdp-qty-stepper">
+                  <button type="button" class="pdp-qty-btn pdp-qty-minus" onclick="pdpAdjustQty(-1)" aria-label="Decrease quantity">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                  </button>
+                  <span id="pdpQtyValue" class="pdp-qty-number">1</span>
+                  <button type="button" class="pdp-qty-btn pdp-qty-plus" onclick="pdpAdjustQty(1)" aria-label="Increase quantity">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                  </button>
+                </div>
+                <button type="button" class="pdp-add-to-cart-pill" onclick="pdpAddToCart()">
+                  Add To Cart
                 </button>
               </div>
+
+              <!-- Full-Width Buy It Now Pill -->
+              <button type="button" class="pdp-buy-it-now-pill" onclick="pdpBuyNow()">
+                Buy It Now
+              </button>
 
               <!-- Coupon Code Hint Strip -->
               <div class="pdp-coupon-hint">
                 <span>💡 Use promo code <strong>FLIXVIP</strong> at checkout for <strong>15% OFF</strong></span>
               </div>
 
-              <!-- 3D Liquid Gloss WhatsApp Action Button (Matching Instant Buy Button) -->
+              <!-- WhatsApp Action Button -->
               <a id="pdpWhatsAppInquiryBtn" href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="pdp-whatsapp-btn">
                 <svg class="pdp-btn-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                   <path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.97.567 3.81 1.545 5.373L2 22l4.757-1.514A9.972 9.972 0 0 0 12.031 22C17.567 22 22 17.505 22 12.031 22 6.495 17.567 2 12.031 2zm5.792 14.288c-.244.686-1.22 1.307-1.745 1.365-.487.054-1.12.079-3.626-.957-3.197-1.32-5.267-4.57-5.426-4.783-.16-.213-1.294-1.722-1.294-3.284 0-1.562.819-2.332 1.109-2.651.29-.319.633-.399.844-.399.21 0 .422 0 .607.01.196.01.458-.074.717.55.264.633.9 2.197.978 2.357.079.16.132.348.026.56-.105.213-.158.348-.316.533-.159.186-.334.415-.477.557-.16.16-.328.334-.141.655.186.32.827 1.367 1.775 2.212 1.222 1.088 2.253 1.424 2.573 1.583.32.16.507.133.693-.08.187-.213.794-.925 1.006-1.242.211-.318.423-.265.714-.159.29.106 1.848.872 2.165 1.03.317.16.529.238.608.37.079.133.079.768-.165 1.454z"/>
@@ -1343,7 +1356,7 @@
   </a>
 
   <!-- Scripts -->
-  <script src="/js/app.js?v=6.0"></script>
-  <script src="/js/product.js?v=6.0"></script>
+  <script src="/js/app.js?v=6.2"></script>
+  <script src="/js/product.js?v=6.2"></script>
 </body>
 </html>

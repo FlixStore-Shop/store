@@ -831,13 +831,14 @@ async function quickBuyNow(slug, event) {
   }
 }
 
-function addToCart(product, plan) {
+function addToCart(product, plan, quantity = 1) {
+  const qty = Math.max(1, parseInt(quantity, 10) || 1);
   const existingIndex = state.cart.findIndex(
     item => item.productId === product.id && item.planId === plan.id
   );
 
   if (existingIndex > -1) {
-    state.cart[existingIndex].quantity += 1;
+    state.cart[existingIndex].quantity += qty;
   } else {
     state.cart.push({
       productId: product.id,
@@ -849,7 +850,7 @@ function addToCart(product, plan) {
       durationLabel: plan.duration_label,
       priceUSD: plan.price_usd,
       priceBDT: plan.price_bdt || Math.round(plan.price_usd * 120),
-      quantity: 1
+      quantity: qty
     });
   }
 

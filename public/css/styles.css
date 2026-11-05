@@ -6380,6 +6380,301 @@ body {
   border-radius: 6px;
 }
 
+/* =============================================================================
+   PDP HERO PRICE STRIP
+   ============================================================================= */
+.pdp-price-hero-strip {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 10px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.pdp-price-hero-amount {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.pdp-price-hero-orig {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.pdp-price-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  background: #fee2e2;
+  color: #ef4444;
+  letter-spacing: 0.2px;
+}
+
+[data-theme="dark"] .pdp-price-hero-amount {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .pdp-price-hero-orig {
+  color: #6b7280;
+}
+
+/* =============================================================================
+   PDP PLAN DURATION SELECTOR (MATCHING DEMO PHOTO 2)
+   ============================================================================= */
+.pdp-duration-section {
+  margin-bottom: 22px;
+}
+
+.pdp-duration-header-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.pdp-duration-label-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.2px;
+}
+
+[data-theme="dark"] .pdp-duration-label-title {
+  color: #f3f4f6;
+}
+
+.pdp-duration-label-active {
+  font-size: 1.02rem;
+  font-weight: 400;
+  color: #374151;
+}
+
+[data-theme="dark"] .pdp-duration-label-active {
+  color: #9ca3af;
+}
+
+.pdp-duration-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pdp-duration-pill {
+  padding: 10px 24px;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: #ffffff;
+  color: #111827;
+  border: 1.5px solid #111827;
+  transition: all 0.16s ease;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.pdp-duration-pill:hover {
+  background: #f9fafb;
+  border-color: #000000;
+  color: #000000;
+}
+
+.pdp-duration-pill.active {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .pdp-duration-pill {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+[data-theme="dark"] .pdp-duration-pill:hover {
+  background: #334155;
+  border-color: #94a3b8;
+}
+
+[data-theme="dark"] .pdp-duration-pill.active {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #ffffff !important;
+}
+
+/* =============================================================================
+   PDP QUANTITY & ACTION BUTTONS (MATCHING DEMO PHOTO 2)
+   ============================================================================= */
+.pdp-actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.pdp-qty-cart-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.pdp-qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 130px;
+  min-width: 125px;
+  height: 50px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 9999px;
+  background: #ffffff;
+  padding: 0 14px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.pdp-qty-btn {
+  background: none;
+  border: none;
+  color: #4b5563;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.pdp-qty-btn:hover {
+  color: #000000;
+  background: #f3f4f6;
+}
+
+.pdp-qty-btn:active {
+  transform: scale(0.9);
+}
+
+.pdp-qty-number {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #111827;
+  user-select: none;
+  text-align: center;
+  min-width: 24px;
+}
+
+.pdp-add-to-cart-pill {
+  flex: 1;
+  height: 50px;
+  border-radius: 9999px;
+  background: #e5e7eb;
+  color: #111827;
+  font-size: 0.98rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.16s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.pdp-add-to-cart-pill:hover {
+  background: #dbe0e6;
+  color: #000000;
+  transform: translateY(-1px);
+}
+
+.pdp-add-to-cart-pill:active {
+  background: #d1d5db;
+  transform: translateY(0);
+}
+
+.pdp-buy-it-now-pill {
+  width: 100%;
+  height: 52px;
+  border-radius: 9999px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.16s ease;
+  letter-spacing: 0.2px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.pdp-buy-it-now-pill:hover {
+  background: #1f2937;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transform: translateY(-1px);
+}
+
+.pdp-buy-it-now-pill:active {
+  background: #111827;
+  transform: translateY(0);
+}
+
+[data-theme="dark"] .pdp-qty-stepper {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .pdp-qty-btn {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .pdp-qty-btn:hover {
+  color: #ffffff;
+  background: #334155;
+}
+
+[data-theme="dark"] .pdp-qty-number {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .pdp-add-to-cart-pill {
+  background: #334155;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .pdp-add-to-cart-pill:hover {
+  background: #475569;
+}
+
+[data-theme="dark"] .pdp-buy-it-now-pill {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+[data-theme="dark"] .pdp-buy-it-now-pill:hover {
+  background: #f1f5f9;
+}
+
 /* Price Summary Box */
 .pdp-price-summary-box {
   background: var(--pdp-price-box-bg);
@@ -6804,6 +7099,32 @@ body {
   .pdp-actions-container {
     gap: 8px !important;
     margin-bottom: 16px !important;
+  }
+
+  .pdp-qty-cart-row {
+    gap: 10px !important;
+  }
+
+  .pdp-qty-stepper {
+    width: 120px !important;
+    min-width: 110px !important;
+    height: 48px !important;
+    padding: 0 12px !important;
+  }
+
+  .pdp-add-to-cart-pill {
+    height: 48px !important;
+    font-size: 0.94rem !important;
+  }
+
+  .pdp-buy-it-now-pill {
+    height: 50px !important;
+    font-size: 1rem !important;
+  }
+
+  .pdp-duration-pill {
+    padding: 9px 20px !important;
+    font-size: 0.9rem !important;
   }
 
   .pdp-btn-row {
