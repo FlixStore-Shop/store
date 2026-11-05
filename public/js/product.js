@@ -274,7 +274,7 @@ function renderTierTabs() {
       <button type="button" class="pdp-tier-btn ${isActive ? 'active' : ''}" onclick="selectPdpTier('${t}')">
         <span class="pdp-tier-icon">${meta.icon}</span>
         <div class="pdp-tier-text">
-          <div style="font-weight:700;">${meta.label}</div>
+          <div class="pdp-tier-label">${meta.label}</div>
           ${isPopular ? '<span class="pdp-tier-pill">MOST POPULAR</span>' : ''}
         </div>
       </button>
