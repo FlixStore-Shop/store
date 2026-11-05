@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCartUI();
   initEventListeners();
   checkAuthStatus();
+  initFloatingMobileNav();
 });
 
 // Theme Management (Light Mode Exclusive)
@@ -2466,6 +2467,62 @@ function scrollToTrustFeature(featureKey) {
 }
 
 window.scrollToTrustFeature = scrollToTrustFeature;
+
+// -----------------------------------------------------------------------------
+// FLOATING MOBILE BOTTOM NAV (AUTO-HIDE AFTER 2S TOUCH / APPEAR ON INTERACTION)
+// -----------------------------------------------------------------------------
+
+function initFloatingMobileNav() {
+  const nav = document.querySelector('.mobile-bottom-nav');
+  if (!nav) return;
+
+  let hideTimer = null;
+  const HIDE_TIMEOUT_MS = 2000; // 2 seconds
+
+  function showNav() {
+    nav.classList.remove('nav-hidden');
+    document.body.classList.remove('mobile-nav-hidden');
+    scheduleHide();
+  }
+
+  function hideNav() {
+    // Keep visible if user is currently inside a modal, drawer, or search input
+    const activeOverlay = document.querySelector('.modal-overlay.active, .cart-drawer.active');
+    if (activeOverlay) return;
+
+    nav.classList.add('nav-hidden');
+    document.body.classList.add('mobile-nav-hidden');
+  }
+
+  function scheduleHide() {
+    if (hideTimer) {
+      clearTimeout(hideTimer);
+    }
+    hideTimer = setTimeout(() => {
+      hideNav();
+    }, HIDE_TIMEOUT_MS);
+  }
+
+  // User interactions that trigger appear and restart the 2s timer
+  const interactionEvents = ['touchstart', 'touchmove', 'scroll', 'mousedown'];
+  interactionEvents.forEach(evt => {
+    window.addEventListener(evt, () => {
+      showNav();
+    }, { passive: true });
+  });
+
+  // Tapping directly inside the floating dock keeps it visible
+  nav.addEventListener('touchstart', () => {
+    if (hideTimer) clearTimeout(hideTimer);
+  }, { passive: true });
+
+  nav.addEventListener('touchend', () => {
+    scheduleHide();
+  }, { passive: true });
+
+  // Initial countdown on page load
+  scheduleHide();
+}
 
 // -----------------------------------------------------------------------------
 // INTERACTIVE CREDIT CARD & LUHN VALIDATION
