@@ -271,12 +271,10 @@ function renderTierTabs() {
     const isActive = productState.selectedTier === t;
     const isPopular = plans.some(pl => pl.tier_type === t && pl.is_popular);
     return `
-      <button type="button" class="pdp-tier-btn ${isActive ? 'active' : ''}" onclick="selectPdpTier('${t}')">
+      <button type="button" class="pdp-tier-btn ${isActive ? 'active' : ''}" onclick="selectPdpTier('${t}')" aria-label="Select ${escapeHtml(meta.label)} tier">
         <span class="pdp-tier-icon">${meta.icon}</span>
-        <div class="pdp-tier-text">
-          <div class="pdp-tier-label">${meta.label}</div>
-          ${isPopular ? '<span class="pdp-tier-pill">MOST POPULAR</span>' : ''}
-        </div>
+        <span class="pdp-tier-label">${meta.label}</span>
+        ${isPopular ? '<span class="pdp-tier-pill">Popular</span>' : ''}
       </button>
     `;
   }).join('');
