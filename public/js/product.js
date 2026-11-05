@@ -23,6 +23,36 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+function cleanDurationLabel(duration, months) {
+  if (months === 1) return '1 Month';
+  if (months === 3) return '3 Months';
+  if (months === 6) return '6 Months';
+  if (months === 12) return '1 Year';
+
+  if (!duration) return '1 Month';
+  let str = String(duration).trim();
+
+  const match = str.match(/^(\d+)\s*(months?|years?|days?|weeks?|hours?)/i);
+  if (match) {
+    const num = match[1];
+    const unit = match[2].toLowerCase();
+    if (unit.startsWith('month')) return `${num} ${num === '1' ? 'Month' : 'Months'}`;
+    if (unit.startsWith('year')) return `${num} ${num === '1' ? 'Year' : 'Years'}`;
+    if (unit.startsWith('day')) return `${num} ${num === '1' ? 'Day' : 'Days'}`;
+    if (unit.startsWith('week')) return `${num} ${num === '1' ? 'Week' : 'Weeks'}`;
+    if (unit.startsWith('hour')) return `${num} ${num === '1' ? 'Hour' : 'Hours'}`;
+  }
+
+  if (/^lifetime/i.test(str)) return 'Lifetime';
+
+  // Strip anything in parentheses like "(Shared Screen)", "(Private PIN Profile)"
+  str = str.replace(/\s*\([^)]*\)/g, '').trim();
+  // Strip trailing words like Access, VIP, Pass, Plan, Device, Screen
+  str = str.replace(/\s+(access|vip|pass|plan|subscription|screen|device)$/i, '').trim();
+
+  return str || '1 Month';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initProductPage();
 });
@@ -296,7 +326,7 @@ function renderDurationOptions() {
 
   container.innerHTML = visiblePlans.map(plan => {
     const isSelected = productState.selectedPlan && productState.selectedPlan.id === plan.id;
-    const durationText = plan.duration_label || '1 Month';
+    const durationText = cleanDurationLabel(plan.duration_label, plan.duration_months);
 
     return `
       <button type="button" 
@@ -310,7 +340,7 @@ function renderDurationOptions() {
 
   const durationLabel = document.getElementById('pdpSelectedDurationLabel');
   if (durationLabel && productState.selectedPlan) {
-    durationLabel.textContent = productState.selectedPlan.duration_label || '1 Month';
+    durationLabel.textContent = cleanDurationLabel(productState.selectedPlan.duration_label, productState.selectedPlan.duration_months);
   }
 }
 
@@ -326,17 +356,20 @@ function selectPdpPlan(planId) {
 
 function getCleanPlanTitle(plan) {
   if (!plan) return '';
-  const name = (plan.plan_name || '').trim();
-  const duration = (plan.duration_label || '').trim();
-  if (!duration) return name;
-  if (!name) return duration;
+  const duration = cleanDurationLabel(plan.duration_label || '', plan.duration_months);
+  let name = (plan.plan_name || '').trim();
   
-  // If plan_name already contains or starts with duration, strip the repetitive part:
-  const strippedName = name.replace(/^(\d+\s*(?:Month|Year|Day)s?)\s*[-–•:]*\s*/i, '').trim();
-  if (strippedName && strippedName.toLowerCase() !== duration.toLowerCase()) {
-    return `${duration} • ${strippedName}`;
+  // Strip duration prefix: e.g. "1 Month - Shared Screen" -> "Shared Screen"
+  name = name.replace(/^(\d+\s*(?:Months?|Years?|Days?|Weeks?|Hours?)|Lifetime)\s*[-–•:]*\s*/i, '').trim();
+  
+  // Remove parenthetical tier repetition: e.g. "Personal (Private PIN)" -> "Personal"
+  name = name.replace(/\s*\([^)]*\)/g, '').trim();
+  
+  // If empty or identical to duration, return just duration
+  if (!name || name.toLowerCase() === duration.toLowerCase()) {
+    return duration;
   }
-  return duration;
+  return `${duration} • ${name}`;
 }
 
 function updateSelectedPlanPricing() {
@@ -375,7 +408,7 @@ function updateSelectedPlanPricing() {
 
   const durationLabel = document.getElementById('pdpSelectedDurationLabel');
   if (durationLabel) {
-    durationLabel.textContent = plan.duration_label || '1 Month';
+    durationLabel.textContent = cleanDurationLabel(plan.duration_label, plan.duration_months);
   }
 
   // Clean, non-repetitive plan title

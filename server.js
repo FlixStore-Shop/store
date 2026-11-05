@@ -8,6 +8,36 @@ require('dotenv').config();
 const { db, DB_PATH, hashPassword, verifyPassword, initDatabase } = require('./db/database');
 const { createToken, verifyToken, authMiddleware } = require('./utils/auth');
 const { rateLimiter, sanitizeInput, generateOrderNumber, generateLicenseKey } = require('./utils/security');
+
+function cleanDurationLabel(duration, months) {
+  if (months === 1) return '1 Month';
+  if (months === 3) return '3 Months';
+  if (months === 6) return '6 Months';
+  if (months === 12) return '1 Year';
+
+  if (!duration) return '1 Month';
+  let str = String(duration).trim();
+
+  const match = str.match(/^(\d+)\s*(months?|years?|days?|weeks?|hours?)/i);
+  if (match) {
+    const num = match[1];
+    const unit = match[2].toLowerCase();
+    if (unit.startsWith('month')) return `${num} ${num === '1' ? 'Month' : 'Months'}`;
+    if (unit.startsWith('year')) return `${num} ${num === '1' ? 'Year' : 'Years'}`;
+    if (unit.startsWith('day')) return `${num} ${num === '1' ? 'Day' : 'Days'}`;
+    if (unit.startsWith('week')) return `${num} ${num === '1' ? 'Week' : 'Weeks'}`;
+    if (unit.startsWith('hour')) return `${num} ${num === '1' ? 'Hour' : 'Hours'}`;
+  }
+
+  if (/^lifetime/i.test(str)) return 'Lifetime';
+
+  // Strip anything in parentheses like "(Shared Screen)", "(Private PIN Profile)"
+  str = str.replace(/\s*\([^)]*\)/g, '').trim();
+  // Strip trailing words like Access, VIP, Pass, Plan, Device, Screen
+  str = str.replace(/\s+(access|vip|pass|plan|subscription|screen|device)$/i, '').trim();
+
+  return str || '1 Month';
+}
 const { sendOtpEmail, sendOrderConfirmationEmail, sendAdminOrderAlert, verifySmtpConnection } = require('./utils/mailer');
 const { checkStorageHealth, uploadAsset, getAsset, deleteAsset, listAssets, BUCKET_NAME } = require('./utils/storage');
 const { checkRealtimeHealth, getRealtimeConfig } = require('./utils/realtime');
@@ -205,6 +235,7 @@ app.get('/api/products/:slug', async (req, res) => {
 
     const formattedPlans = plans.map(pl => ({
       ...pl,
+      duration_label: cleanDurationLabel(pl.duration_label, pl.duration_months),
       price_usd: parseFloat(pl.price_usd || 0),
       price_bdt: parseFloat(pl.price_bdt || 0),
       original_price_usd: pl.original_price_usd ? parseFloat(pl.original_price_usd) : null,
@@ -1513,7 +1544,7 @@ app.post('/api/admin/products', authMiddleware('admin'), async (req, res) => {
           sanitizeInput(pl.plan_name || pl.name || '1 Month Dedicated'),
           sanitizeInput(pl.tier_type || pl.tier || 'private'),
           parseInt(pl.duration_months || pl.months || 1, 10),
-          sanitizeInput(pl.duration_label || pl.label || '1 Month'),
+          cleanDurationLabel(sanitizeInput(pl.duration_label || pl.label || '1 Month'), parseInt(pl.duration_months || pl.months || 1, 10)),
           planUsd,
           planBdt,
           planOrigUsd,

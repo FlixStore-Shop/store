@@ -46,6 +46,45 @@ function formatPrice(amount, isBDT = false) {
   return `৳${val.toLocaleString()}`;
 }
 
+function cleanDurationLabel(duration, months) {
+  if (months === 1) return '1 Month';
+  if (months === 3) return '3 Months';
+  if (months === 6) return '6 Months';
+  if (months === 12) return '1 Year';
+
+  if (!duration) return '1 Month';
+  let str = String(duration).trim();
+
+  const match = str.match(/^(\d+)\s*(months?|years?|days?|weeks?|hours?)/i);
+  if (match) {
+    const num = match[1];
+    const unit = match[2].toLowerCase();
+    if (unit.startsWith('month')) return `${num} ${num === '1' ? 'Month' : 'Months'}`;
+    if (unit.startsWith('year')) return `${num} ${num === '1' ? 'Year' : 'Years'}`;
+    if (unit.startsWith('day')) return `${num} ${num === '1' ? 'Day' : 'Days'}`;
+    if (unit.startsWith('week')) return `${num} ${num === '1' ? 'Week' : 'Weeks'}`;
+    if (unit.startsWith('hour')) return `${num} ${num === '1' ? 'Hour' : 'Hours'}`;
+  }
+
+  if (/^lifetime/i.test(str)) return 'Lifetime';
+
+  str = str.replace(/\s*\([^)]*\)/g, '').trim();
+  str = str.replace(/\s+(access|vip|pass|plan|subscription|screen|device)$/i, '').trim();
+
+  return str || '1 Month';
+}
+
+function formatCartPlanTitle(planName, durationLabel) {
+  const d = cleanDurationLabel(durationLabel);
+  let p = (planName || '').trim();
+  p = p.replace(/^(\d+\s*(?:Months?|Years?|Days?|Weeks?|Hours?)|Lifetime)\s*[-–•:]*\s*/i, '').trim();
+  p = p.replace(/\s*\([^)]*\)/g, '').trim();
+  if (p && p.toLowerCase() !== d.toLowerCase()) {
+    return `${d} • ${p}`;
+  }
+  return d;
+}
+
 // Update all static prices on page (Hero banner, spotlights, etc.)
 function updateAllStaticPrices() {
   document.querySelectorAll('.hero-current-price[data-bdt]').forEach(elem => {
@@ -725,7 +764,7 @@ function renderQuickViewDetails() {
               ${discountPercent > 0 ? `<span class="discount-pill">${discountPercent}% OFF</span>` : ''}
             </div>
             <p style="margin:2px 0 0; font-size:0.8rem; color:var(--text-secondary);">
-              <strong>${plan.device_limit || '1 Device'}</strong> • ${plan.duration_label} • ${plan.plan_features || 'Full Duration Warranty'}
+              <strong>${plan.device_limit || '1 Device'}</strong> • ${cleanDurationLabel(plan.duration_label, plan.duration_months)} • ${plan.plan_features || 'Full Duration Warranty'}
             </p>
           </div>
           <div class="plan-option-price">
@@ -775,7 +814,7 @@ function updateDetailPriceDisplay() {
   }
 
   if (buyBtn) {
-    buyBtn.innerHTML = `Buy ${state.selectedPlan.duration_label} (${displayPrice}) →`;
+    buyBtn.innerHTML = `Buy ${cleanDurationLabel(state.selectedPlan.duration_label, state.selectedPlan.duration_months)} (${displayPrice}) →`;
   }
 }
 
@@ -847,7 +886,7 @@ function addToCart(product, plan, quantity = 1) {
       logoUrl: product.logo_url,
       planId: plan.id,
       planName: plan.plan_name,
-      durationLabel: plan.duration_label,
+      durationLabel: cleanDurationLabel(plan.duration_label, plan.duration_months),
       priceUSD: plan.price_usd,
       priceBDT: plan.price_bdt || Math.round(plan.price_usd * 120),
       quantity: qty
@@ -958,7 +997,7 @@ function updateCartUI() {
       <img src="${item.logoUrl}" alt="${item.productTitle}" class="cart-item-thumb">
       <div class="cart-item-info">
         <div class="cart-item-title">${item.productTitle}</div>
-        <div class="cart-item-plan">${item.planName} (${item.durationLabel})</div>
+        <div class="cart-item-plan">${formatCartPlanTitle(item.planName, item.durationLabel)}</div>
         <button onclick="closeCartDrawer(); openProductDetail('${item.productSlug}')" style="background:none; border:none; color:#60a5fa; font-size:0.75rem; cursor:pointer; text-decoration:underline; padding:0; margin-bottom:6px; display:inline-block;">
           ✏️ Change Plan / Duration
         </button>
