@@ -2469,7 +2469,7 @@ function scrollToTrustFeature(featureKey) {
 window.scrollToTrustFeature = scrollToTrustFeature;
 
 // -----------------------------------------------------------------------------
-// FLOATING MOBILE BOTTOM NAV (AUTO-HIDE AFTER 2S TOUCH / APPEAR ON INTERACTION)
+// FLOATING MOBILE BOTTOM NAV (AUTO-HIDE AFTER 1S TOUCH / APPEAR ON INTERACTION)
 // -----------------------------------------------------------------------------
 
 function initFloatingMobileNav() {
@@ -2477,7 +2477,7 @@ function initFloatingMobileNav() {
   if (!nav) return;
 
   let hideTimer = null;
-  const HIDE_TIMEOUT_MS = 2000; // 2 seconds
+  const HIDE_TIMEOUT_MS = 1000; // 1 second
 
   function showNav() {
     nav.classList.remove('nav-hidden');
