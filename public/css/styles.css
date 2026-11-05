@@ -496,7 +496,7 @@ body {
    HERO SHOWCASE SECTION (Digital 3D Cyber-Hologram Aesthetic)
    ========================================================================== */
 .hero-section {
-  padding: 38px 0 28px;
+  padding: 24px 0 20px;
   position: relative;
   overflow: hidden;
 }
@@ -504,7 +504,7 @@ body {
 .hero-slider-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: clamp(370px, 32vw, 420px);
   border-radius: var(--radius-xl);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -517,7 +517,7 @@ body {
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
   background-position: 0 0, 0 0, -1px -1px, -1px -1px;
-  box-shadow: 0 30px 75px -15px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   user-select: none;
   touch-action: pan-y;
   cursor: grab;
@@ -542,7 +542,7 @@ body {
   height: 100%;
   min-height: 0;
   display: flex;
-  padding: 44px 56px;
+  padding: 28px 48px;
   align-items: center;
   justify-content: space-between;
   position: relative;
@@ -567,8 +567,8 @@ body {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 18px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .hero-beacon-pill {
@@ -664,11 +664,11 @@ body {
 
 /* Hero Typography with 3D Gradients */
 .hero-title {
-  font-size: clamp(2rem, 3.2vw, 2.85rem);
+  font-size: clamp(1.75rem, 2.3vw, 2.25rem);
   font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 12px;
-  letter-spacing: -0.035em;
+  line-height: 1.16;
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
   color: #ffffff;
 }
 
@@ -722,10 +722,11 @@ body {
 }
 
 .hero-subtitle {
-  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  font-size: 0.92rem;
   color: #94a3b8;
-  line-height: 1.5;
-  margin-bottom: 16px;
+  line-height: 1.45;
+  margin-bottom: 14px;
+  max-width: 520px;
 }
 
 /* Feature Matrix Pills */
@@ -752,12 +753,12 @@ body {
 .hero-pricing-box {
   display: flex;
   align-items: baseline;
-  gap: 12px;
-  margin-bottom: 22px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .hero-current-price {
-  font-size: 2.45rem;
+  font-size: 2rem;
   font-weight: 800;
   color: #ffffff;
   letter-spacing: -0.025em;
@@ -765,7 +766,7 @@ body {
 }
 
 .hero-original-price {
-  font-size: 1.15rem;
+  font-size: 1rem;
   color: #64748b;
   text-decoration: line-through;
 }
@@ -841,7 +842,7 @@ body {
 .hero-cta-group {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .hero-btn-gloss {
@@ -850,9 +851,9 @@ body {
   border: 1px solid #ffffff !important;
   box-shadow: 0 4px 0 #94a3b8, 0 14px 28px rgba(0, 0, 0, 0.45) !important;
   font-weight: 700 !important;
-  font-size: 0.94rem !important;
-  padding: 12px 24px !important;
-  border-radius: 9px !important;
+  font-size: 0.88rem !important;
+  padding: 10px 22px !important;
+  border-radius: 8px !important;
   transition: transform 0.12s ease, box-shadow 0.12s ease !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -883,9 +884,9 @@ body {
   border-top: 1px solid rgba(255, 255, 255, 0.35) !important;
   color: #f1f5f9 !important;
   font-weight: 600 !important;
-  font-size: 0.94rem !important;
-  padding: 12px 22px !important;
-  border-radius: 9px !important;
+  font-size: 0.88rem !important;
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
   backdrop-filter: blur(12px) !important;
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4), 0 10px 22px rgba(0, 0, 0, 0.35) !important;
   transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease !important;
@@ -920,8 +921,8 @@ body {
 
 .hero-3d-stage {
   position: relative;
-  width: 350px;
-  height: 310px;
+  width: 320px;
+  height: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -931,8 +932,8 @@ body {
 /* Ambient Volumetric Aura */
 .holo-ambient-aura {
   position: absolute;
-  width: 280px;
-  height: 280px;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
   filter: blur(50px);
   z-index: 1;
@@ -977,9 +978,9 @@ body {
 /* 3D Hologram Card */
 .card-3d-hologram {
   position: relative;
-  width: 320px;
-  height: 225px;
-  border-radius: 18px;
+  width: 290px;
+  height: 195px;
+  border-radius: 16px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(15, 23, 42, 0.85) 100%);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-top: 1px solid rgba(255, 255, 255, 0.38);
@@ -1074,8 +1075,8 @@ body {
 }
 
 .holo-emblem-main {
-  max-width: 185px;
-  max-height: 115px;
+  max-width: 150px;
+  max-height: 95px;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -1307,8 +1308,8 @@ body {
 /* Slider Controls */
 .hero-controls {
   position: absolute;
-  bottom: 24px;
-  right: 56px;
+  bottom: 16px;
+  right: 40px;
   display: flex;
   gap: 8px;
   z-index: 10;
@@ -4638,19 +4639,22 @@ body {
    RESPONSIVE QUERIES (OPTIMIZED FOR ANDROID & MOBILE BROWSERS)
    ========================================================================== */
 @media (max-width: 1024px) {
+  .hero-slider-container {
+    height: clamp(350px, 34vw, 390px);
+  }
   .hero-slide {
-    padding: 30px 40px;
+    padding: 24px 32px;
   }
   .hero-title {
-    font-size: 2.1rem;
+    font-size: 1.85rem;
   }
   .hero-3d-stage {
-    width: 300px;
-    height: 260px;
+    width: 280px;
+    height: 230px;
   }
   .card-3d-hologram {
-    width: 280px;
-    height: 190px;
+    width: 260px;
+    height: 180px;
   }
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
