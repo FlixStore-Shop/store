@@ -8,9 +8,9 @@
   <meta name="description" content="Read FlixStore's official Terms & Conditions, Return & Refund Policy, Delivery Times, Privacy Policy, About Us, and Customer Support channels.">
   <link rel="canonical" href="https://store-q51q.onrender.com/information">
 
-  <link rel="stylesheet" href="/css/styles.css?v=7.7">
-  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=7.7">
-  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=7.7">
+  <link rel="stylesheet" href="/css/styles.css?v=7.8">
+  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=7.8">
+  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=7.8">
 
   <style>
     /* Dedicated Information Center Styles */
@@ -457,9 +457,61 @@
         justify-content: center;
       }
     }
+
+    /* Language Toggle Switch Button & Animation */
+    .lang-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      flex-shrink: 0;
+    }
+    .lang-toggle-btn:hover {
+      background: rgba(37,99,235,0.08);
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37,99,235,0.15);
+    }
+    .lang-toggle-btn:active {
+      transform: translateY(0);
+    }
+    .lang-btn-content {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .lang-flag {
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+    .header-lang-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    /* Language Visibility Switching */
+    body.lang-en .lang-bn {
+      display: none !important;
+    }
+    body.lang-bn .lang-en {
+      display: none !important;
+    }
   </style>
 </head>
-<body>
+<body class="lang-en">
 
   <!-- Ambient Glow Background -->
   <div class="ambient-glow"></div>
@@ -489,7 +541,7 @@
         <div class="header-left-group">
           <!-- Back to Storefront Link -->
           <a href="/" class="brand-logo" aria-label="FlixStore Home">
-            <img src="/assets/flixstore-icon.png?v=7.7" alt="FlixStore" class="brand-logo-img">
+            <img src="/assets/flixstore-icon.png?v=7.8" alt="FlixStore" class="brand-logo-img">
             <span class="brand-logo-text">FLIX STORE</span>
           </a>
           <a href="/" class="action-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px; font-weight:700; font-size:0.8rem; padding:6px 12px; border-radius:8px;">
@@ -503,6 +555,18 @@
               <span>BDT</span>
             </div>
           </div>
+
+          <!-- Language Switch Button in Header -->
+          <button class="action-btn lang-toggle-btn header-lang-btn" onclick="toggleLanguage()" title="Switch Language / ভাষা পরিবর্তন">
+            <span class="lang-btn-content lang-en">
+              <span class="lang-flag">🇧🇩</span>
+              <span>বাংলা</span>
+            </span>
+            <span class="lang-btn-content lang-bn">
+              <span class="lang-flag">🇬🇧</span>
+              <span>English</span>
+            </span>
+          </button>
 
           <a href="/" class="action-btn desktop-only" style="text-decoration:none;">
             <span>Browse Products</span>
@@ -526,9 +590,11 @@
 
       <!-- Breadcrumbs -->
       <div class="info-breadcrumb">
-        <a href="/">Home</a>
+        <a href="/" class="lang-en">Home</a>
+        <a href="/" class="lang-bn">হোম</a>
         <span>/</span>
-        <span>Information</span>
+        <span class="lang-en">Information</span>
+        <span class="lang-bn">ইনফরমেশন</span>
         <span>/</span>
         <strong id="activeBreadcrumbLabel">Terms & Conditions</strong>
       </div>
@@ -538,15 +604,32 @@
         <div class="info-hero-text">
           <div class="info-hero-badge">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Official Customer Trust & Legal Policies
+            <span class="lang-en">Official Customer Trust & Legal Policies</span>
+            <span class="lang-bn">অফিসিয়াল গ্রাহক সেবা ও আইনি নীতিমালা</span>
           </div>
-          <h1>FlixStore Information & Policy Center</h1>
-          <p>
+          <h1>
+            <span class="lang-en">FlixStore Information & Policy Center</span>
+            <span class="lang-bn">ফ্লিক্সস্টোর ইনফরমেশন ও পলিসি সেন্টার</span>
+          </h1>
+          <p class="lang-en">
             Welcome to the official transparency hub for FlixStore. Here you will find our comprehensive guidelines regarding instant digital delivery, warranty, return policies, user data protection, and direct contact channels.
           </p>
+          <p class="lang-bn">
+            ফ্লিক্সস্টোরের অফিসিয়াল পলিসি সেন্টারে আপনাকে স্বাগতম। এখানে আপনি তাৎক্ষণিক ডিজিটাল ডেলিভারি, ওয়ারেন্টি গ্যারান্টি, রিফান্ড পলিসি, ব্যবহারকারীর ডেটা নিরাপত্তা এবং হেল্পলাইন সংক্রান্ত সমস্ত তথ্য পাবেন।
+          </p>
         </div>
-        <div class="desktop-only">
-          <img src="/assets/flixstore-icon.png?v=7.7" alt="FlixStore Shield" style="width:76px; height:76px; opacity:0.9;">
+        <div class="desktop-only" style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+          <img src="/assets/flixstore-icon.png?v=7.8" alt="FlixStore Shield" style="width:76px; height:76px; opacity:0.9;">
+          <button class="lang-toggle-btn" onclick="toggleLanguage()" style="font-size:0.78rem; padding:5px 12px;" title="Switch Language / ভাষা পরিবর্তন">
+            <span class="lang-btn-content lang-en">
+              <span class="lang-flag">🇧🇩</span>
+              <span>বাংলায় পড়ুন</span>
+            </span>
+            <span class="lang-btn-content lang-bn">
+              <span class="lang-flag">🇬🇧</span>
+              <span>In English</span>
+            </span>
+          </button>
         </div>
       </div>
 
@@ -555,36 +638,57 @@
 
         <!-- Left Navigation Sidebar -->
         <aside class="info-sidebar">
-          <div class="info-nav-header">Information & Policies</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding: 4px 6px 10px;">
+            <div class="info-nav-header" style="padding:0;">
+              <span class="lang-en">Information</span>
+              <span class="lang-bn">ইনফরমেশন</span>
+            </div>
+            <button class="lang-toggle-btn" onclick="toggleLanguage()" style="padding:4px 10px; font-size:0.75rem;" title="Switch Language / ভাষা পরিবর্তন">
+              <span class="lang-btn-content lang-en">
+                <span class="lang-flag">🇧🇩</span>
+                <span>বাংলা</span>
+              </span>
+              <span class="lang-btn-content lang-bn">
+                <span class="lang-flag">🇬🇧</span>
+                <span>EN</span>
+              </span>
+            </button>
+          </div>
 
           <button class="info-nav-btn" data-target="terms" onclick="selectTab('terms')">
             <span class="tab-icon">📜</span>
-            <span>Terms & Conditions</span>
+            <span class="lang-en">Terms & Conditions</span>
+            <span class="lang-bn">শর্তাবলি ও নিয়মাবলি</span>
           </button>
 
           <button class="info-nav-btn" data-target="refund" onclick="selectTab('refund')">
             <span class="tab-icon">🔄</span>
-            <span>Return & Refund Policy</span>
+            <span class="lang-en">Return & Refund Policy</span>
+            <span class="lang-bn">রিটার্ন ও রিফান্ড নীতিমালা</span>
           </button>
 
           <button class="info-nav-btn" data-target="delivery" onclick="selectTab('delivery')">
             <span class="tab-icon">🚚</span>
-            <span>Delivery Policy</span>
+            <span class="lang-en">Delivery Policy</span>
+            <span class="lang-bn">ডেলিভারি পলিসি</span>
           </button>
 
           <button class="info-nav-btn" data-target="privacy" onclick="selectTab('privacy')">
             <span class="tab-icon">🔒</span>
-            <span>Privacy Policy</span>
+            <span class="lang-en">Privacy Policy</span>
+            <span class="lang-bn">প্রাইভেসি পলিসি</span>
           </button>
 
           <button class="info-nav-btn" data-target="about" onclick="selectTab('about')">
             <span class="tab-icon">🏠</span>
-            <span>About Us</span>
+            <span class="lang-en">About Us</span>
+            <span class="lang-bn">আমাদের সম্পর্কে</span>
           </button>
 
           <button class="info-nav-btn" data-target="contact" onclick="selectTab('contact')">
             <span class="tab-icon">📞</span>
-            <span>Contact Us</span>
+            <span class="lang-en">Contact Us</span>
+            <span class="lang-bn">যোগাযোগ</span>
           </button>
         </aside>
 
@@ -595,15 +699,34 @@
           <div id="pane-terms" class="policy-pane">
             <div class="policy-header">
               <div class="policy-title-area">
-                <h2><span>📜</span> Terms & Conditions</h2>
+                <h2>
+                  <span>📜</span> 
+                  <span class="lang-en">Terms & Conditions</span>
+                  <span class="lang-bn">শর্তাবলি ও নিয়মাবলি</span>
+                </h2>
                 <div class="policy-meta">
-                  <span>Last Updated: September 24, 2026</span>
-                  <span class="badge">Official Legal Terms</span>
+                  <span class="lang-en">Last Updated: September 24, 2026</span>
+                  <span class="lang-bn">সর্বশেষ আপডেট: ২৪ সেপ্টেম্বর ২০২৬</span>
+                  <span class="badge lang-en">Official Legal Terms</span>
+                  <span class="badge lang-bn">অফিসিয়াল আইনি শর্তাবলি</span>
                 </div>
+              </div>
+              <div class="policy-header-actions">
+                <button class="lang-toggle-btn" onclick="toggleLanguage()" aria-label="Switch Language / ভাষা পরিবর্তন" title="Switch Language / ভাষা পরিবর্তন">
+                  <span class="lang-btn-content lang-en">
+                    <span class="lang-flag">🇧🇩</span>
+                    <span class="lang-text">বাংলায় পড়ুন (BN)</span>
+                  </span>
+                  <span class="lang-btn-content lang-bn">
+                    <span class="lang-flag">🇬🇧</span>
+                    <span class="lang-text">Read in English (EN)</span>
+                  </span>
+                </button>
               </div>
             </div>
 
-            <div class="policy-body">
+            <!-- English Body -->
+            <div class="policy-body lang-en">
               <p>
                 By completing an order on <strong>FlixStore</strong>, you acknowledge and agree to the following terms and conditions. Because all of our offerings are digital goods and software services, these terms are established to protect the interests and rights of both buyer and seller.
               </p>
@@ -698,21 +821,137 @@
                 &copy; 2026 FlixStore Inc. All Rights Reserved.
               </div>
             </div>
+
+            <!-- Bengali Body -->
+            <div class="policy-body lang-bn">
+              <p>
+                <strong>FlixStore</strong>-এ অর্ডার সম্পন্ন করার মাধ্যমে আপনি নিচের শর্তাবলিতে পূর্ণ সম্মতি প্রদান করছেন। আমাদের সকল সেবা ডিজিটাল সফটওয়্যার ও সাবস্ক্রিপশন লাইসেন্স বিধায় এই শর্তাবলি কার্যকরভাবে ক্রেতা ও বিক্রেতা উভয়পক্ষের অধিকার ও স্বার্থ সংরক্ষণ করে।
+              </p>
+
+              <div class="policy-callout">
+                <h5>📌 আবশ্যকীয় নির্দেশনা</h5>
+                <p>অর্ডার কনফার্ম করার পূর্বে পণ্যের বিবরণ (Description), ফিচার, প্রয়োজনীয় ডিভাইস সামঞ্জস্যতা (Compatibility) এবং ওয়ারেন্টি শর্তাবলি সতর্কতার সাথে পড়ে নিন।</p>
+              </div>
+
+              <h3>1. Order (অর্ডার প্রক্রিয়া)</h3>
+              <ul>
+                <li>অর্ডারের সময় সঠিক নাম, সক্রিয় মোবাইল নম্বর ও বৈধ Email Address প্রদান করতে হবে।</li>
+                <li>Order Confirm হওয়ার পূর্বে Product পরিবর্তনের অনুরোধ জানানো যাবে।</li>
+                <li>Order Confirm ও প্রসেসিং সম্পন্ন হওয়ার পর কোনো Product পরিবর্তন, বাতিল বা রিফান্ড গ্রহণযোগ্য হবে না।</li>
+                <li>অর্ডারের পূর্বে Product-এর বিবরণ, সাপোর্টেড ডিভাইস, সিস্টেম কম্প্যাটিবিলিটি ও ওয়ারেন্টি দেখে নেওয়া গ্রাহকের দায়িত্ব।</li>
+              </ul>
+
+              <h3>2. Refund Policy (রিফান্ড নীতিমালা)</h3>
+              <ul>
+                <li>সফল Delivery বা একাউন্ট Activation সম্পন্ন হওয়ার পর কোনো Refund প্রযোজ্য নয়।</li>
+                <li>Payment সফল হলেও প্রযুক্তিগত বা স্টক সীমাবদ্ধতায় অর্ডার সম্পন্ন করা সম্ভব না হলে ১০০% সম্পূর্ণ মূল্য Refund প্রদান করা হবে।</li>
+                <li>FlixStore-এর নিজস্ব সীমাবদ্ধতার কারণে Product/Service Delivery সম্ভব না হলে পণ্যের সম্পূর্ণ মূল্য অবিলম্বে রিফান্ড করা হবে।</li>
+                <li>Customer-এর নিজস্ব অনুরোধে Refund অনুমোদিত হলে ১০% Gateway ও Processing Charge কেটে অবশিষ্ট ৯০% অর্থ Refund করা হবে।</li>
+                <li>Payment Provider বা মোবাইল ব্যাংকিং গেটওয়ের অতিরিক্ত চার্জ থাকলে তা Customer বহন করবেন।</li>
+              </ul>
+
+              <h3>3. Return Policy (রিটার্ন নীতিমালা)</h3>
+              <ul>
+                <li>যেহেতু আমাদের সকল পণ্য ডিজিটাল সফটওয়্যার ও অনলাইন একাউন্ট লাইসেন্স, তাই Delivery বা Activation-এর পর কোনো ফিজিক্যাল Return গ্রহণ করা হয় না।</li>
+              </ul>
+
+              <h3>4. Warranty (ওয়ারেন্টি ও প্রতিস্থাপন)</h3>
+              <ul>
+                <li>প্রতিটি Product-এর Warranty Period সংশ্লিষ্ট পণ্যের পাতায় আলাদাভাবে নির্ধারিত রয়েছে।</li>
+                <li>Warranty মেয়াদের মধ্যে কোনো অনাকাঙ্ক্ষিত সমস্যা দেখা দিলে যাচাই সাপেক্ষে তাৎক্ষণিক Replacement বা সমাধান প্রদান করা হবে।</li>
+                <li>ডিভাইস জনিত সমস্যা, দুর্বল ইন্টারনেট সংযোগ, থার্ড পার্টি সফটওয়্যার বা Customer-এর ভুল ব্যবহারের কারণে সৃষ্ট জটিলতায় Warranty প্রযোজ্য নয়।</li>
+                <li>Warranty মেয়াদ অতিক্রান্ত হওয়ার পর কোনো Warranty Claim গ্রহণ করা হবে না।</li>
+              </ul>
+
+              <h3>5. Delivery (ডেলিভারি মাধ্যম)</h3>
+              <ul>
+                <li>Digital Product সাধারণত WhatsApp, Email বা নিরাপদ ডিজিটাল ভল্টের মাধ্যমে সরবরাহ করা হয়।</li>
+                <li>Customer-কে সর্বদা সক্রিয় ও নির্ভুল Email Address এবং WhatsApp নম্বর প্রদান করতে হবে।</li>
+                <li>Payment Verification ও টেকনিক্যাল এভেইলেবিলিটি অনুযায়ী ডেলিভারি সময় সামান্য পরিবর্তিত হতে পারে।</li>
+              </ul>
+
+              <h3>6. Technical Support & Remote Assistance (কারিগরি সহায়তা)</h3>
+              <p>
+                প্রয়োজনে জটিল কনফিগারেশনের ক্ষেত্রে Technical Support বা Remote Support প্রদান করা হতে পারে। Remote Support-এর জন্য AnyDesk, TeamViewer বা AnyViewer ব্যবহার করা হতে পারে।
+              </p>
+
+              <h3>7. Payment Charges (পেমেন্ট গেটওয়ে চার্জেস)</h3>
+              <p>বিভিন্ন পেমেন্ট মাধ্যমে প্রযোজ্য চার্জের তালিকা নিম্নরূপ:</p>
+              
+              <div class="policy-card-grid">
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">bKash MFS</div>
+                  <div class="policy-stat-value" style="color:#E2136E;">১.৮০%</div>
+                  <div class="policy-stat-desc">Send Money / Merchant Gateway</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">Nagad MFS</div>
+                  <div class="policy-stat-value" style="color:#F7931E;">১.১৫%</div>
+                  <div class="policy-stat-desc">Official Merchant Fee</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">Rocket DBBL</div>
+                  <div class="policy-stat-value" style="color:#8C3494;">১.৬০%</div>
+                  <div class="policy-stat-desc">DBBL Mobile Gateway</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">Upay MFS</div>
+                  <div class="policy-stat-value" style="color:#0072CE;">১.০০%</div>
+                  <div class="policy-stat-desc">Standard Gateway Charge</div>
+                </div>
+              </div>
+              <p style="font-size:0.86rem; color:var(--text-muted);">
+                * Manual Bank Payment-এ কোনো অতিরিক্ত চার্জ প্রযোজ্য নয়।
+              </p>
+
+              <h3>8. Customer Responsibility (গ্রাহকের দায়িত্ব)</h3>
+              <p>
+                Customer-এর Account, Email ও Login Information নিরাপদ রাখা এবং সংশ্লিষ্ট সার্ভিস প্রোভাইডারের Terms & Conditions মেনে চলা গ্রাহকের একান্ত দায়িত্ব।
+              </p>
+
+              <h3>9. Terms Update (শর্তাবলি পরিবর্তন)</h3>
+              <p>
+                FlixStore প্রয়োজন অনুযায়ী যেকোনো সময় এই Terms & Conditions পরিমার্জন বা আপডেট করতে পারে। Updated Terms ওয়েবসাইটে প্রকাশের সাথে সাথেই কার্যকর বলে গণ্য হবে।
+              </p>
+
+              <div style="margin-top:28px; padding-top:16px; border-top:1px solid var(--glass-border); font-size:0.84rem; color:var(--text-muted);">
+                &copy; 2026 FlixStore Inc. All Rights Reserved.
+              </div>
+            </div>
           </div>
 
           <!-- TAB 2: Return & Refund Policy -->
           <div id="pane-refund" class="policy-pane">
             <div class="policy-header">
               <div class="policy-title-area">
-                <h2><span>🔄</span> Return & Refund Policy</h2>
+                <h2>
+                  <span>🔄</span> 
+                  <span class="lang-en">Return & Refund Policy</span>
+                  <span class="lang-bn">রিটার্ন ও রিফান্ড নীতিমালা</span>
+                </h2>
                 <div class="policy-meta">
-                  <span>Last Updated: September 24, 2026</span>
-                  <span class="badge">Guaranteed Protection</span>
+                  <span class="lang-en">Last Updated: September 24, 2026</span>
+                  <span class="lang-bn">সর্বশেষ আপডেট: ২৪ সেপ্টেম্বর ২০২৬</span>
+                  <span class="badge lang-en">Guaranteed Protection</span>
+                  <span class="badge lang-bn">নিশ্চিত গ্রাহক সুরক্ষা</span>
                 </div>
+              </div>
+              <div class="policy-header-actions">
+                <button class="lang-toggle-btn" onclick="toggleLanguage()" aria-label="Switch Language / ভাষা পরিবর্তন" title="Switch Language / ভাষা পরিবর্তন">
+                  <span class="lang-btn-content lang-en">
+                    <span class="lang-flag">🇧🇩</span>
+                    <span class="lang-text">বাংলায় পড়ুন (BN)</span>
+                  </span>
+                  <span class="lang-btn-content lang-bn">
+                    <span class="lang-flag">🇬🇧</span>
+                    <span class="lang-text">Read in English (EN)</span>
+                  </span>
+                </button>
               </div>
             </div>
 
-            <div class="policy-body">
+            <!-- English Body -->
+            <div class="policy-body lang-en">
               <p>
                 All products and services offered by <strong>FlixStore</strong> are fulfilled exclusively in digital formats. Consequently, returns are generally not accepted once digital credentials or activation services have been dispatched. To maintain complete transparency, our comprehensive return and refund guidelines are detailed below.
               </p>
@@ -758,21 +997,88 @@
                 * By placing an order on FlixStore, you acknowledge and agree to all terms set forth in this Return & Refund Policy.
               </p>
             </div>
+
+            <!-- Bengali Body -->
+            <div class="policy-body lang-bn">
+              <p>
+                <strong>FlixStore</strong>-এর সকল পণ্য ও সেবা সম্পূর্ণ ডিজিটাল ফরম্যাটে সরবরাহ করা হয়। তাই ডেলিভারি বা অ্যাক্টিভেশনের পর সাধারণত কোনো রিটার্ন গ্রহণ করা হয় না। গ্রাহকদের স্বচ্ছ ধারণা নিশ্চিত করতে আমাদের সুনির্দিষ্ট নীতিমালা নিচে বর্ণিত হলো।
+              </p>
+
+              <h3>📌 Return Policy (রিটার্ন নীতিমালা)</h3>
+              <ul>
+                <li>Order Confirm হওয়ার পূর্বে পণ্য পরিবর্তনের অনুরোধ করা যাবে।</li>
+                <li>Order Confirm ও ক্রেডেনশিয়াল সরবরাহের পর পণ্য পরিবর্তন বা Return করা যাবে না।</li>
+                <li>ভুল পণ্য নির্বাচন বা ব্যক্তিগত পছন্দ পরিবর্তনের জন্য Return বা Refund প্রযোজ্য নয়।</li>
+              </ul>
+
+              <h3>💰 Refund Policy (রিফান্ড নীতিমালা)</h3>
+              <ul>
+                <li>সফলভাবে Delivery/Activation সম্পন্ন হলে রিফান্ড প্রদান করা হবে না।</li>
+                <li>Payment সফল হওয়া সত্ত্বেও প্রযুক্তিগত জটিলতায় পণ্য/সেবা ডেলিভারি দেওয়া সম্ভব না হলে সম্পূর্ণ মূল্য Refund প্রযোজ্য।</li>
+                <li>FlixStore-এর নিজস্ব স্টক বা টেকনিক্যাল ত্রুটির কারণে Order সম্পন্ন করা সম্ভব না হলে পণ্যের সম্পূর্ণ মূল্য অবিলম্বে রিফান্ড করা হবে।</li>
+                <li>Customer-এর অনুরোধে রিফান্ড অনুমোদিত হলে ১০% Processing/Gateway Charge কেটে অবশিষ্ট ৯০% রিফান্ড করা হবে।</li>
+              </ul>
+
+              <div class="policy-callout warning">
+                <h5>⏱️ Refund Processing সময়সীমা</h5>
+                <p>
+                  • <strong>bKash / Nagad / Rocket (MFS):</strong> ১ থেকে ২৪ ঘণ্টার মধ্যে সরাসরি প্রেরিত হয়।<br>
+                  • <strong>Bank / Online Payment Gateway:</strong> ব্যাংকের কার্যদিবস অনুযায়ী ৩ থেকে ৭ কর্মদিবস সময় লাগতে পারে।
+                </p>
+              </div>
+
+              <h3>📞 রিফান্ড সংক্রান্ত সহায়তা</h3>
+              <p>Refund বা Order সংক্রান্ত যেকোনো তথ্যে আমাদের সাপোর্ট সেন্টারে যোগাযোগ করুন:</p>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">📱 WhatsApp / Call</span>
+                <span class="copy-box-val">01343546958</span>
+                <button class="copy-btn-mini" onclick="copyText('refPhone')">Copy</button>
+              </div>
+              <div class="copy-box-row">
+                <span class="copy-box-label">📧 Official Email</span>
+                <span class="copy-box-val">flixstore.officials@gmail.com</span>
+                <button class="copy-btn-mini" onclick="copyText('refEmail')">Copy</button>
+              </div>
+
+              <p style="font-size:0.86rem; color:var(--text-muted); margin-top:20px;">
+                * Order করার মাধ্যমে আপনি এই Return & Refund Policy-এর শর্তাবলি মেনে নিচ্ছেন।
+              </p>
+            </div>
           </div>
 
           <!-- TAB 3: Delivery Policy -->
           <div id="pane-delivery" class="policy-pane">
             <div class="policy-header">
               <div class="policy-title-area">
-                <h2><span>🚚</span> Delivery Policy</h2>
+                <h2>
+                  <span>🚚</span> 
+                  <span class="lang-en">Delivery Policy</span>
+                  <span class="lang-bn">ডেলিভারি পলিসি</span>
+                </h2>
                 <div class="policy-meta">
-                  <span>Automated Digital Delivery</span>
-                  <span class="badge">Average 5–10 Mins</span>
+                  <span class="lang-en">Automated Digital Delivery</span>
+                  <span class="lang-bn">স্বয়ংক্রিয় ডিজিটাল ডেলিভারি</span>
+                  <span class="badge lang-en">Average 5–10 Mins</span>
+                  <span class="badge lang-bn">গড়ে ৫–১০ মিনিট</span>
                 </div>
+              </div>
+              <div class="policy-header-actions">
+                <button class="lang-toggle-btn" onclick="toggleLanguage()" aria-label="Switch Language / ভাষা পরিবর্তন" title="Switch Language / ভাষা পরিবর্তন">
+                  <span class="lang-btn-content lang-en">
+                    <span class="lang-flag">🇧🇩</span>
+                    <span class="lang-text">বাংলায় পড়ুন (BN)</span>
+                  </span>
+                  <span class="lang-btn-content lang-bn">
+                    <span class="lang-flag">🇬🇧</span>
+                    <span class="lang-text">Read in English (EN)</span>
+                  </span>
+                </button>
               </div>
             </div>
 
-            <div class="policy-body">
+            <!-- English Body -->
+            <div class="policy-body lang-en">
               <p>
                 At <strong>FlixStore</strong>, our automated dispatch infrastructure strives to fulfill your digital orders as quickly as possible. Delivery durations may vary based on product category, current inventory levels, and account provisioning requirements.
               </p>
@@ -835,21 +1141,105 @@
                 <button class="copy-btn-mini" onclick="copyText('delEmail')">Copy</button>
               </div>
             </div>
+
+            <!-- Bengali Body -->
+            <div class="policy-body lang-bn">
+              <p>
+                <strong>FlixStore</strong>-এ আমরা যত দ্রুত সম্ভব আপনার ডিজিটাল অর্ডার ডেলিভারি করার চেষ্টা করি। তবে Product Type, Stock Availability এবং Account Type অনুযায়ী Delivery Time ভিন্ন হতে পারে।
+              </p>
+
+              <h3>⏱️ সাধারণ Delivery Time</h3>
+              <p>
+                আমাদের অধিকাংশ popular এবং in-stock products সাধারণত <strong>৫–১০ মিনিটের</strong> মধ্যে স্বয়ংক্রিয়ভাবে delivery করা হয়। তবে কিছু ক্ষেত্রে অর্ডার ভেরিফিকেশন ও একাউন্ট কাস্টমাইজেশনের কারণে অতিরিক্ত সময় লাগতে পারে।
+              </p>
+
+              <div class="policy-card-grid">
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">⚡ In-Stock / Popular</div>
+                  <div class="policy-stat-value" style="color:#10b981;">৫–১০ মিনিট</div>
+                  <div class="policy-stat-desc">Netflix, ChatGPT, Prime, Spotify</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">🕐 Regular Products</div>
+                  <div class="policy-stat-value" style="color:var(--accent-blue);">৩০মি – ৩ ঘণ্টা</div>
+                  <div class="policy-stat-desc">Creative & Professional Tools</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">👤 Personal Accounts</div>
+                  <div class="policy-stat-value" style="color:#f59e0b;">১ – ২৪ ঘণ্টা</div>
+                  <div class="policy-stat-desc">Personal Email Setup & Licensing</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">🕘 Special Accounts</div>
+                  <div class="policy-stat-value" style="color:#ec4899;">সর্বোচ্চ ২৪ ঘণ্টা</div>
+                  <div class="policy-stat-desc">Custom Enterprise Subscriptions</div>
+                </div>
+              </div>
+
+              <h3>👥 Shared Screen vs 👤 Private Profile</h3>
+              <p>
+                <strong>Shared Screen Account:</strong> আমাদের কিছু Shared Account আগে থেকেই stock-এ available থাকে। তাই এসব account-এর ক্ষেত্রে প্রায় ৫–১০ মিনিটের মধ্যে দ্রুত ডেলিভারি সম্ভব।<br><br>
+                <strong>Personal Account / Private Profile:</strong> Personal Account সাধারণত আগে থেকে stock করে রাখা হয় না। Order পাওয়ার পর customer-এর নির্দিষ্ট ইমেইলে account purchase ও security setup করতে হয়। তাই এতে কয়েক ঘণ্টা থেকে সর্বোচ্চ ২৪ ঘণ্টা সময় লাগতে পারে।
+              </p>
+
+              <div class="policy-callout warning">
+                <h5>⚠️ ডেলিভারি সংক্রান্ত জরুরি তথ্য</h5>
+                <p>
+                  • Delivery time estimated, guaranteed নয়।<br>
+                  • Stock available থাকলে order অতি দ্রুত ডেলিভারি করা হয়।<br>
+                  • কোনো অস্বাভাবিক delay দেখা দিলে Customer-কে WhatsApp বা Email-এ তাৎক্ষণিক আপডেট প্রদান করা হয়।
+                </p>
+              </div>
+
+              <h3>📩 ২৪ ঘণ্টার মধ্যে ডেলিভারি না পেলে</h3>
+              <p>
+                আপনার অর্ডার ২৪ ঘণ্টার মধ্যে না পেলে অনুগ্রহ করে আমাদের Customer Support টিমে আপনার <strong>Order ID</strong> সহ যোগাযোগ করুন:
+              </p>
+              <div class="copy-box-row">
+                <span class="copy-box-label">📞 Phone / WhatsApp</span>
+                <span class="copy-box-val">01343546958</span>
+                <button class="copy-btn-mini" onclick="copyText('delPhone')">Copy</button>
+              </div>
+              <div class="copy-box-row">
+                <span class="copy-box-label">📧 Official Email</span>
+                <span class="copy-box-val">flixstore.officials@gmail.com</span>
+                <button class="copy-btn-mini" onclick="copyText('delEmail')">Copy</button>
+              </div>
+            </div>
           </div>
 
           <!-- TAB 4: Privacy Policy -->
           <div id="pane-privacy" class="policy-pane">
             <div class="policy-header">
               <div class="policy-title-area">
-                <h2><span>🔒</span> Privacy & Data Security Policy</h2>
+                <h2>
+                  <span>🔒</span> 
+                  <span class="lang-en">Privacy & Data Security Policy</span>
+                  <span class="lang-bn">প্রাইভেসি ও ডেটা নিরাপত্তা নীতিমালা</span>
+                </h2>
                 <div class="policy-meta">
-                  <span>100% Customer Data Confidentiality</span>
-                  <span class="badge">256-Bit SSL Secured</span>
+                  <span class="lang-en">100% Customer Data Confidentiality</span>
+                  <span class="lang-bn">গ্রাহকের তথ্যের শতভাগ নিরাপত্তা</span>
+                  <span class="badge lang-en">256-Bit SSL Secured</span>
+                  <span class="badge lang-bn">256-Bit SSL সুরক্ষিত</span>
                 </div>
+              </div>
+              <div class="policy-header-actions">
+                <button class="lang-toggle-btn" onclick="toggleLanguage()" aria-label="Switch Language / ভাষা পরিবর্তন" title="Switch Language / ভাষা পরিবর্তন">
+                  <span class="lang-btn-content lang-en">
+                    <span class="lang-flag">🇧🇩</span>
+                    <span class="lang-text">বাংলায় পড়ুন (BN)</span>
+                  </span>
+                  <span class="lang-btn-content lang-bn">
+                    <span class="lang-flag">🇬🇧</span>
+                    <span class="lang-text">Read in English (EN)</span>
+                  </span>
+                </button>
               </div>
             </div>
 
-            <div class="policy-body">
+            <!-- English Body -->
+            <div class="policy-body lang-en">
               <p>
                 FlixStore considers the confidentiality of customer data and payment security to be our highest operational priority. Our stringent privacy standards are outlined below:
               </p>
@@ -879,21 +1269,72 @@
                 Our web application utilizes temporary, non-invasive browser session cookies exclusively to preserve shopping cart state and accelerate page load times. These cookies contain no identifiable personal information.
               </p>
             </div>
+
+            <!-- Bengali Body -->
+            <div class="policy-body lang-bn">
+              <p>
+                FlixStore গ্রাহকের ব্যক্তিগত তথ্য ও আর্থিক লেনদেনের সর্বোচ্চ নিরাপত্তাকে সর্বাধিক প্রাধান্য দেয়। আমাদের ডেটা সুরক্ষা নীতি নিম্নরূপ:
+              </p>
+
+              <h3>🔐 Delivery Process (ডেলিভারি প্রক্রিয়া)</h3>
+              <ul>
+                <li>আমাদের সমস্ত সেবা অনলাইন ভিত্তিক হওয়ায় অর্ডার ক্রেডেনশিয়াল সরাসরি WhatsApp এবং নিরাপদ Email-এর মাধ্যমে প্রেরণ করা হয়।</li>
+                <li>ক্রেডেনশিয়াল হস্তান্তরের পর তা শুধুমাত্র ক্রেতার অ্যাক্সেসে সংরক্ষিত থাকে।</li>
+              </ul>
+
+              <h3>🛡️ User Data Usage (ব্যবহারকারীর তথ্যের ব্যবহার)</h3>
+              <ul>
+                <li><strong>কোনো বিজ্ঞাপনদাতার কাছে তথ্য বিক্রি নয়:</strong> আমরা গ্রাহকের কোনো ব্যক্তিগত তথ্য কোনো তৃতীয় পক্ষ বা বিজ্ঞাপন সংস্থার কাছে বিক্রি বা প্রকাশ করি না।</li>
+                <li><strong>শুধুমাত্র পণ্য ডেলিভারিতে ব্যবহার:</strong> সংগ্রহকৃত ফোন নম্বর এবং ইমেইল ঠিকানা শুধুমাত্র সংশ্লিষ্ট অর্ডারের ডেলিভারি, ইনভয়েস এবং ওয়ারেন্টি সাপোর্টের উদ্দেশ্যে সংরক্ষিত থাকে।</li>
+                <li><strong>নো স্প্যাম পলিসি:</strong> ব্যবহারকারীর তথ্য অযাচিত প্রমোশনাল কল বা স্প্যাম বার্তার জন্য ব্যবহার করা হয় না।</li>
+              </ul>
+
+              <h3>💳 Payment Transaction Security (পেমেন্ট লেনদেনের নিরাপত্তা)</h3>
+              <ul>
+                <li>আমরা ভেরিফাইড bKash, Nagad ও Rocket মার্চেন্ট পার্টনার। পেমেন্ট সরাসরি তাদের সিকিউর অফিসিয়াল পেমেন্ট গেটওয়ের মাধ্যমে পরিচালিত হয়।</li>
+                <li>ব্যবহারকারীর ব্যাংক কার্ড পাসওয়ার্ড, সিভিসি (CVC), মোবাইল ব্যাংকিং গোপন পিন বা ওটিপি (OTP) কখনোই আমাদের ডাটাবেজে সংরক্ষণ করা হয় না।</li>
+                <li>আমাদের ওয়েবসাইট ব্যাংক-গ্রেড 256-bit SSL এনক্রিপশন দ্বারা সার্বক্ষণিক সুরক্ষিত।</li>
+              </ul>
+
+              <h3>🍪 Cookies Policy (কুকিজ সংক্রান্ত)</h3>
+              <p>
+                ওয়েবসাইট দ্রুত লোড হওয়ার সুবিধার্থে এবং শপিং কার্ট সেশন অক্ষুণ্ণ রাখার উদ্দেশ্যে সাময়িক ব্রাউজার কুকি সংরক্ষিত হয়, যা কোনো ব্যক্তিগত তথ্য ধারণ করে না।
+              </p>
+            </div>
           </div>
 
           <!-- TAB 5: About Us -->
           <div id="pane-about" class="policy-pane">
             <div class="policy-header">
               <div class="policy-title-area">
-                <h2><span>🏠</span> About Us</h2>
+                <h2>
+                  <span>🏠</span> 
+                  <span class="lang-en">About Us</span>
+                  <span class="lang-bn">আমাদের সম্পর্কে</span>
+                </h2>
                 <div class="policy-meta">
-                  <span>Established 2020 | Trusted Digital Solutions</span>
-                  <span class="badge">Official & Verified</span>
+                  <span class="lang-en">Established 2020 | Trusted Digital Solutions</span>
+                  <span class="lang-bn">প্রতিষ্ঠিত ২০২০ | বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম</span>
+                  <span class="badge lang-en">Official & Verified</span>
+                  <span class="badge lang-bn">অফিসিয়াল ও ভেরিফাইড</span>
                 </div>
+              </div>
+              <div class="policy-header-actions">
+                <button class="lang-toggle-btn" onclick="toggleLanguage()" aria-label="Switch Language / ভাষা পরিবর্তন" title="Switch Language / ভাষা পরিবর্তন">
+                  <span class="lang-btn-content lang-en">
+                    <span class="lang-flag">🇧🇩</span>
+                    <span class="lang-text">বাংলায় পড়ুন (BN)</span>
+                  </span>
+                  <span class="lang-btn-content lang-bn">
+                    <span class="lang-flag">🇬🇧</span>
+                    <span class="lang-text">Read in English (EN)</span>
+                  </span>
+                </button>
               </div>
             </div>
 
-            <div class="policy-body">
+            <!-- English Body -->
+            <div class="policy-body lang-en">
               <p>
                 <strong>FlixStore</strong> is a dedicated online digital solutions platform established in <strong>2020</strong> to serve users across Bangladesh.
               </p>
@@ -954,21 +1395,105 @@
                 </div>
               </div>
             </div>
+
+            <!-- Bengali Body -->
+            <div class="policy-body lang-bn">
+              <p>
+                <strong>FlixStore</strong> বাংলাদেশের মানুষের জন্য একটি নিবেদিত অনলাইন ডিজিটাল সার্ভিস প্ল্যাটফর্ম, যার গৌরবময় যাত্রা শুরু হয় <strong>২০২০ সালে</strong>।
+              </p>
+              <p>
+                বাংলাদেশে অনেকের International Credit Card বা Dual Currency Card না থাকার কারণে বিশ্বমানের বিভিন্ন ডিজিটাল সাবস্ক্রিপশন ও প্রিমিয়াম সফটওয়্যার সরাসরি কেনা সম্ভব হয় না। এই বাস্তব সংকট ও সীমাবদ্ধতাকে দূর করে ডিজিটাল সেবাকে সবার হাতের নাগালে পৌঁছে দেওয়ার লক্ষ্য নিয়েই FlixStore প্রতিষ্ঠিত হয়েছে।
+              </p>
+
+              <div class="policy-callout success">
+                <h5>🎯 আমাদের ভিশন</h5>
+                <p>
+                  আমাদের লক্ষ্য হলো—বাংলাদেশের যেকোনো প্রান্তের মানুষ যেন সহজে, সাশ্রয়ী মূল্যে এবং ঝামেলামুক্তভাবে প্রয়োজনীয় digital products ও premium services ব্যবহার করতে পারেন। 🇧🇩
+                </p>
+              </div>
+
+              <h3>💡 আমরা কী ধরনের সার্ভিস সরবরাহ করি?</h3>
+              <p>FlixStore-এ বিভিন্ন ধরনের জনপ্রিয় ডিজিটাল সাবস্ক্রিপশন সুলভ মূল্যে উপলব্ধ রয়েছে:</p>
+
+              <ul>
+                <li>🤖 <strong>AI & Productivity Tools</strong> — ChatGPT Plus, Claude Pro, Gemini Advanced, Perplexity Pro, CapCut ইত্যাদি</li>
+                <li>🎬 <strong>Streaming & Entertainment</strong> — Netflix Premium 4K UHD, YouTube Premium, Amazon Prime Video, Crunchyroll, Hoichoi ইত্যাদি</li>
+                <li>📚 <strong>Educational Tools</strong> — Grammarly Premium, QuillBot, Turnitin ইত্যাদি</li>
+                <li>🎨 <strong>Creative & Professional Tools</strong> — Adobe Creative Cloud All Apps, Canva Pro Lifetime সহ সৃজনশীল সফটওয়্যার</li>
+                <li>🔐 <strong>VPN & Digital Security</strong> — NordVPN, ExpressVPN, Surfshark ইত্যাদি</li>
+                <li>🎮 <strong>Gaming & Digital Keys</strong> — Discord Nitro, Steam Wallet কোড ইত্যাদি</li>
+              </ul>
+
+              <h3>💰 কেন FlixStore অনন্য?</h3>
+              <div class="policy-card-grid">
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">💵 সাশ্রয়ী মূল্য</div>
+                  <div class="policy-stat-value" style="font-size:1.05rem;">Fair BDT Pricing</div>
+                  <div class="policy-stat-desc">আন্তর্জাতিক ডিজিটাল সার্ভিস সাশ্রয়ী টাকায় কেনার সুযোগ।</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">⚡ দ্রুত Delivery</div>
+                  <div class="policy-stat-value" style="font-size:1.05rem;">৫–১০ মিনিটে অ্যাক্সেস</div>
+                  <div class="policy-stat-desc">জনপ্রিয় স্টক প্রোডাক্টে ইনস্ট্যান্ট স্বয়ংক্রিয় সরবরাহ।</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">🛡️ Genuine Service</div>
+                  <div class="policy-stat-value" style="font-size:1.05rem;">১০০% ওয়ারেন্টি গ্যারান্টি</div>
+                  <div class="policy-stat-desc">বৈধ ও আসল লাইসেন্স এবং স্পষ্ট ব্যবহারের নিয়মাবলি।</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">📞 সক্রিয় কাস্টমার কেয়ার</div>
+                  <div class="policy-stat-value" style="font-size:1.05rem;">সকাল ১০টা – রাত ১২টা</div>
+                  <div class="policy-stat-desc">জরুরি প্রয়োজনে হোয়াটসঅ্যাপে তাৎক্ষণিক সহায়তা।</div>
+                </div>
+              </div>
+
+              <div style="margin-top:24px; padding:18px; background:var(--bg-secondary); border-radius:var(--radius-md); text-align:center;">
+                <h4 style="margin:0 0 6px 0; color:var(--accent-blue);">🚀 FlixStore</h4>
+                <p style="margin:0; font-weight:600; color:var(--text-primary);">
+                  Easy Access. Affordable Price. Digital Freedom.
+                </p>
+                <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">
+                  🇧🇩 বাংলাদেশের মানুষের জন্য সহজ ও সাশ্রয়ী Digital Services।
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- TAB 6: Contact Us -->
           <div id="pane-contact" class="policy-pane">
             <div class="policy-header">
               <div class="policy-title-area">
-                <h2><span>📞</span> Contact Us</h2>
+                <h2>
+                  <span>📞</span> 
+                  <span class="lang-en">Contact Us</span>
+                  <span class="lang-bn">যোগাযোগ ও সাপোর্ট</span>
+                </h2>
                 <div class="policy-meta">
-                  <span>Customer Support Team</span>
-                  <span class="badge" style="background:rgba(37,211,102,0.15); color:#25D366;">Active Now</span>
+                  <span class="lang-en">Customer Support Team</span>
+                  <span class="lang-bn">কাস্টমার সাপোর্ট টিম</span>
+                  <span class="badge" style="background:rgba(37,211,102,0.15); color:#25D366;">
+                    <span class="lang-en">Active Now</span>
+                    <span class="lang-bn">সক্রিয় এখন</span>
+                  </span>
                 </div>
+              </div>
+              <div class="policy-header-actions">
+                <button class="lang-toggle-btn" onclick="toggleLanguage()" aria-label="Switch Language / ভাষা পরিবর্তন" title="Switch Language / ভাষা পরিবর্তন">
+                  <span class="lang-btn-content lang-en">
+                    <span class="lang-flag">🇧🇩</span>
+                    <span class="lang-text">বাংলায় পড়ুন (BN)</span>
+                  </span>
+                  <span class="lang-btn-content lang-bn">
+                    <span class="lang-flag">🇬🇧</span>
+                    <span class="lang-text">Read in English (EN)</span>
+                  </span>
+                </button>
               </div>
             </div>
 
-            <div class="policy-body">
+            <!-- English Body -->
+            <div class="policy-body lang-en">
               <p>
                 Whether you require guidance before purchasing, order status updates, payment assistance, or warranty replacement support, the <strong>FlixStore</strong> Customer Care Team is here to help. We are dedicated to providing swift, dependable, and courteous solutions. ❤️
               </p>
@@ -1021,16 +1546,74 @@
                 </a>
               </div>
             </div>
+
+            <!-- Bengali Body -->
+            <div class="policy-body lang-bn">
+              <p>
+                <strong>FlixStore</strong>-এ আপনার যেকোনো Order, Payment, Delivery অথবা Product-related সমস্যার জন্য আমাদের Customer Support Team-এর সাথে সরাসরি যোগাযোগ করুন। আমরা দ্রুততম সময়ে আপনার সমস্যার আন্তরিক সমাধান দিতে প্রস্তুত। ❤️
+              </p>
+
+              <h3>📱 Official Contact Channels</h3>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">📞 Direct Call / Helpline</span>
+                <span class="copy-box-val">01343546958</span>
+                <button class="copy-btn-mini" onclick="copyText('cntPhone')">Copy</button>
+              </div>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">💬 WhatsApp Support</span>
+                <span class="copy-box-val">8801343546958</span>
+                <button class="copy-btn-mini" onclick="copyText('cntWa')">Copy</button>
+              </div>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">📧 Official Email</span>
+                <span class="copy-box-val">flixstore.officials@gmail.com</span>
+                <button class="copy-btn-mini" onclick="copyText('cntEmail')">Copy</button>
+              </div>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">⏰ Support Hours</span>
+                <span class="copy-box-val" style="color:var(--text-primary); font-family:inherit;">প্রতিদিন সকাল ১০:০০টা – রাত ১২:০০টা (10:00 AM – 12:00 AM)</span>
+              </div>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">🌐 Business Nature</span>
+                <span class="copy-box-val" style="color:var(--text-primary); font-family:inherit;">Online Based Digital Solutions & Subscription Business</span>
+              </div>
+
+              <div class="policy-callout warning">
+                <h5>🧾 Order Support নির্দেশিকা</h5>
+                <p>
+                  আপনার অর্ডার সংক্রান্ত বিষয়ে যোগাযোগ করার সময় অনুগ্রহ করে আপনার <strong>Order ID</strong> (যেমন: <code>#FLX-123456</code>) এবং পেমেন্টের ট্রানজেকশন আইডি (TrxID) উল্লেখ করুন। এতে আমাদের টিম অতি দ্রুত আপনার অর্ডার খুঁজে বের করে সমাধান দিতে পারবে।
+                </p>
+              </div>
+
+              <div style="display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;">
+                <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%20Support%2C%20I%20need%20assistance%20with%20my%20order" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#25D366; color:#ffffff; padding:12px 24px; font-size:0.92rem; text-decoration:none; display:inline-flex; align-items:center; gap:8px; border-radius:8px;">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.97.567 3.81 1.545 5.373L2 22l4.757-1.514A9.972 9.972 0 0 0 12.031 22C17.567 22 22 17.505 22 12.031 22 6.495 17.567 2 12.031 2zm5.792 14.288c-.244.686-1.22 1.307-1.745 1.365-.487.054-1.12.079-3.626-.957-3.197-1.32-5.267-4.57-5.426-4.783-.16-.213-1.294-1.722-1.294-3.284 0-1.562.819-2.332 1.109-2.651.29-.319.633-.399.844-.399.21 0 .422 0 .607.01.196.01.458-.074.717.55.264.633.9 2.197.978 2.357.079.16.132.348.026.56-.105.213-.158.348-.316.533-.159.186-.334.415-.477.557-.16.16-.328.334-.141.655.186.32.827 1.367 1.775 2.212 1.222 1.088 2.253 1.424 2.573 1.583.32.16.507.133.693-.08.187-.213.794-.925 1.006-1.242.211-.318.423-.265.714-.159.29.106 1.848.872 2.165 1.03.317.16.529.238.608.37.079.133.079.768-.165 1.454z"/></svg>
+                  <span>Chat on WhatsApp (Avg. reply 2 mins)</span>
+                </a>
+
+                <a href="mailto:flixstore.officials@gmail.com" class="btn-secondary" style="padding:12px 24px; font-size:0.92rem; text-decoration:none; display:inline-flex; align-items:center; gap:8px; border-radius:8px;">
+                  <span>📧 Email Support</span>
+                </a>
+              </div>
+            </div>
           </div>
 
           <!-- Bottom Help Contact Card -->
           <div class="policy-help-banner">
             <div class="policy-help-text">
-              <h4>Need specific assistance or license verification?</h4>
-              <p>Our dedicated operations team is available from 10:00 AM to 12:00 AM daily.</p>
+              <h4 class="lang-en">Need specific assistance or license verification?</h4>
+              <h4 class="lang-bn">বিশেষ কোনো সহায়তা বা লাইসেন্স ভেরিফিকেশন প্রয়োজন?</h4>
+              <p class="lang-en">Our dedicated operations team is available from 10:00 AM to 12:00 AM daily.</p>
+              <p class="lang-bn">আমাদের কাস্টমার কেয়ার টিম প্রতিদিন সকাল ১০:০০টা থেকে রাত ১২:০০টা পর্যন্ত সক্রিয় রয়েছে।</p>
             </div>
             <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#25D366; color:#ffffff; font-size:0.86rem; text-decoration:none; padding:10px 18px; border-radius:6px; font-weight:700;">
-              💬 Instant WhatsApp
+              <span class="lang-en">💬 Instant WhatsApp</span>
+              <span class="lang-bn">💬 তাৎক্ষণিক হোয়াটসঅ্যাপ</span>
             </a>
           </div>
 
@@ -1047,7 +1630,7 @@
         <!-- Col 1: Brand & Trust -->
         <div class="footer-col">
           <div class="brand-logo" style="margin-bottom:12px;">
-            <img src="/assets/flixstore-icon.png?v=7.7" alt="FlixStore" class="brand-logo-img" style="height:34px; width:34px;">
+            <img src="/assets/flixstore-icon.png?v=7.8" alt="FlixStore" class="brand-logo-img" style="height:34px; width:34px;">
             <span class="brand-logo-text">FLIX STORE</span>
           </div>
           <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:16px; font-size:0.86rem;">
@@ -1071,14 +1654,15 @@
 
         <!-- Col 2: Information Section (Reference matched) -->
         <div class="footer-col">
-          <h4>Information</h4>
+          <h4 class="lang-en">Information</h4>
+          <h4 class="lang-bn">ইনফরমেশন</h4>
           <ul class="footer-links footer-info-links">
-            <li><a href="/terms" onclick="selectTab('terms'); return false;"><span>📜</span> Terms & Conditions</a></li>
-            <li><a href="/refund-policy" onclick="selectTab('refund'); return false;"><span>🔄</span> Return & Refund Policy</a></li>
-            <li><a href="/contact-us" onclick="selectTab('contact'); return false;"><span>📞</span> Contact Us</a></li>
-            <li><a href="/about-us" onclick="selectTab('about'); return false;"><span>🏠</span> About Us</a></li>
-            <li><a href="/delivery-policy" onclick="selectTab('delivery'); return false;"><span>🚚</span> Delivery Policy</a></li>
-            <li><a href="/privacy-policy" onclick="selectTab('privacy'); return false;"><span>🔒</span> Privacy Policy</a></li>
+            <li><a href="/terms" onclick="selectTab('terms'); return false;"><span>📜</span> <span class="lang-en">Terms & Conditions</span><span class="lang-bn">শর্তাবলি ও নিয়মাবলি</span></a></li>
+            <li><a href="/refund-policy" onclick="selectTab('refund'); return false;"><span>🔄</span> <span class="lang-en">Return & Refund Policy</span><span class="lang-bn">রিটার্ন ও রিফান্ড নীতিমালা</span></a></li>
+            <li><a href="/contact-us" onclick="selectTab('contact'); return false;"><span>📞</span> <span class="lang-en">Contact Us</span><span class="lang-bn">যোগাযোগ</span></a></li>
+            <li><a href="/about-us" onclick="selectTab('about'); return false;"><span>🏠</span> <span class="lang-en">About Us</span><span class="lang-bn">আমাদের সম্পর্কে</span></a></li>
+            <li><a href="/delivery-policy" onclick="selectTab('delivery'); return false;"><span>🚚</span> <span class="lang-en">Delivery Policy</span><span class="lang-bn">ডেলিভারি পলিসি</span></a></li>
+            <li><a href="/privacy-policy" onclick="selectTab('privacy'); return false;"><span>🔒</span> <span class="lang-en">Privacy Policy</span><span class="lang-bn">প্রাইভেসি পলিসি</span></a></li>
           </ul>
         </div>
 
@@ -1163,19 +1747,61 @@
     </svg>
   </a>
 
-  <!-- Script for Tab Navigation & Deep Linking -->
+  <!-- Script for Tab Navigation, Language Switching & Deep Linking -->
   <script>
     const TAB_NAMES = {
-      terms: 'Terms & Conditions',
-      refund: 'Return & Refund Policy',
-      delivery: 'Delivery Policy',
-      privacy: 'Privacy Policy',
-      about: 'About Us',
-      contact: 'Contact Us'
+      en: {
+        terms: 'Terms & Conditions',
+        refund: 'Return & Refund Policy',
+        delivery: 'Delivery Policy',
+        privacy: 'Privacy Policy',
+        about: 'About Us',
+        contact: 'Contact Us'
+      },
+      bn: {
+        terms: 'শর্তাবলি ও নিয়মাবলি',
+        refund: 'রিটার্ন ও রিফান্ড নীতিমালা',
+        delivery: 'ডেলিভারি পলিসি',
+        privacy: 'প্রাইভেসি পলিসি',
+        about: 'আমাদের সম্পর্কে',
+        contact: 'যোগাযোগ ও সাপোর্ট'
+      }
     };
 
+    let currentLang = localStorage.getItem('flixstore_info_lang') || 'en';
+
+    function setLanguage(lang) {
+      currentLang = (lang === 'bn') ? 'bn' : 'en';
+      localStorage.setItem('flixstore_info_lang', currentLang);
+
+      if (currentLang === 'bn') {
+        document.body.classList.remove('lang-en');
+        document.body.classList.add('lang-bn');
+        document.documentElement.lang = 'bn';
+      } else {
+        document.body.classList.remove('lang-bn');
+        document.body.classList.add('lang-en');
+        document.documentElement.lang = 'en';
+      }
+
+      // Update active breadcrumb & document title
+      const activeBtn = document.querySelector('.info-nav-btn.active');
+      const activeTab = activeBtn ? activeBtn.getAttribute('data-target') : 'terms';
+      const label = (TAB_NAMES[currentLang] && TAB_NAMES[currentLang][activeTab]) 
+        ? TAB_NAMES[currentLang][activeTab] 
+        : (TAB_NAMES.en[activeTab] || 'Information');
+
+      const breadcrumb = document.getElementById('activeBreadcrumbLabel');
+      if (breadcrumb) breadcrumb.textContent = label;
+      document.title = label + ' | FlixStore Official';
+    }
+
+    function toggleLanguage() {
+      setLanguage(currentLang === 'en' ? 'bn' : 'en');
+    }
+
     function selectTab(tabKey, updateUrl = true) {
-      if (!TAB_NAMES[tabKey]) tabKey = 'terms';
+      if (!TAB_NAMES.en[tabKey]) tabKey = 'terms';
 
       // 1. Update tab buttons
       document.querySelectorAll('.info-nav-btn').forEach(btn => {
@@ -1194,11 +1820,14 @@
       if (activePane) activePane.classList.add('active');
 
       // 3. Update breadcrumb
+      const label = (TAB_NAMES[currentLang] && TAB_NAMES[currentLang][tabKey]) 
+        ? TAB_NAMES[currentLang][tabKey] 
+        : TAB_NAMES.en[tabKey];
       const breadcrumb = document.getElementById('activeBreadcrumbLabel');
-      if (breadcrumb) breadcrumb.textContent = TAB_NAMES[tabKey];
+      if (breadcrumb) breadcrumb.textContent = label;
 
       // 4. Update title
-      document.title = TAB_NAMES[tabKey] + ' | FlixStore Information';
+      document.title = label + ' | FlixStore Official';
 
       // 5. Update browser URL history if requested
       if (updateUrl) {
@@ -1246,8 +1875,10 @@
       });
     }
 
-    // Initialize tab from path or params on load
+    // Initialize tab and language from path, params, or storage on load
     window.addEventListener('DOMContentLoaded', () => {
+      setLanguage(currentLang);
+
       const path = window.location.pathname.toLowerCase();
       const params = new URLSearchParams(window.location.search);
       const hash = window.location.hash.toLowerCase().replace('#', '');
@@ -1261,8 +1892,8 @@
       else if (path.includes('refund') || path.includes('return')) initialTab = 'refund';
       else if (path.includes('privacy')) initialTab = 'privacy';
       else if (path.includes('contact')) initialTab = 'contact';
-      else if (tabParam && TAB_NAMES[tabParam]) initialTab = tabParam;
-      else if (hash && TAB_NAMES[hash]) initialTab = hash;
+      else if (tabParam && TAB_NAMES.en[tabParam]) initialTab = tabParam;
+      else if (hash && TAB_NAMES.en[hash]) initialTab = hash;
 
       selectTab(initialTab, false);
     });
