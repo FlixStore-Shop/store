@@ -2944,141 +2944,141 @@ function fillTestCardDetails() {
 const INFO_MODAL_CONTENTS = {
   terms: {
     title: '<span>📜</span> Terms & Conditions',
-    subtitle: 'সর্বশেষ আপডেট: ২৪ সেপ্টেম্বর ২০২৬ | Official Customer Terms',
+    subtitle: 'Last Updated: September 24, 2026 | Official Customer Terms',
     slug: 'terms',
     html: `
       <div class="policy-body">
-        <p><strong>FlixStore</strong>-এ যেকোনো অর্ডার সম্পন্ন করার মাধ্যমে আপনি নিচের শর্তাবলিতে পূর্ণ সম্মতি প্রদান করছেন।</p>
+        <p>By completing an order on <strong>FlixStore</strong>, you acknowledge and agree to the following terms and conditions.</p>
         <div class="policy-callout">
-          <h5>📌 আবশ্যকীয় নির্দেশনা</h5>
-          <p>অর্ডারের পূর্বে সংশ্লিষ্ট Product-এর Description, Features, Compatibility এবং Warranty শর্তাবলি ভালো করে দেখে নেওয়া গ্রাহকের দায়িত্ব।</p>
+          <h5>📌 Essential Guidance</h5>
+          <p>Prior to confirming your order, please review the product description, features, device compatibility, and warranty terms thoroughly.</p>
         </div>
-        <h4 style="margin-top:16px; color:var(--text-primary);">1. Order (অর্ডার প্রক্রিয়া)</h4>
+        <h4 style="margin-top:16px; color:var(--text-primary);">1. Order Process</h4>
         <ul>
-          <li>অর্ডারের সময় সঠিক নাম, সক্রিয় মোবাইল নম্বর ও বৈধ Email Address প্রদান করতে হবে।</li>
-          <li>Order Confirm হওয়ার পূর্বে Product পরিবর্তনের অনুরোধ জানানো যাবে।</li>
-          <li>Order Confirm হওয়ার পর Product পরিবর্তন, বাতিল বা Refund করা যাবে না।</li>
+          <li>During checkout, you must provide your accurate name, an active mobile number, and a valid email address.</li>
+          <li>Requests to change or modify a product can only be accommodated before your order is confirmed.</li>
+          <li>Once an order is confirmed and processing has begun, product changes, cancellations, or voluntary refunds cannot be accepted.</li>
         </ul>
-        <h4 style="margin-top:16px; color:var(--text-primary);">2. Refund Policy (রিফান্ড নীতিমালা)</h4>
+        <h4 style="margin-top:16px; color:var(--text-primary);">2. Refund Policy</h4>
         <ul>
-          <li>ডেলিভারি বা অ্যাক্টিভেশন সম্পন্ন হওয়ার পর কোনো Refund প্রযোজ্য নয়।</li>
-          <li>Payment সফল হলেও প্রযুক্তিগত কারণে Order সম্পন্ন না হলে সম্পূর্ণ মূল্য Refund প্রদান করা হবে।</li>
-          <li>FlixStore-এর নিজস্ব সীমাবদ্ধতার কারণে ডেলিভারি অসম্ভব হলে সম্পূর্ণ মূল্য Refund করা হবে।</li>
-          <li>Customer-requested Refund অনুমোদিত হলে ১০% Gateway/Processing Charge কেটে অবশিষ্ট ৯০% অর্থ Refund করা হবে।</li>
+          <li>No refund is applicable once delivery or account activation has been completed successfully.</li>
+          <li>If a payment is successful but the order cannot be fulfilled due to technical limitations, a 100% full refund will be issued following administrative verification.</li>
+          <li>If FlixStore is unable to deliver the ordered product or service due to our own operational constraints, the customer is entitled to a full refund.</li>
+          <li>If a customer-initiated refund request is approved under exceptional circumstances, a 10% gateway and administrative processing fee will be deducted, and the remaining 90% balance will be refunded.</li>
         </ul>
         <h4 style="margin-top:16px; color:var(--text-primary);">3. Warranty & Replacement</h4>
         <ul>
-          <li>প্রতিটি Product-এর Warranty Period সংশ্লিষ্ট পণ্যের পাতায় আলাদাভাবে নির্ধারিত।</li>
-          <li>Warranty মেয়াদের মধ্যে সমস্যা দেখা দিলে যাচাই সাপেক্ষে দ্রুত Replacement বা সমাধান দেওয়া হবে।</li>
-          <li>ভুল ব্যবহার, ক্রেতার ডিভাইসের সমস্যা বা থার্ড-পার্টি ইন্টারফেয়ারেন্সে Warranty প্রযোজ্য নয়।</li>
+          <li>The warranty period for each product is explicitly stated on its respective product page.</li>
+          <li>If an unexpected issue arises within the active warranty duration, an immediate replacement or technical resolution will be provided upon verification.</li>
+          <li>Warranty coverage does not apply to problems caused by device malfunctions, unstable internet connections, unauthorized third-party software, or customer misuse and negligence.</li>
         </ul>
         <h4 style="margin-top:16px; color:var(--text-primary);">4. Payment Gateway Charges</h4>
         <div class="policy-card-grid" style="margin-top:10px;">
-          <div class="policy-stat-card"><div class="policy-stat-title">bKash</div><div class="policy-stat-value" style="color:#E2136E;">১.৮০%</div></div>
-          <div class="policy-stat-card"><div class="policy-stat-title">Nagad</div><div class="policy-stat-value" style="color:#F7931E;">১.১৫%</div></div>
-          <div class="policy-stat-card"><div class="policy-stat-title">Rocket</div><div class="policy-stat-value" style="color:#8C3494;">১.৬০%</div></div>
-          <div class="policy-stat-card"><div class="policy-stat-title">Upay</div><div class="policy-stat-value" style="color:#0072CE;">১.০০%</div></div>
+          <div class="policy-stat-card"><div class="policy-stat-title">bKash</div><div class="policy-stat-value" style="color:#E2136E;">1.80%</div></div>
+          <div class="policy-stat-card"><div class="policy-stat-title">Nagad</div><div class="policy-stat-value" style="color:#F7931E;">1.15%</div></div>
+          <div class="policy-stat-card"><div class="policy-stat-title">Rocket</div><div class="policy-stat-value" style="color:#8C3494;">1.60%</div></div>
+          <div class="policy-stat-card"><div class="policy-stat-title">Upay</div><div class="policy-stat-value" style="color:#0072CE;">1.00%</div></div>
         </div>
       </div>
     `
   },
   refund: {
     title: '<span>🔄</span> Return & Refund Policy',
-    subtitle: 'সর্বশেষ আপডেট: ২৪ সেপ্টেম্বর ২০২৬ | Guaranteed Customer Protection',
+    subtitle: 'Last Updated: September 24, 2026 | Guaranteed Customer Protection',
     slug: 'refund-policy',
     html: `
       <div class="policy-body">
-        <p><strong>FlixStore</strong>-এর সকল পণ্য ও সেবা ডিজিটাল ফরম্যাটে ডেলিভারি করা হয়। তাই অ্যাক্টিভেশনের পর সাধারণত কোনো রিটার্ন গ্রহণ করা হয় না।</p>
+        <p>All products and services offered by <strong>FlixStore</strong> are fulfilled exclusively in digital formats. Consequently, returns are generally not accepted once digital credentials or activation services have been dispatched.</p>
         <h4 style="color:var(--text-primary);">📌 Return Policy</h4>
         <ul>
-          <li>Order Confirm হওয়ার পূর্বে পণ্য পরিবর্তনের অনুরোধ করা যাবে।</li>
-          <li>Order Confirm ও ক্রেডেনশিয়াল সরবরাহের পর পণ্য পরিবর্তন বা Return করা যাবে না।</li>
-          <li>ভুল পণ্য নির্বাচন বা ব্যক্তিগত পছন্দ পরিবর্তনের জন্য Return/Refund প্রযোজ্য নয়।</li>
+          <li>Requests to exchange or change a product can be submitted before order confirmation.</li>
+          <li>Once an order is confirmed and digital credentials have been dispatched, no product exchange or return can be facilitated.</li>
+          <li>Inadvertent product selection, incorrect variant choice, or changes of personal preference do not qualify for returns or refunds.</li>
         </ul>
         <h4 style="color:var(--text-primary);">💰 Refund Policy & Processing Time</h4>
         <ul>
-          <li>সফলভাবে Delivery/Activation সম্পন্ন হলে রিফান্ড দেওয়া হয় না।</li>
-          <li>Payment সফল হওয়া সত্ত্বেও স্টক ঘাটতি বা সার্ভার সমস্যার কারণে অর্ডার সম্পন্ন না হলে ১০০% রিফান্ড করা হবে।</li>
-          <li>কাস্টমারের বিশেষ অনুরোধে রিফান্ড অনুমোদিত হলে ১০% গেটওয়ে ফি বাদে ৯০% অর্থ রিফান্ড করা হয়।</li>
+          <li>No refunds will be granted after successful delivery or account activation.</li>
+          <li>If your payment is debited successfully but technical constraints prevent product delivery, you will receive a 100% full refund.</li>
+          <li>When a voluntary refund requested by a customer is authorized, a 10% processing and payment gateway fee will be deducted, and the remaining 90% balance will be refunded.</li>
         </ul>
         <div class="policy-callout warning">
-          <h5>⏱️ রিফান্ড নিষ্পত্তির সময়সীমা:</h5>
-          <p>• <strong>bKash / Nagad / Rocket:</strong> সাধারণত ১ থেকে ২৪ ঘণ্টার মধ্যে সরাসরি প্রেরণ।<br>• <strong>ব্যাংক / কার্ড গেটওয়ে:</strong> ৩ থেকে ৭ কর্মদিবস সময় লাগতে পারে।</p>
+          <h5>⏱️ Refund Processing Timeframe:</h5>
+          <p>• <strong>bKash / Nagad / Rocket (MFS):</strong> Typically processed and disbursed within 1 to 24 hours.<br>• <strong>Bank Transfers / Card Gateways:</strong> Subject to standard interbank clearing cycles, requiring 3 to 7 business days.</p>
         </div>
       </div>
     `
   },
   delivery: {
     title: '<span>🚚</span> Delivery Policy',
-    subtitle: 'স্বয়ংক্রিয় ডিজিটাল ডেলিভারি | Average 5–10 Minutes',
+    subtitle: 'Automated Digital Delivery | Average 5–10 Minutes',
     slug: 'delivery-policy',
     html: `
       <div class="policy-body">
-        <p>FlixStore-এ আমরা অত্যন্ত দ্রুততম সময়ে আপনার অর্ডার ডেলিভারি নিশ্চিত করি।</p>
+        <p>At FlixStore, our automated dispatch infrastructure strives to fulfill your digital orders as quickly as possible.</p>
         <div class="policy-card-grid">
           <div class="policy-stat-card">
             <div class="policy-stat-title">⚡ In-Stock Popular</div>
-            <div class="policy-stat-value" style="color:#10b981;">৫–১০ মিনিট</div>
+            <div class="policy-stat-value" style="color:#10b981;">5–10 Mins</div>
             <div class="policy-stat-desc">Netflix, ChatGPT, Prime, Spotify</div>
           </div>
           <div class="policy-stat-card">
             <div class="policy-stat-title">🕐 Regular Tools</div>
-            <div class="policy-stat-value" style="color:var(--accent-blue);">৩০মি – ৩ ঘণ্টা</div>
+            <div class="policy-stat-value" style="color:var(--accent-blue);">30m – 3h</div>
             <div class="policy-stat-desc">Educational & Design Tools</div>
           </div>
           <div class="policy-stat-card">
             <div class="policy-stat-title">👤 Personal Accounts</div>
-            <div class="policy-stat-value" style="color:#f59e0b;">১ – ২৪ ঘণ্টা</div>
+            <div class="policy-stat-value" style="color:#f59e0b;">1 – 24 Hours</div>
             <div class="policy-stat-desc">Custom Personal Email Setup</div>
           </div>
         </div>
-        <h4 style="margin-top:16px; color:var(--text-primary);">Shared vs Personal Accounts</h4>
-        <p>• <strong>Shared Screen:</strong> স্টক থাকলে ৫–১০ মিনিটের মধ্যে ইনস্ট্যান্ট ডেলিভারি।<br>• <strong>Personal Account:</strong> কাস্টমার ইমেইলে আলাদাভাবে লাইসেন্স পারচেজ ও সেটআপের জন্য কয়েক ঘণ্টা থেকে সর্বোচ্চ ২৪ ঘণ্টা পর্যন্ত লাগতে পারে।</p>
+        <h4 style="margin-top:16px; color:var(--text-primary);">Shared Screen vs. Personal Accounts</h4>
+        <p>• <strong>Shared Screen:</strong> Stocked profiles are typically dispatched within 5 to 10 minutes.<br>• <strong>Personal Account:</strong> Custom licensing and email activation require between a few hours and up to 24 hours.</p>
         <div class="policy-callout warning">
-          <h5>📩 ২৪ ঘণ্টার মধ্যে ডেলিভারি না পেলে:</h5>
-          <p>আপনার Order ID সহ সরাসরি WhatsApp: <strong>01343546958</strong> অথবা Email: <strong>flixstore.officials@gmail.com</strong>-এ যোগাযোগ করুন।</p>
+          <h5>📩 Non-Receipt Within 24 Hours:</h5>
+          <p>Please reach out immediately with your Order ID via WhatsApp: <strong>01343546958</strong> or Email: <strong>flixstore.officials@gmail.com</strong>.</p>
         </div>
       </div>
     `
   },
   privacy: {
     title: '<span>🔒</span> Privacy & Data Security Policy',
-    subtitle: 'গ্রাহকের তথ্যের শতভাগ নিরাপত্তা | 256-Bit SSL Encrypted',
+    subtitle: '100% Customer Data Confidentiality | 256-Bit SSL Encrypted',
     slug: 'privacy-policy',
     html: `
       <div class="policy-body">
-        <h4 style="color:var(--text-primary);">🔐 Delivery & Communication Security</h4>
+        <h4 style="color:var(--text-primary);">🔐 Secure Delivery & Communication</h4>
         <ul>
-          <li>অনলাইন ভিত্তিক সেবা হওয়ায় সমস্ত প্রোডাক্ট নিরাপদ WhatsApp এবং রেজিস্টার্ড ইমেইলের মাধ্যমে ডেলিভারি করা হয়।</li>
+          <li>As an online digital service, all credentials and order notices are transmitted securely via WhatsApp and registered email.</li>
         </ul>
-        <h4 style="color:var(--text-primary);">🛡️ ব্যবহারকারীর ডাটা সুরক্ষা</h4>
+        <h4 style="color:var(--text-primary);">🛡️ Customer Data Usage & Protection</h4>
         <ul>
-          <li>আমরা কোনো ব্যবহারকারীর ডাটা কোনো তৃতীয় পক্ষ বা বিজ্ঞাপনদাতার কাছে বিক্রি বা শেয়ার করি না।</li>
-          <li>ব্যবহারকারীর ফোন নম্বর ও ইমেইল শুধুমাত্র প্রোডাক্ট ডেলিভারি, ইনভয়েস ও ওয়ারেন্টি সাপোর্টে ব্যবহৃত হয়।</li>
-          <li>কোনো অযাচিত প্রমোশনাল স্প্যাম কল বা বার্তার জন্য ডাটা ব্যবহার করা হয় না।</li>
+          <li>We never sell, rent, trade, or share user data with third parties or advertising brokers.</li>
+          <li>Phone numbers and email addresses are used strictly for order fulfillment, digital invoice delivery, and warranty support.</li>
+          <li>We maintain a strict zero-tolerance policy against promotional spam calls and unsolicited messages.</li>
         </ul>
         <h4 style="color:var(--text-primary);">💳 Payment Security</h4>
         <ul>
-          <li>আমরা অফিসিয়াল ভেরিফাইড মার্চেন্ট। পেমেন্ট প্রসেসিং সরাসরি bKash, Nagad ও ব্যাংকিং গেটওয়ের মাধ্যমে পরিচালিত হয়।</li>
-          <li>গ্রাহকের কোনো ব্যাংক কার্ড পাসওয়ার্ড, পিন (PIN) বা OTP আমাদের সার্ভারে সংরক্ষণ করা হয় না।</li>
+          <li>We are verified merchant partners. Payment processing is conducted directly through secure bKash, Nagad, and banking gateway networks.</li>
+          <li>We never capture or store customer credit card details, PINs, or one-time passwords (OTPs) on our servers.</li>
         </ul>
       </div>
     `
   },
   about: {
     title: '<span>🏠</span> About FlixStore',
-    subtitle: 'প্রতিষ্ঠিত ২০২০ | Your Non-Stop Stream & Digital Solutions Shop',
+    subtitle: 'Established 2020 | Your Non-Stop Stream & Digital Solutions Shop',
     slug: 'about-us',
     html: `
       <div class="policy-body">
-        <p><strong>FlixStore</strong> বাংলাদেশের মানুষের জন্য একটি নির্ভরযোগ্য অনলাইন ডিজিটাল সার্ভিস প্ল্যাটফর্ম, যার যাত্রা শুরু হয় ২০২০ সালে।</p>
-        <p>বাংলাদেশে অনেকের Credit Card বা Dual Currency Card না থাকার কারণে আন্তর্জাতিক প্রিমিয়াম সার্ভিস সরাসরি কেনা সম্ভব হয় না। এই সমস্যা সমাধানেই FlixStore-এর যাত্রা।</p>
+        <p><strong>FlixStore</strong> is a dedicated online digital solutions platform established in 2020 to serve users across Bangladesh.</p>
+        <p>Because many individuals lack access to international credit cards or dual-currency payment channels, acquiring premier global software and entertainment subscriptions is often difficult. FlixStore bridges this gap by providing easy, local access to verified digital services.</p>
         <div class="policy-callout success">
-          <h5>🎯 আমাদের লক্ষ্য</h5>
-          <p>বাংলাদেশের যেকোনো প্রান্তের মানুষ যেন সহজে, সাশ্রয়ী মূল্যে এবং ঝামেলামুক্তভাবে প্রয়োজনীয় digital products ও premium services ব্যবহার করতে পারেন। 🇧🇩</p>
+          <h5>🎯 Our Mission</h5>
+          <p>To empower users across Bangladesh with easy, affordable, and hassle-free access to premier digital products and world-class streaming subscriptions. 🇧🇩</p>
         </div>
-        <h4 style="color:var(--text-primary);">💡 আমাদের সেবাসমূহ:</h4>
-        <p>🤖 AI Tools (ChatGPT, Claude, Gemini) • 🎬 Streaming (Netflix, Prime, YouTube, Crunchyroll, Hoichoi) • 📚 Educational (Grammarly, QuillBot, Turnitin) • 🎨 Creative (Adobe Creative Cloud, Canva Pro) • 🔐 VPN & Digital Security Services।</p>
+        <h4 style="color:var(--text-primary);">💡 What We Offer:</h4>
+        <p>🤖 AI Tools (ChatGPT, Claude, Gemini) • 🎬 Streaming (Netflix, Prime, YouTube, Crunchyroll, Hoichoi) • 📚 Educational (Grammarly, QuillBot, Turnitin) • 🎨 Creative (Adobe Creative Cloud, Canva Pro) • 🔐 VPN & Digital Security Services.</p>
         <div style="text-align:center; margin-top:20px; padding:14px; background:var(--bg-secondary); border-radius:8px;">
           <strong style="color:var(--accent-blue);">Easy Access • Affordable Price • Digital Freedom</strong>
         </div>
@@ -3091,7 +3091,7 @@ const INFO_MODAL_CONTENTS = {
     slug: 'contact-us',
     html: `
       <div class="policy-body">
-        <p>FlixStore-এ আপনার যেকোনো Order, Payment, Delivery অথবা Product-related সমস্যার জন্য আমাদের সাপোর্ট টিমের সাথে সরাসরি যোগাযোগ করুন।</p>
+        <p>For any questions regarding orders, payments, delivery status, or technical support, please contact our dedicated team directly.</p>
         <div class="copy-box-row">
           <span class="copy-box-label">📞 Direct Call</span>
           <span class="copy-box-val">01343546958</span>
@@ -3105,12 +3105,12 @@ const INFO_MODAL_CONTENTS = {
           <span class="copy-box-val">flixstore.officials@gmail.com</span>
         </div>
         <div class="copy-box-row">
-          <span class="copy-box-label">⏰ Support Hours</span>
-          <span class="copy-box-val" style="color:var(--text-primary);">সকাল ১০:০০টা – রাত ১২:০০টা (10:00 AM – 12:00 AM)</span>
+          <span class="copy-box-label">⏰ Support Operating Hours</span>
+          <span class="copy-box-val" style="color:var(--text-primary);">10:00 AM – 12:00 AM Daily (Dhaka Time)</span>
         </div>
         <div class="policy-callout warning" style="margin-top:16px;">
-          <h5>🧾 Order ID উল্লেখ করুন:</h5>
-          <p>যোগাযোগের সময় অবশ্যই আপনার <strong>Order ID</strong> (যেমন: #FLX-123456) প্রদান করুন। এতে আমরা দ্রুত অর্ডার খুঁজে বের করে প্রয়োজনীয় সহায়তা দিতে পারব। ❤️</p>
+          <h5>🧾 Please Mention Your Order ID:</h5>
+          <p>When reaching out, kindly provide your <strong>Order ID</strong> (e.g., #FLX-123456) so we can locate your record quickly and resolve your inquiry without delay. ❤️</p>
         </div>
       </div>
     `

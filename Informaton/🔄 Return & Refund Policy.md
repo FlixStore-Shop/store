@@ -1,59 +1,34 @@
-# 🔄 Return \& Refund Policy
+﻿# 🔄 Return & Refund Policy
 
-FilStore-এর সকল পণ্য ও সেবা ডিজিটাল। তাই ডেলিভারি বা অ্যাক্টিভেশনের পর সাধারণত কোনো Return গ্রহণ করা হয় না।
+**FlixStore — Official Guarantee & Resolution Guidelines**  
+**Last Updated: September 24, 2026**
 
-
+All products and services offered by **FlixStore** are fulfilled exclusively in digital formats. Consequently, returns are generally not accepted once digital credentials or activation services have been dispatched. To maintain complete transparency, our comprehensive return and refund guidelines are detailed below.
 
 ##### 📌 Return Policy
-
-
-
-* Order Confirm হওয়ার আগে পণ্য পরিবর্তন করা যাবে।
-* Order Confirm হওয়ার পর পণ্য পরিবর্তন বা Return করা যাবে না।
-* ভুল পণ্য নির্বাচন বা ব্যক্তিগত পছন্দ পরিবর্তনের জন্য Return/Refund প্রযোজ্য নয়।
-
-##### 
+* Requests to exchange or change a product can be submitted before order confirmation.
+* Once an order is confirmed and digital credentials have been dispatched, no product exchange or return can be facilitated.
+* Inadvertent product selection, incorrect variant choice, or changes of personal preference do not qualify for returns or refunds.
 
 ##### 💰 Refund Policy
+* No refunds will be granted after successful delivery or account activation.
+* If your payment is debited successfully but technical constraints prevent product delivery, you will receive a 100% full refund.
+* If FlixStore is unable to fulfill your order due to inventory depletion or technical errors on our end, the entire paid amount will be refunded immediately.
+* When a voluntary refund requested by a customer is authorized, a 10% processing and payment gateway fee will be deducted, and the remaining 90% balance will be refunded.
 
+##### ⏱️ Refund Processing Timeframe
+* **bKash / Nagad / Rocket (MFS):** Typically processed and disbursed within 1 to 24 hours.
+* **Bank Transfers / Card Gateways:** Subject to standard interbank clearing cycles, requiring 3 to 7 business days.
+* *Note: FlixStore is not liable for incidental clearing delays caused by third-party banking networks.*
 
+##### 📞 Support & Inquiries
+For questions or assistance regarding refunds or order status, please reach out to our dedicated support channels:
 
-* সফলভাবে Delivery/Activation সম্পন্ন হলে Refund দেওয়া হবে না।
-* Payment সফল হলেও পণ্য/সেবা ডেলিভারি না হলে Refund প্রযোজ্য।
-* FindEasy4K-এর কারণে Order সম্পন্ন করা সম্ভব না হলে পণ্যের মূল্য Refund করা হবে।
-* Customer-এর অনুরোধে Refund অনুমোদিত হলে ১০% Processing/Gateway Charge কেটে বাকি ৯০% Refund করা হবে।
+* **📱 WhatsApp / Direct Call:** 01343546958
+* **📧 Official Email:** flixstore.officials@gmail.com
+* **⏰ Support Hours:** 10:00 AM – 12:00 AM Daily (Dhaka Time)
 
-##### 
+*By placing an order on FlixStore, you acknowledge and agree to all terms set forth in this Return & Refund Policy.*
 
-##### ⏱️ Refund Processing
-
-
-
-* bKash: ১–২৪ ঘণ্টা
-* Payment Gateway: সাধারণত ৩–৭ কর্মদিবস
-* Bank/Payment Gateway-এর নিজস্ব processing delay-এর জন্য FindEasy4K দায়ী নয়।
-
-##### 
-
-##### 📞 Support
-
-
-
-**Refund বা Order সংক্রান্ত সমস্যায় যোগাযোগ করুন:**
-
-
-
-**📱 WhatsApp/Call: 01343546958**
-
-
-
-**📧 Email: flixstore.officials@gmail.com**
-
-
-
-**Order করার মাধ্যমে আপনি এই Return \& Refund Policy-এর শর্তাবলি মেনে নিচ্ছেন।**
-
-
-
-**সর্বশেষ আপডেট: ২৪ সেপ্টেম্বর ২০২৬**
-
+---
+&copy; 2026 FlixStore Inc. All Rights Reserved.

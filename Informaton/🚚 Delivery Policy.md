@@ -1,110 +1,39 @@
-# 🚚 Delivery Policy
+﻿# 🚚 Delivery Policy
 
+**FlixStore — Automated Digital Fulfillment Standards**  
+**Last Updated: September 24, 2026**
 
+At **FlixStore**, our automated dispatch infrastructure strives to fulfill your digital orders as quickly as possible. Delivery durations may vary based on product category, current inventory levels, and account provisioning requirements.
 
-FlixStore-এ আমরা যত দ্রুত সম্ভব আপনার অর্ডার ডেলিভারি করার চেষ্টা করি। তবে product type, stock availability এবং account type অনুযায়ী delivery time ভিন্ন হতে পারে।
+##### ⏱️ Standard Delivery Timelines
+The vast majority of our popular and in-stock digital subscriptions are dispatched automatically within **5 to 10 minutes**. However, specific personal account setups and manual license authentications may require additional processing time.
 
+##### 📊 Estimated Delivery Timelines by Category
+* **⚡ In-Stock / Popular Subscriptions:** Typically 5–10 Minutes (Netflix, ChatGPT, Prime, Spotify)
+* **🕐 Regular Tools & Utilities:** Typically 30 Minutes – 3 Hours (Creative & Professional Tools)
+* **👤 Personal Accounts:** Typically 1 – 24 Hours (Custom Email Setup & Personal Licensing)
+* **🕘 Custom Enterprise / Special Requests:** Up to 24 Hours
 
+##### 👥 Shared Screen Accounts
+Shared subscription profiles are pre-configured and stocked in our inventory vault. Consequently, these accounts are typically dispatched within 5 to 10 minutes following payment confirmation whenever stock is available.
 
-##### ⏱️ সাধারণ Delivery Time
+##### 👤 Personal Accounts
+Private subscriptions are customized on demand rather than pre-stocked. Upon receiving your order, our technicians register, activate, and secure the service using your requested email credentials, which may require between a few hours and up to 24 hours.
 
+##### ⚠️ Important Delivery Information
+* All stated delivery timelines are realistic estimates, not unconditional guarantees.
+* Orders are dispatched with top priority whenever stock is immediately available.
+* In the rare event of an unexpected dispatch delay, customers receive prompt updates via WhatsApp or email.
 
+##### 📩 Non-Receipt Within 24 Hours
+If you have not received your digital credentials within 24 hours of ordering, please notify our customer support team immediately with your **Order ID**:
 
-আমাদের অধিকাংশ popular এবং in-stock products সাধারণত 5–10 মিনিটের মধ্যে delivery করা হয়।
+* **📞 Direct Call / WhatsApp:** 01343546958
+* **📧 Official Email:** flixstore.officials@gmail.com
+* **⏰ Operating Hours:** 10:00 AM – 12:00 AM Daily (Dhaka Time)
 
+##### 🤝 Our Commitment
+FlixStore is committed to delivering genuine, hassle-free digital entertainment and productivity tools across Bangladesh with speed and integrity.
 
-
-তবে কিছু ক্ষেত্রে order processing এবং account availability-এর কারণে delivery time বেশি লাগতে পারে।
-
-
-
-##### 📦 Estimated Delivery Time
-
-
-
-* ⚡ In-Stock / Popular Products: সাধারণত 5–10 মিনিট
-* 🕐 Regular Products: সাধারণত 30 মিনিট–3 ঘণ্টা
-* 🕘 Low-Demand / Special Products: সর্বোচ্চ 24 ঘণ্টা পর্যন্ত
-* 👤 Personal Account: সাধারণত বেশি সময় লাগতে পারে, কারণ order পাওয়ার পর account purchase/setup করতে হতে পারে
-
-
-
-##### 👥 Shared Account
-
-
-
-আমাদের কিছু Shared Account আগে থেকেই stock-এ available থাকে। তাই এসব account-এর ক্ষেত্রে সাধারণত দ্রুত delivery দেওয়া সম্ভব।
-
-
-
-⏱️ Expected Delivery: প্রায় 5–10 মিনিট, যদি productটি stock-এ থাকে।
-
-
-
-##### 👤 Personal Account
-
-
-
-Personal Account সাধারণত আগে থেকে stock করে রাখা হয় না। Order পাওয়ার পর customer-এর জন্য account purchase/setup করতে হতে পারে।
-
-
-
-তাই Personal Account-এর ক্ষেত্রে delivery time তুলনামূলকভাবে বেশি হতে পারে।
-
-
-
-⏱️ Expected Delivery: কয়েক ঘণ্টা থেকে সর্বোচ্চ 24 ঘণ্টা পর্যন্ত সময় লাগতে পারে।
-
-
-
-##### ⚠️ গুরুত্বপূর্ণ বিষয়
-
-
-
-* Delivery time estimated, guaranteed নয়।
-* Stock available থাকলে order দ্রুত delivery করা হবে।
-* Product-এর demand, stock availability এবং account setup-এর ওপর delivery time নির্ভর করতে পারে।
-* কিছু কম-demand product-এর ক্ষেত্রে 24 ঘণ্টা পর্যন্ত সময় লাগতে পারে।
-* আমরা প্রতিটি order যত দ্রুত সম্ভব complete করার চেষ্টা করি।
-* অস্বাভাবিক কোনো delay হলে customer-কে প্রয়োজন অনুযায়ী update দেওয়া হবে।
-
-
-
-##### 📩 Delivery Delay হলে
-
-
-
-আপনার order 24 ঘণ্টার মধ্যে না পেলে আমাদের Customer Support-এর সাথে যোগাযোগ করুন।
-
-
-
-📞 Phone/WhatsApp: 01343546958
-
-
-
-📧 Email: flixstore.officials@gmail.com
-
-
-
-##### ❤️ Our Commitment
-
-
-
-Findeasy4k.com-এর লক্ষ্য হলো নিরাপদ, সহজ এবং দ্রুত digital product delivery নিশ্চিত করা।
-
-
-
-Popular products → Fast delivery ⚡
-
-
-
-In-stock products → Usually 5–10 minutes 🚀
-
-
-
-Personal/Special products → May take longer ⏳
-
-
-
-Thank you for choosing FlixStore. ❤️
-
+---
+&copy; 2026 FlixStore Inc. All Rights Reserved.

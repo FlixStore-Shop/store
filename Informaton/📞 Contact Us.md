@@ -1,35 +1,23 @@
-# **📞 Contact Us**
+﻿# 📞 Contact Us
 
+**FlixStore — Dedicated Customer Assistance Hub**
 
+Whether you require guidance before purchasing, order status updates, payment assistance, or warranty replacement support, the **FlixStore** Customer Care Team is here to help. We are dedicated to providing swift, dependable, and courteous solutions. ❤️
 
-**FlixStore-এ আপনার যেকোনো Order, Payment, Delivery অথবা Product-related সমস্যার জন্য আমাদের Customer Support Team-এর সাথে যোগাযোগ করুন। আমরা যত দ্রুত সম্ভব আপনার সমস্যার সমাধান করার চেষ্টা করি। ❤️**
+##### 📱 Official Contact Channels
+* **📞 Direct Phone / Helpline:** 01343546958
+* **💬 WhatsApp Customer Support:** 8801343546958
+* **📧 Official Email:** flixstore.officials@gmail.com
+* **⏰ Support Operating Hours:** 10:00 AM – 12:00 AM Daily (Dhaka Time)
+* **🌐 Business Nature:** Online-Based Digital Solutions & Subscription Licensing
 
+##### 🧾 Order Support Guideline
+When reaching out to our support team regarding an existing order, please provide your **Order ID** (e.g., `#FLX-123456`) and your payment Transaction ID (TrxID). Providing these details enables our team to locate your record instantly and resolve your inquiry without delay.
 
+---
+### 🚀 FlixStore
+**Your Trusted Source for Digital Entertainment & Productivity Solutions**  
+*AI Tools • Streaming • Educational Tools • Productivity • Gaming • Digital Services*
 
-##### **📱 Contact Information**
-
-
-
-* **📞 Call / WhatsApp: 01343546958**
-* **📧 Email: flixstore.officials@gmail.com**
-* **🌐 Business Type: Online Based Business**
-* **⏰ Customer Support: সকাল ১০:০০টা – রাত ১২:০০টা**
-
-
-
-##### **🧾 Order Support**
-
-
-
-**আপনার Order সংক্রান্ত বিষয়ে যোগাযোগ করার সময় অবশ্যই Order ID প্রদান করুন। এতে আমরা আপনার order দ্রুত খুঁজে বের করে প্রয়োজনীয় সহায়তা দিতে পারব।**
-
-
-
-**❤️ FLixStore**
-
-**Your Trusted Source for Digital Solutions.**
-
-
-
-**AI Tools • Streaming • Educational Tools • Productivity • Gaming • Digital Services**
-
+---
+&copy; 2026 FlixStore Inc. All Rights Reserved.

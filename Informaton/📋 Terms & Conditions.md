@@ -1,117 +1,54 @@
-# 📋 Terms \& Conditions
-
-
-
-FlixStore
-
-
-
-সর্বশেষ আপডেট: ২৪ সেপ্টেম্বর ২০২৬
-
-
-
-FlixStore-এ অর্ডার করার মাধ্যমে আপনি নিচের শর্তগুলোতে সম্মতি প্রদান করছেন।
-
-
-
-##### 1\. Order
-
-
-
-* অর্ডারের সময় সঠিক নাম, মোবাইল নম্বর ও Email Address দিতে হবে।
-* Order Confirm হওয়ার আগে Product পরিবর্তনের অনুরোধ করা যাবে।
-* Order Confirm হওয়ার পর Product পরিবর্তন, বাতিল বা Refund করা যাবে না।
-* অর্ডারের আগে Product-এর Description, Features, Compatibility ও Warranty দেখে নিতে হবে।
-
-##### 
-
-##### 2\. Refund
-
-
-
-* Delivery/Activation সম্পন্ন হওয়ার পর Refund প্রযোজ্য নয়।
-* Payment সফল হলেও Order সম্পন্ন না হলে যাচাই সাপেক্ষে Refund দেওয়া হবে।
-* আমাদের কারণে Product/Service Delivery সম্ভব না হলে Product-এর মূল্য Refund করা হবে।
-* Customer-requested Refund হলে ১০% Gateway/Service Charge কেটে অবশিষ্ট ৯০% Refund করা হবে।
-* Payment Provider-এর অতিরিক্ত Charge থাকলে তা Customer বহন করবেন।
-
-##### 
-
-##### 3\. Return
-
-
-
-* Digital Product হওয়ায় Delivery বা Activation-এর পর কোনো Return গ্রহণ করা হবে না।
-
-
-
-##### 4\. Warranty
-
-
-
-* প্রতিটি Product-এর Warranty Period আলাদাভাবে নির্ধারিত।
-* Warranty-এর মধ্যে সমস্যা হলে যাচাই সাপেক্ষে Replacement বা Solution দেওয়া হবে।
-* Device, Internet, Software বা Customer-এর ভুল ব্যবহারের কারণে সমস্যা হলে Warranty প্রযোজ্য নয়।
-* Warranty শেষ হওয়ার পর কোনো Warranty Claim গ্রহণ করা হবে না।
-
-##### 
-
-##### 5\. Delivery
-
-
-
-* Digital Product সাধারণত Email, Account Details বা Activation-এর মাধ্যমে দেওয়া হয়।
-* Customer-কে সঠিক Email Address দিতে হবে।
-* Payment Verification ও Technical Availability অনুযায়ী Delivery Time পরিবর্তিত হতে পারে।
-
-##### 
-
-##### 6\. Support
-
-
-
-প্রয়োজনে Technical Support বা Remote Support দেওয়া হতে পারে। Remote Support-এর জন্য AnyDesk, TeamViewer বা AnyViewer ব্যবহার করা হতে পারে।
-
-
-
-##### 7\. Payment Charges
-
-
-
-* Online Payment: Checkout-এ প্রদর্শিত Charge প্রযোজ্য।
-* 
-* Manual Bank Payment: অতিরিক্ত Charge নেই।
-* 
-* Manual Mobile Banking: Provider-এর নির্ধারিত Charge প্রযোজ্য।
-
-
-
-###### বর্তমান Charge:
-
-
-
-* bKash — ১.৮০%
-* Nagad — ১.১৫%
-* Rocket — ১.৬০%
-* Upay — ১.০০%
-
-
-
-##### 8\. Customer Responsibility
-
-
-
-Customer-এর Account, Email ও Login Information নিরাপদ রাখা এবং সংশ্লিষ্ট Service Provider-এর Terms \& Conditions মেনে চলা Customer-এর দায়িত্ব।
-
-
-
-##### 9\. Terms Update
-
-
-
-FlixStore প্রয়োজন অনুযায়ী এই Terms \& Conditions পরিবর্তন বা আপডেট করতে পারে। Updated Terms Website-এ প্রকাশের পর তা কার্যকর হবে।
-
-
-
-© 2026 FlixStore Inc. All Rights Reserved.
-
+﻿# 📜 Terms & Conditions
+
+**FlixStore — Official Customer Service Agreement**  
+**Last Updated: September 24, 2026**
+
+By completing an order on **FlixStore**, you acknowledge and agree to the following terms and conditions. Because all of our offerings are digital goods and software services, these terms are established to protect the interests and rights of both buyer and seller.
+
+##### 1. Order Process
+* During checkout, you must provide your accurate name, an active mobile number, and a valid email address.
+* Requests to change or modify a product can only be accommodated before your order is confirmed.
+* Once an order is confirmed and processing has begun, product changes, cancellations, or voluntary refunds cannot be accepted.
+* It is the customer's sole responsibility to verify product descriptions, supported devices, system compatibility, and warranty specifications before purchase.
+
+##### 2. Refund Policy
+* No refund is applicable once delivery or account activation has been completed successfully.
+* If a payment is successful but the order cannot be fulfilled due to technical limitations, a 100% full refund will be issued following administrative verification.
+* If FlixStore is unable to deliver the ordered product or service due to our own operational constraints, the customer is entitled to a full refund.
+* If a customer-initiated refund request is approved under exceptional circumstances, a 10% gateway and administrative processing fee will be deducted, and the remaining 90% balance will be refunded.
+* Any non-refundable gateway surcharges or carrier transaction fees imposed by third-party payment providers remain the responsibility of the customer.
+
+##### 3. Return Policy
+* Because our products consist exclusively of digital account credentials, subscription licenses, and software activations, physical returns are not possible once digital delivery or activation has occurred.
+
+##### 4. Warranty & Replacement
+* The warranty period for each product is explicitly stated on its respective product page.
+* If an unexpected issue arises within the active warranty duration, an immediate replacement or technical resolution will be provided upon verification.
+* Warranty coverage does not apply to problems caused by device malfunctions, unstable internet connections, unauthorized third-party software, or customer misuse and negligence.
+* Warranty claims submitted after the expiration of the stated warranty duration will not be honored.
+
+##### 5. Delivery Methods
+* Digital products and subscription access are delivered electronically via WhatsApp, verified email, or the secure client order dashboard.
+* Customers must provide an active, accurate email address and WhatsApp contact number to ensure prompt receipt of credentials.
+* Delivery timelines may vary slightly based on manual payment verification queues and external provider server availability.
+
+##### 6. Technical Support & Remote Assistance
+* For complex setups or configuration issues, our team may provide dedicated technical or remote assistance upon request. Remote desktop support may be conducted via AnyDesk, TeamViewer, or AnyViewer with the customer's authorization.
+
+##### 7. Payment Gateway Surcharges
+* **Online Payment:** Standard automated gateway charges apply as displayed at checkout.
+* **Manual Bank Transfers:** 0.00% (No additional surcharge applied).
+* **Manual Mobile Financial Services (MFS):**
+  * bKash — 1.80%
+  * Nagad — 1.15%
+  * Rocket — 1.60%
+  * Upay — 1.00%
+
+##### 8. Customer Responsibility
+* Customers are strictly responsible for maintaining the confidentiality and security of their assigned account credentials, registered email, and login details. Compliance with the respective service provider’s acceptable use policy and end-user license agreement is the sole responsibility of the customer.
+
+##### 9. Policy Amendments
+* FlixStore reserves the right to amend, update, or revise these Terms and Conditions at any time without prior notice. Any revisions become effective immediately upon publication on this website.
+
+---
+&copy; 2026 FlixStore Inc. All Rights Reserved.

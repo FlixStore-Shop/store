@@ -1,80 +1,32 @@
-# 🔒 Privacy Policy
+﻿# 🔒 Privacy & Data Security Policy
 
+**FlixStore — User Privacy, Data Usage & Payment Protection**  
+**Last Updated: September 24, 2026**
 
+FlixStore considers the confidentiality of customer data and payment security to be our highest operational priority. Our stringent privacy standards are outlined below:
 
-##### 🔐 Delivery, User Data \& Payment Security Policy
+##### 🔐 Secure Delivery Process
+* Because our services operate entirely digitally, all subscription credentials and order updates are transmitted exclusively via verified WhatsApp channels and encrypted email.
+* Once credentials are handed over, they remain accessible strictly and solely to the purchasing customer.
 
+##### 🛡️ Customer Data Usage & Protection
+* **Zero Data Brokering:** We never sell, lease, trade, or disclose your personal contact information to any third parties, advertisers, or external marketing entities.
+* **Order Fulfillment Only:** Your collected mobile numbers and email addresses are utilized strictly for order dispatch, transaction receipts, invoice delivery, and warranty support.
+* **Strict Anti-Spam Policy:** We maintain a zero-tolerance stance toward unsolicited promotional phone calls, SMS marketing broadcasts, or unwanted promotional spam.
 
+##### 💳 Payment Transaction Security
+* We operate as verified merchant partners with bKash, Nagad, and Rocket. All digital transactions are processed directly through their certified payment gateway infrastructures.
+* FlixStore never captures, logs, or stores sensitive financial instruments, including credit card numbers, CVV codes, mobile banking PINs, or one-time verification passwords (OTPs).
+* Our platform is continuously monitored and guarded with enterprise-grade 256-bit SSL encryption.
 
+##### 🍪 Cookies Policy
+Our web application utilizes temporary, non-invasive browser session cookies exclusively to preserve shopping cart state and accelerate page load times. These cookies contain no identifiable personal information.
 
+##### 📞 Contact & Data Requests
+If you have any questions regarding how your data is handled or wish to update your records, please contact our privacy compliance desk:
 
-###### ডেলিভারি পক্রিয়াঃ
+* **📧 Email:** flixstore.officials@gmail.com
+* **📱 WhatsApp:** 8801343546958
 
-
-
-* &#x20;অনলাইন ভিত্তিক হওয়াতে সমস্ত প্রোডাক্ট ডেলিভারি করা হয় হোয়াটস্যাপ এবং ইমেইলের মাধ্যমে।
-
-
-
-###### ব্যবহারকারীর ডাটাঃ
-
-
-
-* আমরা কোন ব্যবহারকারীর ডাটা কোন বিজ্ঞাপন দাতার কাছে বিক্রি করিনা।
-* ব্যবহারকারীর ডাটা শুধুমাত্র প্রোডাক্ট ডেলিভারির ক্ষেত্রে ব্যবহৃত হয়।
-* ব্যবহারকারীর ডাটা হিসেবে ফোন নাম্বার এবং ইমেইল সংরক্ষিত হয়।
-* কোন প্রমোশনাল অফারের ক্ষেত্রে ব্যবহারকারীর ডাটা ব্যবহার হয়না।
-
-
-
-###### পেমেন্ট লেনদেন প্রক্রিয়াঃ
-
-
-
-* বিকাশের ভেরিফাইড মার্চেন্ট হওয়ায় তাদের অফিসিয়াল পেমেন্ট গেটওয়ের মাধ্যমে পেমেন্ট কার্যকর হয়।
-* ব্যবহারকারীর কোন ব্যাংক বা মোবাইল ব্যাংক এর তথা পাসওয়ার্ড , ভেরিফিকেশন কোড আমাদের ডাটাবেইজে সংরক্ষিত হয়না।
-
-
-
-এই ওয়েবসাইট টি ব্যবহারকারীর ব্রাউজার কুকিজ সাময়ীক সময়ের জন্য সংরক্ষন করে, যা শুধুমাত্র ওয়েবসাইট দ্রুত লোড নেওয়ার জন্য ব্যবহৃত হয়।
-
-
-
-
-
-
-
-
-
-
-
-##### Delivery Process:
-
-
-
-* Being online based, all products are delivered via Whatsapp and email.
-
-
-
-##### User data Usage:
-
-
-
-* We do not sell any user data to any advertisers.
-* User data is only used for product delivery.
-* Phone number and email are stored as user data.
-* User data is not used for any promotional offers.
-
-
-
-##### Payment Transaction Process:
-
-
-
-* We are verified (bKash Merchant). Payments are processed through their official payment gateway.
-* User’s bank or mobile bank password, verification code is not stored in our database.
-
-
-
-This website stores user’s browser cookies for temporary issues, which are used only to make the website load faster.
-
+---
+&copy; 2026 FlixStore Inc. All Rights Reserved.
