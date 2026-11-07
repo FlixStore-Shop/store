@@ -8,9 +8,9 @@
   <meta name="description" content="Read FlixStore's official Terms & Conditions, Return & Refund Policy, Delivery Times, Privacy Policy, About Us, and Customer Support channels.">
   <link rel="canonical" href="https://store-q51q.onrender.com/information">
 
-  <link rel="stylesheet" href="/css/styles.css?v=7.5">
-  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=7.5">
-  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=7.5">
+  <link rel="stylesheet" href="/css/styles.css?v=7.6">
+  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=7.6">
+  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=7.6">
 
   <style>
     /* Dedicated Information Center Styles */
@@ -360,36 +360,101 @@
       color: var(--text-secondary);
     }
 
-    /* Responsive */
+    /* Responsive Smartphone & Tablet Design */
     @media (max-width: 900px) {
       .info-layout {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 20px;
       }
       .info-sidebar {
-        position: static;
+        position: sticky;
+        top: 60px;
+        z-index: 90;
+        background: var(--bg-card);
         overflow-x: auto;
         white-space: nowrap;
         display: flex;
         gap: 8px;
-        padding: 10px;
+        padding: 8px 12px;
+        border-radius: var(--radius-md);
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+        border: 1px solid var(--glass-border);
+      }
+      .info-sidebar::-webkit-scrollbar {
+        display: none;
       }
       .info-nav-header {
         display: none;
       }
       .info-nav-btn {
+        flex-shrink: 0;
         width: auto;
-        padding: 8px 16px;
-        font-size: 0.85rem;
+        padding: 7px 14px;
+        font-size: 0.82rem;
         margin-bottom: 0;
       }
       .info-hero-card {
-        padding: 24px 20px;
+        padding: 20px 18px;
         flex-direction: column;
         align-items: flex-start;
+        margin-bottom: 20px;
+      }
+      .info-hero-text h1 {
+        font-size: 1.45rem;
+        line-height: 1.25;
       }
       .info-content-card {
-        padding: 24px 20px;
+        padding: 22px 18px;
+      }
+      .policy-title-area h2 {
+        font-size: 1.35rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .copy-box-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        padding: 12px 14px;
+      }
+      .copy-box-label {
+        min-width: 0;
+        font-size: 0.8rem;
+      }
+      .copy-box-val {
+        font-size: 0.86rem;
+        word-break: break-all;
+        width: 100%;
+      }
+      .copy-btn-mini {
+        align-self: flex-end;
+      }
+      .policy-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .policy-stat-card {
+        padding: 12px 14px;
+      }
+      .policy-stat-title {
+        font-size: 0.78rem;
+      }
+      .policy-stat-value {
+        font-size: 1.1rem;
+      }
+      .policy-help-banner {
+        padding: 18px 16px;
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        gap: 14px;
+      }
+      .policy-help-banner a.btn-primary {
+        width: 100%;
+        justify-content: center;
       }
     }
   </style>
@@ -424,8 +489,11 @@
         <div class="header-left-group">
           <!-- Back to Storefront Link -->
           <a href="/" class="brand-logo" aria-label="FlixStore Home">
-            <img src="/assets/flixstore-icon.png?v=7.5" alt="FlixStore" class="brand-logo-img">
+            <img src="/assets/flixstore-icon.png?v=7.6" alt="FlixStore" class="brand-logo-img">
             <span class="brand-logo-text">FLIX STORE</span>
+          </a>
+          <a href="/" class="action-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px; font-weight:700; font-size:0.8rem; padding:6px 12px; border-radius:8px;">
+            <span>←</span> <span>Store</span>
           </a>
         </div>
 
@@ -478,7 +546,7 @@
           </p>
         </div>
         <div class="desktop-only">
-          <img src="/assets/flixstore-icon.png?v=7.5" alt="FlixStore Shield" style="width:76px; height:76px; opacity:0.9;">
+          <img src="/assets/flixstore-icon.png?v=7.6" alt="FlixStore Shield" style="width:76px; height:76px; opacity:0.9;">
         </div>
       </div>
 
@@ -979,7 +1047,7 @@
         <!-- Col 1: Brand & Trust -->
         <div class="footer-col">
           <div class="brand-logo" style="margin-bottom:12px;">
-            <img src="/assets/flixstore-icon.png?v=7.5" alt="FlixStore" class="brand-logo-img" style="height:34px; width:34px;">
+            <img src="/assets/flixstore-icon.png?v=7.6" alt="FlixStore" class="brand-logo-img" style="height:34px; width:34px;">
             <span class="brand-logo-text">FLIX STORE</span>
           </div>
           <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:16px; font-size:0.86rem;">
