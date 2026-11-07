@@ -185,6 +185,7 @@ body {
 .brand-logo {
   display: flex;
   align-items: center;
+  gap: 10px;
   text-decoration: none;
   color: var(--text-primary);
   flex-shrink: 0;
@@ -192,15 +193,35 @@ body {
 
 .brand-logo-img {
   height: 38px;
-  width: auto;
-  max-width: 250px;
+  width: 38px;
   object-fit: contain;
   display: block;
+  border-radius: 50%;
   transition: transform 0.22s ease;
+  flex-shrink: 0;
+}
+
+.brand-logo-text {
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  color: #0f172a;
+  font-family: var(--font-main);
+  line-height: 1;
+  white-space: nowrap;
+  transition: color 0.2s ease;
 }
 
 .brand-logo:hover .brand-logo-img {
-  transform: scale(1.02);
+  transform: scale(1.05);
+}
+
+.brand-logo:hover .brand-logo-text {
+  color: var(--accent-blue, #3b82f6);
+}
+
+[data-theme="dark"] .brand-logo-text {
+  color: #f8fafc;
 }
 
 .brand-icon-box {
@@ -4738,9 +4759,19 @@ body {
     height: 18px !important;
   }
 
+  .brand-logo {
+    gap: 7px !important;
+  }
+
   .brand-logo-img {
-    height: 25px !important;
-    max-width: 155px !important;
+    height: 30px !important;
+    width: 30px !important;
+    max-width: 30px !important;
+  }
+
+  .brand-logo-text {
+    font-size: 1.05rem !important;
+    letter-spacing: 0.3px !important;
   }
 
   .currency-select {
@@ -7871,12 +7902,18 @@ body {
 .nav-drawer-brand {
   display: flex;
   align-items: center;
+  gap: 10px;
   text-decoration: none;
 }
 
 .nav-drawer-logo {
-  height: 28px;
-  width: auto;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
   max-width: 175px;
   object-fit: contain;
   display: block;
