@@ -8331,3 +8331,17 @@ body {
   color: #38bdf8;
 }
 
+/* Smooth Scroll Target Margins (Prevents section overlap with sticky header) */
+#howItWorks,
+.how-it-works-section,
+#faqSection,
+.faq-section,
+#whyChooseUs,
+.why-choose-section,
+#productsGrid,
+.category-nav-section,
+.pdp-tabs-nav,
+#pdpTabNav {
+  scroll-margin-top: 85px;
+}
+

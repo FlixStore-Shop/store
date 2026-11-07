@@ -138,10 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
   checkAuthStatus();
   initFloatingMobileNav();
 
-  // Handle URL category parameter if present (e.g. ?category=ai-productivity)
+  // Handle URL category or jump parameter if present (e.g. ?category=ai-productivity or ?jump=warranty)
   try {
     const urlParams = new URLSearchParams(window.location.search);
     const urlCat = urlParams.get('category') || urlParams.get('cat');
+    const jump = urlParams.get('jump');
+
     if (urlCat) {
       setTimeout(() => {
         if (typeof selectCategory === 'function') {
@@ -152,6 +154,31 @@ document.addEventListener('DOMContentLoaded', () => {
           target.scrollIntoView({ behavior: 'smooth' });
         }
       }, 450);
+    } else if (jump) {
+      setTimeout(() => {
+        if (jump === 'warranty') {
+          if (typeof scrollToTrustFeature === 'function') {
+            scrollToTrustFeature('warranty');
+          } else {
+            const el = document.getElementById('trust-100-guarantee') || document.getElementById('whyChooseUs');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        } else if (jump === 'delivery') {
+          const el = document.getElementById('howItWorks');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            el.classList.add('trust-highlight-blue');
+            setTimeout(() => el.classList.remove('trust-highlight-blue'), 2200);
+          }
+        } else if (jump === 'faq' || jump === 'payments') {
+          const el = document.getElementById('faqSection') || document.querySelector('.faq-section');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const firstFaq = el.querySelector('.faq-item');
+            if (firstFaq && !firstFaq.classList.contains('active')) firstFaq.classList.add('active');
+          }
+        }
+      }, 500);
     }
   } catch (e) {
     // Graceful fallback
@@ -1113,13 +1140,78 @@ function handleDrawerCategory(categorySlug, event) {
     if (typeof selectCategory === 'function') {
       selectCategory(categorySlug);
     }
-    const target = document.getElementById('productsGrid') || document.querySelector('.category-nav-section');
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    setTimeout(() => {
+      const target = document.getElementById('productsGrid') || document.querySelector('.category-nav-section');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 120);
   } else {
     window.location.href = `/?category=${encodeURIComponent(categorySlug)}#productsGrid`;
   }
+}
+
+function handleDrawerNav(action, event) {
+  if (event) event.preventDefault();
+  closeNavDrawer();
+
+  const isHome = window.location.pathname === '/' || window.location.pathname.endsWith('index.html');
+  const isProduct = window.location.pathname.includes('/product');
+
+  setTimeout(() => {
+    if (action === 'warranty') {
+      if (isHome) {
+        if (typeof scrollToTrustFeature === 'function') {
+          scrollToTrustFeature('warranty');
+        } else {
+          const el = document.getElementById('trust-100-guarantee') || document.getElementById('whyChooseUs');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      } else if (isProduct && typeof switchPdpTab === 'function') {
+        switchPdpTab('warranty');
+        const el = document.getElementById('pdpTabNav') || document.getElementById('pdpTab_warranty');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.location.href = '/?jump=warranty#trust-100-guarantee';
+      }
+    } else if (action === 'delivery') {
+      if (isHome) {
+        const el = document.getElementById('howItWorks') || document.getElementById('trust-instant-delivery');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          el.classList.add('trust-highlight-blue');
+          setTimeout(() => el.classList.remove('trust-highlight-blue'), 2200);
+        }
+      } else if (isProduct && typeof switchPdpTab === 'function') {
+        switchPdpTab('instructions');
+        const el = document.getElementById('pdpTabNav') || document.getElementById('pdpTab_instructions');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.location.href = '/?jump=delivery#howItWorks';
+      }
+    } else if (action === 'faq' || action === 'payments') {
+      if (isHome) {
+        if (action === 'payments' && typeof scrollToTrustFeature === 'function') {
+          scrollToTrustFeature('payments');
+        } else {
+          const el = document.getElementById('faqSection') || document.querySelector('.faq-section');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const firstFaq = el.querySelector('.faq-item');
+            if (firstFaq && !firstFaq.classList.contains('active')) {
+              firstFaq.classList.add('active');
+            }
+          }
+        }
+      } else if (isProduct && typeof switchPdpTab === 'function') {
+        switchPdpTab('faq');
+        const el = document.getElementById('pdpTabNav') || document.getElementById('pdpTab_faq');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.location.href = '/?jump=faq#faqSection';
+      }
+    }
+  }, 120);
 }
 
 function renderDrawerCategories() {
@@ -1154,6 +1246,7 @@ function renderDrawerCategories() {
 window.openNavDrawer = openNavDrawer;
 window.closeNavDrawer = closeNavDrawer;
 window.handleDrawerCategory = handleDrawerCategory;
+window.handleDrawerNav = handleDrawerNav;
 window.renderDrawerCategories = renderDrawerCategories;
 
 // -----------------------------------------------------------------------------
