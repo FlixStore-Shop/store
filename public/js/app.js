@@ -137,6 +137,25 @@ document.addEventListener('DOMContentLoaded', () => {
   initEventListeners();
   checkAuthStatus();
   initFloatingMobileNav();
+
+  // Handle URL category parameter if present (e.g. ?category=ai-productivity)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlCat = urlParams.get('category') || urlParams.get('cat');
+    if (urlCat) {
+      setTimeout(() => {
+        if (typeof selectCategory === 'function') {
+          selectCategory(urlCat);
+        }
+        const target = document.getElementById('productsGrid') || document.querySelector('.category-nav-section');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 450);
+    }
+  } catch (e) {
+    // Graceful fallback
+  }
 });
 
 // Theme Management (Light Mode Exclusive)
@@ -174,6 +193,7 @@ async function fetchCategories() {
     if (json.success) {
       state.categories = json.data;
       renderCategoryPills();
+      renderDrawerCategories();
     }
   } catch (err) {
     console.error('Failed to load categories:', err);
@@ -975,6 +995,12 @@ function updateCartUI() {
     mobileBadge.style.display = totalItems > 0 ? 'flex' : 'none';
   }
 
+  // Sync drawer cart badge
+  const drawerCartLabel = document.getElementById('drawerCartCountLabel');
+  if (drawerCartLabel) {
+    drawerCartLabel.textContent = totalItems === 1 ? '1 item' : `${totalItems} items`;
+  }
+
   // Update Drawer
   const container = document.getElementById('cartDrawerItems');
   if (!container) return;
@@ -1059,6 +1085,76 @@ function openCartDrawer() {
 function closeCartDrawer() {
   document.getElementById('cartDrawerOverlay').classList.remove('active');
 }
+
+// -----------------------------------------------------------------------------
+// NAVIGATION DRAWER (Slide-out Off-Canvas System)
+// -----------------------------------------------------------------------------
+
+function openNavDrawer() {
+  const overlay = document.getElementById('navDrawerOverlay');
+  if (!overlay) return;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeNavDrawer() {
+  const overlay = document.getElementById('navDrawerOverlay');
+  if (!overlay) return;
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function handleDrawerCategory(categorySlug, event) {
+  if (event) event.preventDefault();
+  closeNavDrawer();
+
+  const isHome = window.location.pathname === '/' || window.location.pathname.endsWith('index.html');
+  if (isHome) {
+    if (typeof selectCategory === 'function') {
+      selectCategory(categorySlug);
+    }
+    const target = document.getElementById('productsGrid') || document.querySelector('.category-nav-section');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } else {
+    window.location.href = `/?category=${encodeURIComponent(categorySlug)}#productsGrid`;
+  }
+}
+
+function renderDrawerCategories() {
+  const container = document.getElementById('drawerCategoryList');
+  if (!container || !state.categories || !state.categories.length) return;
+
+  const totalCount = state.products ? state.products.length : 20;
+  let html = `
+    <a href="/#productsGrid" class="drawer-nav-item ${state.selectedCategory === 'all' ? 'active' : ''}" onclick="handleDrawerCategory('all', event)">
+      <span class="drawer-item-icon">✨</span>
+      <span class="drawer-item-text">All Subscriptions</span>
+      <span class="drawer-badge">${totalCount}</span>
+      <svg class="drawer-item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+  `;
+
+  state.categories.forEach(cat => {
+    const isActive = state.selectedCategory === cat.slug;
+    html += `
+      <a href="/#productsGrid" class="drawer-nav-item ${isActive ? 'active' : ''}" onclick="handleDrawerCategory('${cat.slug}', event)">
+        <span class="drawer-item-icon">${getCategoryIcon(cat.icon)}</span>
+        <span class="drawer-item-text">${cat.name}</span>
+        <span class="drawer-badge">${cat.product_count !== undefined ? cat.product_count : ''}</span>
+        <svg class="drawer-item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+window.openNavDrawer = openNavDrawer;
+window.closeNavDrawer = closeNavDrawer;
+window.handleDrawerCategory = handleDrawerCategory;
+window.renderDrawerCategories = renderDrawerCategories;
 
 // -----------------------------------------------------------------------------
 // COUPON ENGINE
@@ -1951,12 +2047,20 @@ function checkAuthStatus() {
 
   // Strict Security Rule: Hide the Admin link for regular clients/visitors!
   // Only show the Admin link if the authenticated user has role === 'admin'
+  const isAdmin = (state.user && state.token && state.user.role === 'admin');
   if (adminLink) {
-    if (state.user && state.token && state.user.role === 'admin') {
-      adminLink.style.display = 'inline-flex';
-    } else {
-      adminLink.style.display = 'none';
-    }
+    adminLink.style.display = isAdmin ? 'inline-flex' : 'none';
+  }
+
+  // Sync Drawer Admin and Auth buttons
+  const drawerAdminItem = document.getElementById('drawerAdminItem');
+  if (drawerAdminItem) {
+    drawerAdminItem.style.display = isAdmin ? 'flex' : 'none';
+  }
+
+  const drawerAuthBtnText = document.getElementById('drawerAuthBtnText');
+  if (drawerAuthBtnText) {
+    drawerAuthBtnText.textContent = (state.user && state.token) ? (state.user.full_name || 'My Account') : 'Sign In / Register';
   }
 
   if (!authBtn) return;
@@ -2450,6 +2554,17 @@ function initEventListeners() {
       const item = q.parentElement;
       item.classList.toggle('active');
     });
+  });
+
+  // Global ESC key listener to close open drawers and modals
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (typeof closeNavDrawer === 'function') closeNavDrawer();
+      if (typeof closeCartDrawer === 'function') closeCartDrawer();
+      if (typeof closeTrackOrderModal === 'function') closeTrackOrderModal();
+      if (typeof closeAuthModal === 'function') closeAuthModal();
+      if (typeof closeProductDetail === 'function') closeProductDetail();
+    }
   });
 
   // Secret Admin Shortcut for Store Owner (Ctrl + Alt + A)
