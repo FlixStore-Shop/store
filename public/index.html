@@ -40,9 +40,9 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/css/styles.css?v=7.3">
-  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=7.3">
-  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=7.3">
+  <link rel="stylesheet" href="/css/styles.css?v=7.4">
+  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=7.4">
+  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=7.4">
 </head>
 <body>
 
@@ -999,64 +999,108 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
+        <!-- Col 1: Brand & Trust -->
         <div class="footer-col">
-          <div class="brand-logo" style="margin-bottom:14px;">
-            <img src="/assets/flixstore-icon.png?v=7.2" alt="FlixStore" class="brand-logo-img" style="height:34px; width:34px;">
+          <div class="brand-logo" style="margin-bottom:12px;">
+            <img src="/assets/flixstore-icon.png?v=7.4" alt="FlixStore" class="brand-logo-img" style="height:34px; width:34px;">
             <span class="brand-logo-text">FLIX STORE</span>
           </div>
-          <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:16px;">
-            The world's most trusted digital subscription hub. Delivering genuine OTT entertainment, AI tools, and creative cloud suites with instant automated fulfillment.
+          <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:16px; font-size:0.86rem;">
+            Your non-stop stream shop. Delivering genuine OTT entertainment, AI productivity tools, and creative suites with instant automated fulfillment across Bangladesh.
           </p>
-          <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
-            <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20want%20to%20inquire%20about%20a%20subscription" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#25D366; color:#ffffff; padding:8px 16px; font-size:0.82rem; box-shadow:0 3px 12px rgba(37,211,102,0.3); text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-              <span>💬</span> WhatsApp
-            </a>
-            <a href="https://www.facebook.com/FlixStore.org" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:8px 16px; font-size:0.82rem; border-color:rgba(24,119,242,0.5); color:#60a5fa; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-              <span>📘</span> Facebook
-            </a>
+          <div class="footer-trust-list">
+            <div class="footer-trust-item">
+              <svg class="trust-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>100% authentic</span>
+            </div>
+            <div class="footer-trust-item">
+              <svg class="trust-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Verified sellers</span>
+            </div>
+            <div class="footer-trust-item">
+              <svg class="trust-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              <span>Expert support</span>
+            </div>
           </div>
         </div>
 
+        <!-- Col 2: Information Section (Reference Matched) -->
         <div class="footer-col">
-          <h4>Popular OTT</h4>
-          <ul class="footer-links">
-            <li><a href="javascript:void(0)" onclick="openProductDetail('netflix-premium-4k-uhd')">Netflix Premium 4K</a></li>
-            <li><a href="javascript:void(0)" onclick="openProductDetail('amazon-prime-video')">Amazon Prime Video</a></li>
-            <li><a href="javascript:void(0)" onclick="openProductDetail('crunchyroll-mega-fan')">Crunchyroll Mega Fan</a></li>
-            <li><a href="javascript:void(0)" onclick="openProductDetail('hoichoi-premium')">Hoichoi Premium</a></li>
-            <li><a href="javascript:void(0)" onclick="openProductDetail('chorki-premium')">Chorki Premium</a></li>
+          <h4>Information</h4>
+          <ul class="footer-links footer-info-links">
+            <li><a href="/terms" onclick="openInfoModal('terms', event)"><span>📜</span> Terms & Conditions</a></li>
+            <li><a href="/refund-policy" onclick="openInfoModal('refund', event)"><span>🔄</span> Return & Refund Policy</a></li>
+            <li><a href="/contact-us" onclick="openInfoModal('contact', event)"><span>📞</span> Contact Us</a></li>
+            <li><a href="/about-us" onclick="openInfoModal('about', event)"><span>🏠</span> About Us</a></li>
+            <li><a href="/delivery-policy" onclick="openInfoModal('delivery', event)"><span>🚚</span> Delivery Policy</a></li>
+            <li><a href="/privacy-policy" onclick="openInfoModal('privacy', event)"><span>🔒</span> Privacy Policy</a></li>
           </ul>
         </div>
 
+        <!-- Col 3: Popular Subscriptions -->
         <div class="footer-col">
-          <h4>AI & Tools</h4>
+          <h4>Popular Subscriptions</h4>
           <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="openProductDetail('netflix-premium-4k-uhd')">Netflix Premium 4K UHD</a></li>
             <li><a href="javascript:void(0)" onclick="openProductDetail('chatgpt-plus-openai')">ChatGPT Plus (o1 & 4o)</a></li>
-            <li><a href="javascript:void(0)" onclick="openProductDetail('claude-pro-anthropic')">Claude Pro Sonnet</a></li>
-            <li><a href="javascript:void(0)" onclick="openProductDetail('midjourney-pro-plan')">Midjourney Pro</a></li>
-            <li><a href="javascript:void(0)" onclick="openProductDetail('adobe-creative-cloud-all-apps')">Adobe Creative Cloud</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('amazon-prime-video')">Amazon Prime Video</a></li>
             <li><a href="javascript:void(0)" onclick="openProductDetail('canva-pro-subscription')">Canva Pro Lifetime</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('youtube-premium')">YouTube Premium Family</a></li>
+            <li><a href="javascript:void(0)" onclick="openProductDetail('spotify-premium')">Spotify Premium Family</a></li>
           </ul>
         </div>
 
+        <!-- Col 4: Contact & We accept -->
         <div class="footer-col">
-          <h4>Security & Legal</h4>
-          <ul class="footer-links">
-            <li><a href="javascript:void(0)" onclick="openTrackOrderModal()">Track My Order</a></li>
-            <li><a href="javascript:void(0)" onclick="openAuthModal()">Customer Account</a></li>
-            <li><a href="javascript:void(0)">Warranty Policy</a></li>
-            <li><a href="javascript:void(0)">256-Bit SSL Encryption</a></li>
-            <li><a href="javascript:void(0)">Instant Refund Terms</a></li>
-          </ul>
+          <h4>Contact</h4>
+          <div class="footer-contact-details">
+            <div class="contact-item">
+              <a href="tel:01343546958" class="contact-link">01343546958</a>
+            </div>
+            <div class="contact-item">
+              <span>WhatsApp: </span>
+              <a href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="contact-link">8801343546958</a>
+            </div>
+            <div class="contact-item">
+              <a href="mailto:flixstore.officials@gmail.com" class="contact-link">flixstore.officials@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="we-accept-section" style="margin-top:20px;">
+            <h5 class="we-accept-title">We accept</h5>
+            <div class="payment-badges-row">
+              <span class="mfs-badge bkash-badge" title="bKash (Personal & Merchant)">
+                <span class="mfs-badge-dot bkash-dot"></span>
+                <span class="mfs-badge-name">bKash</span>
+              </span>
+              <span class="mfs-badge nagad-badge" title="Nagad (Personal & Merchant)">
+                <span class="mfs-badge-dot nagad-dot"></span>
+                <span class="mfs-badge-name">নগদ</span>
+              </span>
+              <span class="mfs-badge rocket-badge" title="Rocket DBBL">
+                <span class="mfs-badge-dot rocket-dot"></span>
+                <span class="mfs-badge-name">Rocket</span>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- Footer Bottom Bar -->
       <div class="footer-bottom">
-        <div>© 2026 FlixStore Inc. All rights reserved. Built with pride for seamless streaming.</div>
-        <div style="display:flex; gap:16px;">
-          <span>🔒 256-Bit Bank Grade SSL</span>
-          <span>⚡ Automated Credential Vault</span>
-          <span>🛡️ Verified Seller</span>
+        <div class="footer-social-links">
+          <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="social-circle-link" title="YouTube" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="social-circle-link" title="WhatsApp Support" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.97.567 3.81 1.545 5.373L2 22l4.757-1.514A9.972 9.972 0 0 0 12.031 22C17.567 22 22 17.505 22 12.031 22 6.495 17.567 2 12.031 2zm5.792 14.288c-.244.686-1.22 1.307-1.745 1.365-.487.054-1.12.079-3.626-.957-3.197-1.32-5.267-4.57-5.426-4.783-.16-.213-1.294-1.722-1.294-3.284 0-1.562.819-2.332 1.109-2.651.29-.319.633-.399.844-.399.21 0 .422 0 .607.01.196.01.458-.074.717.55.264.633.9 2.197.978 2.357.079.16.132.348.026.56-.105.213-.158.348-.316.533-.159.186-.334.415-.477.557-.16.16-.328.334-.141.655.186.32.827 1.367 1.775 2.212 1.222 1.088 2.253 1.424 2.573 1.583.32.16.507.133.693-.08.187-.213.794-.925 1.006-1.242.211-.318.423-.265.714-.159.29.106 1.848.872 2.165 1.03.317.16.529.238.608.37.079.133.079.768-.165 1.454z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/FlixStore.org" target="_blank" rel="noopener noreferrer" class="social-circle-link" title="Facebook Page" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+        </div>
+        <div class="footer-copyright-text">
+          © 2026 FlixStore — Your Non-Stop Stream Shop. All Rights Reserved.
         </div>
       </div>
     </div>
@@ -1209,6 +1253,66 @@
               <div class="drawer-item-col">
                 <span class="drawer-item-text">Payment Methods & FAQ</span>
                 <span class="drawer-item-sub">bKash, Nagad, Rocket, Cards, USDT</span>
+              </div>
+              <svg class="drawer-item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Section: Information & Policies -->
+        <div class="drawer-section">
+          <div class="drawer-section-title">Information & Policies</div>
+          <div class="drawer-nav-list">
+            <a href="/terms" class="drawer-nav-item" onclick="handleDrawerNav('terms', event)">
+              <span class="drawer-item-icon">📜</span>
+              <div class="drawer-item-col">
+                <span class="drawer-item-text">Terms & Conditions</span>
+                <span class="drawer-item-sub">Official subscription service rules</span>
+              </div>
+              <svg class="drawer-item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+
+            <a href="/refund-policy" class="drawer-nav-item" onclick="handleDrawerNav('refund', event)">
+              <span class="drawer-item-icon">🔄</span>
+              <div class="drawer-item-col">
+                <span class="drawer-item-text">Return & Refund Policy</span>
+                <span class="drawer-item-sub">Protection & dispute guidelines</span>
+              </div>
+              <svg class="drawer-item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+
+            <a href="/delivery-policy" class="drawer-nav-item" onclick="handleDrawerNav('delivery-policy', event)">
+              <span class="drawer-item-icon">🚚</span>
+              <div class="drawer-item-col">
+                <span class="drawer-item-text">Delivery Policy</span>
+                <span class="drawer-item-sub">5–10 min automated dispatch</span>
+              </div>
+              <svg class="drawer-item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+
+            <a href="/privacy-policy" class="drawer-nav-item" onclick="handleDrawerNav('privacy', event)">
+              <span class="drawer-item-icon">🔒</span>
+              <div class="drawer-item-col">
+                <span class="drawer-item-text">Privacy Policy</span>
+                <span class="drawer-item-sub">256-bit encryption & zero spam</span>
+              </div>
+              <svg class="drawer-item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+
+            <a href="/about-us" class="drawer-nav-item" onclick="handleDrawerNav('about', event)">
+              <span class="drawer-item-icon">🏠</span>
+              <div class="drawer-item-col">
+                <span class="drawer-item-text">About Us</span>
+                <span class="drawer-item-sub">Established 2020 in Bangladesh</span>
+              </div>
+              <svg class="drawer-item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+
+            <a href="/contact-us" class="drawer-nav-item" onclick="handleDrawerNav('contact', event)">
+              <span class="drawer-item-icon">📞</span>
+              <div class="drawer-item-col">
+                <span class="drawer-item-text">Contact Us</span>
+                <span class="drawer-item-sub">01343546958 • 10 AM – 12 AM</span>
               </div>
               <svg class="drawer-item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </a>
@@ -1649,6 +1753,53 @@
     </div>
   </div>
 
+  <!-- Information & Policy Center In-Page Modal -->
+  <div id="infoModalOverlay" class="modal-overlay" onclick="closeInfoModal()">
+    <div class="modal-box info-modal-dialog" onclick="event.stopPropagation()">
+      <div class="info-modal-header">
+        <div class="info-modal-title-group">
+          <h3 id="infoModalHeaderTitle"><span>📜</span> Terms & Conditions</h3>
+          <p class="info-modal-subtitle" id="infoModalHeaderSubtitle">Official Customer Terms & Conditions</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeInfoModal()" aria-label="Close dialog" style="position:static;">✕</button>
+      </div>
+
+      <div class="info-modal-tabs">
+        <button class="info-tab-btn active" data-tab="terms" onclick="switchInfoModalTab('terms')">
+          <span>📜</span> Terms & Conditions
+        </button>
+        <button class="info-tab-btn" data-tab="refund" onclick="switchInfoModalTab('refund')">
+          <span>🔄</span> Return & Refund
+        </button>
+        <button class="info-tab-btn" data-tab="delivery" onclick="switchInfoModalTab('delivery')">
+          <span>🚚</span> Delivery Policy
+        </button>
+        <button class="info-tab-btn" data-tab="privacy" onclick="switchInfoModalTab('privacy')">
+          <span>🔒</span> Privacy Policy
+        </button>
+        <button class="info-tab-btn" data-tab="about" onclick="switchInfoModalTab('about')">
+          <span>🏠</span> About Us
+        </button>
+        <button class="info-tab-btn" data-tab="contact" onclick="switchInfoModalTab('contact')">
+          <span>📞</span> Contact Us
+        </button>
+      </div>
+
+      <div class="info-modal-body" id="infoModalBody">
+        <!-- Rendered dynamically by switchInfoModalTab -->
+      </div>
+
+      <div class="info-modal-footer">
+        <a href="/terms" id="infoModalFullPageLink" class="btn-secondary" style="font-size:0.84rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+          <span>↗</span> Open Full Policy Page
+        </a>
+        <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%20Support%2C%20I%20have%20a%20question%20about%20policies" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#25D366; color:#ffffff; font-size:0.84rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+          <span>💬</span> WhatsApp Support
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- 6. Customer Authentication Modal (Sign In / Sign Up / OTP Verification / Digital Profile) -->
   <div id="authModal" class="modal-overlay" onclick="closeAuthModal()">
     <div class="modal-box" id="authModalBox" style="max-width:460px;" onclick="event.stopPropagation()">
@@ -2043,6 +2194,6 @@
   </a>
 
   <!-- Core App Logic -->
-  <script src="/js/app.js?v=7.3"></script>
+  <script src="/js/app.js?v=7.4"></script>
 </body>
 </html>

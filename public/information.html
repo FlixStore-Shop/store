@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="theme-color" content="#ffffff">
+  <title>Information & Policy Center | FlixStore Official</title>
+  <meta name="description" content="Read FlixStore's official Terms & Conditions, Return & Refund Policy, Delivery Times, Privacy Policy, About Us, and Customer Support channels.">
+  <link rel="canonical" href="https://store-q51q.onrender.com/information">
+
+  <link rel="stylesheet" href="/css/styles.css?v=7.4">
+  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=7.4">
+  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=7.4">
+
+  <style>
+    /* Dedicated Information Center Styles */
+    .info-page-wrap {
+      padding: 36px 0 70px;
+      min-height: calc(100vh - 280px);
+    }
+    .info-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .info-breadcrumb a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .info-breadcrumb a:hover {
+      color: var(--accent-blue);
+    }
+
+    .info-hero-card {
+      background: linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(238,43,105,0.06) 100%);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 32px 36px;
+      margin-bottom: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+    .info-hero-text h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .info-hero-text p {
+      color: var(--text-secondary);
+      font-size: 0.96rem;
+      max-width: 680px;
+      line-height: 1.6;
+    }
+    .info-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(37,99,235,0.1);
+      color: var(--accent-blue);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    /* Main 2-column layout */
+    .info-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    /* Sidebar Navigation */
+    .info-sidebar {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      position: sticky;
+      top: 96px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+    }
+    .info-nav-header {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      padding: 10px 14px 8px;
+    }
+    .info-nav-btn {
+      width: 100%;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      margin-bottom: 4px;
+    }
+    .info-nav-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    .info-nav-btn.active {
+      background: rgba(37,99,235,0.09);
+      color: var(--accent-blue);
+      border-color: rgba(37,99,235,0.25);
+      font-weight: 700;
+    }
+    .info-nav-btn span.tab-icon {
+      font-size: 1.15rem;
+      width: 22px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    /* Policy Content Pane */
+    .info-content-card {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 36px 42px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+    .policy-pane {
+      display: none;
+      animation: fadeInPolicy 0.25s ease-out;
+    }
+    .policy-pane.active {
+      display: block;
+    }
+    @keyframes fadeInPolicy {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .policy-header {
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .policy-title-area h2 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .policy-meta {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .policy-meta span.badge {
+      background: rgba(16,185,129,0.1);
+      color: #10b981;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.76rem;
+    }
+
+    /* Policy Body Formatting */
+    .policy-body {
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      line-height: 1.75;
+    }
+    .policy-body p {
+      margin-bottom: 16px;
+      color: var(--text-secondary);
+    }
+    .policy-body h3, .policy-body h4 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 28px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .policy-body ul {
+      margin: 0 0 20px 20px;
+      padding: 0;
+      list-style-type: none;
+    }
+    .policy-body ul li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 10px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .policy-body ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent-blue);
+      font-weight: bold;
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    /* Cards inside policy */
+    .policy-callout {
+      background: rgba(37,99,235,0.05);
+      border-left: 4px solid var(--accent-blue);
+      padding: 18px 22px;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 20px 0;
+    }
+    .policy-callout.warning {
+      background: rgba(245,158,11,0.07);
+      border-left-color: #f59e0b;
+    }
+    .policy-callout.success {
+      background: rgba(16,185,129,0.07);
+      border-left-color: #10b981;
+    }
+    .policy-callout h5 {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .policy-callout p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    /* Grid cards for times & fees */
+    .policy-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .policy-stat-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      transition: transform 0.2s;
+    }
+    .policy-stat-card:hover {
+      transform: translateY(-2px);
+    }
+    .policy-stat-title {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .policy-stat-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .policy-stat-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Quick Copy Box */
+    .copy-box-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--glass-border);
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+    }
+    .copy-box-label {
+      font-weight: 700;
+      color: var(--text-primary);
+      min-width: 140px;
+      font-size: 0.88rem;
+    }
+    .copy-box-val {
+      font-family: monospace;
+      font-size: 0.95rem;
+      color: var(--accent-blue);
+      flex: 1;
+    }
+    .copy-btn-mini {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 5px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn-mini:hover {
+      background: var(--accent-blue);
+      color: #ffffff;
+      border-color: var(--accent-blue);
+    }
+
+    /* Help Banner */
+    .policy-help-banner {
+      margin-top: 40px;
+      background: linear-gradient(135deg, rgba(37,211,102,0.08) 0%, rgba(37,99,235,0.06) 100%);
+      border: 1px solid rgba(37,211,102,0.3);
+      border-radius: var(--radius-md);
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .policy-help-text h4 {
+      margin: 0 0 6px 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .policy-help-text p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .info-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .info-sidebar {
+        position: static;
+        overflow-x: auto;
+        white-space: nowrap;
+        display: flex;
+        gap: 8px;
+        padding: 10px;
+      }
+      .info-nav-header {
+        display: none;
+      }
+      .info-nav-btn {
+        width: auto;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        margin-bottom: 0;
+      }
+      .info-hero-card {
+        padding: 24px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .info-content-card {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glow Background -->
+  <div class="ambient-glow"></div>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-announcement">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <span class="badge-pill">🔥 MEGA SALE</span>
+        Use coupon code <strong>FLIXVIP</strong> for <strong>15% OFF</strong> • Over <strong>48,500+</strong> genuine subscriptions delivered • Instant automated dispatch active!
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;" class="desktop-only">
+        <a href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="badge-pill" style="background:#25D366; color:#ffffff; text-decoration:none; display:inline-flex; align-items:center; gap:5px; font-size:0.75rem; padding:3px 10px; font-weight:600; border-radius:12px;">
+          <span>💬</span> WhatsApp
+        </a>
+        <a href="https://www.facebook.com/FlixStore.org" target="_blank" rel="noopener noreferrer" class="badge-pill" style="background:#1877F2; color:#ffffff; text-decoration:none; display:inline-flex; align-items:center; gap:5px; font-size:0.75rem; padding:3px 10px; font-weight:600; border-radius:12px;">
+          <span>📘</span> Facebook
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Sticky Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <div class="header-left-group">
+          <!-- Back to Storefront Link -->
+          <a href="/" class="brand-logo" aria-label="FlixStore Home">
+            <img src="/assets/flixstore-icon.png?v=7.4" alt="FlixStore" class="brand-logo-img">
+            <span class="brand-logo-text">FLIX STORE</span>
+          </a>
+        </div>
+
+        <div class="header-actions">
+          <div class="currency-select-box" title="Store Currency: BDT">
+            <div class="currency-select" style="display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--text-primary); cursor:default; user-select:none; letter-spacing:0.5px;">
+              <span>BDT</span>
+            </div>
+          </div>
+
+          <a href="/" class="action-btn desktop-only" style="text-decoration:none;">
+            <span>Browse Products</span>
+          </a>
+
+          <a href="/#faqSection" class="action-btn desktop-only" style="text-decoration:none;">
+            <span>FAQ</span>
+          </a>
+
+          <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20have%20a%20question%20about%20policies" target="_blank" rel="noopener noreferrer" class="action-btn" style="color:#25D366; text-decoration:none; display:flex; align-items:center; gap:6px;">
+            <span>💬</span> <span class="desktop-only">Helpline</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Information Center Main Body -->
+  <main class="info-page-wrap">
+    <div class="container">
+
+      <!-- Breadcrumbs -->
+      <div class="info-breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>Information</span>
+        <span>/</span>
+        <strong id="activeBreadcrumbLabel">Terms & Conditions</strong>
+      </div>
+
+      <!-- Hero Header Banner -->
+      <div class="info-hero-card">
+        <div class="info-hero-text">
+          <div class="info-hero-badge">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Official Customer Trust & Legal Policies
+          </div>
+          <h1>FlixStore Information & Policy Center</h1>
+          <p>
+            Welcome to the official transparency hub for FlixStore. Here you will find our comprehensive guidelines regarding instant digital delivery, warranty, return policies, user data protection, and direct contact channels.
+          </p>
+        </div>
+        <div class="desktop-only">
+          <img src="/assets/flixstore-icon.png?v=7.4" alt="FlixStore Shield" style="width:76px; height:76px; opacity:0.9;">
+        </div>
+      </div>
+
+      <!-- 2-Column Information Layout -->
+      <div class="info-layout">
+
+        <!-- Left Navigation Sidebar -->
+        <aside class="info-sidebar">
+          <div class="info-nav-header">Information & Policies</div>
+
+          <button class="info-nav-btn" data-target="terms" onclick="selectTab('terms')">
+            <span class="tab-icon">📜</span>
+            <span>Terms & Conditions</span>
+          </button>
+
+          <button class="info-nav-btn" data-target="refund" onclick="selectTab('refund')">
+            <span class="tab-icon">🔄</span>
+            <span>Return & Refund Policy</span>
+          </button>
+
+          <button class="info-nav-btn" data-target="delivery" onclick="selectTab('delivery')">
+            <span class="tab-icon">🚚</span>
+            <span>Delivery Policy</span>
+          </button>
+
+          <button class="info-nav-btn" data-target="privacy" onclick="selectTab('privacy')">
+            <span class="tab-icon">🔒</span>
+            <span>Privacy Policy</span>
+          </button>
+
+          <button class="info-nav-btn" data-target="about" onclick="selectTab('about')">
+            <span class="tab-icon">🏠</span>
+            <span>About Us</span>
+          </button>
+
+          <button class="info-nav-btn" data-target="contact" onclick="selectTab('contact')">
+            <span class="tab-icon">📞</span>
+            <span>Contact Us</span>
+          </button>
+        </aside>
+
+        <!-- Right Content Cards -->
+        <section class="info-content-card">
+
+          <!-- TAB 1: Terms & Conditions -->
+          <div id="pane-terms" class="policy-pane">
+            <div class="policy-header">
+              <div class="policy-title-area">
+                <h2><span>📜</span> Terms & Conditions</h2>
+                <div class="policy-meta">
+                  <span>সর্বশেষ আপডেট: ২৪ সেপ্টেম্বর ২০২৬</span>
+                  <span class="badge">Official Legal Terms</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-body">
+              <p>
+                <strong>FlixStore</strong>-এ অর্ডার সম্পন্ন করার মাধ্যমে আপনি নিচের শর্তাবলিতে পূর্ণ সম্মতি প্রদান করছেন। আমাদের সকল সেবা ডিজিটাল বিধায় এই শর্তাবলি কার্যকরভাবে ক্রেতা ও বিক্রেতা উভয়পক্ষের স্বার্থ সংরক্ষণ করে।
+              </p>
+
+              <div class="policy-callout">
+                <h5>📌 আবশ্যকীয় নির্দেশনা</h5>
+                <p>অর্ডার কনফার্ম করার পূর্বে পণ্যের বিবরণ (Description), ফিচার, প্রয়োজনীয় ডিভাইস সামঞ্জস্যতা (Compatibility) এবং ওয়ারেন্টি শর্তাবলি সতর্কতার সাথে পড়ে নিন।</p>
+              </div>
+
+              <h3>1. Order (অর্ডার প্রক্রিয়া)</h3>
+              <ul>
+                <li>অর্ডারের সময় সঠিক নাম, সক্রিয় মোবাইল নম্বর ও বৈধ Email Address প্রদান করতে হবে।</li>
+                <li>Order Confirm হওয়ার পূর্বে Product পরিবর্তনের অনুরোধ জানানো যাবে।</li>
+                <li>Order Confirm ও প্রসেসিং সম্পন্ন হওয়ার পর কোনো Product পরিবর্তন, বাতিল বা রিফান্ড গ্রহণযোগ্য হবে না।</li>
+                <li>অর্ডারের পূর্বে Product-এর Description, Features, Compatibility ও Warranty দেখে নেওয়া ক্রেতার দায়িত্ব।</li>
+              </ul>
+
+              <h3>2. Refund Policy (রিফান্ড সংক্রান্ত)</h3>
+              <ul>
+                <li>সফল Delivery বা Activation সম্পন্ন হওয়ার পর কোনো Refund প্রযোজ্য নয়।</li>
+                <li>Payment সফল হলেও অর্ডার সম্পন্ন না হলে যথাযথ যাচাই সাপেক্ষে সম্পূর্ণ Refund প্রদান করা হবে।</li>
+                <li>FlixStore-এর নিজস্ব সীমাবদ্ধতার কারণে Product/Service Delivery সম্ভব না হলে পণ্যের সম্পূর্ণ মূল্য Refund করা হবে।</li>
+                <li>Customer-এর নিজস্ব অনুরোধে Refund অনুমোদিত হলে ১০% Gateway ও Processing Charge কেটে অবশিষ্ট ৯০% অর্থ Refund করা হবে।</li>
+                <li>Payment Provider বা মোবাইল ব্যাংকিং গেটওয়ের অতিরিক্ত চার্জ থাকলে তা Customer বহন করবেন।</li>
+              </ul>
+
+              <h3>3. Return Policy (রিটার্ন)</h3>
+              <ul>
+                <li>যেহেতু আমাদের সকল পণ্য ডিজিটাল সফটওয়্যার ও অনলাইন একাউন্ট লাইসেন্স, তাই Delivery বা Activation-এর পর কোনো ফিজিক্যাল Return গ্রহণ করা হয় না।</li>
+              </ul>
+
+              <h3>4. Warranty (ওয়ারেন্টি ও প্রতিস্থাপন)</h3>
+              <ul>
+                <li>প্রতিটি Product-এর Warranty Period সংশ্লিষ্ট পণ্যের পাতায় আলাদাভাবে নির্ধারিত রয়েছে।</li>
+                <li>Warranty মেয়াদের মধ্যে কোনো অনাকাঙ্ক্ষিত সমস্যা দেখা দিলে যাচাই সাপেক্ষে তাৎক্ষণিক Replacement বা সমাধান প্রদান করা হবে।</li>
+                <li>ডিভাইস জনিত সমস্যা, দুর্বল ইন্টারনেট সংযোগ, থার্ড পার্টি সফটওয়্যার বা Customer-এর ভুল ব্যবহারের কারণে সৃষ্ট জটিলতায় Warranty প্রযোজ্য নয়।</li>
+                <li>Warranty মেয়াদ অতিক্রান্ত হওয়ার পর কোনো Warranty Claim গ্রহণ করা হবে না।</li>
+              </ul>
+
+              <h3>5. Delivery (ডেলিভারি মাধ্যম)</h3>
+              <ul>
+                <li>Digital Product সাধারণত WhatsApp, Email বা নিরাপদ ডিজিটাল ভল্টের মাধ্যমে সরবরাহ করা হয়।</li>
+                <li>Customer-কে সর্বদা সক্রিয় ও নির্ভুল Email Address এবং WhatsApp নম্বর প্রদান করতে হবে।</li>
+                <li>Payment Verification ও টেকনিক্যাল এভেইলেবিলিটি অনুযায়ী ডেলিভারি সময় সামান্য পরিবর্তিত হতে পারে।</li>
+              </ul>
+
+              <h3>6. Technical Support & Remote Assistance</h3>
+              <p>
+                প্রয়োজনে জটিল কনফিগারেশনের ক্ষেত্রে Technical Support বা Remote Support প্রদান করা হতে পারে। Remote Support-এর জন্য AnyDesk, TeamViewer বা AnyViewer ব্যবহার করা হতে পারে।
+              </p>
+
+              <h3>7. Payment Charges (পেমেন্ট গেটওয়ে চার্জেস)</h3>
+              <p>বিভিন্ন পেমেন্ট মাধ্যমে প্রযোজ্য চার্জের তালিকা নিম্নরূপ:</p>
+              
+              <div class="policy-card-grid">
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">bKash MFS</div>
+                  <div class="policy-stat-value" style="color:#E2136E;">১.৮০%</div>
+                  <div class="policy-stat-desc">Send Money / Merchant Gateway</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">Nagad MFS</div>
+                  <div class="policy-stat-value" style="color:#F7931E;">১.১৫%</div>
+                  <div class="policy-stat-desc">Official Merchant Fee</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">Rocket DBBL</div>
+                  <div class="policy-stat-value" style="color:#8C3494;">১.৬০%</div>
+                  <div class="policy-stat-desc">DBBL Mobile Gateway</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">Upay MFS</div>
+                  <div class="policy-stat-value" style="color:#0072CE;">১.০০%</div>
+                  <div class="policy-stat-desc">Standard Gateway Charge</div>
+                </div>
+              </div>
+              <p style="font-size:0.86rem; color:var(--text-muted);">
+                * Manual Bank Payment-এ কোনো অতিরিক্ত চার্জ প্রযোজ্য নয়।
+              </p>
+
+              <h3>8. Customer Responsibility (গ্রাহকের দায়িত্ব)</h3>
+              <p>
+                Customer-এর Account, Email ও Login Information নিরাপদ রাখা এবং সংশ্লিষ্ট সার্ভিস প্রোভাইডারের Terms & Conditions মেনে চলা গ্রাহকের একান্ত দায়িত্ব।
+              </p>
+
+              <h3>9. Terms Update (শর্তাবলি পরিবর্তন)</h3>
+              <p>
+                FlixStore প্রয়োজন অনুযায়ী যেকোনো সময় এই Terms & Conditions পরিমার্জন বা আপডেট করতে পারে। Updated Terms ওয়েবসাইটে প্রকাশের সাথে সাথেই কার্যকর বলে গণ্য হবে।
+              </p>
+
+              <div style="margin-top:28px; padding-top:16px; border-top:1px solid var(--glass-border); font-size:0.84rem; color:var(--text-muted);">
+                © 2026 FlixStore Inc. All Rights Reserved.
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: Return & Refund Policy -->
+          <div id="pane-refund" class="policy-pane">
+            <div class="policy-header">
+              <div class="policy-title-area">
+                <h2><span>🔄</span> Return & Refund Policy</h2>
+                <div class="policy-meta">
+                  <span>সর্বশেষ আপডেট: ২৪ সেপ্টেম্বর ২০২৬</span>
+                  <span class="badge">Guaranteed Protection</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-body">
+              <p>
+                <strong>FlixStore</strong>-এর সকল পণ্য ও সেবা সম্পূর্ণ ডিজিটাল ফরম্যাটে সরবরাহ করা হয়। তাই ডেলিভারি বা অ্যাক্টিভেশনের পর সাধারণত কোনো রিটার্ন গ্রহণ করা হয় না। গ্রাহকদের স্বচ্ছ ধারণা নিশ্চিত করতে আমাদের সুনির্দিষ্ট নীতিমালা নিচে বর্ণিত হলো।
+              </p>
+
+              <h3>📌 Return Policy (রিটার্ন নীতিমালা)</h3>
+              <ul>
+                <li>Order Confirm হওয়ার পূর্বে পণ্য পরিবর্তনের অনুরোধ করা যাবে।</li>
+                <li>Order Confirm ও ক্রেডেনশিয়াল সরবরাহের পর পণ্য পরিবর্তন বা Return করা যাবে না।</li>
+                <li>ভুল পণ্য নির্বাচন বা ব্যক্তিগত পছন্দ পরিবর্তনের জন্য Return বা Refund প্রযোজ্য নয়।</li>
+              </ul>
+
+              <h3>💰 Refund Policy (রিফান্ড নীতিমালা)</h3>
+              <ul>
+                <li>সফলভাবে Delivery/Activation সম্পন্ন হলে রিফান্ড প্রদান করা হবে না।</li>
+                <li>Payment সফল হওয়া সত্ত্বেও প্রযুক্তিগত জটিলতায় পণ্য/সেবা ডেলিভারি দেওয়া সম্ভব না হলে সম্পূর্ণ মূল্য Refund প্রযোজ্য।</li>
+                <li>FlixStore-এর নিজস্ব স্টক বা টেকনিক্যাল ত্রুটির কারণে Order সম্পন্ন করা সম্ভব না হলে পণ্যের সম্পূর্ণ মূল্য অবিলম্বে রিফান্ড করা হবে।</li>
+                <li>Customer-এর অনুরোধে রিফান্ড অনুমোদিত হলে ১০% Processing/Gateway Charge কেটে অবশিষ্ট ৯০% রিফান্ড করা হবে।</li>
+              </ul>
+
+              <div class="policy-callout warning">
+                <h5>⏱️ Refund Processing সময়সীমা</h5>
+                <p>
+                  • <strong>bKash / Nagad / Rocket (MFS):</strong> ১ থেকে ২৪ ঘণ্টার মধ্যে সরাসরি প্রেরিত হয়।<br>
+                  • <strong>Bank / Online Payment Gateway:</strong> ব্যাংকের কার্যদিবস অনুযায়ী ৩ থেকে ৭ কর্মদিবস সময় লাগতে পারে।
+                </p>
+              </div>
+
+              <h3>📞 রিফান্ড সংক্রান্ত সহায়তা</h3>
+              <p>Refund বা Order সংক্রান্ত যেকোনো তথ্যে আমাদের সাপোর্ট সেন্টারে যোগাযোগ করুন:</p>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">📱 WhatsApp / Call</span>
+                <span class="copy-box-val" id="refPhone">01343546958</span>
+                <button class="copy-btn-mini" onclick="copyText('refPhone')">Copy</button>
+              </div>
+              <div class="copy-box-row">
+                <span class="copy-box-label">📧 Official Email</span>
+                <span class="copy-box-val" id="refEmail">flixstore.officials@gmail.com</span>
+                <button class="copy-btn-mini" onclick="copyText('refEmail')">Copy</button>
+              </div>
+
+              <p style="font-size:0.86rem; color:var(--text-muted); margin-top:20px;">
+                * Order করার মাধ্যমে আপনি এই Return & Refund Policy-এর শর্তাবলি মেনে নিচ্ছেন।
+              </p>
+            </div>
+          </div>
+
+          <!-- TAB 3: Delivery Policy -->
+          <div id="pane-delivery" class="policy-pane">
+            <div class="policy-header">
+              <div class="policy-title-area">
+                <h2><span>🚚</span> Delivery Policy</h2>
+                <div class="policy-meta">
+                  <span>স্বয়ংক্রিয় ডিজিটাল ডেলিভারি</span>
+                  <span class="badge">Average 5–10 Mins</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-body">
+              <p>
+                <strong>FlixStore</strong>-এ আমরা যত দ্রুত সম্ভব আপনার ডিজিটাল অর্ডার ডেলিভারি করার চেষ্টা করি। তবে Product Type, Stock Availability এবং Account Type অনুযায়ী Delivery Time ভিন্ন হতে পারে।
+              </p>
+
+              <h3>⏱️ সাধারণ Delivery Time</h3>
+              <p>
+                আমাদের অধিকাংশ popular এবং in-stock products সাধারণত <strong>৫–১০ মিনিটের</strong> মধ্যে স্বয়ংক্রিয়ভাবে delivery করা হয়। তবে কিছু ক্ষেত্রে অর্ডার ভেরিফিকেশন ও একাউন্ট কাস্টমাইজেশনের কারণে অতিরিক্ত সময় লাগতে পারে।
+              </p>
+
+              <div class="policy-card-grid">
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">⚡ In-Stock / Popular</div>
+                  <div class="policy-stat-value" style="color:#10b981;">৫–১০ মিনিট</div>
+                  <div class="policy-stat-desc">Netflix, ChatGPT, Prime, Spotify</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">🕐 Regular Products</div>
+                  <div class="policy-stat-value" style="color:var(--accent-blue);">৩০মি – ৩ ঘণ্টা</div>
+                  <div class="policy-stat-desc">Creative & Professional Tools</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">👤 Personal Accounts</div>
+                  <div class="policy-stat-value" style="color:#f59e0b;">১ – ২৪ ঘণ্টা</div>
+                  <div class="policy-stat-desc">Personal Email Setup & Licensing</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">🕘 Special Accounts</div>
+                  <div class="policy-stat-value" style="color:#ec4899;">সর্বোচ্চ ২৪ ঘণ্টা</div>
+                  <div class="policy-stat-desc">Custom Enterprise Subscriptions</div>
+                </div>
+              </div>
+
+              <h3>👥 Shared Screen vs 👤 Private Profile</h3>
+              <p>
+                <strong>Shared Screen Account:</strong> আমাদের কিছু Shared Account আগে থেকেই stock-এ available থাকে। তাই এসব account-এর ক্ষেত্রে প্রায় ৫–১০ মিনিটের মধ্যে দ্রুত ডেলিভারি সম্ভব।<br><br>
+                <strong>Personal Account / Private Profile:</strong> Personal Account সাধারণত আগে থেকে stock করে রাখা হয় না। Order পাওয়ার পর customer-এর নির্দিষ্ট ইমেইলে account purchase ও security setup করতে হয়। তাই এতে কয়েক ঘণ্টা থেকে সর্বোচ্চ ২৪ ঘণ্টা সময় লাগতে পারে।
+              </p>
+
+              <div class="policy-callout warning">
+                <h5>⚠️ ডেলিভারি সংক্রান্ত জরুরি তথ্য</h5>
+                <p>
+                  • Delivery time estimated, guaranteed নয়।<br>
+                  • Stock available থাকলে order অতি দ্রুত ডেলিভারি করা হয়।<br>
+                  • কোনো অস্বাভাবিক delay দেখা দিলে Customer-কে WhatsApp বা Email-এ তাৎক্ষণিক আপডেট প্রদান করা হয়।
+                </p>
+              </div>
+
+              <h3>📩 ২৪ ঘণ্টার মধ্যে ডেলিভারি না পেলে</h3>
+              <p>
+                আপনার অর্ডার ২৪ ঘণ্টার মধ্যে না পেলে অনুগ্রহ করে আমাদের Customer Support টিমে আপনার <strong>Order ID</strong> সহ যোগাযোগ করুন:
+              </p>
+              <div class="copy-box-row">
+                <span class="copy-box-label">📞 Phone / WhatsApp</span>
+                <span class="copy-box-val" id="delPhone">01343546958</span>
+                <button class="copy-btn-mini" onclick="copyText('delPhone')">Copy</button>
+              </div>
+              <div class="copy-box-row">
+                <span class="copy-box-label">📧 Official Email</span>
+                <span class="copy-box-val" id="delEmail">flixstore.officials@gmail.com</span>
+                <button class="copy-btn-mini" onclick="copyText('delEmail')">Copy</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: Privacy Policy -->
+          <div id="pane-privacy" class="policy-pane">
+            <div class="policy-header">
+              <div class="policy-title-area">
+                <h2><span>🔒</span> Privacy & Data Security Policy</h2>
+                <div class="policy-meta">
+                  <span>গ্রাহকের তথ্যের শতভাগ নিরাপত্তা</span>
+                  <span class="badge">256-Bit SSL Secured</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-body">
+              <p>
+                FlixStore গ্রাহকের ব্যক্তিগত তথ্য ও আর্থিক লেনদেনের সর্বোচ্চ নিরাপত্তাকে সর্বাধিক প্রাধান্য দেয়। আমাদের ডেটা সুরক্ষা নীতি নিম্নরূপ:
+              </p>
+
+              <h3>🔐 Delivery Process (ডেলিভারি প্রক্রিয়া)</h3>
+              <ul>
+                <li>আমাদের সমস্ত সেবা অনলাইন ভিত্তিক হওয়ায় অর্ডার ক্রেডেনশিয়াল সরাসরি WhatsApp এবং নিরাপদ Email-এর মাধ্যমে প্রেরণ করা হয়।</li>
+                <li>ক্রেডেনশিয়াল হস্তান্তরের পর তা শুধুমাত্র ক্রেতার অ্যাক্সেসে সংরক্ষিত থাকে।</li>
+              </ul>
+
+              <h3>🛡️ User Data Usage (ব্যবহারকারীর তথ্যের ব্যবহার)</h3>
+              <ul>
+                <li><strong>কোনো বিজ্ঞাপনদাতার কাছে তথ্য বিক্রি নয়:</strong> আমরা গ্রাহকের কোনো ব্যক্তিগত তথ্য কোনো তৃতীয় পক্ষ বা বিজ্ঞাপন সংস্থার কাছে বিক্রি বা প্রকাশ করি না।</li>
+                <li><strong>শুধুমাত্র পণ্য ডেলিভারিতে ব্যবহার:</strong> সংগ্রহকৃত ফোন নম্বর এবং ইমেইল ঠিকানা শুধুমাত্র সংশ্লিষ্ট অর্ডারের ডেলিভারি, ইনভয়েস এবং ওয়ারেন্টি সাপোর্টের উদ্দেশ্যে সংরক্ষিত থাকে।</li>
+                <li><strong>নো স্প্যাম পলিসি:</strong> ব্যবহারকারীর তথ্য অযাচিত প্রমোশনাল কল বা স্প্যাম বার্তার জন্য ব্যবহার করা হয় না।</li>
+              </ul>
+
+              <h3>💳 Payment Transaction Security (পেমেন্ট লেনদেনের নিরাপত্তা)</h3>
+              <ul>
+                <li>আমরা ভেরিফাইড bKash, Nagad ও Rocket মার্চেন্ট পার্টনার। পেমেন্ট সরাসরি তাদের সিকিউর অফিসিয়াল পেমেন্ট গেটওয়ের মাধ্যমে পরিচালিত হয়।</li>
+                <li>ব্যবহারকারীর ব্যাংক কার্ড পাসওয়ার্ড, সিভিসি (CVC), মোবাইল ব্যাংকিং গোপন পিন বা ওটিপি (OTP) কখনোই আমাদের ডাটাবেজে সংরক্ষণ করা হয় না।</li>
+                <li>আমাদের ওয়েবসাইট ব্যাংক-গ্রেড 256-bit SSL এনক্রিপশন দ্বারা সার্বক্ষণিক সুরক্ষিত।</li>
+              </ul>
+
+              <h3>🍪 Cookies Policy (কুকিজ সংক্রান্ত)</h3>
+              <p>
+                ওয়েবসাইট দ্রুত লোড হওয়ার সুবিধার্থে এবং শপিং কার্ট সেশন অক্ষুণ্ণ রাখার উদ্দেশ্যে সাময়িক ব্রাউজার কুকি সংরক্ষিত হয়, যা কোনো ব্যক্তিগত তথ্য ধারণ করে না।
+              </p>
+            </div>
+          </div>
+
+          <!-- TAB 5: About Us -->
+          <div id="pane-about" class="policy-pane">
+            <div class="policy-header">
+              <div class="policy-title-area">
+                <h2><span>🏠</span> About Us (আমাদের সম্পর্কে)</h2>
+                <div class="policy-meta">
+                  <span>প্রতিষ্ঠিত ২০২০ | বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম</span>
+                  <span class="badge">Official Verified</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-body">
+              <p>
+                <strong>FlixStore</strong> বাংলাদেশের মানুষের জন্য একটি নিবেদিত অনলাইন ডিজিটাল সার্ভিস প্ল্যাটফর্ম, যার গৌরবময় যাত্রা শুরু হয় <strong>২০২০ সালে</strong>।
+              </p>
+              <p>
+                বাংলাদেশে অনেকের International Credit Card বা Dual Currency Card না থাকার কারণে বিশ্বমানের বিভিন্ন ডিজিটাল সাবস্ক্রিপশন ও প্রিমিয়াম সফটওয়্যার সরাসরি কেনা সম্ভব হয় না। এই বাস্তব সংকট ও সীমাবদ্ধতাকে দূর করে ডিজিটাল সেবাকে সবার হাতের নাগালে পৌঁছে দেওয়ার লক্ষ্য নিয়েই FlixStore প্রতিষ্ঠিত হয়েছে।
+              </p>
+
+              <div class="policy-callout success">
+                <h5>🎯 আমাদের ভিশন</h5>
+                <p>
+                  আমাদের লক্ষ্য হলো—বাংলাদেশের যেকোনো প্রান্তের মানুষ যেন সহজে, সাশ্রয়ী মূল্যে এবং ঝামেলামুক্তভাবে প্রয়োজনীয় digital products ও premium services ব্যবহার করতে পারেন। 🇧🇩
+                </p>
+              </div>
+
+              <h3>💡 আমরা কী ধরনের সার্ভিস সরবরাহ করি?</h3>
+              <p>FlixStore-এ বিভিন্ন ধরনের জনপ্রিয় ডিজিটাল সাবস্ক্রিপশন সুলভ মূল্যে উপলব্ধ রয়েছে:</p>
+
+              <ul>
+                <li>🤖 <strong>AI & Productivity Tools</strong> — ChatGPT Plus, Claude Pro, Gemini Advanced, Perplexity Pro, CapCut ইত্যাদি</li>
+                <li>🎬 <strong>Streaming & Entertainment</strong> — Netflix Premium 4K UHD, YouTube Premium, Amazon Prime Video, Crunchyroll, Hoichoi ইত্যাদি</li>
+                <li>📚 <strong>Educational Tools</strong> — Grammarly Premium, QuillBot, Turnitin ইত্যাদি</li>
+                <li>🎨 <strong>Creative & Professional Tools</strong> — Adobe Creative Cloud All Apps, Canva Pro Lifetime সহ সৃজনশীল সফটওয়্যার</li>
+                <li>🔐 <strong>VPN & Digital Security</strong> — NordVPN, ExpressVPN, Surfshark ইত্যাদি</li>
+                <li>🎮 <strong>Gaming & Digital Keys</strong> — Discord Nitro, Steam Wallet কোড ইত্যাদি</li>
+              </ul>
+
+              <h3>💰 কেন FlixStore অনন্য?</h3>
+              <div class="policy-card-grid">
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">💵 সাশ্রয়ী মূল্য</div>
+                  <div class="policy-stat-value" style="font-size:1.05rem;">Fair BDT Pricing</div>
+                  <div class="policy-stat-desc">আন্তর্জাতিক ডিজিটাল সার্ভিস সাশ্রয়ী টাকায় কেনার সুযোগ।</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">⚡ দ্রুত Delivery</div>
+                  <div class="policy-stat-value" style="font-size:1.05rem;">৫–১০ মিনিটে অ্যাক্সেস</div>
+                  <div class="policy-stat-desc">জনপ্রিয় স্টক প্রোডাক্টে ইনস্ট্যান্ট স্বয়ংক্রিয় সরবরাহ।</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">🛡️ Genuine Service</div>
+                  <div class="policy-stat-value" style="font-size:1.05rem;">১০০% ওয়ারেন্টি গ্যারান্টি</div>
+                  <div class="policy-stat-desc">বৈধ ও আসল লাইসেন্স এবং স্পষ্ট ব্যবহারের নিয়মাবলি।</div>
+                </div>
+                <div class="policy-stat-card">
+                  <div class="policy-stat-title">📞 সক্রিয় কাস্টমার কেয়ার</div>
+                  <div class="policy-stat-value" style="font-size:1.05rem;">সকাল ১০টা – রাত ১২টা</div>
+                  <div class="policy-stat-desc">জরুরি প্রয়োজনে হোয়াটসঅ্যাপে তাৎক্ষণিক সহায়তা।</div>
+                </div>
+              </div>
+
+              <div style="margin-top:24px; padding:18px; background:var(--bg-secondary); border-radius:var(--radius-md); text-align:center;">
+                <h4 style="margin:0 0 6px 0; color:var(--accent-blue);">🚀 FlixStore</h4>
+                <p style="margin:0; font-weight:600; color:var(--text-primary);">
+                  Easy Access. Affordable Price. Digital Freedom.
+                </p>
+                <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">
+                  🇧🇩 বাংলাদেশের মানুষের জন্য সহজ ও সাশ্রয়ী Digital Services।
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 6: Contact Us -->
+          <div id="pane-contact" class="policy-pane">
+            <div class="policy-header">
+              <div class="policy-title-area">
+                <h2><span>📞</span> Contact Us (যোগাযোগ)</h2>
+                <div class="policy-meta">
+                  <span>Customer Support Team</span>
+                  <span class="badge" style="background:rgba(37,211,102,0.15); color:#25D366;">Active Now</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-body">
+              <p>
+                <strong>FlixStore</strong>-এ আপনার যেকোনো Order, Payment, Delivery অথবা Product-related সমস্যার জন্য আমাদের Customer Support Team-এর সাথে সরাসরি যোগাযোগ করুন। আমরা দ্রুততম সময়ে আপনার সমস্যার আন্তরিক সমাধান দিতে প্রস্তুত। ❤️
+              </p>
+
+              <h3>📱 Official Contact Channels</h3>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">📞 Direct Call / Helpline</span>
+                <span class="copy-box-val" id="cntPhone">01343546958</span>
+                <button class="copy-btn-mini" onclick="copyText('cntPhone')">Copy</button>
+              </div>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">💬 WhatsApp Support</span>
+                <span class="copy-box-val" id="cntWa">8801343546958</span>
+                <button class="copy-btn-mini" onclick="copyText('cntWa')">Copy</button>
+              </div>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">📧 Official Email</span>
+                <span class="copy-box-val" id="cntEmail">flixstore.officials@gmail.com</span>
+                <button class="copy-btn-mini" onclick="copyText('cntEmail')">Copy</button>
+              </div>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">⏰ Support Hours</span>
+                <span class="copy-box-val" style="color:var(--text-primary); font-family:inherit;">প্রতিদিন সকাল ১০:০০টা – রাত ১২:০০টা (10:00 AM – 12:00 AM)</span>
+              </div>
+
+              <div class="copy-box-row">
+                <span class="copy-box-label">🌐 Business Nature</span>
+                <span class="copy-box-val" style="color:var(--text-primary); font-family:inherit;">Online Based Digital Solutions & Subscription Business</span>
+              </div>
+
+              <div class="policy-callout warning">
+                <h5>🧾 Order Support নির্দেশিকা</h5>
+                <p>
+                  আপনার অর্ডার সংক্রান্ত বিষয়ে যোগাযোগ করার সময় অনুগ্রহ করে আপনার <strong>Order ID</strong> (যেমন: <code>#FLX-123456</code>) এবং পেমেন্টের ট্রানজেকশন আইডি (TrxID) উল্লেখ করুন। এতে আমাদের টিম অতি দ্রুত আপনার অর্ডার খুঁজে বের করে সমাধান দিতে পারবে।
+                </p>
+              </div>
+
+              <div style="display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;">
+                <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%20Support%2C%20I%20need%20assistance%20with%20my%20order" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#25D366; color:#ffffff; padding:12px 24px; font-size:0.92rem; text-decoration:none; display:inline-flex; align-items:center; gap:8px; border-radius:8px;">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.97.567 3.81 1.545 5.373L2 22l4.757-1.514A9.972 9.972 0 0 0 12.031 22C17.567 22 22 17.505 22 12.031 22 6.495 17.567 2 12.031 2zm5.792 14.288c-.244.686-1.22 1.307-1.745 1.365-.487.054-1.12.079-3.626-.957-3.197-1.32-5.267-4.57-5.426-4.783-.16-.213-1.294-1.722-1.294-3.284 0-1.562.819-2.332 1.109-2.651.29-.319.633-.399.844-.399.21 0 .422 0 .607.01.196.01.458-.074.717.55.264.633.9 2.197.978 2.357.079.16.132.348.026.56-.105.213-.158.348-.316.533-.159.186-.334.415-.477.557-.16.16-.328.334-.141.655.186.32.827 1.367 1.775 2.212 1.222 1.088 2.253 1.424 2.573 1.583.32.16.507.133.693-.08.187-.213.794-.925 1.006-1.242.211-.318.423-.265.714-.159.29.106 1.848.872 2.165 1.03.317.16.529.238.608.37.079.133.079.768-.165 1.454z"/></svg>
+                  <span>Chat on WhatsApp (Avg. reply 2 mins)</span>
+                </a>
+
+                <a href="mailto:flixstore.officials@gmail.com" class="btn-secondary" style="padding:12px 24px; font-size:0.92rem; text-decoration:none; display:inline-flex; align-items:center; gap:8px; border-radius:8px;">
+                  <span>📧 Email Support</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Help Contact Card -->
+          <div class="policy-help-banner">
+            <div class="policy-help-text">
+              <h4>Need specific assistance or license verification?</h4>
+              <p>Our dedicated operations team is available from 10:00 AM to 12:00 AM daily.</p>
+            </div>
+            <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background:#25D366; color:#ffffff; font-size:0.86rem; text-decoration:none; padding:10px 18px; border-radius:6px; font-weight:700;">
+              💬 Instant WhatsApp
+            </a>
+          </div>
+
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Standard Site Footer matching index.html & product.html -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1: Brand & Trust -->
+        <div class="footer-col">
+          <div class="brand-logo" style="margin-bottom:12px;">
+            <img src="/assets/flixstore-icon.png?v=7.4" alt="FlixStore" class="brand-logo-img" style="height:34px; width:34px;">
+            <span class="brand-logo-text">FLIX STORE</span>
+          </div>
+          <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:16px; font-size:0.86rem;">
+            Your non-stop stream shop. Delivering genuine OTT entertainment, AI productivity tools, and creative suites with instant automated fulfillment across Bangladesh.
+          </p>
+          <div class="footer-trust-list">
+            <div class="footer-trust-item">
+              <svg class="trust-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>100% authentic</span>
+            </div>
+            <div class="footer-trust-item">
+              <svg class="trust-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Verified sellers</span>
+            </div>
+            <div class="footer-trust-item">
+              <svg class="trust-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              <span>Expert support</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Col 2: Information Section (Reference matched) -->
+        <div class="footer-col">
+          <h4>Information</h4>
+          <ul class="footer-links footer-info-links">
+            <li><a href="/terms" onclick="selectTab('terms'); return false;"><span>📜</span> Terms & Conditions</a></li>
+            <li><a href="/refund-policy" onclick="selectTab('refund'); return false;"><span>🔄</span> Return & Refund Policy</a></li>
+            <li><a href="/contact-us" onclick="selectTab('contact'); return false;"><span>📞</span> Contact Us</a></li>
+            <li><a href="/about-us" onclick="selectTab('about'); return false;"><span>🏠</span> About Us</a></li>
+            <li><a href="/delivery-policy" onclick="selectTab('delivery'); return false;"><span>🚚</span> Delivery Policy</a></li>
+            <li><a href="/privacy-policy" onclick="selectTab('privacy'); return false;"><span>🔒</span> Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Popular Subscriptions -->
+        <div class="footer-col">
+          <h4>Popular Subscriptions</h4>
+          <ul class="footer-links">
+            <li><a href="/product/netflix-premium-4k-uhd">Netflix Premium 4K UHD</a></li>
+            <li><a href="/product/chatgpt-plus-openai">ChatGPT Plus (o1 & 4o)</a></li>
+            <li><a href="/product/amazon-prime-video">Amazon Prime Video</a></li>
+            <li><a href="/product/canva-pro-subscription">Canva Pro Lifetime</a></li>
+            <li><a href="/product/youtube-premium">YouTube Premium Family</a></li>
+            <li><a href="/product/spotify-premium">Spotify Premium Family</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Contact & We Accept -->
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <div class="footer-contact-details">
+            <div class="contact-item">
+              <a href="tel:01343546958" class="contact-link">01343546958</a>
+            </div>
+            <div class="contact-item">
+              <span>WhatsApp: </span>
+              <a href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="contact-link">8801343546958</a>
+            </div>
+            <div class="contact-item">
+              <a href="mailto:flixstore.officials@gmail.com" class="contact-link">flixstore.officials@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="we-accept-section" style="margin-top:20px;">
+            <h5 class="we-accept-title">We accept</h5>
+            <div class="payment-badges-row">
+              <span class="mfs-badge bkash-badge" title="bKash (Personal & Merchant)">
+                <span class="mfs-badge-dot bkash-dot"></span>
+                <span class="mfs-badge-name">bKash</span>
+              </span>
+              <span class="mfs-badge nagad-badge" title="Nagad (Personal & Merchant)">
+                <span class="mfs-badge-dot nagad-dot"></span>
+                <span class="mfs-badge-name">নগদ</span>
+              </span>
+              <span class="mfs-badge rocket-badge" title="Rocket DBBL">
+                <span class="mfs-badge-dot rocket-dot"></span>
+                <span class="mfs-badge-name">Rocket</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bottom Bar -->
+      <div class="footer-bottom">
+        <div class="footer-social-links">
+          <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="social-circle-link" title="YouTube" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://wa.me/8801343546958" target="_blank" rel="noopener noreferrer" class="social-circle-link" title="WhatsApp Support" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.97.567 3.81 1.545 5.373L2 22l4.757-1.514A9.972 9.972 0 0 0 12.031 22C17.567 22 22 17.505 22 12.031 22 6.495 17.567 2 12.031 2zm5.792 14.288c-.244.686-1.22 1.307-1.745 1.365-.487.054-1.12.079-3.626-.957-3.197-1.32-5.267-4.57-5.426-4.783-.16-.213-1.294-1.722-1.294-3.284 0-1.562.819-2.332 1.109-2.651.29-.319.633-.399.844-.399.21 0 .422 0 .607.01.196.01.458-.074.717.55.264.633.9 2.197.978 2.357.079.16.132.348.026.56-.105.213-.158.348-.316.533-.159.186-.334.415-.477.557-.16.16-.328.334-.141.655.186.32.827 1.367 1.775 2.212 1.222 1.088 2.253 1.424 2.573 1.583.32.16.507.133.693-.08.187-.213.794-.925 1.006-1.242.211-.318.423-.265.714-.159.29.106 1.848.872 2.165 1.03.317.16.529.238.608.37.079.133.079.768-.165 1.454z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/FlixStore.org" target="_blank" rel="noopener noreferrer" class="social-circle-link" title="Facebook Page" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+        </div>
+        <div class="footer-copyright-text">
+          © 2026 FlixStore — Your Non-Stop Stream Shop. All Rights Reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp Helpline Button -->
+  <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20have%20a%20question%20about%20policies" 
+     class="floating-whatsapp-btn" 
+     target="_blank" 
+     rel="noopener noreferrer" 
+     aria-label="Chat with FlixStore on WhatsApp">
+    <span class="whatsapp-tooltip">💬 24/7 WhatsApp Support</span>
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+      <path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.97.567 3.81 1.545 5.373L2 22l4.757-1.514A9.972 9.972 0 0 0 12.031 22C17.567 22 22 17.505 22 12.031 22 6.495 17.567 2 12.031 2zm5.792 14.288c-.244.686-1.22 1.307-1.745 1.365-.487.054-1.12.079-3.626-.957-3.197-1.32-5.267-4.57-5.426-4.783-.16-.213-1.294-1.722-1.294-3.284 0-1.562.819-2.332 1.109-2.651.29-.319.633-.399.844-.399.21 0 .422 0 .607.01.196.01.458-.074.717.55.264.633.9 2.197.978 2.357.079.16.132.348.026.56-.105.213-.158.348-.316.533-.159.186-.334.415-.477.557-.16.16-.328.334-.141.655.186.32.827 1.367 1.775 2.212 1.222 1.088 2.253 1.424 2.573 1.583.32.16.507.133.693-.08.187-.213.794-.925 1.006-1.242.211-.318.423-.265.714-.159.29.106 1.848.872 2.165 1.03.317.16.529.238.608.37.079.133.079.768-.165 1.454z"/>
+    </svg>
+  </a>
+
+  <!-- Script for Tab Navigation & Deep Linking -->
+  <script>
+    const TAB_NAMES = {
+      terms: 'Terms & Conditions',
+      refund: 'Return & Refund Policy',
+      delivery: 'Delivery Policy',
+      privacy: 'Privacy Policy',
+      about: 'About Us',
+      contact: 'Contact Us'
+    };
+
+    function selectTab(tabKey, updateUrl = true) {
+      if (!TAB_NAMES[tabKey]) tabKey = 'terms';
+
+      // 1. Update tab buttons
+      document.querySelectorAll('.info-nav-btn').forEach(btn => {
+        if (btn.getAttribute('data-target') === tabKey) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // 2. Update content panes
+      document.querySelectorAll('.policy-pane').forEach(pane => {
+        pane.classList.remove('active');
+      });
+      const activePane = document.getElementById('pane-' + tabKey);
+      if (activePane) activePane.classList.add('active');
+
+      // 3. Update breadcrumb
+      const breadcrumb = document.getElementById('activeBreadcrumbLabel');
+      if (breadcrumb) breadcrumb.textContent = TAB_NAMES[tabKey];
+
+      // 4. Update title
+      document.title = TAB_NAMES[tabKey] + ' | FlixStore Information';
+
+      // 5. Update browser URL history if requested
+      if (updateUrl) {
+        let slug = tabKey;
+        if (tabKey === 'terms') slug = 'terms';
+        else if (tabKey === 'refund') slug = 'refund-policy';
+        else if (tabKey === 'delivery') slug = 'delivery-policy';
+        else if (tabKey === 'privacy') slug = 'privacy-policy';
+        else if (tabKey === 'about') slug = 'about-us';
+        else if (tabKey === 'contact') slug = 'contact-us';
+        
+        try {
+          window.history.replaceState(null, '', '/' + slug);
+        } catch(e) {}
+      }
+
+      // Smooth scroll back to top of content on small screens
+      if (window.innerWidth < 900) {
+        const contentCard = document.querySelector('.info-content-card');
+        if (contentCard) {
+          contentCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+
+    function copyText(elemId) {
+      const elem = document.getElementById(elemId);
+      if (!elem) return;
+      const text = elem.textContent.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = elem.nextElementSibling;
+        if (btn) {
+          const original = btn.textContent;
+          btn.textContent = 'Copied! ✓';
+          btn.style.background = '#10b981';
+          btn.style.color = '#fff';
+          setTimeout(() => {
+            btn.textContent = original;
+            btn.style.background = '';
+            btn.style.color = '';
+          }, 2000);
+        }
+      });
+    }
+
+    // Initialize tab from path or params on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const path = window.location.pathname.toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+      const hash = window.location.hash.toLowerCase().replace('#', '');
+      const tabParam = params.get('tab');
+
+      let initialTab = 'terms';
+
+      if (path.includes('about')) initialTab = 'about';
+      else if (path.includes('terms')) initialTab = 'terms';
+      else if (path.includes('delivery')) initialTab = 'delivery';
+      else if (path.includes('refund') || path.includes('return')) initialTab = 'refund';
+      else if (path.includes('privacy')) initialTab = 'privacy';
+      else if (path.includes('contact')) initialTab = 'contact';
+      else if (tabParam && TAB_NAMES[tabParam]) initialTab = tabParam;
+      else if (hash && TAB_NAMES[hash]) initialTab = hash;
+
+      selectTab(initialTab, false);
+    });
+  </script>
+</body>
+</html>

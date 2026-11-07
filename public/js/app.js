@@ -1210,6 +1210,13 @@ function handleDrawerNav(action, event) {
       } else {
         window.location.href = '/?jump=faq#faqSection';
       }
+    } else if (['terms', 'refund', 'delivery', 'delivery-policy', 'privacy', 'about', 'contact'].includes(action)) {
+      const tabKey = action === 'delivery-policy' ? 'delivery' : action;
+      if (typeof openInfoModal === 'function') {
+        openInfoModal(tabKey);
+      } else {
+        window.location.href = '/information?tab=' + tabKey;
+      }
     }
   }, 120);
 }
@@ -2657,6 +2664,7 @@ function initEventListeners() {
       if (typeof closeTrackOrderModal === 'function') closeTrackOrderModal();
       if (typeof closeAuthModal === 'function') closeAuthModal();
       if (typeof closeProductDetail === 'function') closeProductDetail();
+      if (typeof closeInfoModal === 'function') closeInfoModal();
     }
   });
 
@@ -2927,3 +2935,242 @@ function fillTestCardDetails() {
     cvcInput.value = '921';
   }
 }
+
+// -----------------------------------------------------------------------------
+// INFORMATION & POLICY CENTER MODAL (Instant In-Page Preview)
+// -----------------------------------------------------------------------------
+
+const INFO_MODAL_CONTENTS = {
+  terms: {
+    title: '<span>📜</span> Terms & Conditions',
+    subtitle: 'সর্বশেষ আপডেট: ২৪ সেপ্টেম্বর ২০২৬ | Official Customer Terms',
+    slug: 'terms',
+    html: `
+      <div class="policy-body">
+        <p><strong>FlixStore</strong>-এ যেকোনো অর্ডার সম্পন্ন করার মাধ্যমে আপনি নিচের শর্তাবলিতে পূর্ণ সম্মতি প্রদান করছেন।</p>
+        <div class="policy-callout">
+          <h5>📌 আবশ্যকীয় নির্দেশনা</h5>
+          <p>অর্ডারের পূর্বে সংশ্লিষ্ট Product-এর Description, Features, Compatibility এবং Warranty শর্তাবলি ভালো করে দেখে নেওয়া গ্রাহকের দায়িত্ব।</p>
+        </div>
+        <h4 style="margin-top:16px; color:var(--text-primary);">1. Order (অর্ডার প্রক্রিয়া)</h4>
+        <ul>
+          <li>অর্ডারের সময় সঠিক নাম, সক্রিয় মোবাইল নম্বর ও বৈধ Email Address প্রদান করতে হবে।</li>
+          <li>Order Confirm হওয়ার পূর্বে Product পরিবর্তনের অনুরোধ জানানো যাবে।</li>
+          <li>Order Confirm হওয়ার পর Product পরিবর্তন, বাতিল বা Refund করা যাবে না।</li>
+        </ul>
+        <h4 style="margin-top:16px; color:var(--text-primary);">2. Refund Policy (রিফান্ড নীতিমালা)</h4>
+        <ul>
+          <li>ডেলিভারি বা অ্যাক্টিভেশন সম্পন্ন হওয়ার পর কোনো Refund প্রযোজ্য নয়।</li>
+          <li>Payment সফল হলেও প্রযুক্তিগত কারণে Order সম্পন্ন না হলে সম্পূর্ণ মূল্য Refund প্রদান করা হবে।</li>
+          <li>FlixStore-এর নিজস্ব সীমাবদ্ধতার কারণে ডেলিভারি অসম্ভব হলে সম্পূর্ণ মূল্য Refund করা হবে।</li>
+          <li>Customer-requested Refund অনুমোদিত হলে ১০% Gateway/Processing Charge কেটে অবশিষ্ট ৯০% অর্থ Refund করা হবে।</li>
+        </ul>
+        <h4 style="margin-top:16px; color:var(--text-primary);">3. Warranty & Replacement</h4>
+        <ul>
+          <li>প্রতিটি Product-এর Warranty Period সংশ্লিষ্ট পণ্যের পাতায় আলাদাভাবে নির্ধারিত।</li>
+          <li>Warranty মেয়াদের মধ্যে সমস্যা দেখা দিলে যাচাই সাপেক্ষে দ্রুত Replacement বা সমাধান দেওয়া হবে।</li>
+          <li>ভুল ব্যবহার, ক্রেতার ডিভাইসের সমস্যা বা থার্ড-পার্টি ইন্টারফেয়ারেন্সে Warranty প্রযোজ্য নয়।</li>
+        </ul>
+        <h4 style="margin-top:16px; color:var(--text-primary);">4. Payment Gateway Charges</h4>
+        <div class="policy-card-grid" style="margin-top:10px;">
+          <div class="policy-stat-card"><div class="policy-stat-title">bKash</div><div class="policy-stat-value" style="color:#E2136E;">১.৮০%</div></div>
+          <div class="policy-stat-card"><div class="policy-stat-title">Nagad</div><div class="policy-stat-value" style="color:#F7931E;">১.১৫%</div></div>
+          <div class="policy-stat-card"><div class="policy-stat-title">Rocket</div><div class="policy-stat-value" style="color:#8C3494;">১.৬০%</div></div>
+          <div class="policy-stat-card"><div class="policy-stat-title">Upay</div><div class="policy-stat-value" style="color:#0072CE;">১.০০%</div></div>
+        </div>
+      </div>
+    `
+  },
+  refund: {
+    title: '<span>🔄</span> Return & Refund Policy',
+    subtitle: 'সর্বশেষ আপডেট: ২৪ সেপ্টেম্বর ২০২৬ | Guaranteed Customer Protection',
+    slug: 'refund-policy',
+    html: `
+      <div class="policy-body">
+        <p><strong>FlixStore</strong>-এর সকল পণ্য ও সেবা ডিজিটাল ফরম্যাটে ডেলিভারি করা হয়। তাই অ্যাক্টিভেশনের পর সাধারণত কোনো রিটার্ন গ্রহণ করা হয় না।</p>
+        <h4 style="color:var(--text-primary);">📌 Return Policy</h4>
+        <ul>
+          <li>Order Confirm হওয়ার পূর্বে পণ্য পরিবর্তনের অনুরোধ করা যাবে।</li>
+          <li>Order Confirm ও ক্রেডেনশিয়াল সরবরাহের পর পণ্য পরিবর্তন বা Return করা যাবে না।</li>
+          <li>ভুল পণ্য নির্বাচন বা ব্যক্তিগত পছন্দ পরিবর্তনের জন্য Return/Refund প্রযোজ্য নয়।</li>
+        </ul>
+        <h4 style="color:var(--text-primary);">💰 Refund Policy & Processing Time</h4>
+        <ul>
+          <li>সফলভাবে Delivery/Activation সম্পন্ন হলে রিফান্ড দেওয়া হয় না।</li>
+          <li>Payment সফল হওয়া সত্ত্বেও স্টক ঘাটতি বা সার্ভার সমস্যার কারণে অর্ডার সম্পন্ন না হলে ১০০% রিফান্ড করা হবে।</li>
+          <li>কাস্টমারের বিশেষ অনুরোধে রিফান্ড অনুমোদিত হলে ১০% গেটওয়ে ফি বাদে ৯০% অর্থ রিফান্ড করা হয়।</li>
+        </ul>
+        <div class="policy-callout warning">
+          <h5>⏱️ রিফান্ড নিষ্পত্তির সময়সীমা:</h5>
+          <p>• <strong>bKash / Nagad / Rocket:</strong> সাধারণত ১ থেকে ২৪ ঘণ্টার মধ্যে সরাসরি প্রেরণ।<br>• <strong>ব্যাংক / কার্ড গেটওয়ে:</strong> ৩ থেকে ৭ কর্মদিবস সময় লাগতে পারে।</p>
+        </div>
+      </div>
+    `
+  },
+  delivery: {
+    title: '<span>🚚</span> Delivery Policy',
+    subtitle: 'স্বয়ংক্রিয় ডিজিটাল ডেলিভারি | Average 5–10 Minutes',
+    slug: 'delivery-policy',
+    html: `
+      <div class="policy-body">
+        <p>FlixStore-এ আমরা অত্যন্ত দ্রুততম সময়ে আপনার অর্ডার ডেলিভারি নিশ্চিত করি।</p>
+        <div class="policy-card-grid">
+          <div class="policy-stat-card">
+            <div class="policy-stat-title">⚡ In-Stock Popular</div>
+            <div class="policy-stat-value" style="color:#10b981;">৫–১০ মিনিট</div>
+            <div class="policy-stat-desc">Netflix, ChatGPT, Prime, Spotify</div>
+          </div>
+          <div class="policy-stat-card">
+            <div class="policy-stat-title">🕐 Regular Tools</div>
+            <div class="policy-stat-value" style="color:var(--accent-blue);">৩০মি – ৩ ঘণ্টা</div>
+            <div class="policy-stat-desc">Educational & Design Tools</div>
+          </div>
+          <div class="policy-stat-card">
+            <div class="policy-stat-title">👤 Personal Accounts</div>
+            <div class="policy-stat-value" style="color:#f59e0b;">১ – ২৪ ঘণ্টা</div>
+            <div class="policy-stat-desc">Custom Personal Email Setup</div>
+          </div>
+        </div>
+        <h4 style="margin-top:16px; color:var(--text-primary);">Shared vs Personal Accounts</h4>
+        <p>• <strong>Shared Screen:</strong> স্টক থাকলে ৫–১০ মিনিটের মধ্যে ইনস্ট্যান্ট ডেলিভারি।<br>• <strong>Personal Account:</strong> কাস্টমার ইমেইলে আলাদাভাবে লাইসেন্স পারচেজ ও সেটআপের জন্য কয়েক ঘণ্টা থেকে সর্বোচ্চ ২৪ ঘণ্টা পর্যন্ত লাগতে পারে।</p>
+        <div class="policy-callout warning">
+          <h5>📩 ২৪ ঘণ্টার মধ্যে ডেলিভারি না পেলে:</h5>
+          <p>আপনার Order ID সহ সরাসরি WhatsApp: <strong>01343546958</strong> অথবা Email: <strong>flixstore.officials@gmail.com</strong>-এ যোগাযোগ করুন।</p>
+        </div>
+      </div>
+    `
+  },
+  privacy: {
+    title: '<span>🔒</span> Privacy & Data Security Policy',
+    subtitle: 'গ্রাহকের তথ্যের শতভাগ নিরাপত্তা | 256-Bit SSL Encrypted',
+    slug: 'privacy-policy',
+    html: `
+      <div class="policy-body">
+        <h4 style="color:var(--text-primary);">🔐 Delivery & Communication Security</h4>
+        <ul>
+          <li>অনলাইন ভিত্তিক সেবা হওয়ায় সমস্ত প্রোডাক্ট নিরাপদ WhatsApp এবং রেজিস্টার্ড ইমেইলের মাধ্যমে ডেলিভারি করা হয়।</li>
+        </ul>
+        <h4 style="color:var(--text-primary);">🛡️ ব্যবহারকারীর ডাটা সুরক্ষা</h4>
+        <ul>
+          <li>আমরা কোনো ব্যবহারকারীর ডাটা কোনো তৃতীয় পক্ষ বা বিজ্ঞাপনদাতার কাছে বিক্রি বা শেয়ার করি না।</li>
+          <li>ব্যবহারকারীর ফোন নম্বর ও ইমেইল শুধুমাত্র প্রোডাক্ট ডেলিভারি, ইনভয়েস ও ওয়ারেন্টি সাপোর্টে ব্যবহৃত হয়।</li>
+          <li>কোনো অযাচিত প্রমোশনাল স্প্যাম কল বা বার্তার জন্য ডাটা ব্যবহার করা হয় না।</li>
+        </ul>
+        <h4 style="color:var(--text-primary);">💳 Payment Security</h4>
+        <ul>
+          <li>আমরা অফিসিয়াল ভেরিফাইড মার্চেন্ট। পেমেন্ট প্রসেসিং সরাসরি bKash, Nagad ও ব্যাংকিং গেটওয়ের মাধ্যমে পরিচালিত হয়।</li>
+          <li>গ্রাহকের কোনো ব্যাংক কার্ড পাসওয়ার্ড, পিন (PIN) বা OTP আমাদের সার্ভারে সংরক্ষণ করা হয় না।</li>
+        </ul>
+      </div>
+    `
+  },
+  about: {
+    title: '<span>🏠</span> About FlixStore',
+    subtitle: 'প্রতিষ্ঠিত ২০২০ | Your Non-Stop Stream & Digital Solutions Shop',
+    slug: 'about-us',
+    html: `
+      <div class="policy-body">
+        <p><strong>FlixStore</strong> বাংলাদেশের মানুষের জন্য একটি নির্ভরযোগ্য অনলাইন ডিজিটাল সার্ভিস প্ল্যাটফর্ম, যার যাত্রা শুরু হয় ২০২০ সালে।</p>
+        <p>বাংলাদেশে অনেকের Credit Card বা Dual Currency Card না থাকার কারণে আন্তর্জাতিক প্রিমিয়াম সার্ভিস সরাসরি কেনা সম্ভব হয় না। এই সমস্যা সমাধানেই FlixStore-এর যাত্রা।</p>
+        <div class="policy-callout success">
+          <h5>🎯 আমাদের লক্ষ্য</h5>
+          <p>বাংলাদেশের যেকোনো প্রান্তের মানুষ যেন সহজে, সাশ্রয়ী মূল্যে এবং ঝামেলামুক্তভাবে প্রয়োজনীয় digital products ও premium services ব্যবহার করতে পারেন। 🇧🇩</p>
+        </div>
+        <h4 style="color:var(--text-primary);">💡 আমাদের সেবাসমূহ:</h4>
+        <p>🤖 AI Tools (ChatGPT, Claude, Gemini) • 🎬 Streaming (Netflix, Prime, YouTube, Crunchyroll, Hoichoi) • 📚 Educational (Grammarly, QuillBot, Turnitin) • 🎨 Creative (Adobe Creative Cloud, Canva Pro) • 🔐 VPN & Digital Security Services।</p>
+        <div style="text-align:center; margin-top:20px; padding:14px; background:var(--bg-secondary); border-radius:8px;">
+          <strong style="color:var(--accent-blue);">Easy Access • Affordable Price • Digital Freedom</strong>
+        </div>
+      </div>
+    `
+  },
+  contact: {
+    title: '<span>📞</span> Contact Us',
+    subtitle: 'Customer Support Active 10:00 AM – 12:00 AM Daily',
+    slug: 'contact-us',
+    html: `
+      <div class="policy-body">
+        <p>FlixStore-এ আপনার যেকোনো Order, Payment, Delivery অথবা Product-related সমস্যার জন্য আমাদের সাপোর্ট টিমের সাথে সরাসরি যোগাযোগ করুন।</p>
+        <div class="copy-box-row">
+          <span class="copy-box-label">📞 Direct Call</span>
+          <span class="copy-box-val">01343546958</span>
+        </div>
+        <div class="copy-box-row">
+          <span class="copy-box-label">💬 WhatsApp</span>
+          <span class="copy-box-val">8801343546958</span>
+        </div>
+        <div class="copy-box-row">
+          <span class="copy-box-label">📧 Email</span>
+          <span class="copy-box-val">flixstore.officials@gmail.com</span>
+        </div>
+        <div class="copy-box-row">
+          <span class="copy-box-label">⏰ Support Hours</span>
+          <span class="copy-box-val" style="color:var(--text-primary);">সকাল ১০:০০টা – রাত ১২:০০টা (10:00 AM – 12:00 AM)</span>
+        </div>
+        <div class="policy-callout warning" style="margin-top:16px;">
+          <h5>🧾 Order ID উল্লেখ করুন:</h5>
+          <p>যোগাযোগের সময় অবশ্যই আপনার <strong>Order ID</strong> (যেমন: #FLX-123456) প্রদান করুন। এতে আমরা দ্রুত অর্ডার খুঁজে বের করে প্রয়োজনীয় সহায়তা দিতে পারব। ❤️</p>
+        </div>
+      </div>
+    `
+  }
+};
+
+let currentInfoModalTab = 'terms';
+
+function openInfoModal(tabKey = 'terms', event) {
+  if (event) {
+    try { event.preventDefault(); } catch(e) {}
+  }
+  const modal = document.getElementById('infoModalOverlay');
+  if (!modal) {
+    window.location.href = '/information?tab=' + tabKey;
+    return;
+  }
+  
+  switchInfoModalTab(tabKey);
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeInfoModal() {
+  const modal = document.getElementById('infoModalOverlay');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+  document.body.style.overflow = '';
+}
+
+function switchInfoModalTab(tabKey) {
+  if (!INFO_MODAL_CONTENTS[tabKey]) tabKey = 'terms';
+  currentInfoModalTab = tabKey;
+  const data = INFO_MODAL_CONTENTS[tabKey];
+
+  // Update modal tab buttons
+  document.querySelectorAll('.info-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-tab') === tabKey);
+  });
+
+  // Update header title & subtitle
+  const titleEl = document.getElementById('infoModalHeaderTitle');
+  if (titleEl) titleEl.innerHTML = data.title;
+  const subEl = document.getElementById('infoModalHeaderSubtitle');
+  if (subEl) subEl.textContent = data.subtitle;
+
+  // Update modal body
+  const bodyEl = document.getElementById('infoModalBody');
+  if (bodyEl) {
+    bodyEl.innerHTML = data.html;
+    bodyEl.scrollTop = 0;
+  }
+
+  // Update full page link
+  const linkEl = document.getElementById('infoModalFullPageLink');
+  if (linkEl) {
+    linkEl.href = '/' + data.slug;
+  }
+}
+
+window.openInfoModal = openInfoModal;
+window.closeInfoModal = closeInfoModal;
+window.switchInfoModalTab = switchInfoModalTab;

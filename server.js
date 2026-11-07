@@ -2174,6 +2174,28 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
+// Information & Policy Center Routes (SEO & Direct Link Support)
+const infoRoutes = [
+  '/information',
+  '/information.html',
+  '/about-us',
+  '/about',
+  '/terms',
+  '/terms-and-conditions',
+  '/refund-policy',
+  '/return-and-refund',
+  '/delivery-policy',
+  '/privacy-policy',
+  '/privacy',
+  '/contact-us',
+  '/contact'
+];
+
+app.get(infoRoutes, (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.sendFile(path.join(__dirname, 'public', 'information.html'));
+});
+
 // Fallback for SPA
 app.use((req, res) => {
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
