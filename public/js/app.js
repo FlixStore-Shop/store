@@ -1211,12 +1211,13 @@ function handleDrawerNav(action, event) {
         window.location.href = '/?jump=faq#faqSection';
       }
     } else if (['terms', 'refund', 'delivery', 'delivery-policy', 'privacy', 'about', 'contact'].includes(action)) {
-      const tabKey = action === 'delivery-policy' ? 'delivery' : action;
-      if (typeof openInfoModal === 'function') {
-        openInfoModal(tabKey);
-      } else {
-        window.location.href = '/information?tab=' + tabKey;
-      }
+      let slug = 'terms';
+      if (action === 'refund') slug = 'refund-policy';
+      else if (action === 'delivery' || action === 'delivery-policy') slug = 'delivery-policy';
+      else if (action === 'privacy') slug = 'privacy-policy';
+      else if (action === 'about') slug = 'about-us';
+      else if (action === 'contact') slug = 'contact-us';
+      window.location.href = '/' + slug;
     }
   }, 120);
 }
@@ -3122,15 +3123,13 @@ function openInfoModal(tabKey = 'terms', event) {
   if (event) {
     try { event.preventDefault(); } catch(e) {}
   }
-  const modal = document.getElementById('infoModalOverlay');
-  if (!modal) {
-    window.location.href = '/information?tab=' + tabKey;
-    return;
-  }
-  
-  switchInfoModalTab(tabKey);
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
+  let slug = 'terms';
+  if (tabKey === 'refund') slug = 'refund-policy';
+  else if (tabKey === 'delivery' || tabKey === 'delivery-policy') slug = 'delivery-policy';
+  else if (tabKey === 'privacy') slug = 'privacy-policy';
+  else if (tabKey === 'about') slug = 'about-us';
+  else if (tabKey === 'contact') slug = 'contact-us';
+  window.location.href = '/' + slug;
 }
 
 function closeInfoModal() {

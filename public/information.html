@@ -8,9 +8,9 @@
   <meta name="description" content="Read FlixStore's official Terms & Conditions, Return & Refund Policy, Delivery Times, Privacy Policy, About Us, and Customer Support channels.">
   <link rel="canonical" href="https://store-q51q.onrender.com/information">
 
-  <link rel="stylesheet" href="/css/styles.css?v=7.4">
-  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=7.4">
-  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=7.4">
+  <link rel="stylesheet" href="/css/styles.css?v=7.5">
+  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=7.5">
+  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=7.5">
 
   <style>
     /* Dedicated Information Center Styles */
@@ -424,7 +424,7 @@
         <div class="header-left-group">
           <!-- Back to Storefront Link -->
           <a href="/" class="brand-logo" aria-label="FlixStore Home">
-            <img src="/assets/flixstore-icon.png?v=7.4" alt="FlixStore" class="brand-logo-img">
+            <img src="/assets/flixstore-icon.png?v=7.5" alt="FlixStore" class="brand-logo-img">
             <span class="brand-logo-text">FLIX STORE</span>
           </a>
         </div>
@@ -478,7 +478,7 @@
           </p>
         </div>
         <div class="desktop-only">
-          <img src="/assets/flixstore-icon.png?v=7.4" alt="FlixStore Shield" style="width:76px; height:76px; opacity:0.9;">
+          <img src="/assets/flixstore-icon.png?v=7.5" alt="FlixStore Shield" style="width:76px; height:76px; opacity:0.9;">
         </div>
       </div>
 
@@ -979,7 +979,7 @@
         <!-- Col 1: Brand & Trust -->
         <div class="footer-col">
           <div class="brand-logo" style="margin-bottom:12px;">
-            <img src="/assets/flixstore-icon.png?v=7.4" alt="FlixStore" class="brand-logo-img" style="height:34px; width:34px;">
+            <img src="/assets/flixstore-icon.png?v=7.5" alt="FlixStore" class="brand-logo-img" style="height:34px; width:34px;">
             <span class="brand-logo-text">FLIX STORE</span>
           </div>
           <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:16px; font-size:0.86rem;">
@@ -1143,7 +1143,9 @@
         else if (tabKey === 'contact') slug = 'contact-us';
         
         try {
-          window.history.replaceState(null, '', '/' + slug);
+          if (window.location.pathname !== '/' + slug) {
+            window.history.pushState(null, '', '/' + slug);
+          }
         } catch(e) {}
       }
 
@@ -1195,6 +1197,18 @@
       else if (hash && TAB_NAMES[hash]) initialTab = hash;
 
       selectTab(initialTab, false);
+    });
+
+    window.addEventListener('popstate', () => {
+      const path = window.location.pathname.toLowerCase();
+      let tab = 'terms';
+      if (path.includes('about')) tab = 'about';
+      else if (path.includes('terms')) tab = 'terms';
+      else if (path.includes('delivery')) tab = 'delivery';
+      else if (path.includes('refund') || path.includes('return')) tab = 'refund';
+      else if (path.includes('privacy')) tab = 'privacy';
+      else if (path.includes('contact')) tab = 'contact';
+      selectTab(tab, false);
     });
   </script>
 </body>
