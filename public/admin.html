@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FlixStore Developer Console & Admin Portal</title>
-  <link rel="stylesheet" href="/css/styles.css?v=8.0">
-  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=8.0">
-  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=8.0">
+  <link rel="stylesheet" href="/css/styles.css?v=8.1">
+  <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=8.1">
+  <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=8.1">
   <style>
     /* ==========================================================================
        FLIXSTORE EXECUTIVE LIGHT MODE DESIGN SYSTEM (ADMIN OPS CONSOLE)
@@ -1392,9 +1392,27 @@
                 </div>
               </div>
 
-              <div class="form-group" style="margin-bottom:12px;">
-                <label>Tagline / Highlights</label>
-                <input type="text" id="prodTaglineInput" name="tagline" class="form-input" placeholder="Ultra HD 4K • Private Profile with PIN • Direct BD Streaming" oninput="syncLivePreview()">
+              <div class="form-group" style="margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+                  <label style="margin-bottom:0;">Tagline / Highlights & Sentence Alignment</label>
+                  <div class="studio-format-toolbar" id="taglineFormatToolbar">
+                    <span style="font-size:0.7rem; color:#64748b;">Align:</span>
+                    <button type="button" class="studio-format-btn active" id="btnTaglineAlignLeft" onclick="setTaglineAlign('left')" title="Align Sentences Left">⬅ Left</button>
+                    <button type="button" class="studio-format-btn" id="btnTaglineAlignCenter" onclick="setTaglineAlign('center')" title="Align Sentences Center">↔ Center</button>
+                    <button type="button" class="studio-format-btn" id="btnTaglineAlignJustify" onclick="setTaglineAlign('justify')" title="Justify Sentences">⇥ Justify</button>
+                    <span style="width:1px; height:14px; background:#cbd5e1; margin:0 3px;"></span>
+                    <button type="button" class="studio-format-btn" id="btnTaglineBold" onclick="toggleTaglineBold()" title="Make selected text bold (Ctrl+B or **text**)" style="font-weight:800; color:#0f172a; padding:3px 10px;">𝐁 Bold</button>
+                    <button type="button" class="studio-format-btn" onclick="insertTaglineSnippet('• ')" title="Insert Bullet List Item">• Bullet</button>
+                    <button type="button" class="studio-format-btn" onclick="insertTaglineSnippet('✓ ')" title="Insert Verified Checkmark">✓ Check</button>
+                    <button type="button" class="studio-format-btn" onclick="insertTaglineSnippet('⭐ ')" title="Insert Star Highlight">⭐ Star</button>
+                    <button type="button" class="studio-format-btn" onclick="insertTaglineSnippet(' • ')" title="Insert Dot Separator">| Dot</button>
+                    <button type="button" class="studio-format-btn" onclick="insertTaglineSnippet('\n')" title="Insert Line Break">¶ Break</button>
+                    <button type="button" class="studio-format-btn" onclick="insertTaglineTemplate()" title="Insert Highlights Template">⚡ Template</button>
+                    <button type="button" class="studio-format-btn" onclick="clearTaglineBox()" title="Clear tagline" style="color:#ef4444;">🧹 Clear</button>
+                  </div>
+                </div>
+                <input type="hidden" id="prodTaglineAlign" name="tagline_align" value="left">
+                <textarea id="prodTaglineInput" name="tagline" class="form-input" style="min-height:58px; resize:vertical; font-size:0.86rem; line-height:1.6; white-space:pre-wrap; text-align:left;" placeholder="Ultra HD 4K • Private Profile with PIN • Direct BD Streaming (Supports bold **text**, bullets & sentence alignment)" oninput="syncLivePreview()"></textarea>
               </div>
 
               <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:12px;">
@@ -1787,6 +1805,6 @@
     </div>
   </div>
 
-  <script src="/js/admin.js?v=8.0"></script>
+  <script src="/js/admin.js?v=8.1"></script>
 </body>
 </html>

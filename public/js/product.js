@@ -15,6 +15,23 @@ function formatDescriptionHtml(rawText) {
   return safe;
 }
 
+function formatTaglineHtml(rawText) {
+  if (!rawText) return '';
+  let safe = String(rawText)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+  // Convert markdown bold **text** to <strong>text</strong>
+  safe = safe.replace(/\*\*([^\*\n]+?)\*\*/g, '<strong class="tagline-bold">$1</strong>');
+  safe = safe.replace(/&lt;b&gt;([\s\S]*?)&lt;\/b&gt;/gi, '<strong class="tagline-bold">$1</strong>');
+  safe = safe.replace(/&lt;strong&gt;([\s\S]*?)&lt;\/strong&gt;/gi, '<strong class="tagline-bold">$1</strong>');
+
+  return safe;
+}
+
 /**
  * FlixStore Dedicated Product Page Controller
  * Handles dynamic data fetching, tier & duration selection, instant checkout,
@@ -225,7 +242,14 @@ function renderProductDetails() {
   }
 
   const taglineElem = document.getElementById('pdpProductTagline');
-  if (taglineElem) taglineElem.textContent = (p.tagline || '').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+  if (taglineElem) {
+    taglineElem.innerHTML = formatTaglineHtml((p.tagline || '').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&'));
+    if (p.tagline_align) {
+      taglineElem.style.textAlign = p.tagline_align;
+      taglineElem.classList.remove('align-center', 'align-justify', 'align-right');
+      if (p.tagline_align !== 'left') taglineElem.classList.add(`align-${p.tagline_align}`);
+    }
+  }
 
   const ratingScore = document.getElementById('pdpRatingScore');
   const reviewCount = document.getElementById('pdpReviewCount');

@@ -1459,6 +1459,7 @@ app.post('/api/admin/products', authMiddleware('admin'), async (req, res) => {
       instructions,
       title_align,
       desc_align,
+      tagline_align,
       plans,
       initial_vault_item
     } = req.body;
@@ -1481,14 +1482,15 @@ app.post('/api/admin/products', authMiddleware('admin'), async (req, res) => {
 
     const titleAlign = (title_align === 'center' || title_align === 'right') ? title_align : 'left';
     const descAlign = (desc_align === 'center' || desc_align === 'justify' || desc_align === 'right') ? desc_align : 'left';
+    const taglineAlign = (tagline_align === 'center' || tagline_align === 'justify' || tagline_align === 'right') ? tagline_align : 'left';
 
     const insertProd = db.prepare(`
       INSERT INTO products (
         category_id, title, slug, tagline, description, logo_url, badge,
         base_price, original_price, original_price_bdt, delivery_time, warranty, rating, review_count,
         stock_status, is_featured, is_trending, is_bestseller, features_list, instructions,
-        title_align, desc_align
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        title_align, desc_align, tagline_align
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const result = await insertProd.run(
@@ -1518,7 +1520,8 @@ app.post('/api/admin/products', authMiddleware('admin'), async (req, res) => {
       ]),
       instructions || 'Login at official platform with provided credentials. Do not change master account credentials.',
       titleAlign,
-      descAlign
+      descAlign,
+      taglineAlign
     );
 
     const productId = Number(result.lastInsertRowid);

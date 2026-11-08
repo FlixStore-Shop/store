@@ -779,6 +779,120 @@ function setDescAlign(align) {
   syncLivePreview();
 }
 
+function setTaglineAlign(align) {
+  const hidden = document.getElementById('prodTaglineAlign');
+  const textarea = document.getElementById('prodTaglineInput');
+  if (hidden) hidden.value = align;
+  if (textarea) textarea.style.textAlign = align;
+
+  const btnLeft = document.getElementById('btnTaglineAlignLeft');
+  const btnCenter = document.getElementById('btnTaglineAlignCenter');
+  const btnJustify = document.getElementById('btnTaglineAlignJustify');
+  if (btnLeft) btnLeft.classList.toggle('active', align === 'left');
+  if (btnCenter) btnCenter.classList.toggle('active', align === 'center');
+  if (btnJustify) btnJustify.classList.toggle('active', align === 'justify');
+
+  syncLivePreview();
+}
+
+function formatTaglineHtml(rawText) {
+  if (!rawText) return '';
+  let safe = String(rawText)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+  // Convert markdown bold **text** to <strong>text</strong>
+  safe = safe.replace(/\*\*([^\*\n]+?)\*\*/g, '<strong style="font-weight:700; color:#0f172a;">$1</strong>');
+  safe = safe.replace(/&lt;b&gt;([\s\S]*?)&lt;\/b&gt;/gi, '<strong style="font-weight:700; color:#0f172a;">$1</strong>');
+  safe = safe.replace(/&lt;strong&gt;([\s\S]*?)&lt;\/strong&gt;/gi, '<strong style="font-weight:700; color:#0f172a;">$1</strong>');
+
+  return safe;
+}
+
+function toggleTaglineBold() {
+  const textarea = document.getElementById('prodTaglineInput');
+  if (!textarea) return;
+
+  const start = textarea.selectionStart ?? 0;
+  const end = textarea.selectionEnd ?? 0;
+  const text = textarea.value;
+  const selected = text.substring(start, end);
+
+  if (selected.length > 0) {
+    if (selected.startsWith('**') && selected.endsWith('**') && selected.length >= 4) {
+      const unwrapped = selected.slice(2, -2);
+      textarea.value = text.substring(0, start) + unwrapped + text.substring(end);
+      textarea.focus();
+      textarea.setSelectionRange(start, start + unwrapped.length);
+    } else if (start >= 2 && text.substring(start - 2, start) === '**' && end + 2 <= text.length && text.substring(end, end + 2) === '**') {
+      textarea.value = text.substring(0, start - 2) + selected + text.substring(end + 2);
+      textarea.focus();
+      textarea.setSelectionRange(start - 2, start - 2 + selected.length);
+    } else {
+      const wrapped = `**${selected}**`;
+      textarea.value = text.substring(0, start) + wrapped + text.substring(end);
+      textarea.focus();
+      textarea.setSelectionRange(start + 2, start + 2 + selected.length);
+    }
+  } else {
+    const placeholder = 'Bold Highlights';
+    const snippet = `**${placeholder}**`;
+    textarea.value = text.substring(0, start) + snippet + text.substring(end);
+    textarea.focus();
+    textarea.setSelectionRange(start + 2, start + 2 + placeholder.length);
+  }
+
+  syncLivePreview();
+}
+
+function initTaglineKeyBindings() {
+  const taglineInput = document.getElementById('prodTaglineInput');
+  if (taglineInput && !taglineInput.dataset.boldBound) {
+    taglineInput.dataset.boldBound = 'true';
+    taglineInput.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
+        e.preventDefault();
+        toggleTaglineBold();
+      }
+    });
+  }
+}
+
+function insertTaglineSnippet(snippet) {
+  const textarea = document.getElementById('prodTaglineInput');
+  if (!textarea) return;
+
+  const start = textarea.selectionStart ?? textarea.value.length;
+  const end = textarea.selectionEnd ?? textarea.value.length;
+  const text = textarea.value;
+
+  textarea.value = text.substring(0, start) + snippet + text.substring(end);
+  const newPos = start + snippet.length;
+  textarea.focus();
+  textarea.setSelectionRange(newPos, newPos);
+
+  syncLivePreview();
+}
+
+function insertTaglineTemplate() {
+  const textarea = document.getElementById('prodTaglineInput');
+  if (!textarea) return;
+  const template = "• **Ultra HD 4K Streaming** • **Private PIN Profile** • **Direct BD Streaming**";
+  textarea.value = template;
+  syncLivePreview();
+}
+
+function clearTaglineBox() {
+  const textarea = document.getElementById('prodTaglineInput');
+  if (textarea) {
+    textarea.value = '';
+    syncLivePreview();
+  }
+}
+
 
 function formatDescriptionHtml(rawText) {
   if (!rawText) return '';
@@ -1131,6 +1245,7 @@ function syncLivePreview() {
   const prevWarr = document.getElementById('prevWarrantyLabel');
 
   const titleAlign = document.getElementById('prodTitleAlign')?.value || 'left';
+  const taglineAlign = document.getElementById('prodTaglineAlign')?.value || 'left';
   const desc = (document.getElementById('prodDescInput')?.value || '').trim();
   const descAlign = document.getElementById('prodDescAlign')?.value || 'left';
 
@@ -1146,7 +1261,14 @@ function syncLivePreview() {
     prevTitle.textContent = title;
     prevTitle.style.textAlign = titleAlign;
   }
-  if (prevTagline) prevTagline.textContent = tagline;
+  if (prevTagline) {
+    if (tagline) {
+      prevTagline.innerHTML = formatTaglineHtml(tagline);
+    } else {
+      prevTagline.textContent = 'Ultra HD 4K • Private Profile with PIN • Direct BD Streaming';
+    }
+    prevTagline.style.textAlign = taglineAlign;
+  }
   if (prevWarr) prevWarr.textContent = warranty.includes('Warranty') ? warranty : `${warranty} Warranty`;
 
   const prevDesc = document.getElementById('prevCardDesc');
@@ -1235,7 +1357,10 @@ function syncLivePreview() {
 }
 
 function openAddProductModal() {
-  setTimeout(initDescKeyBindings, 50);
+  setTimeout(() => {
+    initDescKeyBindings();
+    initTaglineKeyBindings();
+  }, 50);
   const modal = document.getElementById('addProductModal');
   if (!modal) return;
 
@@ -1252,8 +1377,10 @@ function openAddProductModal() {
   // Set default alignment cleanly
   const titleAlign = document.getElementById('prodTitleAlign')?.value || 'left';
   const descAlign = document.getElementById('prodDescAlign')?.value || 'left';
+  const taglineAlign = document.getElementById('prodTaglineAlign')?.value || 'left';
   setTitleAlign(titleAlign);
   setDescAlign(descAlign);
+  setTaglineAlign(taglineAlign);
 
   syncLivePreview();
   modal.style.display = 'flex';
@@ -1304,6 +1431,7 @@ async function handleCreateProduct(e) {
 
   const titleAlign = document.getElementById('prodTitleAlign')?.value || 'left';
   const descAlign = document.getElementById('prodDescAlign')?.value || 'left';
+  const taglineAlign = document.getElementById('prodTaglineAlign')?.value || 'left';
 
   const payload = {
     category_id: categoryId,
@@ -1311,6 +1439,7 @@ async function handleCreateProduct(e) {
     slug,
     title_align: titleAlign,
     desc_align: descAlign,
+    tagline_align: taglineAlign,
     tagline: (form.tagline?.value || '').trim(),
     description: (form.description?.value || '').trim(),
     logo_url: (form.logo_url?.value || '/assets/brands/netflix.svg').trim(),

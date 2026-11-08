@@ -153,16 +153,18 @@ async function initDatabase() {
     initSqliteSchema();
   }
 
-  // Ensure title_align and desc_align columns exist on products
+  // Ensure title_align, desc_align, and tagline_align columns exist on products
   try {
     if (isPostgres) {
       await db.exec(`
         ALTER TABLE products ADD COLUMN IF NOT EXISTS title_align TEXT DEFAULT 'left';
         ALTER TABLE products ADD COLUMN IF NOT EXISTS desc_align TEXT DEFAULT 'left';
+        ALTER TABLE products ADD COLUMN IF NOT EXISTS tagline_align TEXT DEFAULT 'left';
       `);
     } else {
       try { db.exec("ALTER TABLE products ADD COLUMN title_align TEXT DEFAULT 'left';"); } catch (e) {}
       try { db.exec("ALTER TABLE products ADD COLUMN desc_align TEXT DEFAULT 'left';"); } catch (e) {}
+      try { db.exec("ALTER TABLE products ADD COLUMN tagline_align TEXT DEFAULT 'left';"); } catch (e) {}
     }
   } catch (err) {
     // Columns already exist
@@ -238,6 +240,7 @@ function initSqliteSchema() {
       instructions TEXT,
       title_align TEXT DEFAULT 'left',
       desc_align TEXT DEFAULT 'left',
+      tagline_align TEXT DEFAULT 'left',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
     );
@@ -400,6 +403,7 @@ async function initPostgresSchema() {
       instructions TEXT,
       title_align TEXT DEFAULT 'left',
       desc_align TEXT DEFAULT 'left',
+      tagline_align TEXT DEFAULT 'left',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 

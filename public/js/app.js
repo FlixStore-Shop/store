@@ -3,6 +3,23 @@
  * High-performance, reactive UI logic
  */
 
+function formatTaglineHtml(rawText) {
+  if (!rawText) return '';
+  let safe = String(rawText)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+  // Convert markdown bold **text** to <strong>text</strong>
+  safe = safe.replace(/\*\*([^\*\n]+?)\*\*/g, '<strong style="font-weight:700;">$1</strong>');
+  safe = safe.replace(/&lt;b&gt;([\s\S]*?)&lt;\/b&gt;/gi, '<strong style="font-weight:700;">$1</strong>');
+  safe = safe.replace(/&lt;strong&gt;([\s\S]*?)&lt;\/strong&gt;/gi, '<strong style="font-weight:700;">$1</strong>');
+
+  return safe;
+}
+
 // State Management
 const state = {
   products: [],
@@ -397,7 +414,7 @@ function renderProducts() {
             <div class="product-body">
               <div class="product-category-name">${p.category_name || 'Premium'}</div>
               <h3 class="product-title" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer; ${p.title_align && p.title_align !== 'left' ? `text-align: ${p.title_align};` : ''}">${(p.title || 'Subscription').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')}</h3>
-              <p class="product-tagline">${(p.tagline || '').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')}</p>
+              <p class="product-tagline" style="${p.tagline_align && p.tagline_align !== 'left' ? `text-align: ${p.tagline_align};` : ''}">${formatTaglineHtml(p.tagline)}</p>
 
               ${tierChipsHTML}
 
@@ -446,7 +463,7 @@ function renderProducts() {
           <div class="product-card" data-slug="${p.slug || ''}">
             <div class="product-body" style="padding: 20px;">
               <h3>${p.title || 'Subscription'}</h3>
-              <p>${p.tagline || ''}</p>
+              <p style="${p.tagline_align && p.tagline_align !== 'left' ? `text-align: ${p.tagline_align};` : ''}">${formatTaglineHtml(p.tagline)}</p>
               <a href="/product/${p.slug || ''}" class="btn-select-plan">
                 <span class="btn-plan-text">Select Plan</span>
                 <span class="btn-plan-arrow">→</span>
@@ -747,7 +764,11 @@ function renderQuickViewDetails() {
   document.getElementById('detailProductImg').src = p.logo_url ? p.logo_url + '?v=2' : '';
   document.getElementById('detailCategory').textContent = p.category_name;
   document.getElementById('detailTitle').textContent = p.title;
-  document.getElementById('detailTagline').textContent = p.tagline;
+  const detailTaglineElem = document.getElementById('detailTagline');
+  if (detailTaglineElem) {
+    detailTaglineElem.innerHTML = formatTaglineHtml(p.tagline);
+    if (p.tagline_align) detailTaglineElem.style.textAlign = p.tagline_align;
+  }
   document.getElementById('detailRating').textContent = `${Number(p.rating || 5.0).toFixed(1)} ★ (${p.review_count || 0} verified reviews)`;
   document.getElementById('detailDescription').textContent = p.description;
 

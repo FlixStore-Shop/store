@@ -6568,6 +6568,27 @@ body {
   color: var(--text-secondary);
   font-size: 0.95rem;
   margin: 0 0 14px 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.pdp-tagline strong,
+.product-tagline strong,
+.tagline-bold {
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+}
+
+.pdp-tagline.align-center {
+  text-align: center;
+}
+
+.pdp-tagline.align-justify {
+  text-align: justify;
+}
+
+.pdp-tagline.align-right {
+  text-align: right;
 }
 
 .pdp-rating-row {
