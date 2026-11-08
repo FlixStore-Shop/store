@@ -8473,7 +8473,26 @@ body {
 }
 
 .drawer-item-icon.wa-icon {
-  color: #25D366;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  filter: drop-shadow(0 2px 5px rgba(37, 211, 102, 0.45));
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s ease;
+}
+
+.drawer-item-icon.wa-icon svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.drawer-nav-item.whatsapp-item:hover .drawer-item-icon.wa-icon {
+  transform: scale(1.12);
+  filter: drop-shadow(0 4px 10px rgba(37, 211, 102, 0.65));
 }
 
 .drawer-item-col {
@@ -8677,3 +8696,48 @@ body {
   scroll-margin-top: 85px;
 }
 
+
+/* ==========================================================================
+   WHATSAPP BRANDING & CLARITY ENHANCEMENTS
+   ========================================================================== */
+.floating-whatsapp-btn {
+  background: linear-gradient(135deg, #25D366 0%, #1da851 100%) !important;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.55), 0 0 16px rgba(37, 211, 102, 0.35) !important;
+}
+
+.floating-whatsapp-btn svg {
+  width: 34px !important;
+  height: 34px !important;
+  display: block !important;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.22)) !important;
+}
+
+/* Hide floating WhatsApp button when drawer or modal is open to avoid background smudge */
+body.drawer-open .floating-whatsapp-btn,
+.nav-drawer-overlay.active ~ .floating-whatsapp-btn,
+.cart-drawer-overlay.active ~ .floating-whatsapp-btn,
+body.modal-open .floating-whatsapp-btn {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: scale(0.6) translateY(24px) !important;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease !important;
+}
+
+/* Crisp Social Circle Link for WhatsApp */
+.social-circle-link.social-wa {
+  color: #25D366;
+}
+
+.social-circle-link.social-wa svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.social-circle-link.social-wa:hover {
+  background: #25D366 !important;
+  border-color: #25D366 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.45) !important;
+}

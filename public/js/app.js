@@ -1121,6 +1121,7 @@ function openNavDrawer() {
   const overlay = document.getElementById('navDrawerOverlay');
   if (!overlay) return;
   overlay.classList.add('active');
+  document.body.classList.add('drawer-open');
   document.body.style.overflow = 'hidden';
 }
 
@@ -1128,6 +1129,7 @@ function closeNavDrawer() {
   const overlay = document.getElementById('navDrawerOverlay');
   if (!overlay) return;
   overlay.classList.remove('active');
+  document.body.classList.remove('drawer-open');
   document.body.style.overflow = '';
 }
 
