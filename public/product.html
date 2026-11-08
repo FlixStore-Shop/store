@@ -386,24 +386,6 @@
                 </li>
               </ul>
             </div>
-            <!-- Dedicated Subscription Overview & Description Section -->
-            <div id="pdpDescSection" class="pdp-description-card">
-              <div class="pdp-desc-header">
-                <div class="pdp-desc-header-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                  </svg>
-                  <span>About This Subscription</span>
-                </div>
-                <span class="pdp-desc-official-pill">✓ Verified Details</span>
-              </div>
-              <div class="pdp-desc-body">
-                <p id="pdpProductDescription" class="pdp-desc-content"></p>
-              </div>
-            </div>
-
-
           </div>
 
         </div>
@@ -433,12 +415,19 @@
             
             <!-- Tab 1: Overview & Features -->
             <div class="pdp-tab-pane active" id="pdpTab_features">
-              <div id="pdpTabOverviewBox" class="pdp-tab-desc-card" style="display:none;">
-                <h4 class="pdp-tab-desc-title">
-                  <span>📖</span>
-                  <span>Subscription Overview</span>
-                </h4>
-                <p id="pdpTabDescription" class="pdp-tab-desc-body"></p>
+              <div id="pdpDescSection" class="pdp-description-card" style="display:none;">
+                <div class="pdp-desc-header">
+                  <div class="pdp-desc-header-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <span>About This Subscription</span>
+                  </div>
+                </div>
+                <div class="pdp-desc-body">
+                  <p id="pdpProductDescription" class="pdp-desc-content"></p>
+                </div>
               </div>
               <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:16px;">What's Included in This Subscription:</h3>
               <div id="pdpFeaturesContainer"></div>

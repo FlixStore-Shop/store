@@ -216,9 +216,7 @@ function renderProductDetails() {
   if (reviewCount) reviewCount.textContent = `(${p.review_count || 128} verified reviews)`;
 
   const descElem = document.getElementById('pdpProductDescription');
-  const tabDescElem = document.getElementById('pdpTabDescription');
   const descSection = document.getElementById('pdpDescSection');
-  const tabOverviewBox = document.getElementById('pdpTabOverviewBox');
   const cleanDesc = (p.description || '').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&').trim();
 
   if (descElem) {
@@ -230,15 +228,8 @@ function renderProductDetails() {
     }
   }
 
-  if (tabDescElem) {
-    tabDescElem.textContent = cleanDesc;
-  }
-
   if (descSection) {
     descSection.style.display = cleanDesc ? 'block' : 'none';
-  }
-  if (tabOverviewBox) {
-    tabOverviewBox.style.display = cleanDesc ? 'block' : 'none';
   }
 
   // 5. Render Tiers & Durations

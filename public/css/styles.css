@@ -8777,14 +8777,15 @@ body.modal-open .floating-whatsapp-btn {
 }
 
 /* =============================================================================
-   PDP DOWNSIDE DESCRIPTION & OVERVIEW SECTION
+   PDP DOWNSIDE DESCRIPTION & OVERVIEW SECTION (INSIDE TABS)
    ============================================================================= */
 .pdp-description-card {
-  margin-top: 20px;
-  background: var(--bg-card);
-  border: 1px solid var(--glass-border);
+  margin-top: 0;
+  margin-bottom: 24px;
+  background: rgba(59, 130, 246, 0.04);
+  border: 1px solid rgba(59, 130, 246, 0.16);
   border-radius: 16px;
-  padding: 20px 22px;
+  padding: 22px 24px;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
   transition: all 0.25s ease;
 }
@@ -8797,11 +8798,10 @@ body.modal-open .floating-whatsapp-btn {
 .pdp-desc-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   margin-bottom: 12px;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.12);
 }
 
 [data-theme="light"] .pdp-desc-header {
@@ -8812,7 +8812,7 @@ body.modal-open .floating-whatsapp-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.92rem;
+  font-size: 1.02rem;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -8822,54 +8822,11 @@ body.modal-open .floating-whatsapp-btn {
   flex-shrink: 0;
 }
 
-.pdp-desc-official-pill {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  border-radius: 999px;
-  padding: 2px 8px;
-  letter-spacing: 0.02em;
-}
-
 .pdp-desc-content {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   color: var(--text-secondary);
-  line-height: 1.75 !important;
+  line-height: 1.8 !important;
   margin: 0;
   white-space: pre-line !important;
   word-break: break-word !important;
-}
-
-/* Detailed Information Tabs Description Banner */
-.pdp-tab-desc-card {
-  margin-bottom: 24px;
-  padding: 18px 22px;
-  background: rgba(59, 130, 246, 0.04);
-  border: 1px solid rgba(59, 130, 246, 0.16);
-  border-radius: 14px;
-}
-
-[data-theme="light"] .pdp-tab-desc-card {
-  background: #f0f7ff;
-  border-color: #bfdbfe;
-}
-
-.pdp-tab-desc-title {
-  margin: 0 0 8px 0;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pdp-tab-desc-body {
-  margin: 0;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  font-size: 0.9rem;
-  white-space: pre-line;
 }
