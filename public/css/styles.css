@@ -7552,6 +7552,7 @@ body {
   height: 50px;
   font-size: 0.98rem;
   font-weight: 800;
+  letter-spacing: 0.3px;
   border-radius: 999px !important;
   text-decoration: none !important;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.1) 48%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0.14) 100%),

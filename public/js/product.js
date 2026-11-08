@@ -494,11 +494,15 @@ function updateSelectedPlanPricing() {
   if (stickyPlan) stickyPlan.textContent = cleanTitle;
   if (stickyPrice) stickyPrice.textContent = formatPrice(offerBdt, true);
 
-  // Update WhatsApp inquiry link
+  // Update WhatsApp direct order link
   const waBtn = document.getElementById('pdpWhatsAppInquiryBtn');
   if (waBtn) {
-    const text = encodeURIComponent(`Hello FlixStore! I am interested in purchasing ${productState.product.title} - ${cleanTitle} for ${formatPrice(offerBdt, true)}.`);
-    waBtn.href = `https://wa.me/8801343546958?text=${text}`;
+    const planName = cleanTitle || 'Selected Plan';
+    const prodTitle = (productState.product && productState.product.title) ? productState.product.title : 'Subscription';
+    const qty = productState.quantity || 1;
+    const priceFormatted = formatPrice(offerBdt * qty, true);
+    const message = `Hello FlixStore! 🚀\nI would like to place an order via WhatsApp:\n\n📦 Subscription: ${prodTitle}\n💳 Plan: ${planName}\n🔢 Quantity: ${qty}\n💰 Total Amount: ${priceFormatted}\n⚡ Delivery: Instant Automated Delivery\n\nPlease send me the payment details (bKash/Nagad/Rocket/Bank) to complete my order. Thank you!`;
+    waBtn.href = `https://wa.me/8801343546958?text=${encodeURIComponent(message)}`;
   }
 }
 
@@ -533,6 +537,7 @@ function pdpAdjustQty(delta) {
   productState.quantity = newQty;
   const qtyEl = document.getElementById('pdpQtyValue');
   if (qtyEl) qtyEl.textContent = newQty;
+  updateSelectedPlanPricing();
 }
 
 function pdpAddToCart() {
