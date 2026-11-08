@@ -6215,7 +6215,8 @@ body {
   gap: 8px;
   font-size: 0.82rem;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  max-width: 1140px;
+  margin: 0 auto 24px;
   flex-wrap: wrap;
 }
 
@@ -6252,13 +6253,14 @@ body {
 
 .pdp-main-grid {
   display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 32px;
+  grid-template-columns: 460px 1fr;
+  gap: 40px;
   align-items: flex-start;
-  margin-bottom: 48px;
+  max-width: 1140px;
+  margin: 0 auto 48px;
 }
 
-/* Media Column (Left) */
+/* Media Column (Left) - Expanded Heroic Showcase */
 .pdp-media-column {
   display: flex;
   flex-direction: column;
@@ -6268,6 +6270,7 @@ body {
   align-self: flex-start;
   z-index: 20;
   will-change: transform;
+  width: 100%;
 }
 
 .pdp-showcase-card {
@@ -6276,8 +6279,8 @@ body {
   top: 96px;
   background: var(--pdp-showcase-bg);
   border: 1px solid var(--pdp-card-border);
-  border-radius: 20px;
-  padding: 36px 24px;
+  border-radius: 24px;
+  padding: 44px 32px;
   text-align: center;
   overflow: hidden;
   box-shadow: var(--pdp-card-shadow);
@@ -6289,11 +6292,11 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 240px;
-  height: 240px;
+  width: 320px;
+  height: 320px;
   background: var(--pdp-showcase-glow);
   border-radius: 50%;
-  filter: blur(40px);
+  filter: blur(50px);
   pointer-events: none;
 }
 
@@ -6301,14 +6304,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 230px;
-  height: 130px;
-  padding: 18px 24px;
-  border-radius: 20px;
+  width: 320px;
+  height: 185px;
+  padding: 22px 30px;
+  border-radius: 22px;
   background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
   border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
-  margin-bottom: 20px;
+  box-shadow: 0 20px 45px -8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  margin-bottom: 24px;
   position: relative;
   overflow: hidden;
   z-index: 2;
@@ -6328,17 +6331,17 @@ body {
 }
 
 .pdp-showcase-badge:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 20px 42px -6px rgba(0, 0, 0, 0.55), 0 0 25px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 26px 54px -8px rgba(0, 0, 0, 0.6), 0 0 30px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
 }
 
 .pdp-showcase-img {
-  max-width: 100% !important;
-  max-height: 100% !important;
+  max-width: 240px !important;
+  max-height: 125px !important;
   width: auto !important;
   height: auto !important;
   object-fit: contain !important;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4)) !important;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45)) !important;
   margin: 0 !important;
   padding: 0 !important;
   background: transparent !important;
@@ -6348,21 +6351,31 @@ body {
   transition: transform 0.25s ease;
 }
 
-/* Tablet & Moderate Widths (769px to 1024px): Side-by-side presentation */
+/* Tablet & Moderate Widths (769px to 1024px): Side-by-side balanced presentation */
 @media (max-width: 1024px) and (min-width: 769px) {
   .pdp-main-grid {
-    grid-template-columns: 260px 1fr;
-    gap: 20px;
+    grid-template-columns: 360px 1fr;
+    gap: 28px;
+    max-width: 100%;
   }
   .pdp-showcase-card {
-    padding: 24px 16px;
+    padding: 32px 20px;
+    border-radius: 20px;
   }
   .pdp-showcase-badge {
-    width: 190px;
-    height: 110px;
-    padding: 14px 18px;
-    margin-bottom: 14px;
-    border-radius: 16px;
+    width: 260px;
+    height: 150px;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+    border-radius: 18px;
+  }
+  .pdp-showcase-img {
+    max-width: 200px !important;
+    max-height: 105px !important;
+  }
+  .pdp-info-column {
+    padding: 28px 24px;
+    border-radius: 20px;
   }
 }
 
@@ -6373,6 +6386,7 @@ body {
     flex-direction: column;
     gap: 20px;
     margin-bottom: 32px;
+    max-width: 100%;
   }
   .pdp-media-column {
     position: static;
@@ -6381,19 +6395,23 @@ body {
   .pdp-showcase-card {
     position: relative;
     top: auto;
-    padding: 24px 16px;
-    border-radius: 16px;
+    padding: 26px 18px;
+    border-radius: 18px;
   }
   .pdp-showcase-badge {
-    width: 190px;
-    height: 110px;
-    padding: 14px 18px;
+    width: 240px;
+    height: 135px;
+    padding: 14px 20px;
     margin-bottom: 14px;
     border-radius: 16px;
   }
+  .pdp-showcase-img {
+    max-width: 180px !important;
+    max-height: 95px !important;
+  }
   .pdp-info-column {
     padding: 24px 18px;
-    border-radius: 16px;
+    border-radius: 18px;
   }
 }
 
@@ -6497,14 +6515,15 @@ body {
   margin-top: 2px;
 }
 
-/* Info Column (Right) */
+/* Info Column (Right) - Refined, Thin & Focused */
 .pdp-info-column {
   background: var(--pdp-card-bg);
   border: 1px solid var(--pdp-card-border);
-  border-radius: 20px;
-  padding: 32px;
+  border-radius: 24px;
+  padding: 36px 36px 40px;
   box-shadow: var(--pdp-card-shadow);
   transition: all 0.25s ease;
+  width: 100%;
 }
 
 @media (max-width: 600px) {
@@ -7946,9 +7965,10 @@ body.pdp-page {
 .pdp-tabs-wrapper {
   background: var(--pdp-card-bg);
   border: 1px solid var(--pdp-card-border);
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
-  margin-bottom: 48px;
+  max-width: 1140px;
+  margin: 0 auto 48px;
   box-shadow: var(--pdp-card-shadow);
   transition: all 0.25s ease;
 }
