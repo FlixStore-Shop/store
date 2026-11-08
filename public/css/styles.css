@@ -6253,14 +6253,14 @@ body {
 
 .pdp-main-grid {
   display: grid;
-  grid-template-columns: 460px 1fr;
-  gap: 40px;
+  grid-template-columns: 520px 1fr;
+  gap: 44px;
   align-items: flex-start;
   max-width: 1140px;
   margin: 0 auto 48px;
 }
 
-/* Media Column (Left) - Expanded Heroic Showcase */
+/* Media Column (Left) - Grand Heroic Product Profile */
 .pdp-media-column {
   display: flex;
   flex-direction: column;
@@ -6279,11 +6279,11 @@ body {
   top: 96px;
   background: var(--pdp-showcase-bg);
   border: 1px solid var(--pdp-card-border);
-  border-radius: 24px;
-  padding: 44px 32px;
+  border-radius: 28px;
+  padding: 48px 36px;
   text-align: center;
   overflow: hidden;
-  box-shadow: var(--pdp-card-shadow);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.12), var(--pdp-card-shadow);
   transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -6292,11 +6292,11 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 320px;
-  height: 320px;
+  width: 400px;
+  height: 400px;
   background: var(--pdp-showcase-glow);
   border-radius: 50%;
-  filter: blur(50px);
+  filter: blur(60px);
   pointer-events: none;
 }
 
@@ -6304,14 +6304,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 320px;
-  height: 185px;
-  padding: 22px 30px;
-  border-radius: 22px;
+  width: 380px;
+  height: 220px;
+  padding: 26px 36px;
+  border-radius: 26px;
   background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  box-shadow: 0 20px 45px -8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
-  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 24px 55px -10px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1.5px 0 rgba(255, 255, 255, 0.35) !important;
+  margin-bottom: 26px;
   position: relative;
   overflow: hidden;
   z-index: 2;
@@ -6325,23 +6325,23 @@ body {
   left: 0;
   right: 0;
   height: 60%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.03) 55%, transparent 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.04) 55%, transparent 100%);
   pointer-events: none;
   z-index: 1;
 }
 
 .pdp-showcase-badge:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 26px 54px -8px rgba(0, 0, 0, 0.6), 0 0 30px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+  transform: translateY(-4px) scale(1.025);
+  box-shadow: 0 32px 64px -10px rgba(0, 0, 0, 0.65), 0 0 35px rgba(59, 130, 246, 0.35), inset 0 1.5px 0 rgba(255, 255, 255, 0.45) !important;
 }
 
 .pdp-showcase-img {
-  max-width: 240px !important;
-  max-height: 125px !important;
+  max-width: 290px !important;
+  max-height: 155px !important;
   width: auto !important;
   height: auto !important;
   object-fit: contain !important;
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45)) !important;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.5)) !important;
   margin: 0 !important;
   padding: 0 !important;
   background: transparent !important;
@@ -6354,28 +6354,28 @@ body {
 /* Tablet & Moderate Widths (769px to 1024px): Side-by-side balanced presentation */
 @media (max-width: 1024px) and (min-width: 769px) {
   .pdp-main-grid {
-    grid-template-columns: 360px 1fr;
+    grid-template-columns: 380px 1fr;
     gap: 28px;
     max-width: 100%;
   }
   .pdp-showcase-card {
-    padding: 32px 20px;
-    border-radius: 20px;
+    padding: 34px 22px;
+    border-radius: 22px;
   }
   .pdp-showcase-badge {
-    width: 260px;
-    height: 150px;
-    padding: 16px 20px;
-    margin-bottom: 18px;
-    border-radius: 18px;
+    width: 290px;
+    height: 165px;
+    padding: 18px 24px;
+    margin-bottom: 20px;
+    border-radius: 20px;
   }
   .pdp-showcase-img {
-    max-width: 200px !important;
-    max-height: 105px !important;
+    max-width: 220px !important;
+    max-height: 120px !important;
   }
   .pdp-info-column {
     padding: 28px 24px;
-    border-radius: 20px;
+    border-radius: 22px;
   }
 }
 
@@ -6395,19 +6395,19 @@ body {
   .pdp-showcase-card {
     position: relative;
     top: auto;
-    padding: 26px 18px;
-    border-radius: 18px;
+    padding: 28px 20px;
+    border-radius: 20px;
   }
   .pdp-showcase-badge {
-    width: 240px;
-    height: 135px;
-    padding: 14px 20px;
-    margin-bottom: 14px;
-    border-radius: 16px;
+    width: 270px;
+    height: 155px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+    border-radius: 18px;
   }
   .pdp-showcase-img {
-    max-width: 180px !important;
-    max-height: 95px !important;
+    max-width: 205px !important;
+    max-height: 110px !important;
   }
   .pdp-info-column {
     padding: 24px 18px;
@@ -6425,17 +6425,17 @@ body {
 }
 
 .pdp-media-badges .badge-tag {
-  font-size: 0.74rem !important;
+  font-size: 0.82rem !important;
   font-weight: 700 !important;
-  padding: 5px 12px !important;
+  padding: 7px 16px !important;
   border-radius: var(--radius-full) !important;
   letter-spacing: 0.5px;
 }
 
 .pdp-media-badges .instant-delivery-badge {
-  font-size: 0.74rem !important;
+  font-size: 0.82rem !important;
   font-weight: 700 !important;
-  padding: 5px 12px !important;
+  padding: 7px 16px !important;
   border-radius: var(--radius-full) !important;
 }
 
