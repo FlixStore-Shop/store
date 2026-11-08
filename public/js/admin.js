@@ -779,6 +779,73 @@ function setDescAlign(align) {
   syncLivePreview();
 }
 
+
+function formatDescriptionHtml(rawText) {
+  if (!rawText) return '';
+  let safe = String(rawText)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+  // Convert markdown bold **text** to <strong>text</strong>
+  safe = safe.replace(/\*\*([^\*\n]+?)\*\*/g, '<strong style="font-weight:700; color:#0f172a;">$1</strong>');
+  safe = safe.replace(/&lt;b&gt;([\s\S]*?)&lt;\/b&gt;/gi, '<strong style="font-weight:700; color:#0f172a;">$1</strong>');
+  safe = safe.replace(/&lt;strong&gt;([\s\S]*?)&lt;\/strong&gt;/gi, '<strong style="font-weight:700; color:#0f172a;">$1</strong>');
+
+  return safe;
+}
+
+function toggleDescBold() {
+  const textarea = document.getElementById('prodDescInput');
+  if (!textarea) return;
+
+  const start = textarea.selectionStart ?? 0;
+  const end = textarea.selectionEnd ?? 0;
+  const text = textarea.value;
+  const selected = text.substring(start, end);
+
+  if (selected.length > 0) {
+    if (selected.startsWith('**') && selected.endsWith('**') && selected.length >= 4) {
+      const unwrapped = selected.slice(2, -2);
+      textarea.value = text.substring(0, start) + unwrapped + text.substring(end);
+      textarea.focus();
+      textarea.setSelectionRange(start, start + unwrapped.length);
+    } else if (start >= 2 && text.substring(start - 2, start) === '**' && end + 2 <= text.length && text.substring(end, end + 2) === '**') {
+      textarea.value = text.substring(0, start - 2) + selected + text.substring(end + 2);
+      textarea.focus();
+      textarea.setSelectionRange(start - 2, start - 2 + selected.length);
+    } else {
+      const wrapped = `**${selected}**`;
+      textarea.value = text.substring(0, start) + wrapped + text.substring(end);
+      textarea.focus();
+      textarea.setSelectionRange(start + 2, start + 2 + selected.length);
+    }
+  } else {
+    const placeholder = 'Bold Text';
+    const snippet = `**${placeholder}**`;
+    textarea.value = text.substring(0, start) + snippet + text.substring(end);
+    textarea.focus();
+    textarea.setSelectionRange(start + 2, start + 2 + placeholder.length);
+  }
+
+  syncLivePreview();
+}
+
+function initDescKeyBindings() {
+  const descTextarea = document.getElementById('prodDescInput');
+  if (descTextarea && !descTextarea.dataset.boldBound) {
+    descTextarea.dataset.boldBound = 'true';
+    descTextarea.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
+        e.preventDefault();
+        toggleDescBold();
+      }
+    });
+  }
+}
+
 function insertDescSnippet(snippet) {
   const textarea = document.getElementById('prodDescInput');
   if (!textarea) return;
@@ -798,7 +865,7 @@ function insertDescSnippet(snippet) {
 function insertFeaturesTemplate() {
   const textarea = document.getElementById('prodDescInput');
   if (!textarea) return;
-  const template = "• Instant automated account delivery within 60 seconds\n• Works directly in Bangladesh without VPN\n• High quality streaming with 4K UHD support\n• 100% full duration replacement warranty with 24/7 support";
+  const template = "• **Instant automated account delivery** within 60 seconds\n• **Direct BD streaming** without any VPN required\n• **Ultra HD 4K quality** with Dolby Atmos & HDR support\n• **100% full duration replacement warranty** with 24/7 support";
   textarea.value = (textarea.value ? textarea.value.trim() + "\n\n" : "") + template;
   syncLivePreview();
 }
@@ -1085,7 +1152,7 @@ function syncLivePreview() {
   const prevDesc = document.getElementById('prevCardDesc');
   if (prevDesc) {
     if (desc) {
-      prevDesc.textContent = desc;
+      prevDesc.innerHTML = formatDescriptionHtml(desc);
       prevDesc.style.color = '#1e293b';
     } else {
       prevDesc.textContent = '(Type in the description box to preview formatted sentences, bullets, and alignment in real-time)';
@@ -1168,6 +1235,7 @@ function syncLivePreview() {
 }
 
 function openAddProductModal() {
+  setTimeout(initDescKeyBindings, 50);
   const modal = document.getElementById('addProductModal');
   if (!modal) return;
 

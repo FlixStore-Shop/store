@@ -1,3 +1,20 @@
+function formatDescriptionHtml(rawText) {
+  if (!rawText) return '';
+  let safe = String(rawText)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+  // Convert markdown bold **text** to <strong>text</strong>
+  safe = safe.replace(/\*\*([^\*\n]+?)\*\*/g, '<strong class="desc-bold">$1</strong>');
+  safe = safe.replace(/&lt;b&gt;([\s\S]*?)&lt;\/b&gt;/gi, '<strong class="desc-bold">$1</strong>');
+  safe = safe.replace(/&lt;strong&gt;([\s\S]*?)&lt;\/strong&gt;/gi, '<strong class="desc-bold">$1</strong>');
+
+  return safe;
+}
+
 /**
  * FlixStore Dedicated Product Page Controller
  * Handles dynamic data fetching, tier & duration selection, instant checkout,
@@ -220,7 +237,7 @@ function renderProductDetails() {
   const cleanDesc = (p.description || '').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&').trim();
 
   if (descElem) {
-    descElem.textContent = cleanDesc;
+    descElem.innerHTML = formatDescriptionHtml(cleanDesc);
     if (p.desc_align) {
       descElem.style.textAlign = p.desc_align;
       descElem.classList.remove('align-center', 'align-justify', 'align-right');

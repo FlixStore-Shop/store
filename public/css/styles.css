@@ -8830,3 +8830,33 @@ body.modal-open .floating-whatsapp-btn {
   white-space: pre-line !important;
   word-break: break-word !important;
 }
+
+/* Description Bold & Sentence Alignment Styling */
+.desc-bold,
+.pdp-desc-content strong,
+.pdp-desc-content b,
+.prev-card-desc strong,
+.prev-card-desc b,
+#prevCardDesc strong,
+#prevCardDesc b {
+  font-weight: 700 !important;
+  color: var(--text-primary, #0f172a) !important;
+}
+
+[data-theme="dark"] .desc-bold,
+[data-theme="dark"] .pdp-desc-content strong,
+[data-theme="dark"] .pdp-desc-content b {
+  color: #ffffff !important;
+}
+
+.pdp-desc-content.align-center {
+  text-align: center !important;
+}
+
+.pdp-desc-content.align-justify {
+  text-align: justify !important;
+}
+
+.pdp-desc-content.align-right {
+  text-align: right !important;
+}
