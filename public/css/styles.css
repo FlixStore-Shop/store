@@ -5398,9 +5398,11 @@ body {
     margin: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
-    height: 100% !important;
-    max-height: 100vh !important;
-    border-radius: 0 !important;
+    height: auto !important;
+    max-height: 94vh !important;
+    border-radius: var(--radius-lg) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   .checkout-grid {
@@ -6399,23 +6401,23 @@ body {
   .pdp-showcase-card {
     position: relative;
     top: auto;
-    padding: 28px 20px;
-    border-radius: 20px;
+    padding: 24px 16px;
+    border-radius: 22px;
   }
   .pdp-showcase-badge {
-    width: 270px;
-    height: 155px;
-    padding: 16px 22px;
-    margin-bottom: 16px;
-    border-radius: 18px;
+    width: min(320px, 92%);
+    height: 180px;
+    padding: 18px 24px;
+    margin-bottom: 18px;
+    border-radius: 22px;
   }
   .pdp-showcase-img {
-    max-width: 205px !important;
-    max-height: 110px !important;
+    max-width: 240px !important;
+    max-height: 130px !important;
   }
   .pdp-info-column {
-    padding: 24px 18px;
-    border-radius: 18px;
+    padding: 22px 16px;
+    border-radius: 20px;
   }
 }
 
@@ -7757,20 +7759,20 @@ body {
   }
 
   .pdp-qty-stepper {
-    width: 120px !important;
-    min-width: 110px !important;
-    height: 48px !important;
-    padding: 0 12px !important;
+    width: 110px !important;
+    min-width: 100px !important;
+    height: 46px !important;
+    padding: 0 10px !important;
   }
 
   .pdp-add-to-cart-pill {
-    height: 48px !important;
-    font-size: 0.94rem !important;
+    height: 46px !important;
+    font-size: 0.92rem !important;
   }
 
   .pdp-buy-it-now-pill {
-    height: 50px !important;
-    font-size: 1rem !important;
+    height: 48px !important;
+    font-size: 0.96rem !important;
   }
 
   .pdp-duration-pill {
@@ -7814,11 +7816,11 @@ body {
 
   .pdp-whatsapp-btn {
     width: 100% !important;
-    height: 48px !important;
-    min-height: 48px !important;
+    height: 46px !important;
+    min-height: 46px !important;
     border-radius: 999px !important;
-    font-size: 0.94rem !important;
-    font-weight: 800 !important;
+    font-size: 0.92rem !important;
+    font-weight: 700 !important;
     padding: 0 16px !important;
     gap: 8px !important;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.1) 48%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0.14) 100%),
@@ -7859,6 +7861,36 @@ body {
     font-size: 0.68rem !important;
     padding: 2px 6px !important;
     margin-left: auto !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .pdp-showcase-badge {
+    width: 100% !important;
+    height: 155px !important;
+    padding: 12px 16px !important;
+  }
+  .pdp-showcase-img {
+    max-width: 200px !important;
+    max-height: 105px !important;
+  }
+  .pdp-price-hero-amount {
+    font-size: 1.65rem !important;
+  }
+  .pdp-qty-stepper {
+    width: 96px !important;
+    min-width: 90px !important;
+    padding: 0 6px !important;
+  }
+  .pdp-add-to-cart-pill {
+    font-size: 0.86rem !important;
+    padding: 0 10px !important;
+  }
+  .pdp-buy-it-now-pill {
+    font-size: 0.92rem !important;
+  }
+  .pdp-whatsapp-btn {
+    font-size: 0.88rem !important;
   }
 }
 
@@ -8055,7 +8087,18 @@ body.pdp-page {
 
 @media (max-width: 600px) {
   .pdp-tab-body {
-    padding: 20px;
+    padding: 18px 14px;
+  }
+
+  .pdp-tab-nav-btn {
+    padding: 12px 14px;
+    font-size: 0.82rem;
+    gap: 6px;
+  }
+
+  .pdp-features-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
   }
 }
 
