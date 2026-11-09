@@ -174,6 +174,14 @@ function renderProductDetails() {
   if (metaDesc) {
     metaDesc.setAttribute('content', `Buy genuine ${p.title} with 60-second instant automated delivery and 100% replacement warranty in Bangladesh.`);
   }
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute('content', `${p.title} - Official Subscription | FlixStore`);
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute('content', `Buy genuine ${p.title} with instant 60s automated delivery and full warranty in Bangladesh.`);
+  const ogImage = document.querySelector('meta[property="og:image"]');
+  if (ogImage && p.logo_url) ogImage.setAttribute('content', window.location.origin + p.logo_url);
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.setAttribute('href', window.location.href);
 
   // 2. Breadcrumbs
   const breadcrumbCat = document.getElementById('pdpBreadcrumbCategory');
@@ -183,7 +191,13 @@ function renderProductDetails() {
 
   // 3. Media Column (Left)
   const logoImg = document.getElementById('pdpProductLogo');
-  if (logoImg) logoImg.src = p.logo_url ? p.logo_url + '?v=2' : '';
+  if (logoImg) {
+    logoImg.src = p.logo_url ? p.logo_url + '?v=2' : '/assets/flixstore-icon.png';
+    logoImg.onerror = function() {
+      this.onerror = null;
+      this.src = '/assets/flixstore-icon.png';
+    };
+  }
   
   const badgeTag = document.getElementById('pdpBadgeTag');
   if (badgeTag) {
@@ -295,7 +309,7 @@ function renderTierTabs() {
   const plans = productState.product.plans || [];
   const uniqueTiers = Array.from(new Set(plans.map(pl => pl.tier_type)));
 
-  const secWrapper = container.closest('div');
+  const secWrapper = document.getElementById('pdpTierSection');
   const hintBox = document.getElementById('pdpTierHintBox');
 
   if (uniqueTiers.length <= 1) {
@@ -502,7 +516,7 @@ function updateSelectedPlanPricing() {
     const qty = productState.quantity || 1;
     const priceFormatted = formatPrice(offerBdt * qty, true);
     const message = `Hello FlixStore! 🚀\nI would like to place an order via WhatsApp:\n\n📦 Subscription: ${prodTitle}\n💳 Plan: ${planName}\n🔢 Quantity: ${qty}\n💰 Total Amount: ${priceFormatted}\n⚡ Delivery: Instant Automated Delivery\n\nPlease send me the payment details (bKash/Nagad/Rocket/Bank) to complete my order. Thank you!`;
-    waBtn.href = `https://wa.me/8801343546958?text=${encodeURIComponent(message)}`;
+    waBtn.href = `https://wa.me/8801616696977?text=${encodeURIComponent(message)}`;
   }
 }
 
@@ -576,7 +590,18 @@ function renderFeaturesTab() {
   const container = document.getElementById('pdpFeaturesContainer');
   if (!container) return;
 
-  const features = productState.product.features_list || [];
+  let features = productState.product.features_list || [];
+  if (typeof features === 'string') {
+    try {
+      features = JSON.parse(features);
+    } catch (e) {
+      features = features.split('\n').map(s => s.trim()).filter(Boolean);
+    }
+  }
+  if (!Array.isArray(features)) {
+    features = [];
+  }
+
   if (features.length === 0) {
     container.innerHTML = '<p style="color:var(--text-secondary);">Features and benefits included with every genuine plan.</p>';
     return;
@@ -677,7 +702,7 @@ function renderFaqTab() {
       </div>
       <div class="pdp-faq-item">
         <h4 class="pdp-faq-q">What happens if a password resets or an issue occurs?</h4>
-        <p class="pdp-faq-a">Every plan comes with our 100% Replacement Warranty. If any issue occurs during your active subscription period, message our WhatsApp support (+8801343546958) and we will resolve or replace it within minutes.</p>
+        <p class="pdp-faq-a">Every plan comes with our 100% Replacement Warranty. If any issue occurs during your active subscription period, message our WhatsApp support (+8801616696977) and we will resolve or replace it within minutes.</p>
       </div>
       <div class="pdp-faq-item">
         <h4 class="pdp-faq-q">How soon will I receive my login credentials?</h4>

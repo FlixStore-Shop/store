@@ -400,7 +400,7 @@ function renderProducts() {
         return `
           <div class="product-card" data-slug="${p.slug}">
             <div class="product-card-top" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer;">
-              <img src="${p.logo_url ? p.logo_url + '?v=2' : '/assets/logos/default.png'}" alt="${p.title || 'Subscription'}" class="product-card-img" loading="lazy">
+              <img src="${p.logo_url ? p.logo_url + '?v=2' : '/assets/flixstore-icon.png'}" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';" alt="${p.title || 'Subscription'}" class="product-card-img" loading="lazy">
               <div class="product-card-gradient"></div>
               <div class="product-card-badges">
                 <span class="badge-tag ${badgeClass}">${p.badge || 'Verified'}</span>
@@ -1487,6 +1487,9 @@ async function processOrderPayment() {
   } else if (selectedPaymentGateway === 'nagad') {
     const ngTrx = document.getElementById('nagadTrxInput');
     trx_id = ngTrx && ngTrx.value.trim() ? ngTrx.value.trim() : 'NAGAD-VERIFIED-' + Math.floor(100000 + Math.random() * 900000);
+  } else if (selectedPaymentGateway === 'rocket') {
+    const rkTrx = document.getElementById('rocketTrxInput');
+    trx_id = rkTrx && rkTrx.value.trim() ? rkTrx.value.trim() : 'ROCKET-VERIFIED-' + Math.floor(100000 + Math.random() * 900000);
   } else if (selectedPaymentGateway === 'card') {
     const cardInput = document.getElementById('checkoutCardNumber');
     const rawNum = cardInput ? cardInput.value.replace(/\D/g, '') : '';
@@ -1637,7 +1640,7 @@ function showOrderSuccessReceipt(order) {
   // Update dynamic receipt WhatsApp action
   const waBtn = document.getElementById('receiptWhatsappLink');
   if (waBtn) {
-    waBtn.href = `https://wa.me/8801343546958?text=${encodeURIComponent(`Hello FlixStore! I just placed Order #${order.orderNumber}. Could you please confirm my activation?`)}`;
+    waBtn.href = `https://wa.me/8801616696977?text=${encodeURIComponent(`Hello FlixStore! I just placed Order #${order.orderNumber}. Could you please confirm my activation?`)}`;
   }
 
   modal.classList.add('active');
@@ -2142,7 +2145,7 @@ async function renderUserProfile() {
                   <button type="button" class="btn-secondary" style="flex:1; padding:7px 10px; font-size:0.76rem; justify-content:center; gap:4px;" onclick="closeAuthModal(); openTrackOrderModal('${ord.order_number}');">
                     <span>🔍</span> Live Tracker
                   </button>
-                  <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20need%20assistance%20with%20Order%20${encodeURIComponent(ord.order_number)}" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:7px 12px; font-size:0.76rem; justify-content:center; gap:4px; text-decoration:none; color:#10b981; border-color:rgba(16,185,129,0.3);">
+                  <a href="https://wa.me/8801616696977?text=Hello%20FlixStore%2C%20I%20need%20assistance%20with%20Order%20${encodeURIComponent(ord.order_number)}" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:7px 12px; font-size:0.76rem; justify-content:center; gap:4px; text-decoration:none; color:#10b981; border-color:rgba(16,185,129,0.3);">
                     <span>💬</span> Help
                   </a>
                 </div>
@@ -3059,7 +3062,7 @@ const INFO_MODAL_CONTENTS = {
         <p>• <strong>Shared Screen:</strong> Stocked profiles are typically dispatched within 5 to 10 minutes.<br>• <strong>Personal Account:</strong> Custom licensing and email activation require between a few hours and up to 24 hours.</p>
         <div class="policy-callout warning">
           <h5>📩 Non-Receipt Within 24 Hours:</h5>
-          <p>Please reach out immediately with your Order ID via WhatsApp: <strong>01343546958</strong> or Email: <strong>flixstore.officials@gmail.com</strong>.</p>
+          <p>Please reach out immediately with your Order ID via WhatsApp: <strong>01616696977</strong> or Email: <strong>flixstore.officials@gmail.com</strong>.</p>
         </div>
       </div>
     `
@@ -3117,11 +3120,11 @@ const INFO_MODAL_CONTENTS = {
         <p>For any questions regarding orders, payments, delivery status, or technical support, please contact our dedicated team directly.</p>
         <div class="copy-box-row">
           <span class="copy-box-label">📞 Direct Call</span>
-          <span class="copy-box-val">01343546958</span>
+          <span class="copy-box-val">01616696977</span>
         </div>
         <div class="copy-box-row">
           <span class="copy-box-label">💬 WhatsApp</span>
-          <span class="copy-box-val">8801343546958</span>
+          <span class="copy-box-val">8801616696977</span>
         </div>
         <div class="copy-box-row">
           <span class="copy-box-label">📧 Email</span>

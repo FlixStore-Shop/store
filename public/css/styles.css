@@ -6570,6 +6570,17 @@ body {
   margin: 0 0 14px 0;
   line-height: 1.5;
   white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+  .pdp-tagline {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    margin-bottom: 12px;
+  }
 }
 
 .pdp-tagline strong,
@@ -8301,10 +8312,6 @@ body.pdp-page {
   object-fit: contain;
   display: block;
   flex-shrink: 0;
-}
-  max-width: 175px;
-  object-fit: contain;
-  display: block;
 }
 
 .nav-drawer-close {

@@ -627,8 +627,8 @@ function renderAdminProducts(products) {
         <td><strong style="color:#d97706;">${Number(p.rating || 5.0).toFixed(1)} ★</strong> (${p.review_count || 0})</td>
         <td>
           <div style="display:flex; gap:6px; align-items:center;">
-            <a href="/#productsGrid" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem;">
-              View
+            <a href="/product/${p.slug}" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="View on Live Storefront">
+              👁️ View
             </a>
             <button onclick="deleteProduct(${p.id}, '${safeTitle}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" title="Delete Subscription">
               🗑️ Delete
