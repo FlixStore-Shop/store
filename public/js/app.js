@@ -1382,8 +1382,13 @@ function openCheckoutModal() {
   }
 
   const cardHolderPreview = document.getElementById('cardHolderPreview');
+  const cardNameInput = document.getElementById('checkoutCardName');
+  const fallbackHolderName = (state.user && state.user.full_name ? state.user.full_name : 'FlixStore Subscriber');
   if (cardHolderPreview) {
-    cardHolderPreview.textContent = (state.user && state.user.full_name ? state.user.full_name : 'FLIXSTORE SUBSCRIBER').toUpperCase();
+    cardHolderPreview.textContent = fallbackHolderName.toUpperCase();
+  }
+  if (cardNameInput && !cardNameInput.value) {
+    cardNameInput.value = fallbackHolderName;
   }
   const cardInput = document.getElementById('checkoutCardNumber');
   if (cardInput) {
@@ -1400,28 +1405,213 @@ function closeCheckoutModal() {
   if (modal) modal.classList.remove('active');
 }
 
+let currentMobileSubMethod = 'bkash';
+let currentExpressSubMethod = 'paypal';
+
 function selectPaymentMethod(method) {
+  // If user passed 'mobile', default to currently active mobile sub-method
+  if (method === 'mobile') {
+    method = currentMobileSubMethod || 'bkash';
+  } else if (method === 'express') {
+    method = currentExpressSubMethod || 'paypal';
+  }
+
   selectedPaymentGateway = method;
 
-  // Update tab highlights
-  document.querySelectorAll('.payment-method-card').forEach(card => {
-    card.classList.toggle('active', card.dataset.method === method);
-  });
+  const isCard = method === 'card';
+  const isMobile = ['bkash', 'nagad', 'rocket'].includes(method);
+  const isExpress = ['paypal', 'crypto'].includes(method);
+
+  // Update Amazon radio cards active state
+  const cardOpt = document.getElementById('amazonCardOption');
+  const mobileOpt = document.getElementById('amazonMobileOption');
+  const expressOpt = document.getElementById('amazonExpressOption');
+
+  if (cardOpt) cardOpt.classList.toggle('active', isCard);
+  if (mobileOpt) mobileOpt.classList.toggle('active', isMobile);
+  if (expressOpt) expressOpt.classList.toggle('active', isExpress);
+
+  // Update radio inputs
+  const rCard = document.getElementById('payRadioCard');
+  const rMobile = document.getElementById('payRadioMobile');
+  const rExpress = document.getElementById('payRadioExpress');
+
+  if (rCard) rCard.checked = isCard;
+  if (rMobile) rMobile.checked = isMobile;
+  if (rExpress) rExpress.checked = isExpress;
 
   // Toggle view panels
   const cardPanel = document.getElementById('cardPaymentPanel');
-  const bkashPanel = document.getElementById('bkashPaymentPanel');
-  const nagadPanel = document.getElementById('nagadPaymentPanel');
-  const rocketPanel = document.getElementById('rocketPaymentPanel');
-  const paypalPanel = document.getElementById('paypalPaymentPanel');
-  const cryptoPanel = document.getElementById('cryptoPaymentPanel');
+  const mobileBody = document.getElementById('mobileBankingBody');
+  const expressBody = document.getElementById('expressPaymentBody');
 
-  if (cardPanel) cardPanel.style.display = method === 'card' ? 'block' : 'none';
-  if (bkashPanel) bkashPanel.style.display = method === 'bkash' ? 'block' : 'none';
-  if (nagadPanel) nagadPanel.style.display = method === 'nagad' ? 'block' : 'none';
-  if (rocketPanel) rocketPanel.style.display = method === 'rocket' ? 'block' : 'none';
-  if (paypalPanel) paypalPanel.style.display = method === 'paypal' ? 'block' : 'none';
-  if (cryptoPanel) cryptoPanel.style.display = method === 'crypto' ? 'block' : 'none';
+  if (cardPanel) cardPanel.style.display = isCard ? 'block' : 'none';
+  if (mobileBody) mobileBody.style.display = isMobile ? 'block' : 'none';
+  if (expressBody) expressBody.style.display = isExpress ? 'block' : 'none';
+
+  if (isMobile) {
+    switchMobileSubMethod(method);
+  } else if (isExpress) {
+    switchExpressSubMethod(method);
+  }
+
+  // Backward-compatibility highlights
+  document.querySelectorAll('.payment-method-card').forEach(card => {
+    card.classList.toggle('active', card.dataset.method === method);
+  });
+}
+
+function switchMobileSubMethod(subMethod, event) {
+  if (event && typeof event.stopPropagation === 'function') event.stopPropagation();
+  currentMobileSubMethod = subMethod;
+  selectedPaymentGateway = subMethod;
+
+  const tabBkash = document.getElementById('tabBkash');
+  const tabNagad = document.getElementById('tabNagad');
+  const tabRocket = document.getElementById('tabRocket');
+
+  if (tabBkash) tabBkash.classList.toggle('active', subMethod === 'bkash');
+  if (tabNagad) tabNagad.classList.toggle('active', subMethod === 'nagad');
+  if (tabRocket) tabRocket.classList.toggle('active', subMethod === 'rocket');
+
+  const channelBadge = document.getElementById('mfsChannelBadge');
+  const mfsInstructions = document.getElementById('mfsInstructions');
+
+  if (subMethod === 'bkash') {
+    if (channelBadge) {
+      channelBadge.textContent = 'bKash Personal (Send Money)';
+      channelBadge.style.background = '#e1125d';
+    }
+    if (mfsInstructions) {
+      mfsInstructions.innerHTML = 'Send exact payment using bKash App or dial <strong>*247#</strong> (Send Money) to our verified number:';
+    }
+  } else if (subMethod === 'nagad') {
+    if (channelBadge) {
+      channelBadge.textContent = 'Nagad Personal (Send Money)';
+      channelBadge.style.background = '#f7941d';
+    }
+    if (mfsInstructions) {
+      mfsInstructions.innerHTML = 'Send exact payment using Nagad App or dial <strong>*167#</strong> (Send Money) to our verified number:';
+    }
+  } else if (subMethod === 'rocket') {
+    if (channelBadge) {
+      channelBadge.textContent = 'DBBL Rocket Personal (Send Money)';
+      channelBadge.style.background = '#8b5cf6';
+    }
+    if (mfsInstructions) {
+      mfsInstructions.innerHTML = 'Send exact payment using Rocket App or dial <strong>*322#</strong> (Send Money) to our verified number:';
+    }
+  }
+
+  syncMobileInputs();
+}
+
+function switchExpressSubMethod(subMethod, event) {
+  if (event && typeof event.stopPropagation === 'function') event.stopPropagation();
+  currentExpressSubMethod = subMethod;
+  selectedPaymentGateway = subMethod;
+
+  const tabPaypal = document.getElementById('tabPaypal');
+  const tabCrypto = document.getElementById('tabCrypto');
+  const paypalSub = document.getElementById('paypalSubPanel');
+  const cryptoSub = document.getElementById('cryptoSubPanel');
+
+  if (tabPaypal) tabPaypal.classList.toggle('active', subMethod === 'paypal');
+  if (tabCrypto) tabCrypto.classList.toggle('active', subMethod === 'crypto');
+  if (paypalSub) paypalSub.style.display = subMethod === 'paypal' ? 'block' : 'none';
+  if (cryptoSub) cryptoSub.style.display = subMethod === 'crypto' ? 'block' : 'none';
+}
+
+function syncMobileInputs() {
+  const unifiedSender = document.getElementById('mobileBankingSender');
+  const unifiedTrx = document.getElementById('mobileBankingTrx');
+  const senderVal = unifiedSender ? unifiedSender.value.trim() : '';
+  const trxVal = unifiedTrx ? unifiedTrx.value.trim() : '';
+
+  const ids = ['bkash', 'nagad', 'rocket'];
+  ids.forEach(id => {
+    const sEl = document.getElementById(`${id}SenderInput`);
+    const tEl = document.getElementById(`${id}TrxInput`);
+    if (sEl && sEl !== unifiedSender) sEl.value = senderVal;
+    if (tEl && tEl !== unifiedTrx) tEl.value = trxVal;
+  });
+}
+
+function handleCardNumberInput(input) {
+  if (!input) return;
+  const raw = input.value.replace(/\D/g, '').substring(0, 16);
+  const formatted = raw.match(/.{1,4}/g)?.join(' ') || raw;
+  input.value = formatted;
+
+  const preview = document.getElementById('cardNumPreview');
+  if (preview) {
+    preview.textContent = formatted.length > 0 ? formatted.padEnd(19, ' •••• •••• ••••'.substring(formatted.length)) : '4242 •••• •••• 4242';
+  }
+
+  const visual = document.getElementById('creditCardVisual');
+  const badge = document.getElementById('cardBrandBadge');
+  let brand = 'VISA';
+
+  if (raw.startsWith('4')) {
+    brand = 'VISA';
+  } else if (/^5[1-5]/.test(raw) || /^2[2-7]/.test(raw)) {
+    brand = 'MASTERCARD';
+  } else if (/^3[47]/.test(raw)) {
+    brand = 'AMEX';
+  } else if (/^6011|^65/.test(raw)) {
+    brand = 'DISCOVER';
+  }
+
+  if (badge) badge.textContent = brand;
+  if (visual) {
+    visual.classList.remove('visa', 'mastercard', 'amex', 'discover');
+    visual.classList.add(brand.toLowerCase());
+  }
+}
+
+function handleCardNameInput(input) {
+  if (!input) return;
+  const preview = document.getElementById('cardHolderPreview');
+  if (preview) {
+    preview.textContent = (input.value.trim() || 'FLIXSTORE SUBSCRIBER').toUpperCase();
+  }
+}
+
+function handleCardExpInput(input) {
+  if (!input) return;
+  let val = input.value.replace(/\D/g, '').substring(0, 4);
+  if (val.length > 2) {
+    val = val.substring(0, 2) + '/' + val.substring(2);
+  }
+  input.value = val;
+  const preview = document.getElementById('cardExpPreview');
+  if (preview) {
+    preview.textContent = val.length > 0 ? val : '12/28';
+  }
+}
+
+function fillTestCardDetails(event) {
+  if (event && typeof event.stopPropagation === 'function') event.stopPropagation();
+  const cardInput = document.getElementById('checkoutCardNumber');
+  const expInput = document.getElementById('checkoutCardExp');
+  const cvcInput = document.getElementById('checkoutCardCvc');
+  const nameInput = document.getElementById('checkoutCardName');
+
+  if (cardInput) {
+    cardInput.value = '4242 8891 0021 4242';
+    handleCardNumberInput(cardInput);
+  }
+  if (expInput) {
+    expInput.value = '12/28';
+    handleCardExpInput(expInput);
+  }
+  if (cvcInput) {
+    cvcInput.value = '921';
+  }
+  if (nameInput) {
+    nameInput.value = (state.user && state.user.full_name) ? state.user.full_name : 'FlixStore Subscriber';
+    handleCardNameInput(nameInput);
+  }
 }
 
 function renderCheckoutSummary() {
@@ -1434,14 +1624,18 @@ function renderCheckoutSummary() {
   const couponRow = document.getElementById('checkoutCouponRow');
   const couponDiscountDisplay = document.getElementById('checkoutCouponDiscount');
   const vipNotice = document.getElementById('vipAutoAppliedNotice');
+  const couponBadge = document.getElementById('appliedCouponBadge');
 
   const totals = calculateCartTotals();
 
   if (itemsContainer) {
     itemsContainer.innerHTML = state.cart.map(item => `
-      <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:8px;">
-        <span>${item.productTitle} × ${item.quantity}</span>
-        <strong>${formatPrice((item.priceBDT || Math.round(item.priceUSD * 120)) * item.quantity, true)}</strong>
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div>
+          <strong style="display:block; color:var(--text-primary);">${item.productTitle}</strong>
+          <span style="font-size:0.75rem; color:var(--text-muted);">${item.planName || 'Digital Subscription'} × ${item.quantity}</span>
+        </div>
+        <strong style="color:var(--text-primary);">${formatPrice((item.priceBDT || Math.round(item.priceUSD * 120)) * item.quantity, true)}</strong>
       </div>
     `).join('');
   }
@@ -1463,6 +1657,9 @@ function renderCheckoutSummary() {
     if (totals.discountBDT > 0) {
       couponRow.style.display = 'flex';
       couponDiscountDisplay.textContent = `-${formatPrice(totals.discountBDT, true)}`;
+      if (couponBadge && state.appliedCoupon) {
+        couponBadge.textContent = state.appliedCoupon.code;
+      }
     } else {
       couponRow.style.display = 'none';
     }
@@ -1472,7 +1669,7 @@ function renderCheckoutSummary() {
   if (btnTotalDisplay) btnTotalDisplay.textContent = formatPrice(totals.totalBDT, true);
 }
 
-// Submit Real Order to Server
+// Submit Real Order to Server (Amazon-grade Checkout)
 async function processOrderPayment() {
   const nameInput = document.getElementById('checkoutName');
   const emailInput = document.getElementById('checkoutEmail');
@@ -1494,52 +1691,28 @@ async function processOrderPayment() {
   let trx_id = '';
   let sender_number = '';
 
-  if (selectedPaymentGateway === 'bkash') {
-    const bkSender = document.getElementById('bkashSenderInput');
-    const bkTrx = document.getElementById('bkashTrxInput');
-    sender_number = bkSender ? bkSender.value.trim() : '';
-    trx_id = bkTrx ? bkTrx.value.trim().toUpperCase() : '';
+  const isMobile = ['bkash', 'nagad', 'rocket'].includes(selectedPaymentGateway);
+
+  if (isMobile) {
+    syncMobileInputs();
+    const unifiedSender = document.getElementById('mobileBankingSender');
+    const unifiedTrx = document.getElementById('mobileBankingTrx');
+    const fallbackSender = document.getElementById(`${selectedPaymentGateway}SenderInput`);
+    const fallbackTrx = document.getElementById(`${selectedPaymentGateway}TrxInput`);
+
+    sender_number = (unifiedSender ? unifiedSender.value.trim() : '') || (fallbackSender ? fallbackSender.value.trim() : '');
+    trx_id = (unifiedTrx ? unifiedTrx.value.trim().toUpperCase() : '') || (fallbackTrx ? fallbackTrx.value.trim().toUpperCase() : '');
+
+    const gatewayName = selectedPaymentGateway.toUpperCase();
 
     if (!sender_number || sender_number.length < 6) {
-      alert('Please enter your bKash Sender Phone Number (the number you sent money from) so we can verify your payment on 01616-696977.');
-      if (bkSender) bkSender.focus();
+      alert(`Please enter your ${gatewayName} Sender Phone Number (the number you sent money from) so we can verify your payment on 01616-696977.`);
+      if (unifiedSender) unifiedSender.focus();
       return;
     }
     if (!trx_id || trx_id.length < 6) {
-      alert('Please enter the bKash Transaction ID (TrxID) received from your bKash payment SMS.');
-      if (bkTrx) bkTrx.focus();
-      return;
-    }
-  } else if (selectedPaymentGateway === 'nagad') {
-    const ngSender = document.getElementById('nagadSenderInput');
-    const ngTrx = document.getElementById('nagadTrxInput');
-    sender_number = ngSender ? ngSender.value.trim() : '';
-    trx_id = ngTrx ? ngTrx.value.trim().toUpperCase() : '';
-
-    if (!sender_number || sender_number.length < 6) {
-      alert('Please enter your Nagad Sender Phone Number (the number you sent money from) so we can verify your payment on 01616-696977.');
-      if (ngSender) ngSender.focus();
-      return;
-    }
-    if (!trx_id || trx_id.length < 6) {
-      alert('Please enter the Nagad Transaction ID (TrxID) received from your Nagad payment SMS.');
-      if (ngTrx) ngTrx.focus();
-      return;
-    }
-  } else if (selectedPaymentGateway === 'rocket') {
-    const rkSender = document.getElementById('rocketSenderInput');
-    const rkTrx = document.getElementById('rocketTrxInput');
-    sender_number = rkSender ? rkSender.value.trim() : '';
-    trx_id = rkTrx ? rkTrx.value.trim().toUpperCase() : '';
-
-    if (!sender_number || sender_number.length < 6) {
-      alert('Please enter your DBBL Rocket Sender Phone Number so we can verify your payment on 01616-696977.');
-      if (rkSender) rkSender.focus();
-      return;
-    }
-    if (!trx_id || trx_id.length < 6) {
-      alert('Please enter the DBBL Rocket Transaction ID (TrxID) received from your payment SMS.');
-      if (rkTrx) rkTrx.focus();
+      alert(`Please enter the ${gatewayName} Transaction ID (TrxID) received from your payment SMS.`);
+      if (unifiedTrx) unifiedTrx.focus();
       return;
     }
   } else if (selectedPaymentGateway === 'card') {
@@ -1558,6 +1731,13 @@ async function processOrderPayment() {
   }
 
   // Disable button while processing
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+      <svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;"><circle cx="12" cy="12" r="10"></circle></svg>
+      Verifying Payment Details & Securing Order...
+    `;
+  }
   if (submitBtn) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
@@ -1837,7 +2017,13 @@ function showToast(message, type = 'success') {
   }, 3200);
 }
 
-function copyToClipboard(text, label = 'Information') {
+function copyToClipboard(text, label = 'Information', event = null) {
+  if (event && typeof event.stopPropagation === 'function') {
+    event.stopPropagation();
+  } else if (label && typeof label.stopPropagation === 'function') {
+    label.stopPropagation();
+    label = 'Information';
+  }
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
       showToast(`${label} copied to clipboard!`, 'success');

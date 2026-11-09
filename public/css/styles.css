@@ -3390,39 +3390,600 @@ body {
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-/* Payment Method Tabs */
-.payment-methods-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
+/* ==========================================================================
+   AMAZON COMMERCIAL CHECKOUT & PAYMENT METHOD SYSTEM
+   ========================================================================== */
+
+.checkout-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 14px;
 }
 
-.payment-method-card {
+.amazon-secure-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.2px;
+}
+
+/* Amazon Vertically Stacked Accordion Cards */
+.amazon-payment-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.amazon-pay-card {
+  border: 1px solid var(--glass-border);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+.amazon-pay-card:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.amazon-pay-card.active {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.04);
+  box-shadow: 0 0 0 1.5px #3b82f6, 0 6px 20px rgba(59, 130, 246, 0.15);
+}
+
+[data-theme="light"] .amazon-pay-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .amazon-pay-card.active {
+  border-color: #2563eb;
+  background: #f8fafc;
+  box-shadow: 0 0 0 1.5px #2563eb, 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.amazon-pay-header {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  user-select: none;
+}
+
+.amazon-radio-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.amazon-radio-wrap input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--text-muted);
+  border-radius: 50%;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: all 0.2s ease;
+}
+
+.amazon-radio-wrap input[type="radio"]::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  background: #3b82f6;
+}
+
+.amazon-radio-wrap input[type="radio"]:checked {
+  border-color: #3b82f6;
+}
+
+.amazon-radio-wrap input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+.amazon-pay-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Authentic Bank & Payment Brand Badges */
+.amazon-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.amazon-brand-pill {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.amazon-brand-pill.visa {
+  background: #1a1f71;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.amazon-brand-pill.mastercard {
+  background: #222222;
+  color: #ff5f00;
+  border: 1px solid rgba(255, 95, 0, 0.4);
+}
+
+.amazon-brand-pill.amex {
+  background: #006fcf;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.amazon-brand-pill.discover {
+  background: #ff6000;
+  color: #ffffff;
+}
+
+.amazon-brand-pill.jcb {
+  background: #0b4ea2;
+  color: #ffffff;
+}
+
+.amazon-brand-pill.paypal {
+  background: #003087;
+  color: #ffffff;
+}
+
+.amazon-brand-pill.crypto {
+  background: #26a17b;
+  color: #ffffff;
+}
+
+/* Regional Bangladesh MFS Badges */
+.amazon-mfs-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+.amazon-mfs-badge.bkash {
+  background: #e1125d;
+}
+
+.amazon-mfs-badge.nagad {
+  background: #f7941d;
+}
+
+.amazon-mfs-badge.rocket {
+  background: #8b5cf6;
+}
+
+/* Amazon Pay Card Body (Expanded Section) */
+.amazon-pay-body {
+  padding: 14px 20px 20px 20px;
+  border-top: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.15);
+  cursor: default;
+}
+
+[data-theme="light"] .amazon-pay-body {
+  background: #fafafa;
+  border-top-color: #f1f5f9;
+}
+
+.amazon-input {
   border: 1px solid var(--glass-border);
   background: var(--bg-tertiary);
-  border-radius: var(--radius-md);
-  padding: 12px 8px;
-  text-align: center;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.amazon-input:focus {
+  border-color: #e77600 !important;
+  box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.4) !important;
+  outline: none;
+}
+
+.amazon-save-card-strip {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--glass-border);
+}
+
+.amazon-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
   cursor: pointer;
+}
+
+.cvv-help-hint {
+  font-size: 0.74rem;
+  color: #3b82f6;
+  text-decoration: underline;
+  cursor: help;
+}
+
+/* MFS Sub-Method Tabs (bKash / Nagad / Rocket) */
+.amazon-mfs-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.amazon-mfs-tab {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 6px;
+  border: 1px solid var(--glass-border);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.amazon-mfs-tab.active {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+[data-theme="light"] .amazon-mfs-tab.active {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.amazon-mfs-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.amazon-mfs-channel-badge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 800;
+  background: #e1125d;
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.amazon-mfs-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.amazon-num-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--glass-border);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+}
+
+.amazon-num-row .num-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.amazon-num-row .num-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.amazon-num-row .highlight-num {
+  font-size: 1.22rem;
+  letter-spacing: 1px;
+  color: #f59e0b;
+}
+
+.amazon-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.amazon-copy-btn:hover {
+  background: #2563eb;
+}
+
+.amazon-mfs-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--glass-border);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mfs-guarantee-pill {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.mfs-wa-link {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #25D366;
+  text-decoration: none;
+}
+
+.mfs-wa-link:hover {
+  text-decoration: underline;
+}
+
+/* PayPal Express Mock Button */
+.amazon-paypal-btn-mock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFC439;
+  border-radius: 999px;
+  padding: 10px 32px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  color: #003087;
+  transition: all 0.2s ease;
+}
+
+.amazon-paypal-btn-mock:hover {
+  background: #f2ba36;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   AMAZON-STYLE ORDER SUMMARY CARD & PRIMARY GOLD ACTION BUTTON
+   ========================================================================== */
+.amazon-summary-card {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+}
+
+[data-theme="light"] .amazon-summary-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.amazon-summary-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+}
+
+.amazon-summary-items {
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  padding-right: 4px;
+}
+
+.amazon-notes-input {
+  height: 60px;
+  padding: 8px 12px;
+  resize: none;
+  font-size: 0.82rem;
+}
+
+.amazon-breakdown-box {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 14px;
+  margin: 14px 0 18px 0;
+}
+
+.amazon-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  margin-bottom: 7px;
+}
+
+.amazon-row-val {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.amazon-free-tag {
+  color: #10b981;
+  font-weight: 800;
+}
+
+.amazon-discount-row {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.amazon-discount-val {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.amazon-total-divider {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 12px 0;
+}
+
+.amazon-order-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 4px;
+}
+
+.amazon-total-label {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.amazon-total-val {
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: #f59e0b;
+}
+
+[data-theme="light"] .amazon-total-val {
+  color: #b12704; /* Classic Amazon price red/amber */
+}
+
+.amazon-vip-notice {
+  display: block;
+  font-size: 0.76rem;
+  color: #f59e0b;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+/* Amazon Iconic Golden Place Order Button */
+.amazon-place-order-btn {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(180deg, #FFD814 0%, #F7CA00 100%);
+  border: 1px solid #D5A900;
+  border-radius: 999px;
+  color: #0F1111;
+  font-size: 1rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(213, 169, 0, 0.45);
   transition: all 0.2s ease;
   user-select: none;
 }
 
-.payment-method-card:hover {
-  border-color: var(--glass-border-hover);
+.amazon-place-order-btn:hover {
+  background: linear-gradient(180deg, #F7CA00 0%, #E2B300 100%);
+  border-color: #a88734;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(213, 169, 0, 0.6);
 }
 
-.payment-method-card.active {
-  border-color: var(--accent-blue);
-  background: rgba(59, 130, 246, 0.12);
-  box-shadow: 0 0 0 1px var(--accent-blue);
+.amazon-place-order-btn:active {
+  transform: scale(0.99);
+  background: #e2b300;
 }
 
-.payment-method-card .method-name {
-  font-size: 0.82rem;
-  font-weight: 700;
-  margin-top: 4px;
+/* Amazon Trust & Buyer Guarantee Strip */
+.amazon-guarantee-strip {
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+[data-theme="light"] .amazon-guarantee-strip {
+  background: #f1f5f9;
+}
+
+.amazon-guarantee-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.amazon-guarantee-item svg {
+  flex-shrink: 0;
+  color: #10b981;
+  margin-top: 1px;
+}
+
+.amazon-terms-disclaimer {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 14px;
+  line-height: 1.4;
+}
+
+.amazon-terms-disclaimer a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+/* Backward compatibility legacy styles */
+.payment-methods-grid {
+  display: none !important;
 }
 
 /* Credit Card Sandbox Mode Banner */
@@ -7673,6 +8234,68 @@ body {
   padding-top: 14px;
   border-top: 1px solid var(--pdp-card-border);
   flex-wrap: wrap;
+}
+
+/* Amazon Commercial Payment & Security Assurance Bar on PDP */
+.amazon-assurance-bar {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--pdp-subtle-bg, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--pdp-card-border, rgba(255, 255, 255, 0.08));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+[data-theme="light"] .amazon-assurance-bar {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.amazon-assurance-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.amazon-zero-fee-pill {
+  color: #10b981;
+  font-weight: 800;
+  font-size: 0.72rem;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.amazon-assurance-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pdp-btn-pulse {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  animation: waPulse 1.8s infinite;
+  display: inline-block;
+}
+
+.pdp-btn-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.25);
+  color: #a7f3d0;
+  padding: 2px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
 }
 
 .pdp-gateways-title {
