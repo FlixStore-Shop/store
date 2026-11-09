@@ -252,9 +252,10 @@ app.get('/api/products/:slug', async (req, res) => {
 
     // Fetch related products in the same category
     const related = await db.prepare(`
-      SELECT id, title, slug, tagline, logo_url, base_price, original_price, rating, badge
-      FROM products
-      WHERE category_id = ? AND id != ?
+      SELECT p.id, p.title, p.slug, p.tagline, p.logo_url, p.base_price, p.original_price, p.rating, p.badge, c.name as category_name
+      FROM products p
+      LEFT JOIN categories c ON p.category_id = c.id
+      WHERE p.category_id = ? AND p.id != ?
       LIMIT 4
     `).all(product.category_id, product.id);
 

@@ -6280,9 +6280,6 @@ body {
 }
 
 .pdp-showcase-card {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 96px;
   background: var(--pdp-showcase-bg);
   border: 1px solid var(--pdp-card-border);
   border-radius: 28px;
@@ -7966,6 +7963,28 @@ body {
   color: #2563eb;
 }
 
+
+/* PDP Sticky Bar Dark Mode Support */
+[data-theme="dark"] .pdp-sticky-bar {
+  background: rgba(15, 23, 42, 0.94) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
+[data-theme="dark"] .pdp-sticky-plan {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .pdp-sticky-price {
+  color: #60a5fa !important;
+}
+
+[data-theme="dark"] .pdp-sticky-cart-btn {
+  background: rgba(30, 41, 59, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #f1f5f9 !important;
+}
+
 .pdp-sticky-buy-btn {
   height: 40px;
   padding: 0 18px;
@@ -8935,4 +8954,12 @@ body.modal-open .floating-whatsapp-btn {
 
 .pdp-desc-content.align-right {
   text-align: right !important;
+}
+
+@media (max-width: 600px) {
+  .pdp-description-card {
+    padding: 16px 14px !important;
+    margin-bottom: 18px !important;
+    border-radius: 14px !important;
+  }
 }

@@ -1764,18 +1764,18 @@ async function performOrderLookup() {
             ${isMasked ? '<span style="font-size:0.72rem; color:#f59e0b; font-weight:600;">🔒 Protected View</span>' : ''}
           </h5>
           ${order.credentials.map(c => `
-            <div style="background:var(--bg-secondary); padding:10px 14px; border-radius:8px; margin-bottom:8px; font-family:monospace; font-size:0.85rem;">
-              <div style="font-weight:700; color:#ffffff; margin-bottom:4px;">${c.product_title || 'Subscription'}</div>
+            <div style="background:var(--bg-secondary); border:1px solid var(--glass-border); padding:10px 14px; border-radius:8px; margin-bottom:8px; font-family:monospace; font-size:0.85rem;">
+              <div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">${c.product_title || 'Subscription'}</div>
               ${c.account_email ? `<div>Email: <strong>${c.account_email}</strong></div>` : ''}
               ${c.account_password ? `<div>Password: <strong>${c.account_password}</strong></div>` : ''}
               ${c.profile_pin ? `<div>Profile PIN: <strong>${c.profile_pin}</strong></div>` : ''}
               ${c.license_key ? `<div>License Key: <strong>${c.license_key}</strong></div>` : ''}
-              ${c.activation_link ? `<div style="margin-top:6px;"><a href="${c.activation_link}" target="_blank" style="color:#38bdf8;">Access Activation Link</a></div>` : ''}
+              ${c.activation_link ? `<div style="margin-top:6px;"><a href="${c.activation_link}" target="_blank" style="color:#0284c7; font-weight:600;">Access Activation Link →</a></div>` : ''}
             </div>
           `).join('')}
 
           ${isMasked ? `
-            <div style="margin-top:12px; padding:10px 14px; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:8px; font-size:0.78rem; color:#fcd34d; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+            <div style="margin-top:12px; padding:10px 14px; background:#fffbeb; border:1px solid #fef3c7; border-radius:8px; font-size:0.78rem; color:#92400e; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
               <span>🔒 Passwords & PINs are masked to protect customer privacy. Sign in to view unmasked credentials.</span>
               <button type="button" class="btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="closeTrackOrderModal(); openAuthModal('signin');">Sign In</button>
             </div>

@@ -744,14 +744,14 @@ function renderRelatedProducts() {
     return `
       <div class="product-card" onclick="window.location.href='/product/${p.slug}'" style="cursor:pointer;">
         <div class="product-card-top">
-          <img src="${p.logo_url ? p.logo_url + '?v=2' : ''}" alt="${p.title}" class="product-card-img" loading="lazy">
+          <img src="${p.logo_url ? p.logo_url + '?v=2' : '/assets/flixstore-icon.png'}" alt="${p.title}" class="product-card-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';">
           <div class="product-card-gradient"></div>
           <div class="product-card-badges">
             <span class="badge-tag pro">${p.badge || 'Verified'}</span>
           </div>
         </div>
         <div class="product-body" style="padding:16px;">
-          <div class="product-category-name" style="font-size:0.75rem;">${p.category_name}</div>
+          <div class="product-category-name" style="font-size:0.75rem;">${p.category_name || 'Subscription'}</div>
           <h4 class="product-title" style="font-size:1rem; margin:4px 0 8px;">${p.title}</h4>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
             <div class="pdp-related-price">${formatPrice(offerPriceBDT, true)}</div>
