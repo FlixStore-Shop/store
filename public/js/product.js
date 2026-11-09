@@ -482,10 +482,13 @@ function updateSelectedPlanPricing() {
     deviceLimitDisplay.textContent = `${plan.device_limit || '1 Device'} • 4K UHD • Full Warranty`;
   }
 
+  const qty = productState.quantity || 1;
+  const totalOfferBdt = offerBdt * qty;
+
   // Update dynamic Buy Now CTA button label with offer price
   const buyBtnLabel = document.getElementById('pdpBuyBtnLabel');
   if (buyBtnLabel) {
-    buyBtnLabel.innerHTML = `Buy It Now &mdash; ${formatPrice(offerBdt, true)}`;
+    buyBtnLabel.innerHTML = `Buy It Now &mdash; ${formatPrice(totalOfferBdt, true)}`;
   }
 
   // Check VIP Status for discount alert
@@ -506,7 +509,7 @@ function updateSelectedPlanPricing() {
   const stickyPlan = document.getElementById('pdpStickyPlanName');
   const stickyPrice = document.getElementById('pdpStickyPrice');
   if (stickyPlan) stickyPlan.textContent = cleanTitle;
-  if (stickyPrice) stickyPrice.textContent = formatPrice(offerBdt, true);
+  if (stickyPrice) stickyPrice.textContent = formatPrice(totalOfferBdt, true);
 
   // Update WhatsApp direct order link
   const waBtn = document.getElementById('pdpWhatsAppInquiryBtn');
@@ -564,7 +567,17 @@ function pdpAddToCart() {
 function pdpBuyNow() {
   if (!productState.product || !productState.selectedPlan) return;
   const qty = productState.quantity || 1;
-  addToCart(productState.product, productState.selectedPlan, qty);
+  const existingIndex = (typeof state !== 'undefined' && state?.cart) 
+    ? state.cart.findIndex(item => item.productId === productState.product.id && item.planId === productState.selectedPlan.id)
+    : -1;
+
+  if (existingIndex > -1) {
+    state.cart[existingIndex].quantity = qty;
+    if (typeof saveCart === 'function') saveCart();
+    if (typeof updateCartUI === 'function') updateCartUI();
+  } else {
+    addToCart(productState.product, productState.selectedPlan, qty);
+  }
   openCheckoutModal();
 }
 

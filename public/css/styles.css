@@ -52,6 +52,10 @@
   --shadow-glow: 0 0 30px -5px rgba(59, 130, 246, 0.15);
   --shadow-neon: 0 0 25px rgba(139, 92, 246, 0.2);
 
+  --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --bg-hover: rgba(241, 245, 249, 0.8);
+
   --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 

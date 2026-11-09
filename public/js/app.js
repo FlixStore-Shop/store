@@ -694,7 +694,7 @@ function initSearchAutocomplete() {
       if (matches.length > 0) {
         dropdown.innerHTML = matches.map(m => `
           <div class="search-result-item" onclick="openProductDetail('${m.slug}'); hideSearchDropdown();">
-            <img src="${m.logo_url}" alt="${m.title}" class="search-result-thumb">
+            <img src="${m.logo_url || '/assets/flixstore-icon.png'}" alt="${m.title}" class="search-result-thumb" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';">
             <div class="search-result-info">
               <div class="search-result-title">${m.title}</div>
               <div class="search-result-price">${m.min_price_bdt ? formatPrice(m.min_price_bdt, true) : formatPrice(m.base_price)} • ${m.category_name}</div>
@@ -752,7 +752,8 @@ async function openProductDetail(slug) {
 }
 
 function closeProductDetail() {
-  document.getElementById('productDetailModal').classList.remove('active');
+  const modal = document.getElementById('productDetailModal');
+  if (modal) modal.classList.remove('active');
   state.selectedProduct = null;
   state.selectedPlan = null;
 }
@@ -761,16 +762,24 @@ function renderQuickViewDetails() {
   const p = state.selectedProduct;
   if (!p) return;
 
-  document.getElementById('detailProductImg').src = p.logo_url ? p.logo_url + '?v=2' : '';
-  document.getElementById('detailCategory').textContent = p.category_name;
-  document.getElementById('detailTitle').textContent = p.title;
+  const imgEl = document.getElementById('detailProductImg');
+  if (imgEl) {
+    imgEl.src = p.logo_url ? p.logo_url + '?v=2' : '/assets/flixstore-icon.png';
+    imgEl.onerror = function() { this.onerror = null; this.src = '/assets/flixstore-icon.png'; };
+  }
+  const catEl = document.getElementById('detailCategory');
+  if (catEl) catEl.textContent = p.category_name || 'Subscription';
+  const titleEl = document.getElementById('detailTitle');
+  if (titleEl) titleEl.textContent = p.title || '';
   const detailTaglineElem = document.getElementById('detailTagline');
   if (detailTaglineElem) {
-    detailTaglineElem.innerHTML = formatTaglineHtml(p.tagline);
+    detailTaglineElem.innerHTML = formatTaglineHtml(p.tagline || '');
     if (p.tagline_align) detailTaglineElem.style.textAlign = p.tagline_align;
   }
-  document.getElementById('detailRating').textContent = `${Number(p.rating || 5.0).toFixed(1)} ★ (${p.review_count || 0} verified reviews)`;
-  document.getElementById('detailDescription').textContent = p.description;
+  const ratingEl = document.getElementById('detailRating');
+  if (ratingEl) ratingEl.textContent = `${Number(p.rating || 5.0).toFixed(1)} ★ (${p.review_count || 0} verified reviews)`;
+  const descEl = document.getElementById('detailDescription');
+  if (descEl) descEl.textContent = p.description || '';
 
   // Features
   const featuresList = document.getElementById('detailFeaturesList');
@@ -1127,11 +1136,13 @@ function updateDrawerFooter() {
 }
 
 function openCartDrawer() {
-  document.getElementById('cartDrawerOverlay').classList.add('active');
+  const overlay = document.getElementById('cartDrawerOverlay');
+  if (overlay) overlay.classList.add('active');
 }
 
 function closeCartDrawer() {
-  document.getElementById('cartDrawerOverlay').classList.remove('active');
+  const overlay = document.getElementById('cartDrawerOverlay');
+  if (overlay) overlay.classList.remove('active');
 }
 
 // -----------------------------------------------------------------------------
@@ -1575,10 +1586,14 @@ function showOrderSuccessReceipt(order) {
   const modal = document.getElementById('orderSuccessModal');
   if (!modal) return;
 
-  document.getElementById('receiptOrderNum').textContent = order.orderNumber;
-  document.getElementById('receiptCustomerEmail').textContent = order.customerEmail;
-  document.getElementById('receiptPaymentMethod').textContent = order.paymentMethod.toUpperCase();
-  document.getElementById('receiptTotalAmount').textContent = formatPrice(order.total);
+  const numEl = document.getElementById('receiptOrderNum');
+  if (numEl) numEl.textContent = order.orderNumber;
+  const emailEl = document.getElementById('receiptCustomerEmail');
+  if (emailEl) emailEl.textContent = order.customerEmail;
+  const methodEl = document.getElementById('receiptPaymentMethod');
+  if (methodEl) methodEl.textContent = (order.paymentMethod || '').toUpperCase();
+  const totalEl = document.getElementById('receiptTotalAmount');
+  if (totalEl) totalEl.textContent = order.total_bdt ? formatPrice(order.total_bdt, true) : formatPrice(order.total);
 
   // Render Dispatched Credentials
   const credsContainer = document.getElementById('receiptCredentialsList');
@@ -1647,7 +1662,8 @@ function showOrderSuccessReceipt(order) {
 }
 
 function closeOrderSuccessModal() {
-  document.getElementById('orderSuccessModal').classList.remove('active');
+  const modal = document.getElementById('orderSuccessModal');
+  if (modal) modal.classList.remove('active');
 }
 
 function showToast(message, type = 'success') {
