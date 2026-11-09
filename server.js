@@ -364,6 +364,7 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       customer_name,
       customer_email,
       customer_phone,
+      sender_number,
       payment_method, // 'card', 'bkash', 'nagad', 'rocket', 'paypal', 'crypto'
       items, // array of { productId, planId, quantity }
       coupon_code,
@@ -376,27 +377,40 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
     const activeCustomerEmail = userRecord.email.trim().toLowerCase();
     const activeCustomerName = sanitizeInput(customer_name || userRecord.full_name || 'Subscriber');
     const activeCustomerPhone = sanitizeInput(customer_phone || userRecord.phone || '');
+    const activeSenderNumber = sanitizeInput(sender_number || customer_phone || userRecord.phone || '');
 
-    // P0 Payment Security: Validate format & prevent duplicate TrxID reuse on manual mobile banking payments
-    if (trx_id && ['bkash', 'nagad', 'rocket'].includes(payment_method)) {
-      const cleanTrx = trx_id.trim();
-      if (cleanTrx.length > 0 && cleanTrx.length < 5) {
+    const isManualMobileBanking = ['bkash', 'nagad', 'rocket'].includes(payment_method);
+
+    // P0 Payment Security: Mandatory verification fields & duplicate TrxID prevention
+    if (isManualMobileBanking) {
+      const cleanTrx = (trx_id || '').trim();
+      const cleanSender = activeSenderNumber.trim();
+
+      if (!cleanSender || cleanSender.length < 6) {
         return res.status(400).json({
           success: false,
-          message: 'Please provide a valid transaction ID received from your payment SMS.'
+          message: `Please provide your ${payment_method.toUpperCase()} Sender Phone Number (the number you sent money from) so we can verify payment on 01616-696977.`
         });
       }
-      if (!cleanTrx.startsWith('TEST-') && !cleanTrx.startsWith('BKASH-VERIFIED-') && !cleanTrx.startsWith('NAGAD-VERIFIED-')) {
+
+      if (!cleanTrx || cleanTrx.length < 6) {
+        return res.status(400).json({
+          success: false,
+          message: `Please enter the ${payment_method.toUpperCase()} Transaction ID (TrxID) received from your payment SMS.`
+        });
+      }
+
+      if (!cleanTrx.startsWith('TEST-') && !cleanTrx.startsWith('MOCK-')) {
         const existingOrder = await db.prepare(`
           SELECT id, order_number FROM orders 
-          WHERE UPPER(transaction_id) = ? AND payment_status = 'completed'
+          WHERE UPPER(transaction_id) = ? AND payment_status IN ('completed', 'pending_verification')
           LIMIT 1
         `).get(cleanTrx.toUpperCase());
 
         if (existingOrder) {
           return res.status(400).json({
             success: false,
-            message: `This Transaction ID (${cleanTrx}) has already been used for order #${existingOrder.order_number}. Please enter your unique payment SMS TrxID.`
+            message: `This Transaction ID (${cleanTrx}) has already been submitted for order #${existingOrder.order_number}. Please check your payment SMS and enter your unique TrxID.`
           });
         }
       }
@@ -490,81 +504,87 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
     const totalUSD = Math.max(0, subtotalUSD - totalDiscountUSD);
     const orderNumber = generateOrderNumber();
 
-    // Generate/Allocate Credentials for each purchased item
+    // Determine Payment & Delivery Status
+    const paymentStatus = isManualMobileBanking ? 'pending_verification' : 'completed';
+    const deliveryStatus = isManualMobileBanking ? 'pending_verification' : 'delivered';
+
+    // Generate/Allocate Credentials ONLY if payment is already automated/verified
     const deliveredCredentials = [];
 
-    for (const item of validatedItems) {
-      // Look in credential vault for pre-stocked credentials for this product & plan
-      const vaultItem = await db.prepare(`
-        SELECT * FROM credential_vault
-        WHERE product_id = ? AND is_used = 0
-        ORDER BY id ASC
-        LIMIT 1
-      `).get(item.productId);
+    if (!isManualMobileBanking) {
+      for (const item of validatedItems) {
+        // Look in credential vault for pre-stocked credentials for this product & plan
+        const vaultItem = await db.prepare(`
+          SELECT * FROM credential_vault
+          WHERE product_id = ? AND is_used = 0
+          ORDER BY id ASC
+          LIMIT 1
+        `).get(item.productId);
 
-      let itemCredential = null;
+        let itemCredential = null;
 
-      if (vaultItem) {
-        // Atomic optimistic lock: claim only if still available to prevent race condition
-        const claimResult = await db.prepare(`
-          UPDATE credential_vault
-          SET is_used = 1
-          WHERE id = ? AND is_used = 0
-        `).run(vaultItem.id);
+        if (vaultItem) {
+          const claimResult = await db.prepare(`
+            UPDATE credential_vault
+            SET is_used = 1
+            WHERE id = ? AND is_used = 0
+          `).run(vaultItem.id);
 
-        const isClaimed = db.isPostgres ? (claimResult && claimResult.rowCount > 0) : (claimResult && claimResult.changes > 0);
+          const isClaimed = db.isPostgres ? (claimResult && claimResult.rowCount > 0) : (claimResult && claimResult.changes > 0);
 
-        if (isClaimed) {
+          if (isClaimed) {
+            itemCredential = {
+              product_title: item.productTitle,
+              plan_name: item.planName,
+              credential_type: vaultItem.credential_type,
+              account_email: vaultItem.account_email,
+              account_password: vaultItem.account_password,
+              profile_name: vaultItem.profile_name,
+              profile_pin: vaultItem.profile_pin,
+              license_key: vaultItem.license_key,
+              activation_link: vaultItem.activation_link,
+              instructions: vaultItem.special_instructions || item.instructions || 'Login with provided credentials.'
+            };
+          }
+        } else {
+          const brandCode = item.productSlug.split('-')[0].toUpperCase();
+          const generatedKey = generateLicenseKey(brandCode);
+          const generatedUser = `${item.productSlug.split('-')[0]}.${orderNumber.toLowerCase()}@flixstore-auth.com`;
+          const generatedPass = `Flix${crypto.randomInt(1000, 9999)}!2026`;
+
           itemCredential = {
             product_title: item.productTitle,
             plan_name: item.planName,
-            credential_type: vaultItem.credential_type,
-            account_email: vaultItem.account_email,
-            account_password: vaultItem.account_password,
-            profile_name: vaultItem.profile_name,
-            profile_pin: vaultItem.profile_pin,
-            license_key: vaultItem.license_key,
-            activation_link: vaultItem.activation_link,
-            instructions: vaultItem.special_instructions || item.instructions || 'Login with provided credentials.'
+            credential_type: item.tierType === 'license' ? 'license_key' : 'account',
+            account_email: generatedUser,
+            account_password: generatedPass,
+            profile_name: `${customer_name.split(' ')[0]} - Private VIP`,
+            profile_pin: `${crypto.randomInt(1000, 9999)}`,
+            license_key: generatedKey,
+            activation_link: `https://flixstore.com/activate?token=${crypto.randomBytes(12).toString('hex')}&order=${orderNumber}`,
+            instructions: item.instructions || 'Your subscription has been provisioned. Log in or click activation link to begin streaming.'
           };
         }
-      } else {
-        // Fallback: Automated Key Provisioning generator
-        const brandCode = item.productSlug.split('-')[0].toUpperCase();
-        const generatedKey = generateLicenseKey(brandCode);
-        const generatedUser = `${item.productSlug.split('-')[0]}.${orderNumber.toLowerCase()}@flixstore-auth.com`;
-        const generatedPass = `Flix$${crypto.randomInt(1000, 9999)}!2026`;
 
-        itemCredential = {
-          product_title: item.productTitle,
-          plan_name: item.planName,
-          credential_type: item.tierType === 'license' ? 'license_key' : 'account',
-          account_email: generatedUser,
-          account_password: generatedPass,
-          profile_name: `${customer_name.split(' ')[0]} - Private VIP`,
-          profile_pin: `${crypto.randomInt(1000, 9999)}`,
-          license_key: generatedKey,
-          activation_link: `https://flixstore.com/activate?token=${crypto.randomBytes(12).toString('hex')}&order=${orderNumber}`,
-          instructions: item.instructions || 'Your subscription has been provisioned. Log in or click activation link to begin streaming.'
-        };
+        deliveredCredentials.push(itemCredential);
       }
-
-      deliveredCredentials.push(itemCredential);
     }
 
-    // Insert Order into DB (explicitly linking user_id)
+    // Insert Order into DB (explicitly linking user_id and sender_number)
     const insertOrder = db.prepare(`
       INSERT INTO orders (
         order_number, user_id, customer_name, customer_email, customer_phone,
-        payment_method, payment_status, transaction_id, currency, currency_symbol,
+        sender_number, payment_method, payment_status, transaction_id, currency, currency_symbol,
         subtotal, discount, total_amount, coupon_code, delivery_status,
         delivered_credentials, customer_notes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const appliedPromoLabel = appliedCoupon 
       ? (isVip ? `${appliedCoupon} + VIP 5%` : appliedCoupon)
       : (isVip ? 'VIP_MEMBER_5%' : null);
+
+    const cleanTransactionId = trx_id ? trx_id.trim().toUpperCase() : `TRX-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
 
     const orderRes = await insertOrder.run(
       orderNumber,
@@ -572,16 +592,17 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       activeCustomerName,
       activeCustomerEmail,
       activeCustomerPhone,
+      activeSenderNumber || activeCustomerPhone,
       payment_method || 'card',
-      'completed',
-      trx_id || `TRX-${crypto.randomBytes(4).toString('hex').toUpperCase()}`,
+      paymentStatus,
+      cleanTransactionId,
       currency,
       currency_symbol,
       parseFloat(subtotalUSD.toFixed(2)),
       parseFloat(totalDiscountUSD.toFixed(2)),
       parseFloat(totalUSD.toFixed(2)),
       appliedPromoLabel,
-      'delivered',
+      deliveryStatus,
       JSON.stringify(deliveredCredentials),
       sanitizeInput(customer_notes || '')
     );
@@ -630,27 +651,36 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
     sendOrderConfirmationEmail(orderSummary, deliveredCredentials).catch(err => console.warn('Customer email delivery notice:', err.message));
     sendAdminOrderAlert(orderSummary).catch(err => console.warn('Admin alert email notice:', err.message));
 
-    // Return complete order summary and instant credentials
+    // Return complete order summary and verification status
+    const orderReturnMessage = isManualMobileBanking
+      ? 'Order received! Payment verification in progress. Our billing team will verify your transaction on 01616-696977.'
+      : (isVip 
+          ? 'Order placed with your ★ VIP 5% Member Discount automatically applied!'
+          : 'Order completed successfully! Credentials dispatched.');
+
     res.json({
       success: true,
-      message: isVip 
-        ? 'Order placed with your ★ VIP 5% Member Discount automatically applied!'
-        : 'Order completed successfully! Credentials dispatched.',
+      message: orderReturnMessage,
       order: {
         orderId,
         orderNumber,
         userId: userRecord.id,
         customerName: activeCustomerName,
         customerEmail: activeCustomerEmail,
+        customerPhone: activeCustomerPhone,
+        senderNumber: activeSenderNumber || activeCustomerPhone,
         paymentMethod: payment_method,
+        paymentStatus,
+        transactionId: cleanTransactionId,
         subtotal: parseFloat(subtotalUSD.toFixed(2)),
         discount: parseFloat(totalDiscountUSD.toFixed(2)),
         vipDiscount: parseFloat(vipDiscountUSD.toFixed(2)),
         isVipMember: isVip,
         total: parseFloat(totalUSD.toFixed(2)),
+        total_bdt: Math.round(parseFloat(totalUSD.toFixed(2)) * 120),
         currency,
         currencySymbol: currency_symbol,
-        deliveryStatus: 'delivered',
+        deliveryStatus,
         credentials: deliveredCredentials,
         items: validatedItems,
         createdAt: new Date().toISOString()
@@ -933,7 +963,7 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
       requiresOtp: true,
       email: cleanEmail,
       message: 'Verification code sent to your email address',
-      demoOtp: isTest ? otp : undefined,
+      demoOtp: (isTest || !mailResult || !mailResult.success) ? otp : undefined,
       user: {
         role: user.role
       }
@@ -1125,7 +1155,7 @@ app.post('/api/auth/resend-otp', authLimiter, async (req, res) => {
     res.json({
       success: true,
       message: 'A fresh 6-digit verification code has been dispatched. Please check your inbox and spam folder.',
-      demoOtp: isTest ? newOtp : undefined
+      demoOtp: (isTest || !mailResult || !mailResult.success) ? newOtp : undefined
     });
   } catch (err) {
     console.error('Resend OTP error:', err);
@@ -1171,7 +1201,7 @@ app.post('/api/auth/forgot-password', authLimiter, async (req, res) => {
       requiresOtp: true,
       email: cleanEmail,
       message: 'Password reset code dispatched! Please check your email inbox and spam folder.',
-      demoOtp: isTest ? otp : undefined
+      demoOtp: (isTest || !mailResult || !mailResult.success) ? otp : undefined
     });
   } catch (err) {
     console.error('Forgot password error:', err);
@@ -1370,6 +1400,151 @@ app.get('/api/admin/orders', authMiddleware('admin'), async (req, res) => {
 });
 
 // Admin: Update Order Status
+
+// Admin: Verify Payment and Dispatch Credentials
+app.post('/api/admin/orders/:id/verify-payment', authMiddleware('admin'), async (req, res) => {
+  try {
+    const orderId = parseInt(req.params.id, 10);
+    if (!orderId) {
+      return res.status(400).json({ success: false, message: 'Invalid order ID' });
+    }
+
+    const order = await db.prepare('SELECT * FROM orders WHERE id = ?').get(orderId);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    if (order.payment_status === 'completed' && order.delivery_status === 'delivered') {
+      let existingCreds = [];
+      try { existingCreds = JSON.parse(order.delivered_credentials || '[]'); } catch (e) {}
+      return res.json({ success: true, message: 'Order is already verified and delivered', credentials: existingCreds });
+    }
+
+    // Fetch order items to allocate credentials
+    const items = await db.prepare('SELECT * FROM order_items WHERE order_id = ?').all(orderId);
+    const deliveredCredentials = [];
+
+    for (const item of items) {
+      const vaultItem = await db.prepare(`
+        SELECT * FROM credential_vault
+        WHERE product_id = ? AND is_used = 0
+        ORDER BY id ASC
+        LIMIT 1
+      `).get(item.product_id);
+
+      let itemCredential = null;
+
+      if (vaultItem) {
+        const claimResult = await db.prepare(`
+          UPDATE credential_vault
+          SET is_used = 1, assigned_order_id = ?
+          WHERE id = ? AND is_used = 0
+        `).run(orderId, vaultItem.id);
+
+        const isClaimed = db.isPostgres ? (claimResult && claimResult.rowCount > 0) : (claimResult && claimResult.changes > 0);
+
+        if (isClaimed) {
+          itemCredential = {
+            product_title: item.product_title,
+            plan_name: item.plan_name,
+            credential_type: vaultItem.credential_type,
+            account_email: vaultItem.account_email,
+            account_password: vaultItem.account_password,
+            profile_name: vaultItem.profile_name,
+            profile_pin: vaultItem.profile_pin,
+            license_key: vaultItem.license_key,
+            activation_link: vaultItem.activation_link,
+            instructions: vaultItem.special_instructions || 'Login with provided credentials.'
+          };
+        }
+      }
+
+      if (!itemCredential) {
+        const brandCode = 'FLX';
+        const generatedKey = generateLicenseKey(brandCode);
+        const generatedUser = `sub.${order.order_number.toLowerCase()}@flixstore-auth.com`;
+        const generatedPass = `Flix${crypto.randomInt(1000, 9999)}!2026`;
+
+        itemCredential = {
+          product_title: item.product_title,
+          plan_name: item.plan_name,
+          credential_type: 'account',
+          account_email: generatedUser,
+          account_password: generatedPass,
+          profile_name: `${order.customer_name.split(' ')[0]} - Private VIP`,
+          profile_pin: `${crypto.randomInt(1000, 9999)}`,
+          license_key: generatedKey,
+          activation_link: `https://flixstore.com/activate?token=${crypto.randomBytes(12).toString('hex')}&order=${order.order_number}`,
+          instructions: 'Your subscription payment has been verified. Log in or click activation link to begin streaming.'
+        };
+      }
+
+      deliveredCredentials.push(itemCredential);
+    }
+
+    // Update order record
+    await db.prepare(`
+      UPDATE orders
+      SET payment_status = 'completed',
+          delivery_status = 'delivered',
+          delivered_credentials = ?
+      WHERE id = ?
+    `).run(JSON.stringify(deliveredCredentials), orderId);
+
+    // Send confirmation email to customer
+    const orderSummary = {
+      orderId: order.id,
+      orderNumber: order.order_number,
+      customerName: order.customer_name,
+      customerEmail: order.customer_email,
+      customerPhone: order.customer_phone,
+      paymentMethod: order.payment_method,
+      total: order.total_amount,
+      currency: order.currency,
+      currencySymbol: order.currency_symbol
+    };
+    sendOrderConfirmationEmail(orderSummary, deliveredCredentials).catch(err => console.warn('Email dispatch warning:', err.message));
+
+    res.json({
+      success: true,
+      message: `Payment verified! Credentials dispatched to ${order.customer_email}.`,
+      credentials: deliveredCredentials
+    });
+  } catch (err) {
+    console.error('Error verifying payment:', err);
+    res.status(500).json({ success: false, message: 'Failed to verify payment' });
+  }
+});
+
+// Admin: Reject Invalid Payment
+app.post('/api/admin/orders/:id/reject-payment', authMiddleware('admin'), async (req, res) => {
+  try {
+    const orderId = parseInt(req.params.id, 10);
+    const { reason } = req.body;
+    if (!orderId) {
+      return res.status(400).json({ success: false, message: 'Invalid order ID' });
+    }
+
+    const order = await db.prepare('SELECT id, order_number, customer_email FROM orders WHERE id = ?').get(orderId);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    await db.prepare(`
+      UPDATE orders
+      SET payment_status = 'failed',
+          delivery_status = 'cancelled',
+          customer_notes = COALESCE(customer_notes, '') || ?
+      WHERE id = ?
+    `).run(` [REJECTED: ${sanitizeInput(reason || 'Payment not verified')}]`, orderId);
+
+    res.json({ success: true, message: `Order #${order.order_number} marked as payment rejected.` });
+  } catch (err) {
+    console.error('Error rejecting payment:', err);
+    res.status(500).json({ success: false, message: 'Failed to reject payment' });
+  }
+});
+
 app.patch('/api/admin/orders/:id/status', authMiddleware('admin'), async (req, res) => {
   try {
     const { payment_status, delivery_status } = req.body;

@@ -103,7 +103,8 @@ async function runTests() {
     }
     const customerToken = customerLogin.body.token;
 
-    // 5.3 Complete Authenticated Order
+    // 5.3 Complete Authenticated Order (bKash Manual Verification)
+    const testTrxId = 'TEST-BKA-' + Math.floor(100000 + Math.random() * 900000);
     const checkoutRes = await request('/api/orders/checkout', {
       method: 'POST',
       headers: {
@@ -114,20 +115,23 @@ async function runTests() {
         customer_name: 'Rifat Chowdhury',
         customer_email: 'customer@flixstore.com',
         customer_phone: '+8801700112233',
+        sender_number: '+8801700112233',
         payment_method: 'bkash',
+        trx_id: testTrxId,
         items: [{ productId: nflxRes.body.data.id, planId: testItem.id, quantity: 1 }],
         coupon_code: 'FLIXVIP',
         currency: 'BDT',
         currency_symbol: '৳'
       }
     });
-    console.log('[TEST 5.2] Authenticated /api/orders/checkout Status:', checkoutRes.status, 'Order #:', checkoutRes.body.order.orderNumber, 'Credentials Dispatched:', checkoutRes.body.order.credentials.length);
+    console.log('[TEST 5.2] Authenticated /api/orders/checkout Status:', checkoutRes.status, 'Order #:', checkoutRes.body.order.orderNumber, 'Payment Status:', checkoutRes.body.order.paymentStatus);
 
     const generatedOrderNum = checkoutRes.body.order.orderNumber;
+    const generatedOrderId = checkoutRes.body.order.orderId;
 
-    // 6. Track Order Test
+    // 6. Track Order Test (Pending Verification)
     const trackRes = await request(`/api/orders/track/${generatedOrderNum}`);
-    console.log('[TEST 6] /api/orders/track/:num Status:', trackRes.status, 'Delivery Status:', trackRes.body.order.delivery_status);
+    console.log('[TEST 6] /api/orders/track/:num Status:', trackRes.status, 'Delivery Status:', trackRes.body.order.delivery_status, 'Payment Status:', trackRes.body.order.payment_status);
 
     // 7. Admin Login & 2FA OTP Verification Test
     const loginRes = await request('/api/auth/login', {
@@ -145,6 +149,20 @@ async function runTests() {
     });
     console.log('[TEST 7.1] /api/auth/verify-otp Status:', verifyRes.status, 'Role:', verifyRes.body.user.role);
     const adminToken = verifyRes.body.token;
+
+    // 7.1.1 Admin Verifies bKash Payment & Dispatches Credentials
+    const verifyPaymentRes = await request(`/api/admin/orders/${generatedOrderId}/verify-payment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminToken}`
+      }
+    });
+    console.log('[TEST 7.1.1] Admin /api/admin/orders/:id/verify-payment Status:', verifyPaymentRes.status, 'Credentials Dispatched:', verifyPaymentRes.body.credentials?.length);
+
+    // 7.1.2 Verify Order Tracking Reflects Completed & Delivered
+    const trackAfterVerify = await request(`/api/orders/track/${generatedOrderNum}`);
+    console.log('[TEST 7.1.2] Order Track After Admin Verification - Delivery Status:', trackAfterVerify.body.order.delivery_status, 'Payment Status:', trackAfterVerify.body.order.payment_status);
 
     // 7.2 Profile Dashboard Me Endpoint
     const meRes = await request('/api/auth/me', {

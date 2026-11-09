@@ -1490,17 +1490,58 @@ async function processOrderPayment() {
     return;
   }
 
-  // Get Gateway Specific Transaction ID
+  // Get Gateway Specific Transaction ID & Sender Phone
   let trx_id = '';
+  let sender_number = '';
+
   if (selectedPaymentGateway === 'bkash') {
+    const bkSender = document.getElementById('bkashSenderInput');
     const bkTrx = document.getElementById('bkashTrxInput');
-    trx_id = bkTrx && bkTrx.value.trim() ? bkTrx.value.trim() : 'BKASH-VERIFIED-' + Math.floor(100000 + Math.random() * 900000);
+    sender_number = bkSender ? bkSender.value.trim() : '';
+    trx_id = bkTrx ? bkTrx.value.trim().toUpperCase() : '';
+
+    if (!sender_number || sender_number.length < 6) {
+      alert('Please enter your bKash Sender Phone Number (the number you sent money from) so we can verify your payment on 01616-696977.');
+      if (bkSender) bkSender.focus();
+      return;
+    }
+    if (!trx_id || trx_id.length < 6) {
+      alert('Please enter the bKash Transaction ID (TrxID) received from your bKash payment SMS.');
+      if (bkTrx) bkTrx.focus();
+      return;
+    }
   } else if (selectedPaymentGateway === 'nagad') {
+    const ngSender = document.getElementById('nagadSenderInput');
     const ngTrx = document.getElementById('nagadTrxInput');
-    trx_id = ngTrx && ngTrx.value.trim() ? ngTrx.value.trim() : 'NAGAD-VERIFIED-' + Math.floor(100000 + Math.random() * 900000);
+    sender_number = ngSender ? ngSender.value.trim() : '';
+    trx_id = ngTrx ? ngTrx.value.trim().toUpperCase() : '';
+
+    if (!sender_number || sender_number.length < 6) {
+      alert('Please enter your Nagad Sender Phone Number (the number you sent money from) so we can verify your payment on 01616-696977.');
+      if (ngSender) ngSender.focus();
+      return;
+    }
+    if (!trx_id || trx_id.length < 6) {
+      alert('Please enter the Nagad Transaction ID (TrxID) received from your Nagad payment SMS.');
+      if (ngTrx) ngTrx.focus();
+      return;
+    }
   } else if (selectedPaymentGateway === 'rocket') {
+    const rkSender = document.getElementById('rocketSenderInput');
     const rkTrx = document.getElementById('rocketTrxInput');
-    trx_id = rkTrx && rkTrx.value.trim() ? rkTrx.value.trim() : 'ROCKET-VERIFIED-' + Math.floor(100000 + Math.random() * 900000);
+    sender_number = rkSender ? rkSender.value.trim() : '';
+    trx_id = rkTrx ? rkTrx.value.trim().toUpperCase() : '';
+
+    if (!sender_number || sender_number.length < 6) {
+      alert('Please enter your DBBL Rocket Sender Phone Number so we can verify your payment on 01616-696977.');
+      if (rkSender) rkSender.focus();
+      return;
+    }
+    if (!trx_id || trx_id.length < 6) {
+      alert('Please enter the DBBL Rocket Transaction ID (TrxID) received from your payment SMS.');
+      if (rkTrx) rkTrx.focus();
+      return;
+    }
   } else if (selectedPaymentGateway === 'card') {
     const cardInput = document.getElementById('checkoutCardNumber');
     const rawNum = cardInput ? cardInput.value.replace(/\D/g, '') : '';
@@ -1521,14 +1562,15 @@ async function processOrderPayment() {
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
       <svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;"><circle cx="12" cy="12" r="10"></circle></svg>
-      Securing & Provisioning Credentials...
+      Verifying Payment Details & Securing Order...
     `;
   }
 
   const payload = {
     customer_name,
     customer_email: (state.user && state.user.email) ? state.user.email : customer_email,
-    customer_phone,
+    customer_phone: sender_number || customer_phone,
+    sender_number,
     payment_method: selectedPaymentGateway,
     items: state.cart.map(i => ({ productId: i.productId, planId: i.planId, quantity: i.quantity })),
     coupon_code: state.appliedCoupon ? state.appliedCoupon.code : null,
@@ -1551,10 +1593,17 @@ async function processOrderPayment() {
     const json = await res.json();
 
     if (res.status === 401 || json.requiresAuth) {
+      // Clear any invalid or expired session
+      state.user = null;
+      state.token = null;
+      localStorage.removeItem('flix_user');
+      localStorage.removeItem('flix_token');
+      checkAuthStatus();
+
       alert(json.message || 'Sign up or login is compulsory to purchase subscriptions.');
       closeCheckoutModal();
       state.pendingCheckoutAfterAuth = true;
-      openAuthModal('signup');
+      openAuthModal('signin');
       return;
     }
 
@@ -1581,10 +1630,60 @@ async function processOrderPayment() {
   }
 }
 
-// Display Order Confirmation & Instant Credentials Vault Receipt
+let orderVerificationPollTimer = null;
+
+// Display Order Confirmation & Verification / Credentials Vault Receipt
 function showOrderSuccessReceipt(order) {
   const modal = document.getElementById('orderSuccessModal');
   if (!modal) return;
+
+  const isPending = (order.paymentStatus === 'pending_verification' || order.deliveryStatus === 'pending_verification');
+
+  const titleEl = document.getElementById('receiptModalTitle');
+  const iconEl = document.getElementById('receiptSuccessIcon');
+  const badgeEl = document.getElementById('receiptStatusBadge');
+  const verifiedNotice = document.getElementById('receiptVerifiedNotice');
+  const pendingNotice = document.getElementById('receiptPendingVerificationNotice');
+
+  if (titleEl) {
+    titleEl.textContent = isPending ? 'Order Received — Verifying Payment' : 'Order Completed Successfully!';
+  }
+  if (iconEl) {
+    iconEl.textContent = isPending ? '⏳' : '✓';
+    iconEl.style.background = isPending ? '#f59e0b' : '#10b981';
+  }
+
+  if (badgeEl) {
+    badgeEl.style.display = 'inline-block';
+    if (isPending) {
+      badgeEl.innerHTML = '<span style="background:#fef3c7; color:#92400e; font-size:0.78rem; font-weight:700; padding:4px 12px; border-radius:999px; border:1px solid #fde68a;">⏳ Payment Verification in Progress</span>';
+    } else {
+      badgeEl.innerHTML = '<span style="background:#dcfce7; color:#15803d; font-size:0.78rem; font-weight:700; padding:4px 12px; border-radius:999px; border:1px solid #bbf7d0;">✓ Payment Verified & Dispatched</span>';
+    }
+  }
+
+  if (isPending) {
+    if (verifiedNotice) verifiedNotice.style.display = 'none';
+    if (pendingNotice) {
+      pendingNotice.style.display = 'block';
+      pendingNotice.innerHTML = `
+        <div style="background:rgba(245, 158, 11, 0.08); border:1px solid rgba(245, 158, 11, 0.25); border-radius:12px; padding:16px; margin:14px 0 20px; text-align:left;">
+          <h4 style="font-size:0.96rem; font-weight:700; color:#d97706; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <span>⏳</span> <span>Verifying ${(order.paymentMethod || 'Mobile Banking').toUpperCase()} Payment</span>
+          </h4>
+          <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.6; margin:0 0 10px 0;">
+            We have recorded your payment submission for Order <strong>#${order.orderNumber}</strong>. Our accounts team is verifying your Transaction ID <strong>${order.transactionId || 'submitted'}</strong> sent to <strong>01616-696977</strong>.
+          </p>
+          <div style="font-size:0.78rem; color:#64748b; display:flex; align-items:center; gap:6px;">
+            <span>⚡</span> Average verification time: <strong>1 to 5 minutes</strong>. This page auto-refreshes when approved.
+          </div>
+        </div>
+      `;
+    }
+  } else {
+    if (pendingNotice) pendingNotice.style.display = 'none';
+    if (verifiedNotice) verifiedNotice.style.display = 'block';
+  }
 
   const numEl = document.getElementById('receiptOrderNum');
   if (numEl) numEl.textContent = order.orderNumber;
@@ -1595,61 +1694,76 @@ function showOrderSuccessReceipt(order) {
   const totalEl = document.getElementById('receiptTotalAmount');
   if (totalEl) totalEl.textContent = order.total_bdt ? formatPrice(order.total_bdt, true) : formatPrice(order.total);
 
-  // Render Dispatched Credentials
+  // Render Dispatched Credentials or Locked Placeholder
   const credsContainer = document.getElementById('receiptCredentialsList');
-  if (credsContainer && order.credentials) {
-    credsContainer.innerHTML = order.credentials.map((cred, idx) => `
-      <div class="credentials-vault-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h4 style="font-size:1.1rem; color:#60a5fa; font-weight:700;">${cred.product_title}</h4>
-          <span class="badge-tag pro">${cred.plan_name}</span>
+  if (credsContainer) {
+    if (isPending) {
+      credsContainer.innerHTML = `
+        <div style="text-align:center; padding:24px 18px; background:var(--bg-secondary); border-radius:12px; border:1px dashed var(--glass-border); margin-bottom:16px;">
+          <div style="font-size:2rem; margin-bottom:8px;">🔒</div>
+          <div style="font-weight:700; font-size:0.95rem; color:var(--text-primary); margin-bottom:4px;">Credentials Locked Pending Payment Verification</div>
+          <p style="font-size:0.82rem; color:var(--text-secondary); margin:0; line-height:1.5;">
+            As soon as our billing team confirms your TrxID on <strong>01616-696977</strong>, your account credentials and profile PIN will appear here immediately.
+          </p>
         </div>
+      `;
 
-        ${cred.account_email ? `
-          <div class="credential-field">
-            <span>Email / Username:</span>
-            <strong>${cred.account_email}</strong>
-            <button class="copy-btn" onclick="copyToClipboard('${cred.account_email}')">Copy</button>
+      // Start live polling for instant unlock when admin verifies
+      pollOrderVerificationStatus(order.orderNumber);
+    } else if (order.credentials && order.credentials.length > 0) {
+      credsContainer.innerHTML = order.credentials.map((cred, idx) => `
+        <div class="credentials-vault-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h4 style="font-size:1.1rem; color:#60a5fa; font-weight:700;">${cred.product_title}</h4>
+            <span class="badge-tag pro">${cred.plan_name}</span>
           </div>
-        ` : ''}
 
-        ${cred.account_password ? `
-          <div class="credential-field">
-            <span>Password:</span>
-            <strong>${cred.account_password}</strong>
-            <button class="copy-btn" onclick="copyToClipboard('${cred.account_password}')">Copy</button>
+          ${cred.account_email ? `
+            <div class="credential-field">
+              <span>Email / Username:</span>
+              <strong>${cred.account_email}</strong>
+              <button class="copy-btn" onclick="copyToClipboard('${cred.account_email}')">Copy</button>
+            </div>
+          ` : ''}
+
+          ${cred.account_password ? `
+            <div class="credential-field">
+              <span>Password:</span>
+              <strong>${cred.account_password}</strong>
+              <button class="copy-btn" onclick="copyToClipboard('${cred.account_password}')">Copy</button>
+            </div>
+          ` : ''}
+
+          ${cred.profile_pin ? `
+            <div class="credential-field">
+              <span>Assigned Profile & PIN:</span>
+              <strong>${cred.profile_name || 'VIP'} (PIN: ${cred.profile_pin})</strong>
+              <button class="copy-btn" onclick="copyToClipboard('${cred.profile_pin}')">Copy PIN</button>
+            </div>
+          ` : ''}
+
+          ${cred.license_key ? `
+            <div class="credential-field">
+              <span>License Activation Key:</span>
+              <strong>${cred.license_key}</strong>
+              <button class="copy-btn" onclick="copyToClipboard('${cred.license_key}')">Copy Key</button>
+            </div>
+          ` : ''}
+
+          ${cred.activation_link ? `
+            <div style="margin-top:12px;">
+              <a href="${cred.activation_link}" target="_blank" class="btn-primary" style="width:100%; text-decoration:none;">
+                🚀 Open Direct One-Click Activation Link
+              </a>
+            </div>
+          ` : ''}
+
+          <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:12px; background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:6px;">
+            📌 <strong>Instructions:</strong> ${cred.instructions}
           </div>
-        ` : ''}
-
-        ${cred.profile_pin ? `
-          <div class="credential-field">
-            <span>Assigned Profile & PIN:</span>
-            <strong>${cred.profile_name || 'VIP'} (PIN: ${cred.profile_pin})</strong>
-            <button class="copy-btn" onclick="copyToClipboard('${cred.profile_pin}')">Copy PIN</button>
-          </div>
-        ` : ''}
-
-        ${cred.license_key ? `
-          <div class="credential-field">
-            <span>License Activation Key:</span>
-            <strong>${cred.license_key}</strong>
-            <button class="copy-btn" onclick="copyToClipboard('${cred.license_key}')">Copy Key</button>
-          </div>
-        ` : ''}
-
-        ${cred.activation_link ? `
-          <div style="margin-top:12px;">
-            <a href="${cred.activation_link}" target="_blank" class="btn-primary" style="width:100%; text-decoration:none;">
-              🚀 Open Direct One-Click Activation Link
-            </a>
-          </div>
-        ` : ''}
-
-        <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:12px; background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:6px;">
-          📌 <strong>Instructions:</strong> ${cred.instructions}
         </div>
-      </div>
-    `).join('');
+      `).join('');
+    }
   }
 
   // Update dynamic receipt WhatsApp action
@@ -1661,7 +1775,47 @@ function showOrderSuccessReceipt(order) {
   modal.classList.add('active');
 }
 
+function pollOrderVerificationStatus(orderNumber) {
+  if (orderVerificationPollTimer) {
+    clearInterval(orderVerificationPollTimer);
+  }
+
+  let attempts = 0;
+  orderVerificationPollTimer = setInterval(async () => {
+    attempts++;
+    if (attempts > 75) {
+      clearInterval(orderVerificationPollTimer);
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/orders/track/${orderNumber}`, {
+        headers: state.token ? { 'Authorization': `Bearer ${state.token}` } : {}
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && data.success && data.order) {
+        if (data.order.payment_status === 'completed' && data.order.delivery_status === 'delivered') {
+          clearInterval(orderVerificationPollTimer);
+          showNotification('✓ Payment Verified! Your subscription credentials are now unlocked.', 'success');
+          showOrderSuccessReceipt({
+            orderNumber: data.order.order_number,
+            customerEmail: data.order.customer_email,
+            paymentMethod: data.order.payment_method,
+            total: data.order.total_amount,
+            paymentStatus: 'completed',
+            deliveryStatus: 'delivered',
+            credentials: data.order.credentials
+          });
+        }
+      }
+    } catch (e) {}
+  }, 4000);
+}
+
 function closeOrderSuccessModal() {
+  if (orderVerificationPollTimer) { clearInterval(orderVerificationPollTimer); orderVerificationPollTimer = null; }
+
   const modal = document.getElementById('orderSuccessModal');
   if (modal) modal.classList.remove('active');
 }
@@ -1801,10 +1955,10 @@ async function performOrderLookup() {
 function openAuthModal(defaultMode = 'signin') {
   const modal = document.getElementById('authModal');
   if (modal) {
-    if (state.user && state.token) {
+    if (defaultMode === 'profile' && state.user && state.token) {
       switchAuthMode('profile');
     } else {
-      switchAuthMode(defaultMode);
+      switchAuthMode(defaultMode || 'signin');
       const notice = document.getElementById('authCheckoutNotice');
       if (notice) {
         notice.style.display = state.pendingCheckoutAfterAuth ? 'block' : 'none';
@@ -2211,9 +2365,19 @@ function checkAuthStatus() {
   if (state.user && state.token) {
     if (state.user.is_vip === undefined) {
       fetch('/api/auth/me', { headers: { 'Authorization': `Bearer ${state.token}` } })
-        .then(r => r.json())
+        .then(r => {
+          if (r.status === 401) {
+            state.user = null;
+            state.token = null;
+            localStorage.removeItem('flix_user');
+            localStorage.removeItem('flix_token');
+            checkAuthStatus();
+            return null;
+          }
+          return r.json();
+        })
         .then(d => {
-          if (d.success && d.user) {
+          if (d && d.success && d.user) {
             state.user = { ...state.user, ...d.user };
             localStorage.setItem('flix_user', JSON.stringify(state.user));
             updateCartUI();

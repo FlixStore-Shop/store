@@ -422,10 +422,13 @@ function renderAllOrders(orders) {
     const amountBDT = Math.round(o.total_amount * (o.currency === 'USD' ? 120 : 1));
     const gwClass = o.payment_method ? o.payment_method.toLowerCase() : 'card';
     const dateStr = new Date(o.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-    const cleanPhone = o.customer_phone ? o.customer_phone.replace(/\D/g, '') : '';
+    const cleanPhone = (o.sender_number || o.customer_phone || '').replace(/\D/g, '');
+    const isPendingVerification = (o.payment_status === 'pending_verification' || o.delivery_status === 'pending_verification');
+    const isCompleted = o.payment_status === 'completed';
+    const isFailed = o.payment_status === 'failed';
 
     return `
-      <tr>
+      <tr style="${isPendingVerification ? 'background:rgba(245,158,11,0.06);' : ''}">
         <td>
           <strong style="color:#2563eb; font-size:0.9rem;">#${o.order_number}</strong>
           <div style="font-size:0.72rem; color:#64748b;">ID: ${o.id}</div>
@@ -433,32 +436,49 @@ function renderAllOrders(orders) {
         <td>
           <div style="font-weight:700;">${o.customer_name}</div>
           <div style="font-size:0.78rem; color:#64748b;">${o.customer_email}</div>
-          ${o.customer_phone ? `<div style="font-size:0.74rem; color:#64748b;">📞 ${o.customer_phone}</div>` : ''}
+          ${o.sender_number ? `<div style="font-size:0.74rem; color:#059669; font-weight:700;">📱 Sender: ${o.sender_number}</div>` : (o.customer_phone ? `<div style="font-size:0.74rem; color:#64748b;">📞 ${o.customer_phone}</div>` : '')}
         </td>
         <td>
           <strong style="font-size:0.95rem;">৳${amountBDT.toLocaleString()}</strong>
-          <div style="font-size:0.72rem; color:#64748b;">$${Number(o.total_amount).toFixed(2)} USD</div>
+          <div style="font-size:0.72rem; color:#64748b;">${Number(o.total_amount).toFixed(2)} USD</div>
         </td>
         <td>
-          <span class="gateway-pill ${gwClass}">${o.payment_method}</span>
-          <div style="font-size:0.74rem; color:#64748b; font-family:monospace; margin-top:3px;" title="Transaction ID">${o.transaction_id || 'AUTO'}</div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span class="gateway-pill ${gwClass}">${o.payment_method}</span>
+            ${isPendingVerification ? '<span style="background:#fef3c7; color:#92400e; font-size:0.68rem; font-weight:700; padding:2px 6px; border-radius:999px; border:1px solid #fde68a;">⏳ VERIFY</span>' : (isCompleted ? '<span style="background:#dcfce7; color:#15803d; font-size:0.68rem; font-weight:700; padding:2px 6px; border-radius:999px;">✓ PAID</span>' : '<span style="background:#fee2e2; color:#b91c1c; font-size:0.68rem; font-weight:700; padding:2px 6px; border-radius:999px;">✕ REJECTED</span>')}
+          </div>
+          <div style="font-size:0.76rem; color:#0f172a; font-family:monospace; margin-top:4px; display:flex; align-items:center; gap:4px;" title="Transaction ID">
+            <strong>${o.transaction_id || 'AUTO'}</strong>
+            ${o.transaction_id ? `<button type="button" class="copy-btn" style="padding:1px 5px; font-size:0.68rem;" onclick="navigator.clipboard.writeText('${o.transaction_id}'); showToast('TrxID copied!');">Copy</button>` : ''}
+          </div>
         </td>
         <td>
           <select onchange="updateOrderStatus(${o.id}, this.value)" style="background:#ffffff; color:#0f172a; border:1px solid #cbd5e1; padding:5px 8px; border-radius:6px; font-size:0.78rem; cursor:pointer;">
             <option value="delivered" ${o.delivery_status === 'delivered' ? 'selected' : ''}>● Delivered</option>
+            <option value="pending_verification" ${o.delivery_status === 'pending_verification' ? 'selected' : ''}>⏳ Verifying</option>
             <option value="processing" ${o.delivery_status === 'processing' ? 'selected' : ''}>⏳ Processing</option>
             <option value="pending" ${o.delivery_status === 'pending' ? 'selected' : ''}>⚠️ Pending</option>
+            <option value="cancelled" ${o.delivery_status === 'cancelled' ? 'selected' : ''}>✕ Cancelled</option>
           </select>
         </td>
         <td>${dateStr}</td>
         <td>
-          <div style="display:flex; gap:6px; align-items:center;">
-            <button class="btn-secondary" style="padding:4px 8px; font-size:0.74rem;" onclick="viewOrderCredentials('${encodeURIComponent(o.delivered_credentials || '[]')}')" title="Inspect Credentials">
-              🔑 View Keys
-            </button>
+          <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+            ${isPendingVerification ? `
+              <button class="btn-primary" style="padding:4px 10px; font-size:0.74rem; background:linear-gradient(135deg, #059669 0%, #10b981 100%); color:#ffffff; font-weight:700; border:none; border-radius:6px; cursor:pointer;" onclick="verifyOrderPayment(${o.id}, '${o.order_number}')" title="Confirm payment on 01616-696977 and dispatch credentials">
+                ✓ Verify & Dispatch
+              </button>
+              <button class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" onclick="rejectOrderPayment(${o.id}, '${o.order_number}')" title="Reject invalid payment">
+                ✕ Reject
+              </button>
+            ` : `
+              <button class="btn-secondary" style="padding:4px 8px; font-size:0.74rem;" onclick="viewOrderCredentials('${encodeURIComponent(o.delivered_credentials || '[]')}')" title="Inspect Credentials">
+                🔑 View Keys
+              </button>
+            `}
             ${cleanPhone ? `
               <a href="https://wa.me/${cleanPhone}?text=Hello%20${encodeURIComponent(o.customer_name)}%2C%20this%20is%20FlixStore%20Support%20regarding%20Order%20${encodeURIComponent(o.order_number)}" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#059669; border-color:#a7f3d0; background:#ecfdf5; text-decoration:none;" title="Chat via WhatsApp">
-                💬 WhatsApp
+                💬 WA
               </a>
             ` : ''}
             <button onclick="deleteOrder(${o.id}, '${o.order_number}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" title="Delete Order Record">
@@ -469,6 +489,41 @@ function renderAllOrders(orders) {
       </tr>
     `;
   }).join('');
+}
+
+async function verifyOrderPayment(orderId, orderNumber) {
+  if (!confirm(`Verify Payment & Dispatch Credentials for Order #${orderNumber}?\n\nPlease confirm you received the payment SMS on your personal number (+8801616696977).\n\nThis will instantly dispatch genuine subscription credentials to the customer.`)) {
+    return;
+  }
+
+  const json = await fetchAdminApi(`/api/admin/orders/${orderId}/verify-payment`, {
+    method: 'POST'
+  });
+
+  if (json && json.success) {
+    showToast(`✓ Order #${orderNumber} verified! Credentials dispatched.`);
+    loadDashboardData();
+  } else {
+    showToast(json?.message || 'Verification failed', true);
+  }
+}
+
+async function rejectOrderPayment(orderId, orderNumber) {
+  const reason = prompt(`Reject payment for Order #${orderNumber}?\n\nEnter reason (e.g. TrxID not found on 01616-696977, Amount mismatch):`, 'TrxID not found in SMS records');
+  if (reason === null) return;
+
+  const json = await fetchAdminApi(`/api/admin/orders/${orderId}/reject-payment`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ reason })
+  });
+
+  if (json && json.success) {
+    showToast(`Order #${orderNumber} payment marked as rejected.`);
+    loadDashboardData();
+  } else {
+    showToast(json?.message || 'Rejection failed', true);
+  }
 }
 
 async function deleteOrder(orderId, orderNumber) {

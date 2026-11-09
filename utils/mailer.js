@@ -273,25 +273,42 @@ async function sendOrderConfirmationEmail(orderData, credentials = []) {
   const fromAddress = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER || 'orders@flixstore.org';
   const from = `"${fromName}" <${fromAddress}>`;
 
-  const subject = `Order Confirmed: ${orderData.orderNumber} - Your Subscription Credentials`;
+  const isPending = !credentials || credentials.length === 0;
+  const subject = isPending
+    ? `Order Received: ${orderData.orderNumber} - Payment Verification In Progress`
+    : `Order Confirmed: ${orderData.orderNumber} - Your Subscription Credentials`;
 
   let credsHtml = '';
-  for (const c of credentials) {
-    credsHtml += `
-      <div style="background:#161d2f; border:1px solid #2d3748; border-radius:10px; padding:18px; margin-bottom:16px;">
-        <div style="font-size:16px; font-weight:700; color:#ffffff; margin-bottom:4px;">${c.product_title || 'Subscription'}</div>
-        <div style="font-size:12px; color:#38bdf8; font-weight:600; margin-bottom:12px;">Plan: ${c.plan_name || 'Standard Plan'}</div>
-        
-        ${c.account_email ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>Email/User:</strong> <code style="background:#0b0f19; padding:2px 8px; border-radius:4px; color:#34d399;">${c.account_email}</code></div>` : ''}
-        ${c.account_password ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>Password:</strong> <code style="background:#0b0f19; padding:2px 8px; border-radius:4px; color:#f59e0b;">${c.account_password}</code></div>` : ''}
-        ${c.profile_name ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>Profile:</strong> ${c.profile_name}</div>` : ''}
-        ${c.profile_pin ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>PIN:</strong> <code style="background:#0b0f19; padding:2px 8px; border-radius:4px; color:#60a5fa;">${c.profile_pin}</code></div>` : ''}
-        ${c.license_key ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>License Key:</strong> <code style="background:#0b0f19; padding:2px 8px; border-radius:4px; color:#a78bfa;">${c.license_key}</code></div>` : ''}
-        ${c.activation_link ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>Activation Link:</strong> <a href="${c.activation_link}" style="color:#38bdf8;">Click to Activate</a></div>` : ''}
-        
-        ${c.instructions ? `<div style="margin-top:10px; padding-top:10px; border-top:1px dashed #334155; font-size:12px; color:#94a3b8; line-height:1.5;"><strong>Instructions:</strong> ${c.instructions}</div>` : ''}
+  if (isPending) {
+    credsHtml = `
+      <div style="background:#161d2f; border:1px dashed #f59e0b; border-radius:10px; padding:18px; margin-bottom:16px; text-align:left;">
+        <div style="font-size:15px; font-weight:700; color:#fbbf24; margin-bottom:6px;">⏳ Payment Verification in Progress</div>
+        <p style="font-size:13px; color:#cbd5e1; line-height:1.6; margin:0 0 10px 0;">
+          We have recorded your manual payment via <strong>${(orderData.paymentMethod || '').toUpperCase()}</strong> to our verified personal number <strong>01616-696977</strong>.
+        </p>
+        <p style="font-size:12px; color:#94a3b8; line-height:1.5; margin:0;">
+          Our accounts team is verifying your Transaction ID. Once verified (usually within 1 to 5 minutes), your subscription credentials will unlock in your account and be emailed directly to you.
+        </p>
       </div>
     `;
+  } else {
+    for (const c of credentials) {
+      credsHtml += `
+        <div style="background:#161d2f; border:1px solid #2d3748; border-radius:10px; padding:18px; margin-bottom:16px;">
+          <div style="font-size:16px; font-weight:700; color:#ffffff; margin-bottom:4px;">${c.product_title || 'Subscription'}</div>
+          <div style="font-size:12px; color:#38bdf8; font-weight:600; margin-bottom:12px;">Plan: ${c.plan_name || 'Standard Plan'}</div>
+          
+          ${c.account_email ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>Email/User:</strong> <code style="background:#0b0f19; padding:2px 8px; border-radius:4px; color:#34d399;">${c.account_email}</code></div>` : ''}
+          ${c.account_password ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>Password:</strong> <code style="background:#0b0f19; padding:2px 8px; border-radius:4px; color:#f59e0b;">${c.account_password}</code></div>` : ''}
+          ${c.profile_name ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>Profile:</strong> ${c.profile_name}</div>` : ''}
+          ${c.profile_pin ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>PIN:</strong> <code style="background:#0b0f19; padding:2px 8px; border-radius:4px; color:#60a5fa;">${c.profile_pin}</code></div>` : ''}
+          ${c.license_key ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>License Key:</strong> <code style="background:#0b0f19; padding:2px 8px; border-radius:4px; color:#a78bfa;">${c.license_key}</code></div>` : ''}
+          ${c.activation_link ? `<div style="margin-bottom:6px; font-size:13px; color:#cbd5e1;"><strong>Activation Link:</strong> <a href="${c.activation_link}" style="color:#38bdf8;">Click to Activate</a></div>` : ''}
+          
+          ${c.instructions ? `<div style="margin-top:10px; padding-top:10px; border-top:1px dashed #334155; font-size:12px; color:#94a3b8; line-height:1.5;"><strong>Instructions:</strong> ${c.instructions}</div>` : ''}
+        </div>
+      `;
+    }
   }
 
   const htmlContent = `
@@ -306,7 +323,7 @@ async function sendOrderConfirmationEmail(orderData, credentials = []) {
         .header { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); padding: 28px; text-align: center; border-bottom: 1px solid #2d3748; }
         .brand { font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; }
         .body-content { padding: 30px 24px; }
-        .order-badge { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; display: inline-block; margin-bottom: 14px; }
+        .order-badge { background: ${isPending ? 'rgba(245, 158, 11, 0.15)' : 'rgba(34, 197, 94, 0.15)'}; color: ${isPending ? '#fbbf24' : '#4ade80'}; border: 1px solid ${isPending ? 'rgba(245, 158, 11, 0.3)' : 'rgba(34, 197, 94, 0.3)'}; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; display: inline-block; margin-bottom: 14px; }
         .footer { padding: 20px 24px; background: #0c101c; border-top: 1px solid #1a2030; font-size: 11px; color: #64748b; text-align: center; }
         .cta-btn { display: inline-block; background: #25D366; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; margin-top: 16px; }
       </style>
@@ -317,23 +334,25 @@ async function sendOrderConfirmationEmail(orderData, credentials = []) {
           <div class="brand">FlixStore <span style="background:#3b82f6; font-size:11px; padding:2px 6px; border-radius:4px;">PRO</span></div>
         </div>
         <div class="body-content">
-          <span class="order-badge">✓ PAYMENT VERIFIED & CREDENTIALS DISPATCHED</span>
-          <h2 style="font-size:20px; font-weight:800; color:#ffffff; margin:0 0 10px 0;">Thank You for Your Order, ${orderData.customerName}!</h2>
+          <span class="order-badge">${isPending ? '⏳ PAYMENT VERIFICATION IN PROGRESS' : '✓ PAYMENT VERIFIED & CREDENTIALS DISPATCHED'}</span>
+          <h2 style="font-size:20px; font-weight:800; color:#ffffff; margin:0 0 10px 0;">${isPending ? 'Order Received' : 'Thank You for Your Order'}, ${orderData.customerName}!</h2>
           <p style="font-size:14px; color:#94a3b8; line-height:1.6; margin-bottom:20px;">
-            Your order <strong>#${orderData.orderNumber}</strong> has been processed with instant automated delivery. Your subscription access details are below:
+            ${isPending 
+              ? `Your order <strong>#${orderData.orderNumber}</strong> has been received. We are verifying your transaction on <strong>01616-696977</strong>:`
+              : `Your order <strong>#${orderData.orderNumber}</strong> has been processed with instant automated delivery. Your subscription access details are below:`}
           </p>
 
           ${credsHtml}
 
           <div style="background:#131b2e; border:1px solid #243048; border-radius:10px; padding:16px; margin:20px 0;">
-            <div style="font-size:13px; color:#cbd5e1;"><strong>Total Paid:</strong> ${orderData.currencySymbol || '৳'}${orderData.total} (${orderData.paymentMethod.toUpperCase()})</div>
+            <div style="font-size:13px; color:#cbd5e1;"><strong>Total:</strong> ${orderData.currencySymbol || '৳'}${orderData.total} (${(orderData.paymentMethod || '').toUpperCase()})</div>
             <div style="font-size:13px; color:#cbd5e1; margin-top:4px;"><strong>Order ID:</strong> ${orderData.orderNumber}</div>
-            <div style="font-size:13px; color:#cbd5e1; margin-top:4px;"><strong>Delivery Status:</strong> 100% Instant Dispatched</div>
+            <div style="font-size:13px; color:#cbd5e1; margin-top:4px;"><strong>Status:</strong> ${isPending ? '⏳ Pending Verification' : '100% Dispatched'}</div>
           </div>
 
           <div style="text-align:center; padding:10px 0;">
-            <p style="font-size:13px; color:#94a3b8; margin-bottom:10px;">Need replacement warranty help or have questions?</p>
-            <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%20Support%2C%20I%20need%20help%20with%20Order%20${orderData.orderNumber}" class="cta-btn">
+            <p style="font-size:13px; color:#94a3b8; margin-bottom:10px;">Need urgent verification or have questions?</p>
+            <a href="https://wa.me/8801616696977?text=Hello%20FlixStore%20Support%2C%20I%20need%20help%20with%20Order%20${orderData.orderNumber}" class="cta-btn">
               💬 Chat with 24/7 WhatsApp Support
             </a>
           </div>

@@ -153,18 +153,20 @@ async function initDatabase() {
     initSqliteSchema();
   }
 
-  // Ensure title_align, desc_align, and tagline_align columns exist on products
+  // Ensure title_align, desc_align, and tagline_align columns exist on products, and sender_number on orders
   try {
     if (isPostgres) {
       await db.exec(`
         ALTER TABLE products ADD COLUMN IF NOT EXISTS title_align TEXT DEFAULT 'left';
         ALTER TABLE products ADD COLUMN IF NOT EXISTS desc_align TEXT DEFAULT 'left';
         ALTER TABLE products ADD COLUMN IF NOT EXISTS tagline_align TEXT DEFAULT 'left';
+        ALTER TABLE orders ADD COLUMN IF NOT EXISTS sender_number TEXT;
       `);
     } else {
       try { db.exec("ALTER TABLE products ADD COLUMN title_align TEXT DEFAULT 'left';"); } catch (e) {}
       try { db.exec("ALTER TABLE products ADD COLUMN desc_align TEXT DEFAULT 'left';"); } catch (e) {}
       try { db.exec("ALTER TABLE products ADD COLUMN tagline_align TEXT DEFAULT 'left';"); } catch (e) {}
+      try { db.exec("ALTER TABLE orders ADD COLUMN sender_number TEXT;"); } catch (e) {}
     }
   } catch (err) {
     // Columns already exist
@@ -302,6 +304,7 @@ function initSqliteSchema() {
       customer_name TEXT NOT NULL,
       customer_email TEXT NOT NULL,
       customer_phone TEXT,
+      sender_number TEXT,
       payment_method TEXT NOT NULL,
       payment_status TEXT NOT NULL DEFAULT 'completed',
       transaction_id TEXT,
@@ -461,6 +464,7 @@ async function initPostgresSchema() {
       customer_name TEXT NOT NULL,
       customer_email TEXT NOT NULL,
       customer_phone TEXT,
+      sender_number TEXT,
       payment_method TEXT NOT NULL,
       payment_status TEXT NOT NULL DEFAULT 'completed',
       transaction_id TEXT,
