@@ -1459,8 +1459,13 @@ function switchMobileSubMethod(subMethod, event) {
 
   const channelBadge = document.getElementById('mfsChannelBadge');
   const mfsInstructions = document.getElementById('mfsInstructions');
+  const mfsChannelLogo = document.getElementById('mfsChannelLogo');
 
   if (subMethod === 'bkash') {
+    if (mfsChannelLogo) {
+      mfsChannelLogo.src = '/assets/brands/bkash.svg';
+      mfsChannelLogo.alt = 'bKash Official Logo';
+    }
     if (channelBadge) {
       channelBadge.textContent = 'bKash Personal (Send Money)';
       channelBadge.style.background = '#e1125d';
@@ -1469,6 +1474,10 @@ function switchMobileSubMethod(subMethod, event) {
       mfsInstructions.innerHTML = 'Send exact payment using bKash App or dial <strong>*247#</strong> (Send Money) to our verified number:';
     }
   } else if (subMethod === 'nagad') {
+    if (mfsChannelLogo) {
+      mfsChannelLogo.src = '/assets/brands/nagad.svg';
+      mfsChannelLogo.alt = 'Nagad Official Logo';
+    }
     if (channelBadge) {
       channelBadge.textContent = 'Nagad Personal (Send Money)';
       channelBadge.style.background = '#f7941d';
@@ -1477,6 +1486,10 @@ function switchMobileSubMethod(subMethod, event) {
       mfsInstructions.innerHTML = 'Send exact payment using Nagad App or dial <strong>*167#</strong> (Send Money) to our verified number:';
     }
   } else if (subMethod === 'rocket') {
+    if (mfsChannelLogo) {
+      mfsChannelLogo.src = '/assets/brands/rocket.svg';
+      mfsChannelLogo.alt = 'DBBL Rocket Official Logo';
+    }
     if (channelBadge) {
       channelBadge.textContent = 'DBBL Rocket Personal (Send Money)';
       channelBadge.style.background = '#8b5cf6';

@@ -650,7 +650,7 @@ function renderInstructionsTab() {
         <div class="how-step-card" style="padding:16px;">
           <div class="step-num-badge">STEP 01</div>
           <h4 style="margin:8px 0 4px; font-size:0.95rem;">Complete Order</h4>
-          <p style="font-size:0.78rem; color:var(--text-secondary); margin:0;">Pay in BDT with bKash/Nagad or USD with Card/PayPal.</p>
+          <p style="font-size:0.78rem; color:var(--text-secondary); margin:0;">Pay securely via bKash, Nagad, Rocket, or Bank transfer.</p>
         </div>
         <div class="how-step-card" style="padding:16px;">
           <div class="step-num-badge">STEP 02</div>

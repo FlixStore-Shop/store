@@ -3570,25 +3570,131 @@ body {
   color: #ffffff;
 }
 
-/* Regional Bangladesh MFS Badges */
+/* Regional Bangladesh MFS Badges with Official Logos */
 .amazon-mfs-badge {
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 3px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #ffffff;
+  border-radius: 5px;
+  padding: 2px 7px;
+  height: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.amazon-mfs-logo-img {
+  height: 16px;
+  width: auto;
+  max-width: 48px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Inside MFS Sub-Method Tabs (tabBkash, tabNagad, tabRocket) */
+.amazon-mfs-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mfs-tab-logo {
+  height: 18px;
+  width: auto;
+  max-width: 42px;
+  object-fit: contain;
+  background: #ffffff;
+  padding: 2px 5px;
   border-radius: 4px;
-  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: inline-block;
 }
 
-.amazon-mfs-badge.bkash {
-  background: #e1125d;
+/* Inside Channel Info Header */
+.amazon-mfs-info-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.amazon-mfs-badge.nagad {
-  background: #f7941d;
+.mfs-channel-logo-display {
+  height: 36px;
+  width: auto;
+  max-width: 90px;
+  background: #ffffff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
-.amazon-mfs-badge.rocket {
-  background: #8b5cf6;
+/* PDP & General MFS Logo Pill */
+.mfs-logo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  padding: 3px 8px;
+  height: 26px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  user-select: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+[data-theme="light"] .mfs-logo-pill {
+  border-color: #cbd5e1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.mfs-logo-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
+}
+
+.mfs-logo-pill img {
+  height: 16px;
+  width: auto;
+  max-width: 50px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Footer Official MFS Badges */
+.mfs-badge-official {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  transition: transform 0.15s ease;
+}
+
+.mfs-badge-official:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.mfs-badge-official img {
+  height: 16px;
+  width: auto;
+  max-width: 48px;
+  object-fit: contain;
+}
+
+.mfs-badge-official span {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #0f172a;
 }
 
 /* Amazon Pay Card Body (Expanded Section) */

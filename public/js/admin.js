@@ -420,12 +420,17 @@ function renderAllOrders(orders) {
 
   tableBody.innerHTML = orders.map(o => {
     const amountBDT = Math.round(o.total_amount * (o.currency === 'USD' ? 120 : 1));
-    const gwClass = o.payment_method ? o.payment_method.toLowerCase() : 'card';
+    const gwClass = o.payment_method ? o.payment_method.toLowerCase() : 'bkash';
     const dateStr = new Date(o.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
     const cleanPhone = (o.sender_number || o.customer_phone || '').replace(/\D/g, '');
     const isPendingVerification = (o.payment_status === 'pending_verification' || o.delivery_status === 'pending_verification');
     const isCompleted = o.payment_status === 'completed';
     const isFailed = o.payment_status === 'failed';
+
+    let gwLogo = '';
+    if (gwClass === 'bkash') gwLogo = '<img src="/assets/brands/bkash.svg" style="height:13px; width:auto; vertical-align:middle; margin-right:4px; display:inline-block;">';
+    else if (gwClass === 'nagad') gwLogo = '<img src="/assets/brands/nagad.svg" style="height:13px; width:auto; vertical-align:middle; margin-right:4px; display:inline-block;">';
+    else if (gwClass === 'rocket') gwLogo = '<img src="/assets/brands/rocket.svg" style="height:13px; width:auto; vertical-align:middle; margin-right:4px; display:inline-block;">';
 
     return `
       <tr style="${isPendingVerification ? 'background:rgba(245,158,11,0.06);' : ''}">
@@ -444,7 +449,7 @@ function renderAllOrders(orders) {
         </td>
         <td>
           <div style="display:flex; align-items:center; gap:6px;">
-            <span class="gateway-pill ${gwClass}">${o.payment_method}</span>
+            <span class="gateway-pill ${gwClass}" style="display:inline-flex; align-items:center;">${gwLogo}${o.payment_method}</span>
             ${isPendingVerification ? '<span style="background:#fef3c7; color:#92400e; font-size:0.68rem; font-weight:700; padding:2px 6px; border-radius:999px; border:1px solid #fde68a;">⏳ VERIFY</span>' : (isCompleted ? '<span style="background:#dcfce7; color:#15803d; font-size:0.68rem; font-weight:700; padding:2px 6px; border-radius:999px;">✓ PAID</span>' : '<span style="background:#fee2e2; color:#b91c1c; font-size:0.68rem; font-weight:700; padding:2px 6px; border-radius:999px;">✕ REJECTED</span>')}
           </div>
           <div style="font-size:0.76rem; color:#0f172a; font-family:monospace; margin-top:4px; display:flex; align-items:center; gap:4px;" title="Transaction ID">
