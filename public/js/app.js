@@ -1381,21 +1381,9 @@ function openCheckoutModal() {
     phoneInput.value = state.user.phone;
   }
 
-  const cardHolderPreview = document.getElementById('cardHolderPreview');
-  const cardNameInput = document.getElementById('checkoutCardName');
-  const fallbackHolderName = (state.user && state.user.full_name ? state.user.full_name : 'FlixStore Subscriber');
-  if (cardHolderPreview) {
-    cardHolderPreview.textContent = fallbackHolderName.toUpperCase();
-  }
-  if (cardNameInput && !cardNameInput.value) {
-    cardNameInput.value = fallbackHolderName;
-  }
-  const cardInput = document.getElementById('checkoutCardNumber');
-  if (cardInput) {
-    cardInput.dispatchEvent(new Event('input'));
-  }
 
-  selectPaymentMethod('card');
+
+  selectPaymentMethod('bkash');
   renderCheckoutSummary();
   modal.classList.add('active');
 }
@@ -1409,8 +1397,10 @@ let currentMobileSubMethod = 'bkash';
 let currentExpressSubMethod = 'paypal';
 
 function selectPaymentMethod(method) {
-  // If user passed 'mobile', default to currently active mobile sub-method
-  if (method === 'mobile') {
+  // If user passed 'card' or invalid, default to 'bkash'
+  if (method === 'card' || !method) {
+    method = currentMobileSubMethod || 'bkash';
+  } else if (method === 'mobile') {
     method = currentMobileSubMethod || 'bkash';
   } else if (method === 'express') {
     method = currentExpressSubMethod || 'paypal';
@@ -1418,34 +1408,27 @@ function selectPaymentMethod(method) {
 
   selectedPaymentGateway = method;
 
-  const isCard = method === 'card';
   const isMobile = ['bkash', 'nagad', 'rocket'].includes(method);
   const isExpress = ['paypal', 'crypto'].includes(method);
 
   // Update Amazon radio cards active state
-  const cardOpt = document.getElementById('amazonCardOption');
   const mobileOpt = document.getElementById('amazonMobileOption');
   const expressOpt = document.getElementById('amazonExpressOption');
 
-  if (cardOpt) cardOpt.classList.toggle('active', isCard);
   if (mobileOpt) mobileOpt.classList.toggle('active', isMobile);
   if (expressOpt) expressOpt.classList.toggle('active', isExpress);
 
   // Update radio inputs
-  const rCard = document.getElementById('payRadioCard');
   const rMobile = document.getElementById('payRadioMobile');
   const rExpress = document.getElementById('payRadioExpress');
 
-  if (rCard) rCard.checked = isCard;
   if (rMobile) rMobile.checked = isMobile;
   if (rExpress) rExpress.checked = isExpress;
 
   // Toggle view panels
-  const cardPanel = document.getElementById('cardPaymentPanel');
   const mobileBody = document.getElementById('mobileBankingBody');
   const expressBody = document.getElementById('expressPaymentBody');
 
-  if (cardPanel) cardPanel.style.display = isCard ? 'block' : 'none';
   if (mobileBody) mobileBody.style.display = isMobile ? 'block' : 'none';
   if (expressBody) expressBody.style.display = isExpress ? 'block' : 'none';
 
@@ -1715,15 +1698,7 @@ async function processOrderPayment() {
       if (unifiedTrx) unifiedTrx.focus();
       return;
     }
-  } else if (selectedPaymentGateway === 'card') {
-    const cardInput = document.getElementById('checkoutCardNumber');
-    const rawNum = cardInput ? cardInput.value.replace(/\D/g, '') : '';
-    if (rawNum.length < 13) {
-      alert('Please enter a valid card number or click "Fill Safe Test Visa (4242)".');
-      return;
-    }
-    const last4 = rawNum.slice(-4);
-    trx_id = `ch_${Math.random().toString(36).substring(2, 10)}_****${last4}`;
+
   } else if (selectedPaymentGateway === 'crypto') {
     trx_id = 'TXID-' + Math.random().toString(36).substring(2, 16).toUpperCase();
   } else {
