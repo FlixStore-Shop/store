@@ -3665,36 +3665,40 @@ body {
   display: block;
 }
 
-/* Footer Official MFS Badges */
+/* Footer Official MFS Badges - Premium Amazon-grade payment icons */
 .mfs-badge-official {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
   background: #ffffff;
-  padding: 4px 10px;
+  padding: 4px 8px;
+  min-width: 58px;
+  height: 32px;
   border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   text-decoration: none;
-  transition: transform 0.15s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  box-sizing: border-box;
 }
 
 .mfs-badge-official:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .mfs-badge-official img {
-  height: 16px;
+  height: 20px;
   width: auto;
   max-width: 48px;
+  max-height: 22px;
   object-fit: contain;
+  display: block;
 }
 
 .mfs-badge-official span {
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: #0f172a;
+  display: none;
 }
 
 /* Amazon Pay Card Body (Expanded Section) */
