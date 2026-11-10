@@ -16,8 +16,11 @@ function getApiKey() {
 }
 
 function getBaseUrl() {
-  const url = (process.env.UDDOKTAPAY_BASE_URL || DEFAULT_BASE_URL).trim();
-  return url.replace(/\/+$/, '');
+  let url = (process.env.UDDOKTAPAY_BASE_URL || DEFAULT_BASE_URL).trim().replace(/\/+$/, '');
+  if (url.endsWith('/api')) {
+    url = url.slice(0, -4);
+  }
+  return url;
 }
 
 /**
