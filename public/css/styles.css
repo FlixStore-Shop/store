@@ -9696,3 +9696,93 @@ body.modal-open .floating-whatsapp-btn {
     border-radius: 14px !important;
   }
 }
+
+
+/* UddoktaPay Gateway Card Styles */
+.uddokta-info-box {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+[data-theme="light"] .uddokta-info-box {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.uddokta-channels-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uddokta-verified-badge {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #0284c7;
+  background: rgba(2, 132, 199, 0.1);
+  border: 1px solid rgba(2, 132, 199, 0.25);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.uddokta-desc {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.uddokta-supported-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.uddokta-method-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.uddokta-method-pill img {
+  height: 16px;
+  width: auto;
+  max-width: 36px;
+  object-fit: contain;
+}
+
+.uddokta-perks-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--glass-border);
+}
+
+.uddokta-perk {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.uddokta-perk svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}

@@ -428,7 +428,8 @@ function renderAllOrders(orders) {
     const isFailed = o.payment_status === 'failed';
 
     let gwLogo = '';
-    if (gwClass === 'bkash') gwLogo = '<img src="/assets/brands/bkash.svg" style="height:13px; width:auto; vertical-align:middle; margin-right:4px; display:inline-block;">';
+    if (gwClass === 'uddoktapay' || gwClass.startsWith('uddoktapay')) gwLogo = '<img src="/assets/brands/uddoktapay-icon.png" style="height:13px; width:auto; vertical-align:middle; margin-right:4px; display:inline-block;">';
+    else if (gwClass === 'bkash') gwLogo = '<img src="/assets/brands/bkash.svg" style="height:13px; width:auto; vertical-align:middle; margin-right:4px; display:inline-block;">';
     else if (gwClass === 'nagad') gwLogo = '<img src="/assets/brands/nagad.svg" style="height:13px; width:auto; vertical-align:middle; margin-right:4px; display:inline-block;">';
     else if (gwClass === 'rocket') gwLogo = '<img src="/assets/brands/rocket.svg" style="height:13px; width:auto; vertical-align:middle; margin-right:4px; display:inline-block;">';
 

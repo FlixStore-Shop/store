@@ -1383,7 +1383,7 @@ function openCheckoutModal() {
 
 
 
-  selectPaymentMethod('bkash');
+  selectPaymentMethod('uddoktapay');
   renderCheckoutSummary();
   modal.classList.add('active');
 }
@@ -1397,44 +1397,46 @@ let currentMobileSubMethod = 'bkash';
 let currentExpressSubMethod = 'paypal';
 
 function selectPaymentMethod(method) {
-  // If user passed 'card' or invalid, default to 'bkash'
-  if (method === 'card' || !method) {
-    method = currentMobileSubMethod || 'bkash';
-  } else if (method === 'mobile') {
-    method = currentMobileSubMethod || 'bkash';
-  } else if (method === 'express') {
-    method = currentExpressSubMethod || 'paypal';
+  if (!method || method === 'card' || method === 'mobile' || method === 'express') {
+    method = 'uddoktapay';
   }
 
   selectedPaymentGateway = method;
 
+  const isUddokta = (method === 'uddoktapay');
   const isMobile = ['bkash', 'nagad', 'rocket'].includes(method);
   const isExpress = ['paypal', 'crypto'].includes(method);
 
   // Update Amazon radio cards active state
+  const uddoktaOpt = document.getElementById('amazonUddoktaOption');
   const mobileOpt = document.getElementById('amazonMobileOption');
   const expressOpt = document.getElementById('amazonExpressOption');
 
+  if (uddoktaOpt) uddoktaOpt.classList.toggle('active', isUddokta);
   if (mobileOpt) mobileOpt.classList.toggle('active', isMobile);
   if (expressOpt) expressOpt.classList.toggle('active', isExpress);
 
   // Update radio inputs
+  const rUddokta = document.getElementById('payRadioUddokta');
   const rMobile = document.getElementById('payRadioMobile');
   const rExpress = document.getElementById('payRadioExpress');
 
+  if (rUddokta) rUddokta.checked = isUddokta;
   if (rMobile) rMobile.checked = isMobile;
   if (rExpress) rExpress.checked = isExpress;
 
   // Toggle view panels
+  const uddoktaBody = document.getElementById('uddoktaPaymentBody');
   const mobileBody = document.getElementById('mobileBankingBody');
   const expressBody = document.getElementById('expressPaymentBody');
 
+  if (uddoktaBody) uddoktaBody.style.display = isUddokta ? 'block' : 'none';
   if (mobileBody) mobileBody.style.display = isMobile ? 'block' : 'none';
   if (expressBody) expressBody.style.display = isExpress ? 'block' : 'none';
 
-  if (isMobile) {
+  if (isMobile && typeof switchMobileSubMethod === 'function') {
     switchMobileSubMethod(method);
-  } else if (isExpress) {
+  } else if (isExpress && typeof switchExpressSubMethod === 'function') {
     switchExpressSubMethod(method);
   }
 
@@ -1687,9 +1689,13 @@ async function processOrderPayment() {
   let trx_id = '';
   let sender_number = '';
 
+  const isUddokta = (selectedPaymentGateway === 'uddoktapay');
   const isMobile = ['bkash', 'nagad', 'rocket'].includes(selectedPaymentGateway);
 
-  if (isMobile) {
+  if (isUddokta) {
+    sender_number = customer_phone;
+    trx_id = 'UP-AUTOMATED';
+  } else if (isMobile) {
     syncMobileInputs();
     const unifiedSender = document.getElementById('mobileBankingSender');
     const unifiedTrx = document.getElementById('mobileBankingTrx');
@@ -1702,7 +1708,7 @@ async function processOrderPayment() {
     const gatewayName = selectedPaymentGateway.toUpperCase();
 
     if (!sender_number || sender_number.length < 6) {
-      alert(`Please enter your ${gatewayName} Sender Phone Number (the number you sent money from) so we can verify your payment on 01616-696977.`);
+      alert(`Please enter your ${gatewayName} Sender Phone Number (the number you sent money from) so we can verify your payment.`);
       if (unifiedSender) unifiedSender.focus();
       return;
     }
@@ -1711,7 +1717,6 @@ async function processOrderPayment() {
       if (unifiedTrx) unifiedTrx.focus();
       return;
     }
-
   } else if (selectedPaymentGateway === 'crypto') {
     trx_id = 'TXID-' + Math.random().toString(36).substring(2, 16).toUpperCase();
   } else {
@@ -1783,6 +1788,17 @@ async function processOrderPayment() {
       updateCartUI();
 
       closeCheckoutModal();
+
+      // If gateway provides payment_url (UddoktaPay), redirect immediately!
+      if (json.payment_url) {
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = 'Connecting to UddoktaPay Secure Gateway...';
+        }
+        window.location.href = json.payment_url;
+        return;
+      }
+
       showOrderSuccessReceipt(json.order);
     } else {
       alert(`Checkout failed: ${json.message}`);
