@@ -498,7 +498,7 @@ function renderAllOrders(orders) {
 }
 
 async function verifyOrderPayment(orderId, orderNumber) {
-  if (!confirm(`Verify Payment & Dispatch Credentials for Order #${orderNumber}?\n\nPlease confirm you received the payment SMS on your personal number (+8801616696977).\n\nThis will instantly dispatch genuine subscription credentials to the customer.`)) {
+  if (!confirm(`Verify Payment & Dispatch Credentials for Order #${orderNumber}?\n\nPlease confirm you received the payment SMS on your personal number (+8801343546958).\n\nThis will instantly dispatch genuine subscription credentials to the customer.`)) {
     return;
   }
 

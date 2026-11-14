@@ -1953,7 +1953,7 @@ function showOrderSuccessReceipt(order) {
   // Update dynamic receipt WhatsApp action
   const waBtn = document.getElementById('receiptWhatsappLink');
   if (waBtn) {
-    waBtn.href = `https://wa.me/8801616696977?text=${encodeURIComponent(`Hello FlixStore! I just placed Order #${order.orderNumber}. Could you please confirm my activation?`)}`;
+    waBtn.href = `https://wa.me/8801343546958?text=${encodeURIComponent(`Hello FlixStore! I just placed Order #${order.orderNumber}. Could you please confirm my activation?`)}`;
   }
 
   modal.classList.add('active');
@@ -2505,7 +2505,7 @@ async function renderUserProfile() {
                   <button type="button" class="btn-secondary" style="flex:1; padding:7px 10px; font-size:0.76rem; justify-content:center; gap:4px;" onclick="closeAuthModal(); openTrackOrderModal('${ord.order_number}');">
                     <span>🔍</span> Live Tracker
                   </button>
-                  <a href="https://wa.me/8801616696977?text=Hello%20FlixStore%2C%20I%20need%20assistance%20with%20Order%20${encodeURIComponent(ord.order_number)}" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:7px 12px; font-size:0.76rem; justify-content:center; gap:4px; text-decoration:none; color:#10b981; border-color:rgba(16,185,129,0.3);">
+                  <a href="https://wa.me/8801343546958?text=Hello%20FlixStore%2C%20I%20need%20assistance%20with%20Order%20${encodeURIComponent(ord.order_number)}" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:7px 12px; font-size:0.76rem; justify-content:center; gap:4px; text-decoration:none; color:#10b981; border-color:rgba(16,185,129,0.3);">
                     <span>💬</span> Help
                   </a>
                 </div>
@@ -3432,7 +3432,7 @@ const INFO_MODAL_CONTENTS = {
         <p>• <strong>Shared Screen:</strong> Stocked profiles are typically dispatched within 5 to 10 minutes.<br>• <strong>Personal Account:</strong> Custom licensing and email activation require between a few hours and up to 24 hours.</p>
         <div class="policy-callout warning">
           <h5>📩 Non-Receipt Within 24 Hours:</h5>
-          <p>Please reach out immediately with your Order ID via WhatsApp: <strong>01616696977</strong> or Email: <strong>flixstore.officials@gmail.com</strong>.</p>
+          <p>Please reach out immediately with your Order ID via WhatsApp: <strong>01343546958</strong> or Email: <strong>flixstore.officials@gmail.com</strong>.</p>
         </div>
       </div>
     `
@@ -3490,11 +3490,11 @@ const INFO_MODAL_CONTENTS = {
         <p>For any questions regarding orders, payments, delivery status, or technical support, please contact our dedicated team directly.</p>
         <div class="copy-box-row">
           <span class="copy-box-label">📞 Direct Call</span>
-          <span class="copy-box-val">01616696977</span>
+          <span class="copy-box-val">01343546958</span>
         </div>
         <div class="copy-box-row">
           <span class="copy-box-label">💬 WhatsApp</span>
-          <span class="copy-box-val">8801616696977</span>
+          <span class="copy-box-val">8801343546958</span>
         </div>
         <div class="copy-box-row">
           <span class="copy-box-label">📧 Email</span>

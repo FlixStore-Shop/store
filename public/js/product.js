@@ -522,7 +522,7 @@ function updateSelectedPlanPricing() {
     const qty = productState.quantity || 1;
     const priceFormatted = formatPrice(offerBdt * qty, true);
     const message = `Hello FlixStore! 🚀\nI would like to place an order via WhatsApp:\n\n📦 Subscription: ${prodTitle}\n💳 Plan: ${planName}\n🔢 Quantity: ${qty}\n💰 Total Amount: ${priceFormatted}\n⚡ Delivery: Instant Automated Delivery\n\nPlease send me the payment details (bKash/Nagad/Rocket/Bank) to complete my order. Thank you!`;
-    waBtn.href = `https://wa.me/8801616696977?text=${encodeURIComponent(message)}`;
+    waBtn.href = `https://wa.me/8801343546958?text=${encodeURIComponent(message)}`;
   }
 }
 
@@ -718,7 +718,7 @@ function renderFaqTab() {
       </div>
       <div class="pdp-faq-item">
         <h4 class="pdp-faq-q">What happens if a password resets or an issue occurs?</h4>
-        <p class="pdp-faq-a">Every plan comes with our 100% Replacement Warranty. If any issue occurs during your active subscription period, message our WhatsApp support (+8801616696977) and we will resolve or replace it within minutes.</p>
+        <p class="pdp-faq-a">Every plan comes with our 100% Replacement Warranty. If any issue occurs during your active subscription period, message our WhatsApp support (+8801343546958) and we will resolve or replace it within minutes.</p>
       </div>
       <div class="pdp-faq-item">
         <h4 class="pdp-faq-q">How soon will I receive my login credentials?</h4>
