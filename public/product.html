@@ -40,7 +40,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/css/styles.css?v=9.2">
+  <link rel="stylesheet" href="/css/styles.css?v=9.3">
   <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=9.2">
   <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=9.2">
 </head>
@@ -1016,21 +1016,12 @@
 
             <!-- PRIMARY GATEWAY: UddoktaPay Automated Online Payment -->
             <div class="amazon-pay-card active" id="amazonUddoktaOption" onclick="selectPaymentMethod('uddoktapay')">
-              <div class="amazon-pay-header">
-                <div class="amazon-radio-wrap">
+              <div class="amazon-pay-header" style="padding: 15px 18px;">
+                <div class="amazon-radio-wrap" style="flex:1; width:100%;">
                   <input type="radio" id="payRadioUddokta" name="amazonPaymentRadio" value="uddoktapay" checked>
-                  <label for="payRadioUddokta" class="amazon-radio-label">
-                    <span class="amazon-pay-title" style="display:flex; align-items:center; gap:8px;">
-                      <span>UddoktaPay Automated Online Gateway</span>
-                      <span class="amazon-zero-fee-pill" style="font-size:0.68rem; padding:2px 8px;">⚡ Instant 60s Access</span>
-                    </span>
+                  <label for="payRadioUddokta" class="amazon-radio-label" style="flex:1; cursor:pointer; width:100%; margin:0;">
+                    <span class="amazon-pay-title" style="font-size:1.02rem; font-weight:700; color:var(--text-primary); display:block; width:100%; letter-spacing:0.2px;">UddoktaPay Automated Online Gateway</span>
                   </label>
-                </div>
-                <div class="amazon-card-badges">
-                  <span class="amazon-mfs-badge uddokta" title="UddoktaPay Official Gateway"><img src="/assets/brands/uddoktapay.png" alt="UddoktaPay" class="amazon-mfs-logo-img" style="height:17px; width:auto;"></span>
-                  <span class="amazon-mfs-badge" title="bKash"><img src="/assets/brands/bkash.svg" alt="bKash" class="amazon-mfs-logo-img"></span>
-                  <span class="amazon-mfs-badge" title="Nagad"><img src="/assets/brands/nagad.svg" alt="Nagad" class="amazon-mfs-logo-img"></span>
-                  <span class="amazon-mfs-badge" title="DBBL Rocket"><img src="/assets/brands/rocket.svg" alt="Rocket" class="amazon-mfs-logo-img"></span>
                 </div>
               </div>
 
@@ -1699,7 +1690,7 @@
   </a>
 
   <!-- Scripts -->
-  <script src="/js/app.js?v=9.2"></script>
-  <script src="/js/product.js?v=9.2"></script>
+  <script src="/js/app.js?v=9.3"></script>
+  <script src="/js/product.js?v=9.3"></script>
 </body>
 </html>
