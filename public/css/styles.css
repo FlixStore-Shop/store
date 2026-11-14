@@ -9605,17 +9605,23 @@ body.modal-open .floating-whatsapp-btn {
 }
 
 /* =============================================================================
-   PDP DOWNSIDE DESCRIPTION & OVERVIEW SECTION (INSIDE TABS)
+   PDP DOWNSIDE DESCRIPTION & OVERVIEW SECTION (ACCORDION BUTTON)
    ============================================================================= */
 .pdp-description-card {
   margin-top: 0;
   margin-bottom: 24px;
   background: rgba(59, 130, 246, 0.04);
-  border: 1px solid rgba(59, 130, 246, 0.16);
+  border: 1px solid rgba(59, 130, 246, 0.18);
   border-radius: 16px;
-  padding: 22px 24px;
+  padding: 0 !important;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
   transition: all 0.25s ease;
+}
+
+.pdp-description-card:hover {
+  border-color: rgba(59, 130, 246, 0.35);
+  box-shadow: 0 6px 22px rgba(59, 130, 246, 0.08);
 }
 
 [data-theme="light"] .pdp-description-card {
@@ -9623,24 +9629,40 @@ body.modal-open .floating-whatsapp-btn {
   border-color: #e2e8f0;
 }
 
-.pdp-desc-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.12);
+[data-theme="light"] .pdp-description-card:hover {
+  border-color: #cbd5e1;
 }
 
-[data-theme="light"] .pdp-desc-header {
-  border-bottom-color: #e2e8f0;
+.pdp-desc-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+  margin: 0;
+  gap: 12px;
+  font-family: inherit;
+  transition: background 0.2s ease;
+}
+
+.pdp-desc-toggle-btn:hover {
+  background: rgba(59, 130, 246, 0.08);
+}
+
+[data-theme="light"] .pdp-desc-toggle-btn:hover {
+  background: #f1f5f9;
 }
 
 .pdp-desc-header-title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 1.02rem;
+  gap: 10px;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -9650,8 +9672,61 @@ body.modal-open .floating-whatsapp-btn {
   flex-shrink: 0;
 }
 
+.pdp-desc-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.08);
+  transition: all 0.25s ease;
+}
+
+.pdp-desc-toggle-btn:hover .pdp-desc-arrow {
+  background: rgba(59, 130, 246, 0.16);
+}
+
+.pdp-desc-chevron {
+  color: #3b82f6;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Expanded State */
+.pdp-description-card.expanded {
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.pdp-description-card.expanded .pdp-desc-toggle-btn {
+  border-bottom: 1px solid rgba(59, 130, 246, 0.12);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+[data-theme="light"] .pdp-description-card.expanded .pdp-desc-toggle-btn {
+  border-bottom-color: #e2e8f0;
+  background: #f1f5f9;
+}
+
+.pdp-description-card.expanded .pdp-desc-chevron {
+  transform: rotate(180deg);
+}
+
+.pdp-desc-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, padding 0.3s ease;
+}
+
+.pdp-description-card.expanded .pdp-desc-body {
+  max-height: 1500px;
+  opacity: 1;
+  padding: 18px 20px 22px 20px;
+}
+
 .pdp-desc-content {
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   color: var(--text-secondary);
   line-height: 1.8 !important;
   margin: 0;

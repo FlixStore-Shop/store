@@ -283,7 +283,10 @@ function renderProductDetails() {
     }
   }
 
-  if (descSection) {
+    if (descSection) {
+    descSection.classList.remove('expanded');
+    const tBtn = document.getElementById('pdpDescToggleBtn');
+    if (tBtn) tBtn.setAttribute('aria-expanded', 'false');
     descSection.style.display = cleanDesc ? 'block' : 'none';
   }
 
@@ -762,3 +765,16 @@ function renderRelatedProducts() {
     `;
   }).join('');
 }
+
+
+/**
+ * Toggle "About This Subscription" collapsible accordion button
+ */
+function togglePdpDescription() {
+  const card = document.getElementById('pdpDescSection');
+  const btn = document.getElementById('pdpDescToggleBtn');
+  if (!card) return;
+  const isExpanded = card.classList.toggle('expanded');
+  if (btn) btn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+}
+window.togglePdpDescription = togglePdpDescription;
