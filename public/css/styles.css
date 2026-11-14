@@ -6985,7 +6985,7 @@ body {
   background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
   border: 1px solid rgba(255, 255, 255, 0.18) !important;
   box-shadow: 0 24px 55px -10px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1.5px 0 rgba(255, 255, 255, 0.35) !important;
-  margin-bottom: 26px;
+  margin-bottom: 0 !important;
   position: relative;
   overflow: hidden;
   z-index: 2;
@@ -7010,12 +7010,13 @@ body {
 }
 
 .pdp-showcase-img {
-  max-width: 290px !important;
+  width: 75% !important;
+  min-width: 210px !important;
+  max-width: 300px !important;
   max-height: 155px !important;
-  width: auto !important;
   height: auto !important;
   object-fit: contain !important;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.5)) !important;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.6)) !important;
   margin: 0 !important;
   padding: 0 !important;
   background: transparent !important;
@@ -7044,8 +7045,7 @@ body {
     border-radius: 20px;
   }
   .pdp-showcase-img {
-    max-width: 220px !important;
-    max-height: 120px !important;
+    width: 75% !important; min-width: 180px !important; max-width: 260px !important; max-height: 130px !important;
   }
   .pdp-info-column {
     padding: 28px 24px;
@@ -7080,8 +7080,7 @@ body {
     border-radius: 22px;
   }
   .pdp-showcase-img {
-    max-width: 240px !important;
-    max-height: 130px !important;
+    width: 75% !important; min-width: 180px !important; max-width: 260px !important; max-height: 130px !important;
   }
   .pdp-info-column {
     padding: 22px 16px;
@@ -7225,16 +7224,17 @@ body {
 }
 
 .pdp-title {
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 2.45rem;
+  font-weight: 900;
   color: var(--text-primary);
-  margin: 0 0 6px 0;
-  line-height: 1.2;
+  margin: 0 0 8px 0;
+  line-height: 1.16;
+  letter-spacing: -0.4px;
 }
 
 @media (max-width: 600px) {
   .pdp-title {
-    font-size: 1.5rem;
+    font-size: 1.85rem;
   }
 }
 
