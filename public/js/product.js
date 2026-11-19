@@ -720,109 +720,197 @@ function renderInstructionsTab() {
   `;
 }
 
+let currentReviewRating = 5;
+
+function togglePdpReviewForm() {
+  const formCard = document.getElementById('pdpWriteReviewFormCard');
+  if (!formCard) return;
+  formCard.classList.toggle('open');
+  if (formCard.classList.contains('open')) {
+    formCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+window.togglePdpReviewForm = togglePdpReviewForm;
+
+function setPdpReviewRating(stars) {
+  currentReviewRating = stars;
+  const starBtns = document.querySelectorAll('.pdp-star-btn');
+  starBtns.forEach((btn, idx) => {
+    btn.classList.toggle('active', idx < stars);
+  });
+}
+window.setPdpReviewRating = setPdpReviewRating;
+
+async function submitPdpReview(e) {
+  if (e) e.preventDefault();
+  const nameInput = document.getElementById('pdpReviewAuthorInput');
+  const commentInput = document.getElementById('pdpReviewCommentInput');
+  const submitBtn = document.getElementById('pdpReviewSubmitBtn');
+
+  const customer_name = nameInput ? nameInput.value.trim() : '';
+  const comment = commentInput ? commentInput.value.trim() : '';
+
+  if (!customer_name) {
+    if (typeof showToast === 'function') showToast('Please enter your name', 'warning');
+    else alert('Please enter your name');
+    if (nameInput) nameInput.focus();
+    return;
+  }
+  if (!comment) {
+    if (typeof showToast === 'function') showToast('Please write your review comment', 'warning');
+    else alert('Please write your review comment');
+    if (commentInput) commentInput.focus();
+    return;
+  }
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+  }
+
+  try {
+    const p = productState.product || {};
+    const res = await fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        product_id: p.id,
+        customer_name,
+        rating: currentReviewRating,
+        comment
+      })
+    });
+    const json = await res.json();
+
+    if (json.success) {
+      if (typeof showToast === 'function') showToast('Thank you! Your review has been published.', 'success');
+      // Add review to local state and re-render
+      if (!p.reviews) p.reviews = [];
+      p.reviews.unshift({
+        customer_name,
+        rating: currentReviewRating,
+        comment,
+        created_at: new Date().toISOString(),
+        verified_purchase: 1
+      });
+      renderReviewsTab();
+    } else {
+      if (typeof showToast === 'function') showToast(json.message || 'Failed to submit review', 'error');
+    }
+  } catch (err) {
+    console.error('Review submit error:', err);
+    if (typeof showToast === 'function') showToast('Network error submitting review', 'error');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Review';
+    }
+  }
+}
+window.submitPdpReview = submitPdpReview;
+
 function renderReviewsTab() {
   const container = document.getElementById('pdpReviewsContainer');
   if (!container) return;
 
   const p = productState.product || {};
-  const dbReviews = p.reviews || [];
-  
-  // ShahedStore Authentic Verified Reviews Showcase
-  const defaultReviews = [
-    {
-      author_name: 'Tanvir Ahmed',
-      location: 'Dhaka',
-      rating: 5,
-      date: '2 days ago',
-      plan: '1 Month • Private PIN Profile',
-      comment: 'Got credentials on my screen in less than 40 seconds after bKash payment! Private profile with my own PIN worked immediately on my Samsung Smart TV in 4K Dolby Vision. Amazing service!'
-    },
-    {
-      author_name: 'Sayeed Chowdhury',
-      location: 'Chittagong',
-      rating: 5,
-      date: '5 days ago',
-      plan: '3 Months • Private Profile',
-      comment: 'This is my 3rd time renewing with FlixStore. Zero downtime, authentic UHD quality, and whenever I needed assistance their WhatsApp team responded within 2 minutes. Highly recommended!'
-    },
-    {
-      author_name: 'Mahir Faysal',
-      location: 'Sylhet',
-      rating: 5,
-      date: '1 week ago',
-      plan: '1 Month • Shared Screen',
-      comment: 'Best price in Bangladesh with full warranty. Profile was cleanly assigned and stream was buffer-free. Automated instant delivery is super smooth.'
-    },
-    {
-      author_name: 'Nusrat Jahan',
-      location: 'Uttara, Dhaka',
-      rating: 5,
-      date: '2 weeks ago',
-      plan: '3 Months • Private PIN Profile',
-      comment: '100% genuine subscription account. No geoblocking or password reset issues. Very trustworthy seller and smooth checkout!'
-    }
-  ];
-
-  const displayReviews = dbReviews.length > 0 ? dbReviews : defaultReviews;
+  const reviews = p.reviews || [];
   const ratingScore = Number(p.rating || 5.0).toFixed(1);
-  const totalReviews = p.review_count || 1482;
+  const totalCount = p.review_count || 128;
 
-  container.innerHTML = `
-    <!-- Rating Summary Header -->
-    <div class="pdp-reviews-summary-row">
-      <div class="pdp-rating-big-box">
-        <div class="pdp-rating-big-num">${ratingScore}</div>
-        <div class="pdp-rating-big-stars">★★★★★</div>
-        <div class="pdp-rating-count-label">Based on ${totalReviews.toLocaleString()} verified ratings</div>
+  // Form HTML template
+  const formHtml = `
+    <div id="pdpWriteReviewFormCard" class="pdp-write-review-form-card">
+      <h4 class="pdp-form-title">Write a Customer Review</h4>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:13px; font-weight:600; color:#475569; display:block; margin-bottom:6px;">Your Rating:</label>
+        <div class="pdp-star-picker">
+          <button type="button" class="pdp-star-btn active" onclick="setPdpReviewRating(1)">★</button>
+          <button type="button" class="pdp-star-btn active" onclick="setPdpReviewRating(2)">★</button>
+          <button type="button" class="pdp-star-btn active" onclick="setPdpReviewRating(3)">★</button>
+          <button type="button" class="pdp-star-btn active" onclick="setPdpReviewRating(4)">★</button>
+          <button type="button" class="pdp-star-btn active" onclick="setPdpReviewRating(5)">★</button>
+        </div>
       </div>
-      
-      <div class="pdp-rating-bars-col">
-        <div class="pdp-bar-row">
-          <span class="pdp-bar-label">5 Stars</span>
-          <div class="pdp-bar-track"><div class="pdp-bar-fill" style="width: 98%;"></div></div>
-          <span class="pdp-bar-pct">98%</span>
-        </div>
-        <div class="pdp-bar-row">
-          <span class="pdp-bar-label">4 Stars</span>
-          <div class="pdp-bar-track"><div class="pdp-bar-fill" style="width: 2%;"></div></div>
-          <span class="pdp-bar-pct">2%</span>
-        </div>
-        <div class="pdp-bar-row">
-          <span class="pdp-bar-label">3 Stars</span>
-          <div class="pdp-bar-track"><div class="pdp-bar-fill" style="width: 0%;"></div></div>
-          <span class="pdp-bar-pct">0%</span>
-        </div>
-        <div class="pdp-bar-row">
-          <span class="pdp-bar-label">2 Stars</span>
-          <div class="pdp-bar-track"><div class="pdp-bar-fill" style="width: 0%;"></div></div>
-          <span class="pdp-bar-pct">0%</span>
-        </div>
-        <div class="pdp-bar-row">
-          <span class="pdp-bar-label">1 Star</span>
-          <div class="pdp-bar-track"><div class="pdp-bar-fill" style="width: 0%;"></div></div>
-          <span class="pdp-bar-pct">0%</span>
-        </div>
+      <div class="pdp-form-grid">
+        <input type="text" id="pdpReviewAuthorInput" class="pdp-form-input" placeholder="Your Name (e.g. Tanvir Ahmed)" required>
+        <input type="text" class="pdp-form-input" value="${escapeHtml(p.title || '')}" readonly style="background:#F1F5F9; color:#64748B;">
+      </div>
+      <textarea id="pdpReviewCommentInput" class="pdp-form-textarea" placeholder="Share your experience with this subscription (activation speed, streaming quality, customer support...)" required></textarea>
+      <div class="pdp-form-actions">
+        <button type="button" class="btn-pdp-cancel-review" onclick="togglePdpReviewForm()">Cancel</button>
+        <button type="button" id="pdpReviewSubmitBtn" class="btn-pdp-submit-review" onclick="submitPdpReview(event)">Submit Review</button>
       </div>
     </div>
+  `;
 
-    <!-- Verified Review Cards Grid -->
-    <div class="pdp-reviews-grid">
-      ${displayReviews.map(r => `
-        <div class="pdp-review-card">
-          <div class="pdp-review-top">
-            <div>
-              <div class="pdp-review-author">${escapeHtml(r.author_name || 'Verified Customer')}</div>
-              <div class="pdp-review-meta">
-                <span class="pdp-review-verified">✓ Verified Buyer</span>
-                <span class="pdp-review-date">${r.location ? escapeHtml(r.location) + ' • ' : ''}${escapeHtml(r.date || 'Recently')}</span>
-              </div>
-            </div>
-            <div class="pdp-review-stars">${'★'.repeat(r.rating || 5)}</div>
-          </div>
-          ${r.plan ? `<span class="pdp-review-plan-tag">${escapeHtml(r.plan)}</span>` : ''}
-          <p class="pdp-review-comment">${escapeHtml(r.comment || '')}</p>
+  if (reviews.length === 0) {
+    // Exact ShahedStore signature empty reviews card (step_8_shot_2.png)
+    container.innerHTML = `
+      <div class="pdp-empty-reviews-box">
+        <div class="pdp-empty-star-icon">
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
         </div>
-      `).join('')}
+        <p class="pdp-empty-review-title">এখনো কোনো রিভিউ নেই। প্রথম রিভিউ দিন!</p>
+        <p class="pdp-empty-review-sub">No reviews yet for this product. Be the first to review!</p>
+        <button type="button" class="btn-pdp-write-review" onclick="togglePdpReviewForm()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          <span>Write a Review</span>
+        </button>
+      </div>
+      ${formHtml}
+    `;
+    return;
+  }
+
+  // Organized Reviews Presentation when reviews exist
+  container.innerHTML = `
+    <div class="pdp-reviews-clean-header">
+      <div class="pdp-reviews-rating-pill">
+        <div class="pdp-reviews-score-badge">
+          <span class="pdp-reviews-score-stars">★</span>
+          <span>${ratingScore}</span>
+        </div>
+        <span class="pdp-reviews-count-txt">Based on ${reviews.length} verified customer reviews</span>
+      </div>
+      <button type="button" class="btn-pdp-write-review" onclick="togglePdpReviewForm()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+        <span>Write a Review</span>
+      </button>
+    </div>
+
+    ${formHtml}
+
+    <div class="pdp-reviews-stream">
+      ${reviews.map(r => {
+        const authorName = escapeHtml(r.customer_name || r.author_name || 'Verified Customer');
+        const initials = authorName.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'VC';
+        const rating = Math.max(1, Math.min(5, parseInt(r.rating || 5, 10)));
+        const starsStr = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+        const comment = escapeHtml(r.comment || '');
+        const timeStr = r.created_at ? new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Verified Order';
+
+        return `
+          <div class="pdp-review-item-row">
+            <div class="pdp-review-header-flex">
+              <div class="pdp-review-user-info">
+                <div class="pdp-review-avatar-circle">${initials}</div>
+                <div class="pdp-review-name-wrap">
+                  <div class="pdp-review-author-name">
+                    <span>${authorName}</span>
+                    <span class="pdp-review-verified-pill">✓ Verified Buyer</span>
+                  </div>
+                  <span class="pdp-review-meta-time">${timeStr}</span>
+                </div>
+              </div>
+              <div class="pdp-review-stars-strip">${starsStr}</div>
+            </div>
+            <p class="pdp-review-body-text">${comment}</p>
+          </div>
+        `;
+      }).join('')}
     </div>
   `;
 }
