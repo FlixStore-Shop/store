@@ -2046,7 +2046,7 @@ body {
 }
 
 .card-price-label {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -2077,7 +2077,7 @@ body {
 .discount-pill {
   display: inline-flex;
   align-items: center;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #10b981;
   background: rgba(16, 185, 129, 0.14);
@@ -2091,7 +2091,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #10b981;
   background: rgba(16, 185, 129, 0.08);
@@ -2111,7 +2111,7 @@ body {
 .plan-save-pill {
   display: inline-flex;
   align-items: center;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #10b981;
   background: rgba(16, 185, 129, 0.12);
@@ -2128,7 +2128,7 @@ body {
 }
 
 .card-device-info {
-  font-size: 0.75rem;
+  font-size: 0.80rem;
   color: var(--text-muted);
   font-weight: 500;
 }
@@ -5623,7 +5623,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 3px;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 600;
   padding: 6px 8px;
   cursor: pointer;
@@ -5719,7 +5719,7 @@ body {
   }
 
   .top-announcement {
-    font-size: 0.72rem !important;
+    font-size: 0.82rem !important;
     padding: 6px 10px !important;
     line-height: 1.35 !important;
   }
@@ -5853,7 +5853,7 @@ body {
   }
 
   .hero-beacon-pill {
-    font-size: 0.60rem !important;
+    font-size: 0.72rem !important;
     padding: 2px 7px !important;
     letter-spacing: 0.3px !important;
   }
@@ -5863,7 +5863,7 @@ body {
   }
 
   .hero-title {
-    font-size: 1.18rem !important;
+    font-size: 1.22rem !important;
     line-height: 1.15 !important;
     margin-bottom: 6px !important;
     font-weight: 800 !important;
@@ -5897,7 +5897,7 @@ body {
   }
 
   .hero-savings-tag {
-    font-size: 0.65rem !important;
+    font-size: 0.72rem !important;
     font-weight: 700 !important;
     padding: 2px 6px !important;
     border-radius: 4px !important;
@@ -5914,7 +5914,7 @@ body {
   .hero-cta-group .btn-primary {
     height: 35px !important;
     padding: 0 12px !important;
-    font-size: 0.78rem !important;
+    font-size: 0.85rem !important;
     font-weight: 700 !important;
     border-radius: 7px !important;
     display: flex !important;
@@ -6013,14 +6013,14 @@ body {
 
   .holo-card-footer {
     padding: 3px 6px !important;
-    font-size: 0.50rem !important;
+    font-size: 0.85rem !important;
     letter-spacing: 0.4px !important;
     background: rgba(0, 0, 0, 0.65) !important;
   }
 
   .holo-chip {
     padding: 2px 6px !important;
-    font-size: 0.58rem !important;
+    font-size: 0.70rem !important;
     gap: 3px !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
   }
@@ -6199,7 +6199,7 @@ body {
   }
 
   .badge-tag {
-    font-size: 0.6rem !important;
+    font-size: 0.72rem !important;
     padding: 3px 8px !important;
     font-weight: 800 !important;
     letter-spacing: 0.4px !important;
@@ -6210,7 +6210,7 @@ body {
   }
 
   .instant-delivery-badge {
-    font-size: 0.58rem !important;
+    font-size: 0.70rem !important;
     padding: 3px 7px !important;
     gap: 3px !important;
     border-radius: 999px !important;
@@ -6234,14 +6234,14 @@ body {
   }
 
   .product-category-name {
-    font-size: 0.62rem !important;
+    font-size: 0.72rem !important;
     margin-bottom: 3px !important;
     font-weight: 800 !important;
     letter-spacing: 0.4px !important;
   }
 
   .product-title {
-    font-size: 0.88rem !important;
+    font-size: 0.92rem !important;
     line-height: 1.25 !important;
     font-weight: 700 !important;
     margin-bottom: 4px !important;
@@ -6265,7 +6265,7 @@ body {
   }
 
   .tier-badge-pill {
-    font-size: 0.6rem !important;
+    font-size: 0.70rem !important;
     padding: 2px 6px !important;
     border-radius: 999px !important;
     line-height: 1.2 !important;
@@ -6274,7 +6274,7 @@ body {
   }
 
   .product-rating-row {
-    font-size: 0.68rem !important;
+    font-size: 0.78rem !important;
     gap: 3px !important;
     margin-bottom: 6px !important;
     display: flex !important;
@@ -6282,12 +6282,12 @@ body {
   }
 
   .stars {
-    font-size: 0.68rem !important;
+    font-size: 0.82rem !important;
     gap: 1px !important;
   }
 
   .review-count {
-    font-size: 0.62rem !important;
+    font-size: 0.74rem !important;
   }
 
   .card-pricing-row {
@@ -6308,12 +6308,12 @@ body {
   }
 
   .card-price-label {
-    font-size: 0.6rem !important;
+    font-size: 0.70rem !important;
     font-weight: 700 !important;
   }
 
   .discount-pill {
-    font-size: 0.6rem !important;
+    font-size: 0.72rem !important;
     padding: 2px 6px !important;
     border-radius: 999px !important;
     font-weight: 800 !important;
@@ -6330,7 +6330,7 @@ body {
   }
 
   .card-price-current {
-    font-size: 1.18rem !important;
+    font-size: 1.22rem !important;
     font-weight: 800 !important;
     color: var(--text-primary) !important;
     letter-spacing: -0.02em !important;
@@ -6350,7 +6350,7 @@ body {
   }
 
   .card-price-struck {
-    font-size: 0.75rem !important;
+    font-size: 0.80rem !important;
     color: #94a3b8 !important;
     text-decoration: line-through !important;
     margin-left: 5px !important;
@@ -6358,7 +6358,7 @@ body {
 
   .btn-card-buy-now {
     height: 38px !important;
-    font-size: 0.82rem !important;
+    font-size: 0.875rem !important;
   }
 
   .card-action-split-row {
@@ -6367,7 +6367,7 @@ body {
 
   .btn-card-secondary {
     height: 34px !important;
-    font-size: 0.74rem !important;
+    font-size: 0.82rem !important;
     padding: 0 4px !important;
   }
 
@@ -6391,19 +6391,19 @@ body {
   }
 
   .quick-sort-label {
-    font-size: 0.68rem !important;
+    font-size: 0.78rem !important;
   }
 
   .quick-sort-pill {
     padding: 5px 11px !important;
-    font-size: 0.72rem !important;
+    font-size: 0.82rem !important;
     font-weight: 700 !important;
   }
 
   .btn-select-plan {
     height: 38px !important;
     padding: 0 10px !important;
-    font-size: 0.78rem !important;
+    font-size: 0.85rem !important;
     font-weight: 800 !important;
     border-radius: 999px !important;
     width: 100% !important;
@@ -7684,7 +7684,7 @@ body {
   color: var(--pdp-tag-red-text);
   border: 1px solid var(--pdp-tag-red-border);
   font-weight: 700;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   padding: 2px 6px;
   border-radius: 6px;
 }
@@ -11702,7 +11702,7 @@ body.pdp-page .pdp-title {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: #334155;
   line-height: 1.5;
@@ -12262,7 +12262,7 @@ body.pdp-page .pdp-desc-content {
   position: absolute !important;
   top: 12px !important;
   right: 12px !important;
-  font-size: 0.68rem !important;
+  font-size: 0.78rem !important;
   font-weight: 800 !important;
   color: #4F46E5 !important;
   background: #EEF2FF !important;
@@ -12756,4 +12756,23 @@ body.pdp-page .pdp-warranty-card {
   color: #334155 !important;
   line-height: 1.65 !important;
   margin: 0 !important;
+}
+
+@media (max-width: 480px) {
+  body.pdp-page .pdp-price-hero-strip {
+    padding: 12px 16px !important;
+    gap: 8px 10px !important;
+    margin-bottom: 18px !important;
+  }
+  body.pdp-page .pdp-price-hero-amount {
+    font-size: 32px !important;
+  }
+  body.pdp-page .pdp-price-hero-orig {
+    font-size: 16px !important;
+  }
+  .pdp-price-save-pill,
+  .pdp-price-discount-pill {
+    font-size: 11.5px !important;
+    padding: 3px 8px !important;
+  }
 }
