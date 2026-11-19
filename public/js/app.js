@@ -432,7 +432,7 @@ function renderProducts() {
         const tiers = (p.all_tier_types && typeof p.all_tier_types === 'string') ? p.all_tier_types.split(',') : [];
         let tierChipsHTML = '<div class="card-tier-hint">';
         if (tiers.includes('shared')) tierChipsHTML += '<span class="tier-badge-pill shared">👥 Shared</span>';
-        if (tiers.includes('private')) tierChipsHTML += '<span class="tier-badge-pill private">🔒 Private Profile</span>';
+        if (tiers.includes('private')) tierChipsHTML += '<span class="tier-badge-pill private">🔒 Personal</span>';
         if (tiers.includes('family')) tierChipsHTML += '<span class="tier-badge-pill family">👨‍👩‍👧‍👦 Full Account</span>';
         if (tiers.includes('license')) tierChipsHTML += '<span class="tier-badge-pill license">🔑 License Key</span>';
         if (tiers.length === 0) tierChipsHTML += '<span class="tier-badge-pill pro">⚡ Instant Access</span>';
@@ -842,8 +842,8 @@ function renderQuickViewDetails() {
             <span>💡</span> How to choose your tier:
           </div>
           <div style="font-size:0.8rem; color:var(--text-secondary); line-height:1.5;">
-            • <strong>👥 Shared Profile:</strong> 1 Screen. Most economical.<br>
-            • <strong>🔒 Private Profile with PIN:</strong> Your own locked profile with custom 4-digit PIN. 100% private watch history & recommendations.<br>
+            • <strong>👥 Shared:</strong> 1 Screen. Most economical.<br>
+            • <strong>🔒 Personal:</strong> Your own locked profile with custom 4-digit PIN. 100% private watch history & recommendations.<br>
             • <strong>👨‍👩‍👧‍👦 Full Account:</strong> All profiles unlocked. Share with family/friends on multiple devices.
           </div>
         </div>
@@ -855,9 +855,9 @@ function renderQuickViewDetails() {
       
       let tierBadge = '';
       if (plan.tier_type === 'shared') {
-        tierBadge = '<span class="badge-tag essential" style="margin-right:6px;">👥 Shared Screen</span>';
+        tierBadge = '<span class="badge-tag essential" style="margin-right:6px;">👥 Shared</span>';
       } else if (plan.tier_type === 'private') {
-        tierBadge = '<span class="badge-tag pro" style="margin-right:6px;">🔒 Private Profile</span>';
+        tierBadge = '<span class="badge-tag pro" style="margin-right:6px;">🔒 Personal</span>';
       } else if (plan.tier_type === 'family') {
         tierBadge = '<span class="badge-tag bestseller" style="margin-right:6px;">👨‍👩‍👧‍👦 Family / Full</span>';
       } else if (plan.tier_type === 'license') {

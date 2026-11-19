@@ -350,8 +350,8 @@ function renderTierTabs() {
   container.style.display = 'flex';
 
   const tierMeta = {
-    'shared': { label: 'Shared Screen', icon: '👥', hint: 'Most economical option. 1 device at a time.' },
-    'private': { label: 'Private Profile', icon: '🔒', hint: 'Your dedicated profile locked with custom 4-digit PIN. 100% private watch history & recommendations.' },
+    'shared': { label: 'Shared', icon: '👥', hint: 'Most economical option. 1 device at a time.' },
+    'private': { label: 'Personal', icon: '🔒', hint: 'Your dedicated profile locked with custom 4-digit PIN. 100% private watch history & recommendations.' },
     'family': { label: 'Full Family Account', icon: '👨‍👩‍👧‍👦', hint: 'All profiles unlocked. Share with family/friends across up to 5 devices.' },
     'license': { label: 'Direct License Key', icon: '🔑', hint: 'Official software license key with automated instant activation.' }
   };
@@ -459,8 +459,11 @@ function getCleanPlanTitle(plan) {
   // Remove parenthetical tier repetition: e.g. "Personal (Private PIN)" -> "Personal"
   name = name.replace(/\s*\([^)]*\)/g, '').trim();
   
-  // Simplify "Private PIN Profile" -> "Private Profile"
-  name = name.replace(/Private\s+PIN\s+Profile/i, 'Private Profile');
+  // Simplify tier titles
+  name = name.replace(/Private\s+PIN\s+Profile/i, 'Personal');
+  name = name.replace(/Private\s+Profile/i, 'Personal');
+  name = name.replace(/Private\s+Screen/i, 'Personal');
+  name = name.replace(/Shared\s+Screen/i, 'Shared');
   
   // If empty or identical to duration, return just duration
   if (!name || name.toLowerCase() === duration.toLowerCase()) {
@@ -942,7 +945,7 @@ function renderFaqTab() {
     },
     {
       q: "Can I use this subscription on multiple devices simultaneously?",
-      a: "For Shared Screen plans, you can watch on 1 device at a time. For Private PIN Profile plans, your dedicated profile is locked with your private PIN for 1 device concurrent streaming. For Full Family Accounts, you can stream simultaneously on up to 4–5 devices."
+      a: "For Shared plans, you can watch on 1 device at a time. For Personal plans, your dedicated profile is locked with your private PIN for 1 device concurrent streaming. For Full Family Accounts, you can stream simultaneously on up to 4–5 devices."
     }
   ];
 
