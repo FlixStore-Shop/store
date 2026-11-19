@@ -192,7 +192,7 @@ function renderProductDetails() {
   // 3. Media Column (Left)
   const logoImg = document.getElementById('pdpProductLogo');
   if (logoImg) {
-    logoImg.src = p.logo_url ? p.logo_url + '?v=2' : '/assets/flixstore-icon.png';
+    logoImg.src = p.logo_url ? p.logo_url + '?v=3' : '/assets/flixstore-icon.png';
     logoImg.onerror = function() {
       this.onerror = null;
       this.src = '/assets/flixstore-icon.png';
@@ -747,7 +747,7 @@ function renderRelatedProducts() {
     return `
       <div class="product-card" onclick="window.location.href='/product/${p.slug}'" style="cursor:pointer;">
         <div class="product-card-top">
-          <img src="${p.logo_url ? p.logo_url + '?v=2' : '/assets/flixstore-icon.png'}" alt="${p.title}" class="product-card-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';">
+          <img src="${p.logo_url ? p.logo_url + '?v=3' : '/assets/flixstore-icon.png'}" alt="${p.title}" class="product-card-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';">
           <div class="product-card-gradient"></div>
           <div class="product-card-badges">
             <span class="badge-tag pro">${p.badge || 'Verified'}</span>
