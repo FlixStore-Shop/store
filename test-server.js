@@ -93,6 +93,40 @@ async function runTests() {
     assert(guestRes.body?.success === true, 'Guest checkout should return success: true');
     assert(guestRes.body?.order?.orderNumber, 'Guest checkout should generate an order number');
 
+    const guestOrderNum = guestRes.body.order.orderNumber;
+    const guestOrderId = guestRes.body.order.orderId;
+
+    // 5.1.1 Automated Payment Confirmation Webhook (No Admin Release Needed)
+    const webhookRes = await request('/api/payment/uddoktapay/webhook', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'rt-uddoktapay-api-key': '982d381360a69d419689740d9f2e26ce36fb7a50'
+      },
+      body: {
+        status: 'COMPLETED',
+        invoice_id: 'AUTO-INV-' + guestOrderNum,
+        payment_method: 'bkash',
+        transaction_id: 'AUTO-TRX-998877',
+        sender_number: '01343546958',
+        metadata: {
+          order_id: String(guestOrderId),
+          order_number: guestOrderNum
+        }
+      }
+    });
+    console.log('[TEST 5.1.1] Automated Webhook Payment Confirmation Status:', webhookRes.status, 'Auto-Fulfilled:', webhookRes.body?.success);
+    assert(webhookRes.status === 200, 'Webhook should return 200 OK');
+    assert(webhookRes.body?.success === true, 'Webhook should automatically fulfill order');
+
+    // 5.1.2 Verify Guest Order Instantly Delivered With Credentials Without Admin
+    const guestTrack = await request(`/api/orders/track/${guestOrderNum}?email=guest@example.com`);
+    assert(guestTrack.body?.order?.delivery_status === 'delivered', 'Delivery status should automatically be delivered');
+    assert(guestTrack.body?.order?.payment_status === 'completed', 'Payment status should automatically be completed');
+    assert(guestTrack.body?.order?.credentials?.length > 0, 'Credentials should be automatically delivered to customer');
+    assert(!guestTrack.body?.credentialsMasked, 'Credentials should be unmasked for paying customer');
+    console.log('[TEST 5.1.2] Instant Automated Customer Delivery Verified - Credentials:', guestTrack.body.order.credentials.length);
+
     // 5.2 Authenticate Customer
     let customerLogin = await request('/api/auth/login', {
       method: 'POST',

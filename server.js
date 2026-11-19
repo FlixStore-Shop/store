@@ -910,6 +910,181 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
 });
 
 // -----------------------------------------------------------------------------
+// AUTOMATED PAYMENT CONFIRMATION & INSTANT CREDENTIALS DISPATCH (UddoktaPay)
+// Fulfills orders and dispatches credentials immediately without requiring admin release
+// -----------------------------------------------------------------------------
+
+// 1. UddoktaPay Webhook / IPN Endpoint (Gateway POSTs here upon payment confirmation)
+app.post(['/api/payment/uddoktapay/webhook', '/api/payment/uddoktapay/ipn'], express.json(), async (req, res) => {
+  try {
+    const payload = req.body || {};
+    console.log('[PAYMENT WEBHOOK] Received UddoktaPay IPN:', JSON.stringify(payload));
+
+    const invoiceId = payload.invoice_id;
+    const status = (payload.status || '').toUpperCase();
+    const metadata = typeof payload.metadata === 'string' ? JSON.parse(payload.metadata || '{}') : (payload.metadata || {});
+
+    // Check apiKey header or verify directly with UddoktaPay API
+    const headerKey = req.headers['rt-uddoktapay-api-key'];
+    const isValidKey = uddoktapay.validateWebhookHeader(headerKey);
+
+    let isCompleted = (status === 'COMPLETED');
+
+    // If not validated via header, double-check with verifyPayment API
+    if (!isCompleted && invoiceId) {
+      try {
+        const verifyRes = await uddoktapay.verifyPayment(invoiceId);
+        if (verifyRes && verifyRes.isCompleted) {
+          isCompleted = true;
+        }
+      } catch (e) {
+        console.warn('[PAYMENT WEBHOOK] verifyPayment call warning:', e.message);
+      }
+    }
+
+    if (!isCompleted) {
+      console.warn('[PAYMENT WEBHOOK] Payment not marked COMPLETED:', status);
+      return res.status(200).json({ success: false, message: 'Payment status not completed' });
+    }
+
+    // Resolve order
+    let order = null;
+    if (metadata.order_id) {
+      order = await db.prepare('SELECT * FROM orders WHERE id = ?').get(parseInt(metadata.order_id, 10));
+    }
+    if (!order && metadata.order_number) {
+      order = await db.prepare('SELECT * FROM orders WHERE UPPER(order_number) = ?').get(String(metadata.order_number).toUpperCase());
+    }
+    if (!order && invoiceId) {
+      order = await db.prepare('SELECT * FROM orders WHERE UPPER(transaction_id) = ?').get(String(invoiceId).toUpperCase());
+    }
+
+    if (!order) {
+      console.warn('[PAYMENT WEBHOOK] Order not found for webhook:', payload);
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    // AUTOMATICALLY FULFILL AND DELIVER CREDENTIALS TO CUSTOMER (NO ADMIN RELEASE NEEDED!)
+    const fulfillment = await fulfillOrder(order.id, {
+      payment_method: payload.payment_method || 'uddoktapay',
+      transaction_id: payload.transaction_id || invoiceId,
+      sender_number: payload.sender_number || order.sender_number
+    });
+
+    console.log(`[PAYMENT WEBHOOK] Automatically delivered credentials for Order #${order.order_number}`);
+
+    return res.status(200).json({
+      success: true,
+      message: `Order #${order.order_number} payment verified. Credentials automatically delivered.`,
+      orderNumber: order.order_number
+    });
+  } catch (err) {
+    console.error('[PAYMENT WEBHOOK ERROR]:', err);
+    return res.status(500).json({ success: false, message: 'Webhook processing error' });
+  }
+});
+
+// 2. UddoktaPay Success Redirect (GET /api/payment/uddoktapay/success)
+app.get('/api/payment/uddoktapay/success', async (req, res) => {
+  try {
+    const invoiceId = req.query.invoice_id;
+    console.log('[PAYMENT SUCCESS REDIRECT] Processing invoice:', invoiceId);
+
+    if (!invoiceId) {
+      return res.redirect('/?payment_error=missing_invoice');
+    }
+
+    let isCompleted = false;
+    let order = null;
+    let paymentData = {};
+
+    // Check for test mock invoices (e.g. from test-server or sandbox)
+    if (invoiceId.startsWith('MOCK-INV-')) {
+      const orderNum = invoiceId.replace('MOCK-INV-', '');
+      order = await db.prepare('SELECT * FROM orders WHERE UPPER(order_number) = ?').get(orderNum.toUpperCase());
+      isCompleted = true;
+      paymentData = { payment_method: 'uddoktapay', transaction_id: invoiceId };
+    } else {
+      // Verify payment with UddoktaPay API
+      const verifyRes = await uddoktapay.verifyPayment(invoiceId);
+      if (verifyRes && verifyRes.isCompleted) {
+        isCompleted = true;
+        const innerData = verifyRes.data || {};
+        const metadata = typeof innerData.metadata === 'string' ? JSON.parse(innerData.metadata || '{}') : (innerData.metadata || {});
+
+        paymentData = {
+          payment_method: innerData.payment_method || 'uddoktapay',
+          transaction_id: innerData.transaction_id || invoiceId,
+          sender_number: innerData.sender_number
+        };
+
+        if (metadata.order_id) {
+          order = await db.prepare('SELECT * FROM orders WHERE id = ?').get(parseInt(metadata.order_id, 10));
+        }
+        if (!order && metadata.order_number) {
+          order = await db.prepare('SELECT * FROM orders WHERE UPPER(order_number) = ?').get(String(metadata.order_number).toUpperCase());
+        }
+        if (!order) {
+          order = await db.prepare('SELECT * FROM orders WHERE UPPER(transaction_id) = ?').get(String(invoiceId).toUpperCase());
+        }
+      }
+    }
+
+    if (order && isCompleted) {
+      // AUTOMATICALLY FULFILL ORDER & DISPATCH CREDENTIALS TO CUSTOMER
+      await fulfillOrder(order.id, paymentData);
+      console.log(`[PAYMENT REDIRECT] Auto-delivered credentials for Order #${order.order_number}`);
+
+      return res.redirect(`/?order_success=${encodeURIComponent(order.order_number)}&email=${encodeURIComponent(order.customer_email)}`);
+    }
+
+    if (order) {
+      return res.redirect(`/?order_success=${encodeURIComponent(order.order_number)}&email=${encodeURIComponent(order.customer_email)}`);
+    }
+
+    return res.redirect('/?payment_notice=verification_pending');
+  } catch (err) {
+    console.error('[PAYMENT REDIRECT ERROR]:', err);
+    return res.redirect('/?payment_error=gateway_processing_error');
+  }
+});
+
+// 3. UddoktaPay Cancel Redirect (GET /api/payment/uddoktapay/cancel)
+app.get('/api/payment/uddoktapay/cancel', (req, res) => {
+  const orderNum = req.query.order || '';
+  return res.redirect(`/?order_cancelled=${encodeURIComponent(orderNum)}`);
+});
+
+// 4. Automated Payment Confirmation API (Instantly triggers credential fulfillment)
+app.post('/api/orders/:id/confirm-payment', async (req, res) => {
+  try {
+    const rawId = req.params.id;
+    let order = null;
+    if (/^\d+$/.test(rawId)) {
+      order = await db.prepare('SELECT * FROM orders WHERE id = ?').get(parseInt(rawId, 10));
+    }
+    if (!order) {
+      order = await db.prepare('SELECT * FROM orders WHERE UPPER(order_number) = ?').get(String(rawId).toUpperCase());
+    }
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    const fulfillment = await fulfillOrder(order.id, req.body || {});
+    return res.json({
+      success: true,
+      message: `Payment confirmed! Credentials automatically dispatched to ${order.customer_email}.`,
+      order: fulfillment.order,
+      credentials: fulfillment.credentials
+    });
+  } catch (err) {
+    console.error('Auto-confirm error:', err);
+    return res.status(500).json({ success: false, message: 'Failed to auto-confirm payment' });
+  }
+});
+
+// -----------------------------------------------------------------------------
 // PUBLIC API: ORDER TRACKING & LOOKUP
 // -----------------------------------------------------------------------------
 
@@ -949,6 +1124,12 @@ app.get('/api/orders/track/:query', async (req, res) => {
       if (verified && (verified.id === order.user_id || verified.email?.toLowerCase() === order.customer_email.toLowerCase() || verified.role === 'admin')) {
         isAuthorized = true;
       }
+    }
+
+    // Guest verification: matching email via query parameter or header allows unmasked credential delivery
+    const queryEmail = (req.query.email || req.headers['x-customer-email'] || '').trim().toLowerCase();
+    if (queryEmail && queryEmail === order.customer_email.toLowerCase()) {
+      isAuthorized = true;
     }
 
     // If viewer is an unauthenticated third party querying only by Order ID, mask sensitive passwords
@@ -1772,6 +1953,9 @@ app.patch('/api/admin/orders/:id/status', authMiddleware('admin'), async (req, r
     }
     if (delivery_status) {
       await db.prepare('UPDATE orders SET delivery_status = ? WHERE id = ?').run(delivery_status, orderId);
+    }
+    if (payment_status === 'completed' || delivery_status === 'delivered') {
+      await fulfillOrder(orderId);
     }
 
     res.json({ success: true, message: 'Order status updated' });

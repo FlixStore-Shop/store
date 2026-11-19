@@ -155,9 +155,50 @@ document.addEventListener('DOMContentLoaded', () => {
   checkAuthStatus();
   initFloatingMobileNav();
 
-  // Handle URL category or jump parameter if present (e.g. ?category=ai-productivity or ?jump=warranty)
+  // Handle URL category, jump, or automated payment return parameters
   try {
     const urlParams = new URLSearchParams(window.location.search);
+    const orderSuccessNum = urlParams.get('order_success');
+    const orderSuccessEmail = urlParams.get('email');
+    const orderCancelled = urlParams.get('order_cancelled');
+
+    if (orderSuccessNum) {
+      // Clear Cart on verified purchase return
+      state.cart = [];
+      state.appliedCoupon = null;
+      saveCart();
+      updateCartUI();
+
+      try { window.history.replaceState({}, document.title, window.location.pathname); } catch (e) {}
+
+      setTimeout(async () => {
+        try {
+          const emailQuery = orderSuccessEmail ? `?email=${encodeURIComponent(orderSuccessEmail)}` : '';
+          const res = await fetch(`/api/orders/track/${orderSuccessNum}${emailQuery}`, {
+            headers: state.token ? { 'Authorization': `Bearer ${state.token}` } : {}
+          });
+          const data = await res.json();
+          if (data && data.success && data.order) {
+            showOrderSuccessReceipt({
+              orderNumber: data.order.order_number,
+              customerEmail: data.order.customer_email,
+              paymentMethod: data.order.payment_method,
+              total: data.order.total_amount,
+              paymentStatus: data.order.payment_status,
+              deliveryStatus: data.order.delivery_status,
+              credentials: data.order.credentials
+            });
+            showNotification('🎉 Payment Confirmed! Your subscription credentials have been delivered below.', 'success');
+          }
+        } catch (e) {
+          console.warn('Auto order success display error:', e);
+        }
+      }, 350);
+    } else if (orderCancelled) {
+      try { window.history.replaceState({}, document.title, window.location.pathname); } catch (e) {}
+      showNotification('Payment was cancelled. You can retry checkout anytime.', 'info');
+    }
+
     const urlCat = urlParams.get('category') || urlParams.get('cat');
     const jump = urlParams.get('jump');
 
@@ -1899,7 +1940,7 @@ function showOrderSuccessReceipt(order) {
       `;
 
       // Start live polling for instant unlock when admin verifies
-      pollOrderVerificationStatus(order.orderNumber);
+      pollOrderVerificationStatus(order.orderNumber, order.customerEmail);
     } else if (order.credentials && order.credentials.length > 0) {
       credsContainer.innerHTML = order.credentials.map((cred, idx) => `
         <div class="credentials-vault-card">
@@ -1965,7 +2006,7 @@ function showOrderSuccessReceipt(order) {
   modal.classList.add('active');
 }
 
-function pollOrderVerificationStatus(orderNumber) {
+function pollOrderVerificationStatus(orderNumber, customerEmail) {
   if (orderVerificationPollTimer) {
     clearInterval(orderVerificationPollTimer);
   }
@@ -1979,7 +2020,8 @@ function pollOrderVerificationStatus(orderNumber) {
     }
 
     try {
-      const res = await fetch(`/api/orders/track/${orderNumber}`, {
+      const emailQuery = customerEmail ? `?email=${encodeURIComponent(customerEmail)}` : '';
+      const res = await fetch(`/api/orders/track/${orderNumber}${emailQuery}`, {
         headers: state.token ? { 'Authorization': `Bearer ${state.token}` } : {}
       });
       if (!res.ok) return;
