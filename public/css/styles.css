@@ -1647,13 +1647,13 @@ body {
   aspect-ratio: 1 / 1 !important;
   height: auto !important;
   overflow: hidden;
-  background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
+  background: #f8fafc !important;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: none;
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
 }
@@ -6158,26 +6158,18 @@ body {
     height: auto !important;
     padding: 0 !important;
     position: relative !important;
-    background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 0 rgba(0, 0, 0, 0.4) !important;
+    background: #f8fafc !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
+    box-shadow: none !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    border-top-left-radius: 17px !important;
-    border-top-right-radius: 17px !important;
+    border-top-left-radius: 18px !important;
+    border-top-right-radius: 18px !important;
   }
 
   .product-card-top::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 60% !important;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.03) 55%, transparent 100%) !important;
-    pointer-events: none !important;
-    z-index: 1 !important;
+    display: none !important;
   }
 
   .product-card-img {
@@ -6344,10 +6336,44 @@ body {
     letter-spacing: -0.02em !important;
   }
 
-  .card-price-original {
-    font-size: 0.74rem !important;
-    color: var(--text-muted) !important;
+  .card-discount-pill {
+    bottom: 8px !important;
+    left: 8px !important;
+    font-size: 0.72rem !important;
+    padding: 3px 8px !important;
+  }
+
+  .card-price-violet {
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    color: #8b5cf6 !important;
+  }
+
+  .card-price-struck {
+    font-size: 0.75rem !important;
+    color: #94a3b8 !important;
     text-decoration: line-through !important;
+    margin-left: 5px !important;
+  }
+
+  .btn-card-buy-now {
+    height: 38px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .card-action-split-row {
+    gap: 6px !important;
+  }
+
+  .btn-card-secondary {
+    height: 34px !important;
+    font-size: 0.74rem !important;
+    padding: 0 4px !important;
+  }
+
+  .btn-card-secondary svg {
+    width: 13px !important;
+    height: 13px !important;
   }
 
   .card-warranty-pill {
@@ -7028,9 +7054,9 @@ body {
   height: auto !important;
   padding: 0 !important;
   border-radius: 26px !important;
-  background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  box-shadow: 0 24px 55px -10px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1.5px 0 rgba(255, 255, 255, 0.35) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 16px 40px -8px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1) !important;
   margin: 0 auto !important;
   position: relative;
   overflow: hidden;
@@ -10689,43 +10715,246 @@ body,
   color: #475569 !important;
 }
 
-/* Product Cards - Light Transparent Frosted Acrylic */
+/* Product Profile Frame & Cards - Modern Light Acrylic Glassmorphism (ShahedStore Reference Design) */
 .product-card {
-  background: rgba(255, 255, 255, 0.55) !important;
-  backdrop-filter: blur(20px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.85) !important;
-  border-radius: var(--radius-lg) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 8px 24px -2px rgba(15, 23, 42, 0.06), 0 1px 3px 0 rgba(15, 23, 42, 0.03) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.6) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative !important;
 }
 
 .product-card:hover {
   transform: translateY(-5px) !important;
-  background: rgba(255, 255, 255, 0.78) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
   border-color: rgba(59, 130, 246, 0.45) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 14px 34px -4px rgba(37, 99, 235, 0.14), 0 0 0 1px rgba(59, 130, 246, 0.25) !important;
+  box-shadow: 0 20px 42px -8px rgba(15, 23, 42, 0.14), 0 0 0 1.5px rgba(59, 130, 246, 0.4) !important;
 }
 
-.product-card-title,
-.product-card-body h3 {
-  color: #0f172a !important;
+.product-card-top {
+  position: relative !important;
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+  overflow: hidden !important;
+  background: #f8fafc !important;
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.75) !important;
 }
 
-.product-card-tagline {
-  color: #475569 !important;
+.product-card-top::before {
+  display: none !important;
 }
 
-.product-card-bottom {
+.product-card-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  transition: transform 0.4s ease !important;
+}
+
+.product-card-img[src*=".svg"] {
+  object-fit: contain !important;
+  padding: 24px !important;
+}
+
+.product-card:hover .product-card-img {
+  transform: scale(1.05) !important;
+}
+
+/* Floating Bottom-Left Discount Badge */
+.card-discount-pill {
+  position: absolute !important;
+  bottom: 12px !important;
+  left: 12px !important;
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+  color: #ffffff !important;
+  font-size: 0.8rem !important;
+  font-weight: 800 !important;
+  padding: 4px 11px !important;
+  border-radius: 999px !important;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.4) !important;
+  letter-spacing: 0.2px !important;
+  z-index: 2 !important;
+  line-height: 1.2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.card-discount-pill.hot {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.4) !important;
+}
+
+/* Product Card Body */
+.product-body {
+  padding: 16px 16px 18px 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  justify-content: space-between !important;
   background: transparent !important;
 }
 
-.product-card-price-current {
-  color: #1d4ed8 !important;
+.product-title {
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  line-height: 1.35 !important;
+  margin: 0 0 6px 0 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-height: 2.7em !important;
+  cursor: pointer !important;
+  transition: color 0.2s ease !important;
 }
 
-.product-card-price-original {
+.product-title:hover {
+  color: #2563eb !important;
+}
+
+.product-rating-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-bottom: 8px !important;
+}
+
+.product-rating-row .stars {
+  color: #f59e0b !important;
+  letter-spacing: 1px !important;
+  font-size: 0.92rem !important;
+  line-height: 1 !important;
+}
+
+.product-rating-row .review-count {
+  font-size: 0.82rem !important;
   color: #64748b !important;
+  font-weight: 500 !important;
+}
+
+/* Pricing Row - Purple / Violet Primary Price */
+.card-pricing-row {
+  display: flex !important;
+  align-items: baseline !important;
+  margin-bottom: 14px !important;
+  gap: 8px !important;
+}
+
+.card-price-violet {
+  font-size: 1.55rem !important;
+  font-weight: 800 !important;
+  color: #8b5cf6 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.3px !important;
+}
+
+.card-price-struck {
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  color: #94a3b8 !important;
+  text-decoration: line-through !important;
+}
+
+/* Action Buttons Group */
+.card-action-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-top: auto !important;
+  width: 100% !important;
+}
+
+.btn-card-buy-now {
+  width: 100% !important;
+  height: 44px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, #4f46e5 0%, #3b82f6 50%, #60a5fa 100%) !important;
+  color: #ffffff !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-card-buy-now:hover {
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.55) !important;
+  filter: brightness(1.05) !important;
+}
+
+.btn-card-buy-now:active {
+  transform: scale(0.985) !important;
+}
+
+.card-action-split-row {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.btn-card-secondary {
+  height: 38px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  color: #0f172a !important;
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-card-secondary:hover {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+}
+
+.btn-card-whatsapp {
+  color: #065f46 !important;
+}
+
+.btn-card-whatsapp:hover {
+  background: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+  color: #047857 !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15) !important;
 }
 
 /* Product Detail Page (PDP) Showcase & Info Column */

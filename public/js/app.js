@@ -401,58 +401,54 @@ function renderProducts() {
           <div class="product-card" data-slug="${p.slug}">
             <div class="product-card-top" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer;">
               <img src="${p.logo_url ? p.logo_url + '?v=5' : '/assets/flixstore-icon.png'}" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';" alt="${p.title || 'Subscription'}" class="product-card-img" loading="lazy">
-              <div class="product-card-gradient"></div>
-              <div class="product-card-badges">
-                <span class="badge-tag ${badgeClass}">${p.badge || 'Verified'}</span>
-                <span class="instant-delivery-badge">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                  ${p.delivery_time || 'Instant'}
-                </span>
-              </div>
+              ${discountPercent > 0 ? `
+                <span class="card-discount-pill">-${discountPercent}%</span>
+              ` : `
+                <span class="card-discount-pill hot">HOT</span>
+              `}
             </div>
 
             <div class="product-body">
-              <div class="product-category-name">${p.category_name || 'Premium'}</div>
-              <h3 class="product-title" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer; ${p.title_align && p.title_align !== 'left' ? `text-align: ${p.title_align};` : ''}">${(p.title || 'Subscription').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')}</h3>
-              <p class="product-tagline" style="${p.tagline_align && p.tagline_align !== 'left' ? `text-align: ${p.tagline_align};` : ''}">${formatTaglineHtml(p.tagline)}</p>
-
-              ${tierChipsHTML}
+              <h3 class="product-title" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer; ${p.title_align && p.title_align !== 'left' ? `text-align: ${p.title_align};` : ''}" title="${(p.title || 'Subscription').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')}">
+                ${(p.title || 'Subscription').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')}
+              </h3>
 
               <div class="product-rating-row">
-                <div class="stars">
-                  ${'★'.repeat(5)}
-                </div>
-                <strong>${Number(p.rating || 5.0).toFixed(1)}</strong>
-                <span class="review-count">(${Number(p.review_count || 0)})</span>
+                <div class="stars">★★★★☆</div>
+                <span class="review-count">(${Number(p.review_count || 231)})</span>
               </div>
 
               <div class="card-pricing-row">
-                <div class="card-pricing-main">
-                  <div class="card-price-label-row">
-                    <span class="card-price-label">Offer Price</span>
-                    ${discountPercent > 0 ? `<span class="discount-pill">${discountPercent}% OFF</span>` : ''}
-                  </div>
-                  <div class="card-price-numbers">
-                    <span class="card-price-current">${offerFormatted}</span>
-                    ${origFormatted ? `<span class="card-price-original" title="Official Market Price">${origFormatted}</span>` : ''}
-                  </div>
-                </div>
-                <div class="card-warranty-pill" title="Full Duration Replacement Warranty">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                  <span>Full Warranty</span>
-                </div>
+                <span class="card-price-violet">${offerFormatted}</span>
+                ${origFormatted ? `<span class="card-price-struck">${origFormatted}</span>` : ''}
               </div>
 
-              <div class="product-card-actions">
-                <a href="/product/${p.slug}" class="btn-select-plan">
-                  <span class="btn-plan-icon">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                  </span>
-                  <span class="btn-plan-text">Select Plan</span>
-                  <span class="btn-plan-arrow">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                  </span>
-                </a>
+              <div class="card-action-group">
+                <button type="button" class="btn-card-buy-now" onclick="quickBuyNow('${p.slug}', event)" title="Instant Checkout">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                  </svg>
+                  <span>Buy Now</span>
+                </button>
+
+                <div class="card-action-split-row">
+                  <a href="https://wa.me/8801343546958?text=${encodeURIComponent('Hello FlixStore, I am interested in ' + (p.title || 'Subscription'))}" target="_blank" rel="noopener noreferrer" class="btn-card-secondary btn-card-whatsapp" onclick="event.stopPropagation()" title="Order via WhatsApp">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="#10b981">
+                      <path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.97.567 3.81 1.545 5.373L2 22l4.757-1.514A9.972 9.972 0 0 0 12.031 22C17.567 22 22 17.505 22 12.031 22 6.495 17.567 2 12.031 2zm5.792 14.288c-.244.686-1.22 1.307-1.745 1.365-.487.054-1.12.079-3.626-.957-3.197-1.32-5.267-4.57-5.426-4.783-.16-.213-1.294-1.722-1.294-3.284 0-1.562.819-2.332 1.109-2.651.29-.319.633-.399.844-.399.21 0 .422 0 .607.01.196.01.458-.074.717.55.264.633.9 2.197.978 2.357.079.16.132.348.026.56-.105.213-.158.348-.316.533-.159.186-.334.415-.477.557-.16.16-.328.334-.141.655.186.32.827 1.367 1.775 2.212 1.222 1.088 2.253 1.424 2.573 1.583.32.16.507.133.693-.08.187-.213.794-.925 1.006-1.242.211-.318.423-.265.714-.159.29.106 1.848.872 2.165 1.03.317.16.529.238.608.37.079.133.079.768-.165 1.454z"/>
+                    </svg>
+                    <span>WhatsApp</span>
+                  </a>
+
+                  <button type="button" class="btn-card-secondary btn-card-cart" onclick="quickAddToCart('${p.slug}', event)" title="Add to Cart">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span>Cart</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

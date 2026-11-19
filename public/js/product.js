@@ -744,21 +744,42 @@ function renderRelatedProducts() {
 
   grid.innerHTML = related.map(p => {
     const offerPriceBDT = Math.round(Number(p.base_price || 0) * 120);
+    const offerFormatted = formatPrice(offerPriceBDT, true);
     return `
-      <div class="product-card" onclick="window.location.href='/product/${p.slug}'" style="cursor:pointer;">
-        <div class="product-card-top">
+      <div class="product-card" data-slug="${p.slug}">
+        <div class="product-card-top" onclick="window.location.href='/product/${p.slug}'" style="cursor:pointer;">
           <img src="${p.logo_url ? p.logo_url + '?v=5' : '/assets/flixstore-icon.png'}" alt="${p.title}" class="product-card-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';">
-          <div class="product-card-gradient"></div>
-          <div class="product-card-badges">
-            <span class="badge-tag pro">${p.badge || 'Verified'}</span>
-          </div>
+          <span class="card-discount-pill hot">HOT</span>
         </div>
-        <div class="product-body" style="padding:16px;">
-          <div class="product-category-name" style="font-size:0.75rem;">${p.category_name || 'Subscription'}</div>
-          <h4 class="product-title" style="font-size:1rem; margin:4px 0 8px;">${p.title}</h4>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-            <div class="pdp-related-price">${formatPrice(offerPriceBDT, true)}</div>
-            <a href="/product/${p.slug}" class="btn-secondary" style="padding:5px 10px; font-size:0.75rem; text-decoration:none;">View Plan →</a>
+        <div class="product-body">
+          <h3 class="product-title" onclick="window.location.href='/product/${p.slug}'" style="cursor:pointer;" title="${p.title}">
+            ${p.title}
+          </h3>
+          <div class="product-rating-row">
+            <div class="stars">★★★★☆</div>
+            <span class="review-count">(${Number(p.review_count || 180)})</span>
+          </div>
+          <div class="card-pricing-row">
+            <span class="card-price-violet">${offerFormatted}</span>
+          </div>
+          <div class="card-action-group">
+            <button type="button" class="btn-card-buy-now" onclick="window.location.href='/product/${p.slug}'" title="View Plan">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                <line x1="1" y1="10" x2="23" y2="10"></line>
+              </svg>
+              <span>Buy Now</span>
+            </button>
+            <div class="card-action-split-row">
+              <a href="https://wa.me/8801343546958?text=${encodeURIComponent('Hello FlixStore, I am interested in purchasing ' + p.title)}" target="_blank" rel="noopener noreferrer" class="btn-card-secondary btn-card-whatsapp" onclick="event.stopPropagation()" title="Order via WhatsApp">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#10b981"><path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.97.567 3.81 1.545 5.373L2 22l4.757-1.514A9.972 9.972 0 0 0 12.031 22C17.567 22 22 17.505 22 12.031 22 6.495 17.567 2 12.031 2zm5.792 14.288c-.244.686-1.22 1.307-1.745 1.365-.487.054-1.12.079-3.626-.957-3.197-1.32-5.267-4.57-5.426-4.783-.16-.213-1.294-1.722-1.294-3.284 0-1.562.819-2.332 1.109-2.651.29-.319.633-.399.844-.399.21 0 .422 0 .607.01.196.01.458-.074.717.55.264.633.9 2.197.978 2.357.079.16.132.348.026.56-.105.213-.158.348-.316.533-.159.186-.334.415-.477.557-.16.16-.328.334-.141.655.186.32.827 1.367 1.775 2.212 1.222 1.088 2.253 1.424 2.573 1.583.32.16.507.133.693-.08.187-.213.794-.925 1.006-1.242.211-.318.423-.265.714-.159.29.106 1.848.872 2.165 1.03.317.16.529.238.608.37.079.133.079.768-.165 1.454z"/></svg>
+                <span>WhatsApp</span>
+              </a>
+              <a href="/product/${p.slug}" class="btn-card-secondary btn-card-cart" onclick="event.stopPropagation()" title="View Plan">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span>Cart</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
