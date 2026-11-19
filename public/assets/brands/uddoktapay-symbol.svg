@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 42" width="42" height="42" fill="none">
+  <defs>
+    <linearGradient id="uddoktaGradSymbol" x1="2" y1="3" x2="38" y2="39" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#009DFA"/>
+      <stop offset="1" stop-color="#005FB1"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="38" height="38" rx="10" fill="url(#uddoktaGradSymbol)"/>
+  <path d="M12 21L18 27L30 14" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M17 11C22 11 27 15 27 21" stroke="rgba(255,255,255,0.4)" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

@@ -400,7 +400,7 @@ function renderProducts() {
         return `
           <div class="product-card" data-slug="${p.slug}">
             <div class="product-card-top" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer;">
-              <img src="${p.logo_url ? p.logo_url + '?v=4' : '/assets/flixstore-icon.png'}" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';" alt="${p.title || 'Subscription'}" class="product-card-img" loading="lazy">
+              <img src="${p.logo_url ? p.logo_url + '?v=5' : '/assets/flixstore-icon.png'}" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';" alt="${p.title || 'Subscription'}" class="product-card-img" loading="lazy">
               <div class="product-card-gradient"></div>
               <div class="product-card-badges">
                 <span class="badge-tag ${badgeClass}">${p.badge || 'Verified'}</span>
@@ -764,7 +764,7 @@ function renderQuickViewDetails() {
 
   const imgEl = document.getElementById('detailProductImg');
   if (imgEl) {
-    imgEl.src = p.logo_url ? p.logo_url + '?v=4' : '/assets/flixstore-icon.png';
+    imgEl.src = p.logo_url ? p.logo_url + '?v=5' : '/assets/flixstore-icon.png';
     imgEl.onerror = function() { this.onerror = null; this.src = '/assets/flixstore-icon.png'; };
   }
   const catEl = document.getElementById('detailCategory');
