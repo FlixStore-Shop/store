@@ -723,7 +723,7 @@ async function deleteProduct(productId, title) {
 const BRAND_PRESETS = [
   { id: 'netflix', name: 'Netflix', logo: '/assets/brands/netflix.svg', cat: 1, title: 'Netflix Premium 4K UHD', tagline: 'Ultra HD 4K • Private Profile with PIN • Direct BD Streaming', badge: 'Official Verified', presetType: 'streaming' },
   { id: 'prime', name: 'Prime Video', logo: '/assets/brands/prime-video.svg', cat: 1, title: 'Amazon Prime Video 4K', tagline: 'Full HD / 4K UHD • Private Profile • Ad-Free', badge: 'Hot Deal', presetType: 'streaming' },
-  { id: 'disney', name: 'Disney+', logo: '/assets/brands/disney-plus.svg', cat: 1, title: 'Disney+ Premium 4K UHD', tagline: 'Disney, Pixar, Marvel, Star Wars & Nat Geo • 4K HDR', badge: 'Family Choice', presetType: 'streaming' },
+  { id: 'disney', name: 'Disney+', logo: '/assets/products/disney-plus.jpg', cat: 1, title: 'Disney+ Premium 4K UHD', tagline: 'Disney, Pixar, Marvel, Star Wars & Nat Geo • 4K HDR', badge: 'Family Choice', presetType: 'streaming' },
   { id: 'spotify', name: 'Spotify', logo: '/assets/brands/spotify.svg', cat: 4, title: 'Spotify Premium Individual', tagline: 'Ad-Free Music • High Quality Audio • Offline Downloads', badge: 'Music #1', presetType: 'streaming' },
   { id: 'youtube', name: 'YouTube', logo: '/assets/brands/youtube-premium.svg', cat: 4, title: 'YouTube Premium + Music', tagline: 'Ad-Free Video • Background Play • Includes YouTube Music', badge: 'Bestseller', presetType: 'streaming' },
   { id: 'chatgpt', name: 'ChatGPT Plus', logo: '/assets/brands/chatgpt.svg', cat: 3, title: 'ChatGPT Plus (GPT-4o & Canvas)', tagline: 'Unlimited GPT-4o, DALL-E 3, Advanced Voice & Web Browsing', badge: 'AI Superpower', presetType: 'ai' },

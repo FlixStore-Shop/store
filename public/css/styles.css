@@ -9712,13 +9712,13 @@ body.modal-open .floating-whatsapp-btn {
 /* =============================================================================
    PDP DOWNSIDE DESCRIPTION & OVERVIEW SECTION (ACCORDION BUTTON)
    ============================================================================= */
-.pdp-description-card {
+.pdp-legacy-desc-card {
   margin-top: 0;
   margin-bottom: 24px;
   background: rgba(59, 130, 246, 0.04);
   border: 1px solid rgba(59, 130, 246, 0.18);
   border-radius: 16px;
-  padding: 0 !important;
+  padding: 0;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   transition: all 0.25s ease;
@@ -12096,10 +12096,10 @@ body.pdp-page .pdp-qty-number {
 
 .pdp-section-title {
   font-family: 'Sora', sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 800;
   color: #0F172A;
-  margin: 0 0 20px 0;
+  margin: 0 0 18px 0;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -12108,48 +12108,130 @@ body.pdp-page .pdp-qty-number {
 
 .pdp-title-bar {
   width: 4px;
-  height: 24px;
+  height: 22px;
   background: #4F46E5;
   border-radius: 4px;
   display: inline-block;
   flex-shrink: 0;
 }
 
-.pdp-description-card {
-  background: #FFFFFF;
-  border: 1px solid rgba(228, 228, 231, 0.85);
-  border-radius: 28px;
-  padding: 32px;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+body.pdp-page .pdp-description-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(228, 228, 231, 0.9) !important;
+  border-radius: 28px !important;
+  padding: 36px 32px !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
 }
 
 @media (max-width: 600px) {
-  .pdp-description-card {
-    padding: 20px;
+  body.pdp-page .pdp-description-card {
+    padding: 24px 18px !important;
+    border-radius: 20px !important;
   }
 }
 
-.pdp-desc-content {
-  font-size: 15px;
-  color: #334155;
-  line-height: 1.75;
-  margin-bottom: 24px;
-  white-space: pre-line;
+body.pdp-page .pdp-desc-content {
+  font-size: 15px !important;
+  color: #334155 !important;
+  line-height: 1.8 !important;
+  margin-top: 0 !important;
+  margin-bottom: 28px !important;
+  padding-top: 4px !important;
+  overflow: visible !important;
 }
 
 .pdp-inner-heading {
   font-family: 'Sora', sans-serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: #0F172A;
   margin: 28px 0 16px 0;
 }
 
+.pdp-inner-instructions-block {
+  margin-top: 28px;
+}
+
+.pdp-instructions-card {
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 20px !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+.pdp-instructions-header {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdp-instructions-card .how-steps-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin-top: 16px !important;
+}
+
+@media (max-width: 768px) {
+  .pdp-instructions-card .how-steps-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+.pdp-instructions-card .how-step-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 14px !important;
+  padding: 16px 14px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.pdp-instructions-card .step-num-badge {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  font-size: 0.68rem !important;
+  font-weight: 800 !important;
+  color: #4F46E5 !important;
+  background: #EEF2FF !important;
+  border: 1px solid #C7D2FE !important;
+  padding: 2px 7px !important;
+  border-radius: 20px !important;
+  letter-spacing: 0.05em !important;
+}
+
 .pdp-warranty-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-top: 16px;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin-top: 16px !important;
+}
+
+@media (max-width: 768px) {
+  .pdp-warranty-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
 }
 
 body.pdp-page .pdp-warranty-card {
@@ -12157,6 +12239,8 @@ body.pdp-page .pdp-warranty-card {
   border: 1px solid #E2E8F0 !important;
   border-radius: 16px !important;
   padding: 18px !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
 }
 
 .pdp-warranty-title {
@@ -12178,11 +12262,12 @@ body.pdp-page .pdp-warranty-card {
 
 /* ShahedStore Important Notes Callout Box */
 .pdp-important-notes-box {
-  background: #FFFBEB;
-  border: 1.5px solid #FDE68A;
-  border-radius: 18px;
-  padding: 22px;
-  margin-top: 32px;
+  background: #FFFBEB !important;
+  border: 1.5px solid #FDE68A !important;
+  border-radius: 18px !important;
+  padding: 22px 24px !important;
+  margin-top: 32px !important;
+  box-sizing: border-box !important;
 }
 
 .pdp-notes-header {
@@ -12205,7 +12290,7 @@ body.pdp-page .pdp-warranty-card {
   gap: 10px;
   font-size: 14px;
   color: #78350F;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .pdp-cross-icon,
@@ -12213,78 +12298,267 @@ body.pdp-page .pdp-warranty-card {
   margin-right: 6px;
 }
 
-/* FAQ Accordion */
+/* FAQ Interactive Accordion */
 .pdp-faq-accordion-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
 }
 
 .pdp-faq-item {
-  background: #FFFFFF;
-  border: 1.5px solid #E2E8F0;
-  border-radius: 18px;
-  padding: 18px 22px;
-  cursor: pointer;
-  transition: all 0.22s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 16px !important;
+  padding: 18px 22px !important;
+  cursor: pointer !important;
+  transition: all 0.22s ease !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+  box-sizing: border-box !important;
 }
 
 .pdp-faq-item:hover {
-  border-color: #818CF8;
+  border-color: #A5B4FC !important;
+  background: #FAFAFF !important;
 }
 
 .pdp-faq-item.active {
-  border-color: #6366F1 !important;
-  background: #FAFAFF !important;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
+  border-color: #4F46E5 !important;
+  background: #F8F9FE !important;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.08) !important;
 }
 
 .pdp-faq-q {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: 'Sora', sans-serif;
-  font-size: 15.5px;
-  font-weight: 700;
-  color: #0F172A;
-  margin: 0;
-  user-select: none;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  font-family: 'Sora', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #0F172A !important;
+  margin: 0 !important;
+  user-select: none !important;
+  gap: 16px !important;
 }
 
 .pdp-faq-arrow {
-  color: #6366F1;
-  transition: transform 0.25s ease;
-  flex-shrink: 0;
+  color: #6366F1 !important;
+  transition: transform 0.25s ease !important;
+  flex-shrink: 0 !important;
 }
 
 .pdp-faq-item.active .pdp-faq-arrow {
-  transform: rotate(180deg);
+  transform: rotate(180deg) !important;
 }
 
 .pdp-faq-a {
-  display: none;
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid #E0E7FF;
-  font-size: 14.5px;
-  color: #475569;
-  line-height: 1.7;
+  display: none !important;
+  margin-top: 14px !important;
+  padding-top: 14px !important;
+  border-top: 1px solid #E0E7FF !important;
+  font-size: 14px !important;
+  color: #475569 !important;
+  line-height: 1.7 !important;
 }
 
 .pdp-faq-item.active .pdp-faq-a {
-  display: block;
+  display: block !important;
+  animation: pdpFaqFadeIn 0.25s ease-out !important;
 }
 
-.pdp-faq-a p {
-  margin: 0;
+@keyframes pdpFaqFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Reviews Card */
 .pdp-reviews-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(228, 228, 231, 0.9) !important;
+  border-radius: 28px !important;
+  padding: 36px 32px !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05) !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 600px) {
+  .pdp-reviews-card {
+    padding: 24px 18px !important;
+  }
+}
+
+/* Reviews Summary Header */
+.pdp-reviews-summary-row {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #F1F5F9;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.pdp-rating-big-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+  background: #F8F9FE;
+  border-radius: 20px;
+  border: 1px solid #E0E7FF;
+  min-width: 140px;
+}
+
+.pdp-rating-big-num {
+  font-family: 'Sora', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1;
+}
+
+.pdp-rating-big-stars {
+  color: #F59E0B;
+  font-size: 18px;
+  margin: 6px 0 4px;
+  letter-spacing: 2px;
+}
+
+.pdp-rating-count-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+}
+
+.pdp-rating-bars-col {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pdp-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #64748B;
+}
+
+.pdp-bar-label {
+  width: 48px;
+  font-weight: 600;
+}
+
+.pdp-bar-track {
+  flex: 1;
+  height: 8px;
+  background: #F1F5F9;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.pdp-bar-fill {
+  height: 100%;
+  background: #F59E0B;
+  border-radius: 99px;
+}
+
+.pdp-bar-pct {
+  width: 36px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+}
+
+/* Reviews List Grid */
+.pdp-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 768px) {
+  .pdp-reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pdp-review-card {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 18px;
+  padding: 20px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.pdp-review-card:hover {
   background: #FFFFFF;
-  border: 1px solid rgba(228, 228, 231, 0.85);
-  border-radius: 28px;
-  padding: 32px;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+  border-color: #CBD5E1;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.pdp-review-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.pdp-review-author {
+  font-family: 'Sora', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.pdp-review-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.pdp-review-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #16A34A;
+  background: #DCFCE7;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+.pdp-review-date {
+  font-size: 11.5px;
+  color: #94A3B8;
+}
+
+.pdp-review-stars {
+  color: #F59E0B;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.pdp-review-plan-tag {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #4F46E5;
+  background: #EEF2FF;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.pdp-review-comment {
+  font-size: 13.5px;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0;
 }
