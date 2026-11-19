@@ -12779,3 +12779,116 @@ body.pdp-page .pdp-warranty-card {
     padding: 3px 8px !important;
   }
 }
+
+
+/* ==========================================================================
+   CHECKOUT MODAL SMARTPHONE VIEW ALIGNMENT FIX
+   ========================================================================== */
+@media (max-width: 600px) {
+  .checkout-modal-header {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 16px 14px !important;
+  }
+  .checkout-header-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding-right: 38px !important; /* Space for close button */
+    width: 100% !important;
+  }
+  .checkout-header-icon {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    flex-shrink: 0 !important;
+  }
+  .checkout-modal-heading {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+    color: #0f172a !important;
+  }
+  .checkout-modal-subheading {
+    font-size: 0.78rem !important;
+    line-height: 1.35 !important;
+    color: #64748b !important;
+    margin: 2px 0 0 0 !important;
+  }
+  .checkout-header-right {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    padding-left: 50px !important; /* Align beneath heading */
+    width: 100% !important;
+  }
+  .checkout-ssl-pill {
+    display: inline-flex !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    color: #059669 !important;
+    background: rgba(16, 185, 129, 0.12) !important;
+    border: 1px solid rgba(16, 185, 129, 0.28) !important;
+    padding: 3px 9px !important;
+    border-radius: 999px !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+  }
+  .checkout-close-btn {
+    position: absolute !important;
+    top: 14px !important;
+    right: 14px !important;
+    width: 32px !important;
+    height: 32px !important;
+    z-index: 10 !important;
+  }
+
+  /* Payment Method Gateway Card */
+  .checkout-gateway-banner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 14px !important;
+  }
+  .gateway-main-meta {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  .gateway-icon-badge {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    flex-shrink: 0 !important;
+  }
+  .gateway-main-meta > div {
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+  .gateway-brand-title {
+    font-size: 0.94rem !important;
+    font-weight: 800 !important;
+    line-height: 1.35 !important;
+    color: #0f172a !important;
+    word-break: normal !important;
+  }
+  .gateway-brand-desc {
+    font-size: 0.78rem !important;
+    line-height: 1.4 !important;
+    color: #64748b !important;
+    margin-top: 3px !important;
+  }
+  .gateway-active-pill {
+    align-self: flex-start !important;
+    margin-left: 50px !important;
+    font-size: 0.72rem !important;
+    padding: 3px 9px !important;
+  }
+}
