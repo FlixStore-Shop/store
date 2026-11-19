@@ -11,7 +11,6 @@ const brandMap = {
   'chorki-premium': '/assets/brands/chorki.png',
   'chatgpt-plus-openai': '/assets/brands/chatgpt.svg',
   'claude-pro-anthropic': '/assets/brands/claude-ai.svg',
-  'midjourney-pro-plan': '/assets/brands/midjourney.svg',
   'spotify-premium-individual': '/assets/brands/spotify.svg',
   'apple-music-premium': '/assets/brands/apple-music.svg',
   'adobe-creative-cloud-all-apps': '/assets/brands/adobe-creative-cloud.svg',

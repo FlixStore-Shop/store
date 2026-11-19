@@ -268,37 +268,6 @@ const catalog = [
     ]
   },
 
-  // 9. Midjourney Pro Plan
-  {
-    cat_slug: 'ai-tools',
-    slug: 'midjourney-pro-plan',
-    title: 'Midjourney Pro Plan',
-    tagline: 'Photorealistic AI Image Generation, Stealth Mode & Fast GPU',
-    description: 'Create jaw-dropping photorealistic imagery, artistic concept art, 3D renders, and cinematic visuals with Midjourney. Includes 30 hours of Fast GPU time, unlimited Relax mode, and commercial usage rights.',
-    logo_url: '/assets/brands/midjourney.svg',    base_price: 13.00,
-    original_price: 30.00,
-    original_price_bdt: 3600,
-    rating: 4.94,
-    review_count: 940,
-    is_featured: 0,
-    is_trending: 1,
-    is_bestseller: 0,
-    features_list: JSON.stringify([
-      'High-speed Fast GPU generation hours',
-      'Unlimited Relax GPU generations (never run out)',
-      'Commercial usage rights for your generated creations',
-      'Access to Midjourney Web interface and Discord bot',
-      'Supports latest Midjourney v6.1 photorealistic model'
-    ]),
-    instructions: 'Login through the dedicated Midjourney Discord/Web account provided in your order receipt.',
-    plans: [
-      { name: '1 Month - Standard Plan', tier: 'private', months: 1, label: '1 Month (Standard Plan)', usd: 13.00, bdt: 1560, orig_usd: 30.00, orig_bdt: 3600, popular: 1, devices: '1 Discord Account', features: '15h Fast GPU, Unlimited Relax GPU, Commercial License' }
-    ],
-    vault: [
-      { type: 'account', email: 'midjourney.art@flixstore-auth.com', pass: 'MjArtGen#2026x', profile: 'Artist Pro', pin: '', instr: 'Discord account with active Midjourney subscription.' }
-    ]
-  },
-
   // 10. Spotify Premium Individual
   {
     cat_slug: 'music-audio',

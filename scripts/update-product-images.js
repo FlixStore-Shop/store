@@ -9,7 +9,6 @@ const imageMap = {
   'chorki-premium': '/assets/products/chorki.svg',
   'chatgpt-plus-openai': '/assets/products/chatgpt-plus.svg',
   'claude-pro-anthropic': '/assets/products/claude-pro.svg',
-  'midjourney-pro-plan': '/assets/products/midjourney.svg',
   'spotify-premium-individual': '/assets/products/spotify-premium.svg',
   'apple-music-premium': '/assets/products/apple-music.svg',
   'adobe-creative-cloud-all-apps': '/assets/products/adobe-creative-cloud.svg',

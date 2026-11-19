@@ -175,7 +175,7 @@ async function initDatabase() {
   // Ensure default admin & categories exist
   await seedBaseData();
 
-  // Ensure all 20 verified subscriptions and updated plans are synced
+  // Ensure all 19 verified subscriptions and updated plans are synced
   try {
     const prodCount = await db.prepare('SELECT COUNT(*) as count FROM products').get();
     const comboPlans = await db.prepare(`
@@ -183,8 +183,8 @@ async function initDatabase() {
       WHERE product_id = (SELECT id FROM products WHERE slug = 'netflix-primevideo-combo')
     `).get();
 
-    if (!prodCount || Number(prodCount.count) < 20 || !comboPlans || Number(comboPlans.count) < 4) {
-      console.log(`[CATALOG SYNC] Syncing full catalog (Products: ${prodCount ? prodCount.count : 0}/20, Combo Plans: ${comboPlans ? comboPlans.count : 0}/4)...`);
+    if (!prodCount || Number(prodCount.count) < 19 || !comboPlans || Number(comboPlans.count) < 4) {
+      console.log(`[CATALOG SYNC] Syncing full catalog (Products: ${prodCount ? prodCount.count : 0}/19, Combo Plans: ${comboPlans ? comboPlans.count : 0}/4)...`);
       const { syncCatalog } = require('../scripts/update-catalog');
       await syncCatalog(db);
     }
@@ -539,7 +539,7 @@ async function seedBaseData() {
 
   await insertCategory.run('ott-streaming', 'OTT & Streaming', 'film', 'Most Popular', 'Netflix, Prime Video, Disney+, Apple TV+ and Max premium passes.', 1);
   await insertCategory.run('regional-bengali-ott', 'Regional Bengali OTT', 'tv', 'Popular in BD', 'Hoichoi, Chorki, Bioscope and Bengali entertainment portals.', 2);
-  await insertCategory.run('ai-productivity', 'AI & Productivity', 'cpu', 'Trending', 'ChatGPT Plus, Claude Pro, Midjourney and GitHub Copilot.', 3);
+  await insertCategory.run('ai-productivity', 'AI & Productivity', 'cpu', 'Trending', 'ChatGPT Plus, Claude Pro, GitHub Copilot and leading AI suites.', 3);
   await insertCategory.run('music-audio', 'Music & Audio', 'music', null, 'Spotify Premium, Apple Music, YouTube Premium and Tidal HiFi.', 4);
   await insertCategory.run('cloud-creative', 'Cloud & Creative', 'cloud', 'Pro Suites', 'Canva Pro, Adobe Creative Cloud, Google One and Microsoft 365.', 5);
   await insertCategory.run('security-utilities', 'VPN & Security', 'shield', null, 'NordVPN, ExpressVPN, Surfshark and premium cybersecurity tools.', 6);
