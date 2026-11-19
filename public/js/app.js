@@ -886,7 +886,7 @@ function renderQuickViewDetails() {
             ${origBdt && origBdt > offerBdt ? `
               <div style="display:flex; flex-direction:column; align-items:flex-end; gap:2px; margin-top:2px;">
                 <span class="plan-price-original" title="Official Market Price">${formatPrice(origBdt, true)}</span>
-                <span class="plan-save-pill">Save ৳${saveAmount.toLocaleString()}</span>
+                <span class="discount-pill">-${Math.round((1 - offerBdt / origBdt) * 100)}% OFF</span>
               </div>
             ` : ''}
           </div>
@@ -920,7 +920,7 @@ function updateDetailPriceDisplay() {
     if (origBdt && origBdt > offerBdt) {
       const discount = Math.round((1 - offerBdt / origBdt) * 100);
       const saved = origBdt - offerBdt;
-      compareDisplay.innerHTML = `<span class="plan-price-original" style="font-size:1.1rem; margin-right:6px;" title="Official Market Price">${formatPrice(origBdt, true)}</span> <span class="discount-pill">${discount}% OFF • Save ৳${saved.toLocaleString()}</span>`;
+      compareDisplay.innerHTML = `<span class="plan-price-original" style="font-size:1.1rem; margin-right:6px;" title="Official Market Price">${formatPrice(origBdt, true)}</span> <span class="discount-pill">-${discount}% OFF</span>`;
       compareDisplay.style.display = 'inline-flex';
     } else {
       compareDisplay.style.display = 'none';

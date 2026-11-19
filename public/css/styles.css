@@ -11857,6 +11857,9 @@ body.pdp-page .pdp-price-hero-orig {
 }
 
 .pdp-price-discount-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
   background: #FFE4E6 !important;
   color: #E11D48 !important;
   border: 1px solid #FECDD3 !important;

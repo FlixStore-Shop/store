@@ -500,17 +500,18 @@ function updateSelectedPlanPricing() {
   }
 
   if (savingsDisplay) {
-    if (saveAmount > 0) {
-      savingsDisplay.textContent = `Save ৳${saveAmount.toLocaleString()}`;
-      savingsDisplay.style.display = 'inline-flex';
-    } else {
-      savingsDisplay.style.display = 'none';
-    }
+    savingsDisplay.style.display = 'none';
   }
 
   if (discountBadge) {
     if (discountPercent > 0) {
-      discountBadge.textContent = `-${discountPercent}% OFF`;
+      discountBadge.innerHTML = `
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+          <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+          <line x1="7" y1="7" x2="7.01" y2="7"></line>
+        </svg>
+        <span>-${discountPercent}% OFF</span>
+      `;
       discountBadge.style.display = 'inline-flex';
     } else {
       discountBadge.style.display = 'none';
