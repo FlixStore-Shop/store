@@ -1365,7 +1365,7 @@ function openCheckoutModal() {
       badge.style.background = 'rgba(16, 185, 129, 0.15)';
       badge.style.borderColor = 'rgba(52, 211, 153, 0.35)';
       badge.style.color = '#34d399';
-      if (badgeText) badgeText.textContent = `Verified Account (${state.user.email})`;
+      if (badgeText) badgeText.textContent = 'Verified Account';
     }
     if (phoneInput && state.user.phone) {
       phoneInput.value = state.user.phone;
@@ -1387,7 +1387,7 @@ function openCheckoutModal() {
       badge.style.background = 'rgba(99, 102, 241, 0.12)';
       badge.style.borderColor = 'rgba(99, 102, 241, 0.25)';
       badge.style.color = '#a5b4fc';
-      if (badgeText) badgeText.textContent = '⚡ Instant Guest Checkout (No password needed)';
+      if (badgeText) badgeText.textContent = 'Instant Guest Checkout';
     }
   }
 
@@ -1819,7 +1819,7 @@ async function processOrderPayment() {
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
-      submitBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span>Pay in BDT (<span id="payBtnAmount">${formatPrice(calculateCartTotals().totalBDT, true)}</span>) via UddoktaPay →</span>`;
+      submitBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span>Pay <span id="payBtnAmount">${formatPrice(calculateCartTotals().totalBDT, true)}</span> via UddoktaPay →</span>`;
     }
   }
 }
