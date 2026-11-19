@@ -270,6 +270,25 @@ function renderProductDetails() {
   if (ratingScore) ratingScore.textContent = Number(p.rating || 5.0).toFixed(1);
   if (reviewCount) reviewCount.textContent = `(${p.review_count || 128} verified reviews)`;
 
+  // ShahedStore Style Highlights Card
+  const hlList = document.getElementById('pdpHighlightsList');
+  if (hlList) {
+    let feats = p.features_list || [];
+    if (typeof feats === 'string') {
+      try { feats = JSON.parse(feats); } catch(e) { feats = feats.split('\n').map(s => s.trim()).filter(Boolean); }
+    }
+    if (Array.isArray(feats) && feats.length > 0) {
+      hlList.innerHTML = feats.slice(0, 4).map(f => `<li><span class="pdp-hl-dot"></span> ${escapeHtml(f)}</li>`).join('');
+    } else {
+      hlList.innerHTML = `
+        <li><span class="pdp-hl-dot"></span> Full Plan Replacement Warranty Available</li>
+        <li><span class="pdp-hl-dot"></span> Automated 60s Instant Vault Delivery</li>
+        <li><span class="pdp-hl-dot"></span> Genuine Dedicated Profile with 4-Digit Security PIN</li>
+        <li><span class="pdp-hl-dot"></span> Streaming on TV, Mobile, Laptop & Tablet Without VPN</li>
+      `;
+    }
+  }
+
   const descElem = document.getElementById('pdpProductDescription');
   const descSection = document.getElementById('pdpDescSection');
   const cleanDesc = (p.description || '').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&').trim();
@@ -380,21 +399,29 @@ function renderDurationOptions() {
     : allPlans;
 
   if (visiblePlans.length === 0) {
-    container.innerHTML = '<div style="color:var(--text-secondary); font-size:0.85rem;">No plan configurations available for this tier.</div>';
+    container.innerHTML = '<div style="color:var(--text-secondary); font-size:0.85rem; padding:12px;">No plan configurations available for this tier.</div>';
     return;
   }
 
   container.innerHTML = visiblePlans.map(plan => {
     const isSelected = productState.selectedPlan && productState.selectedPlan.id === plan.id;
     const durationText = cleanDurationLabel(plan.duration_label, plan.duration_months);
+    const offerBdt = plan.price_bdt || Math.round(plan.price_usd * 120);
+    const origBdt = plan.original_price_bdt || (plan.original_price_usd ? Math.round(plan.original_price_usd * 120) : null);
+    const discountPercent = (origBdt && origBdt > offerBdt) ? Math.round((1 - offerBdt / origBdt) * 100) : 0;
 
     return `
-      <button type="button" 
-        class="pdp-duration-pill ${isSelected ? 'active' : ''}" 
-        onclick="selectPdpPlan(${plan.id})"
-        aria-label="Select ${escapeHtml(durationText)} duration">
-        ${escapeHtml(durationText)}
-      </button>
+      <div class="pdp-plan-card ${isSelected ? 'active' : ''}" onclick="selectPdpPlan(${plan.id})" role="button" tabindex="0">
+        <div class="pdp-plan-card-left">
+          <span class="pdp-plan-radio-dot ${isSelected ? 'active' : ''}"></span>
+          <span class="pdp-plan-duration-name">${escapeHtml(durationText)}</span>
+        </div>
+        <div class="pdp-plan-card-right">
+          ${origBdt && origBdt > offerBdt ? `<span class="pdp-plan-orig-bdt">৳${origBdt.toLocaleString()}</span>` : ''}
+          <span class="pdp-plan-current-bdt">৳${offerBdt.toLocaleString()}</span>
+          ${discountPercent > 0 ? `<span class="pdp-plan-disc-tag">-${discountPercent}%</span>` : ''}
+        </div>
+      </div>
     `;
   }).join('');
 
@@ -447,6 +474,8 @@ function updateSelectedPlanPricing() {
   const currentPriceDisplay = document.getElementById('pdpCurrentPrice');
   const origPriceDisplay = document.getElementById('pdpOriginalPrice');
   const savingsDisplay = document.getElementById('pdpSavingsTag');
+  const discountBadge = document.getElementById('pdpDiscountBadge');
+  const imgDiscountBadge = document.getElementById('pdpImageDiscountBadge');
   const planNameDisplay = document.getElementById('pdpSelectedPlanSummary');
   const deviceLimitDisplay = document.getElementById('pdpDeviceLimitSummary');
 
@@ -462,10 +491,28 @@ function updateSelectedPlanPricing() {
 
   if (savingsDisplay) {
     if (saveAmount > 0) {
-      savingsDisplay.textContent = `${discountPercent}% OFF • Save ৳${saveAmount.toLocaleString()}`;
+      savingsDisplay.textContent = `Save ৳${saveAmount.toLocaleString()}`;
       savingsDisplay.style.display = 'inline-flex';
     } else {
       savingsDisplay.style.display = 'none';
+    }
+  }
+
+  if (discountBadge) {
+    if (discountPercent > 0) {
+      discountBadge.textContent = `-${discountPercent}% OFF`;
+      discountBadge.style.display = 'inline-flex';
+    } else {
+      discountBadge.style.display = 'none';
+    }
+  }
+
+  if (imgDiscountBadge) {
+    if (discountPercent > 0) {
+      imgDiscountBadge.textContent = `-${discountPercent}% OFF`;
+      imgDiscountBadge.style.display = 'inline-flex';
+    } else {
+      imgDiscountBadge.style.display = 'none';
     }
   }
 

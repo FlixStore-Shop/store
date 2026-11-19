@@ -11383,3 +11383,908 @@ input.form-input:focus {
 .info-content-card h4 {
   color: #0f172a !important;
 }
+
+
+/* =============================================================================
+   SHAHEDSTORE PRODUCT PAGE THEME & DESIGN SYSTEM (EXACT COPY)
+   ============================================================================= */
+body.pdp-page {
+  background-color: #F8F9FE !important;
+  color: #18181B;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body.pdp-page .pdp-page-wrapper {
+  background: transparent !important;
+  padding: 20px 0 80px;
+}
+
+/* Breadcrumb Bar */
+body.pdp-page .pdp-breadcrumb-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(228, 228, 231, 0.8);
+  border-radius: 9999px;
+  padding: 6px 18px;
+  margin: 0 0 24px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748B;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+body.pdp-page .pdp-breadcrumb-bar a {
+  color: #64748B;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+body.pdp-page .pdp-breadcrumb-bar a:hover {
+  color: #4F46E5;
+}
+
+body.pdp-page .pdp-breadcrumb-separator {
+  color: #CBD5E1;
+  font-size: 11px;
+}
+
+body.pdp-page .pdp-breadcrumb-current {
+  color: #0F172A;
+  font-weight: 700;
+}
+
+/* PDP Main 2-Column Grid */
+body.pdp-page .pdp-main-grid {
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  gap: 40px;
+  align-items: flex-start;
+  max-width: 1240px;
+  margin: 0 auto 40px;
+}
+
+@media (max-width: 1024px) {
+  body.pdp-page .pdp-main-grid {
+    grid-template-columns: 440px 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 860px) {
+  body.pdp-page .pdp-main-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  body.pdp-page .pdp-media-column {
+    position: static !important;
+  }
+}
+
+/* Left Media Column */
+body.pdp-page .pdp-media-column {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 90px;
+  z-index: 10;
+}
+
+body.pdp-page .pdp-showcase-card {
+  position: relative;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(228, 228, 231, 0.9) !important;
+  border-radius: 28px !important;
+  padding: 24px !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05) !important;
+  aspect-ratio: 1 / 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  transition: all 0.25s ease !important;
+}
+
+/* Floating Discount Badge (Top-Left) */
+.pdp-img-discount-pill {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 12;
+  background: #F43F5E !important;
+  color: #FFFFFF !important;
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35);
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+}
+
+/* Floating Wishlist Button (Top-Right) */
+.pdp-img-wishlist-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 12;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(228, 228, 231, 0.8) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748B;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 0;
+  outline: none;
+}
+
+.pdp-img-wishlist-btn:hover {
+  color: #EF4444;
+  transform: scale(1.08);
+  border-color: #FECDD3 !important;
+  background: #FFF1F2 !important;
+}
+
+.pdp-img-wishlist-btn.active {
+  color: #EF4444;
+  background: #FFF1F2 !important;
+  border-color: #FECDD3 !important;
+}
+
+body.pdp-page .pdp-showcase-badge {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+body.pdp-page .pdp-showcase-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  border-radius: 20px !important;
+}
+
+/* Certified Digital Merchant Banner */
+.pdp-merchant-cert-card {
+  margin-top: 16px;
+  background: #FFFFFF;
+  border: 1px solid rgba(228, 228, 231, 0.85);
+  border-radius: 20px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  gap: 12px;
+}
+
+.pdp-cert-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdp-cert-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pdp-cert-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.pdp-cert-sub {
+  font-size: 11.5px;
+  color: #64748B;
+  margin-top: 2px;
+}
+
+.pdp-cert-tag {
+  background: #EEF2FF;
+  color: #4F46E5;
+  border: 1px solid #C7D2FE;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+/* Right Info Column */
+body.pdp-page .pdp-info-column {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(228, 228, 231, 0.85) !important;
+  border-radius: 28px !important;
+  padding: 32px 36px 36px !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05) !important;
+}
+
+@media (max-width: 600px) {
+  body.pdp-page .pdp-info-column {
+    padding: 20px !important;
+  }
+}
+
+.pdp-top-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+body.pdp-page .pdp-category-pill {
+  background: #E0F2FE !important;
+  color: #0284C7 !important;
+  border: none !important;
+  font-family: 'Sora', sans-serif;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.6px !important;
+  text-transform: uppercase !important;
+  padding: 4px 12px !important;
+  border-radius: 9999px !important;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 !important;
+}
+
+.pdp-share-btn {
+  border: 1px solid #E2E8F0;
+  border-radius: 9999px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  background: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pdp-share-btn:hover {
+  border-color: #CBD5E1;
+  color: #0F172A;
+  background: #F8FAFC;
+}
+
+body.pdp-page .pdp-title {
+  font-family: 'Sora', sans-serif !important;
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
+  line-height: 1.25 !important;
+  margin: 0 0 14px 0 !important;
+  letter-spacing: -0.4px !important;
+}
+
+@media (max-width: 600px) {
+  body.pdp-page .pdp-title {
+    font-size: 22px !important;
+  }
+}
+
+/* Bullet Highlights Card (ShahedStore Style) */
+.pdp-highlights-card {
+  background: #F8FAFC;
+  border: 1px solid #F1F5F9;
+  border-radius: 16px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+
+.pdp-highlights-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.pdp-hl-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6366F1;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+body.pdp-page .pdp-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+body.pdp-page .pdp-rating-stars {
+  color: #F59E0B;
+  letter-spacing: 2px;
+}
+
+#pdpRatingScore {
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.pdp-review-count-text {
+  color: #64748B;
+  font-size: 0.85rem;
+}
+
+.pdp-meta-sep {
+  color: #CBD5E1;
+}
+
+.pdp-sold-badge {
+  background: #F1F5F9;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+body.pdp-page .pdp-in-stock-pill {
+  background: #DCFCE7 !important;
+  color: #15803D !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 9px !important;
+  border-radius: 9999px !important;
+}
+
+/* Price Hero Strip (ShahedStore Signature) */
+body.pdp-page .pdp-price-hero-strip {
+  background: linear-gradient(135deg, rgba(238, 242, 255, 0.7) 0%, rgba(245, 243, 255, 0.4) 100%) !important;
+  border: 1px solid rgba(199, 210, 254, 0.8) !important;
+  border-radius: 18px !important;
+  padding: 16px 22px !important;
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 12px !important;
+  margin-bottom: 22px !important;
+  flex-wrap: wrap !important;
+}
+
+body.pdp-page .pdp-price-hero-amount {
+  font-family: 'Sora', sans-serif !important;
+  font-size: 38px !important;
+  font-weight: 900 !important;
+  color: #4F46E5 !important;
+  letter-spacing: -0.5px !important;
+  line-height: 1 !important;
+}
+
+body.pdp-page .pdp-price-hero-orig {
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  color: #94A3B8 !important;
+  text-decoration: line-through !important;
+}
+
+.pdp-price-save-pill {
+  background: #FEF3C7 !important;
+  color: #B45309 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  padding: 3px 9px !important;
+  border-radius: 6px !important;
+  border: 1px solid #FDE68A !important;
+}
+
+.pdp-price-discount-pill {
+  background: #FFE4E6 !important;
+  color: #E11D48 !important;
+  border: 1px solid #FECDD3 !important;
+  font-family: 'Sora', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  margin-left: auto !important;
+}
+
+/* Plan Duration Variations List */
+.pdp-duration-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pdp-plan-card {
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.pdp-plan-card:hover {
+  border-color: #818CF8;
+  background: #FAFAFF;
+  transform: translateY(-1px);
+}
+
+.pdp-plan-card.active {
+  border: 2px solid #6366F1 !important;
+  background: #EEF2FF !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.12);
+}
+
+.pdp-plan-card-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdp-plan-radio-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #CBD5E1;
+  background: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.pdp-plan-card.active .pdp-plan-radio-dot {
+  border-color: #4F46E5 !important;
+  background: #4F46E5 !important;
+  box-shadow: inset 0 0 0 3.5px #FFFFFF;
+}
+
+.pdp-plan-duration-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.pdp-plan-card-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pdp-plan-orig-bdt {
+  font-size: 13px;
+  color: #94A3B8;
+  text-decoration: line-through;
+}
+
+.pdp-plan-current-bdt {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #4F46E5;
+}
+
+.pdp-plan-disc-tag {
+  background: #FFE4E6;
+  color: #E11D48;
+  font-family: 'Sora', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid #FECDD3;
+}
+
+/* Quantity Row */
+.pdp-quantity-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pdp-qty-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748B;
+}
+
+body.pdp-page .pdp-qty-stepper {
+  display: inline-flex !important;
+  align-items: center !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  padding: 2px !important;
+  background: #FFFFFF !important;
+  width: fit-content !important;
+  height: auto !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03) !important;
+}
+
+body.pdp-page .pdp-qty-btn {
+  width: 34px !important;
+  height: 34px !important;
+  border: none !important;
+  background: transparent !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #334155 !important;
+  cursor: pointer !important;
+  border-radius: 8px !important;
+  transition: background 0.15s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+body.pdp-page .pdp-qty-btn:hover {
+  background: #F1F5F9 !important;
+  color: #0F172A !important;
+}
+
+body.pdp-page .pdp-qty-number {
+  min-width: 36px !important;
+  text-align: center !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
+}
+
+/* Action Box Container */
+.pdp-actions-card {
+  border: 1.5px solid #E0E7FF;
+  background: #FAFAFF;
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.05);
+}
+
+.pdp-buy-now-cta {
+  height: 52px;
+  width: 100%;
+  border-radius: 16px;
+  border: none;
+  background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 50%, #3B82F6 100%);
+  color: #FFFFFF;
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -4px rgba(79, 70, 229, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  user-select: none;
+}
+
+.pdp-buy-now-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -4px rgba(79, 70, 229, 0.5);
+}
+
+.pdp-buy-now-cta:active {
+  transform: translateY(0);
+}
+
+.pdp-secondary-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.pdp-shahed-whatsapp-btn {
+  height: 48px;
+  border-radius: 14px;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #0F172A;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.pdp-shahed-whatsapp-btn:hover {
+  border-color: #22C55E;
+  color: #16A34A;
+  background: #F0FDF4;
+  transform: translateY(-1px);
+}
+
+.pdp-shahed-cart-btn {
+  height: 48px;
+  border-radius: 14px;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #0F172A;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.pdp-shahed-cart-btn:hover {
+  border-color: #4F46E5;
+  color: #4F46E5;
+  background: #EEF2FF;
+  transform: translateY(-1px);
+}
+
+/* Payment Methods Strip */
+.pdp-payment-methods-strip {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #F1F5F9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pdp-pay-strip-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+}
+
+.pdp-pay-icons-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Sections Below Hero */
+.pdp-section-block {
+  margin-top: 48px;
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pdp-section-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.3px;
+}
+
+.pdp-title-bar {
+  width: 4px;
+  height: 24px;
+  background: #4F46E5;
+  border-radius: 4px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.pdp-description-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(228, 228, 231, 0.85);
+  border-radius: 28px;
+  padding: 32px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 600px) {
+  .pdp-description-card {
+    padding: 20px;
+  }
+}
+
+.pdp-desc-content {
+  font-size: 15px;
+  color: #334155;
+  line-height: 1.75;
+  margin-bottom: 24px;
+  white-space: pre-line;
+}
+
+.pdp-inner-heading {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 28px 0 16px 0;
+}
+
+.pdp-warranty-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+body.pdp-page .pdp-warranty-card {
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 16px !important;
+  padding: 18px !important;
+}
+
+.pdp-warranty-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.pdp-warranty-title.green { color: #16A34A; }
+.pdp-warranty-title.blue { color: #2563EB; }
+.pdp-warranty-title.amber { color: #D97706; }
+
+.pdp-warranty-desc {
+  font-size: 13px;
+  color: #64748B;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ShahedStore Important Notes Callout Box */
+.pdp-important-notes-box {
+  background: #FFFBEB;
+  border: 1.5px solid #FDE68A;
+  border-radius: 18px;
+  padding: 22px;
+  margin-top: 32px;
+}
+
+.pdp-notes-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: #92400E;
+  margin-bottom: 12px;
+}
+
+.pdp-notes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  color: #78350F;
+  line-height: 1.5;
+}
+
+.pdp-cross-icon,
+.pdp-cart-icon {
+  margin-right: 6px;
+}
+
+/* FAQ Accordion */
+.pdp-faq-accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pdp-faq-item {
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 18px;
+  padding: 18px 22px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.pdp-faq-item:hover {
+  border-color: #818CF8;
+}
+
+.pdp-faq-item.active {
+  border-color: #6366F1 !important;
+  background: #FAFAFF !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
+}
+
+.pdp-faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Sora', sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0;
+  user-select: none;
+}
+
+.pdp-faq-arrow {
+  color: #6366F1;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.pdp-faq-item.active .pdp-faq-arrow {
+  transform: rotate(180deg);
+}
+
+.pdp-faq-a {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #E0E7FF;
+  font-size: 14.5px;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.pdp-faq-item.active .pdp-faq-a {
+  display: block;
+}
+
+.pdp-faq-a p {
+  margin: 0;
+}
+
+/* Reviews Card */
+.pdp-reviews-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(228, 228, 231, 0.85);
+  border-radius: 28px;
+  padding: 32px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+}
