@@ -1628,12 +1628,15 @@ function renderCheckoutSummary() {
 
   if (itemsContainer) {
     itemsContainer.innerHTML = state.cart.map(item => `
-      <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div>
-          <strong style="display:block; color:var(--text-primary);">${item.productTitle}</strong>
-          <span style="font-size:0.75rem; color:var(--text-muted);">${item.planName || 'Digital Subscription'} × ${item.quantity}</span>
+      <div class="checkout-summary-item">
+        <div class="checkout-item-thumb">
+          <img src="${item.logoUrl || '/assets/flixstore-icon.png'}" alt="${item.productTitle}" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';">
         </div>
-        <strong style="color:var(--text-primary);">${formatPrice((item.priceBDT || Math.round(item.priceUSD * 120)) * item.quantity, true)}</strong>
+        <div class="checkout-item-info">
+          <div class="checkout-item-title">${item.productTitle}</div>
+          <div class="checkout-item-meta">${item.planName || 'Subscription'}${item.durationLabel ? ' • ' + item.durationLabel : ''} <span class="checkout-item-qty">×${item.quantity}</span></div>
+        </div>
+        <div class="checkout-item-price">${formatPrice((item.priceBDT || Math.round(item.priceUSD * 120)) * item.quantity, true)}</div>
       </div>
     `).join('');
   }
@@ -1809,7 +1812,7 @@ async function processOrderPayment() {
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
-      submitBtn.innerHTML = `Complete Order & Get Instant Access (<span id="payBtnAmount">${formatPrice(calculateCartTotals().totalBDT, true)}</span>)`;
+      submitBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span>Pay in BDT (<span id="payBtnAmount">${formatPrice(calculateCartTotals().totalBDT, true)}</span>) via UddoktaPay →</span>`;
     }
   }
 }
