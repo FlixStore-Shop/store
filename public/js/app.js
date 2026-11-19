@@ -209,7 +209,7 @@ function initTheme() {
   document.documentElement.setAttribute('data-theme', 'transparent');
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
   if (metaThemeColor) {
-    metaThemeColor.setAttribute('content', '#07090e');
+    metaThemeColor.setAttribute('content', '#f1f5f9');
   }
 }
 

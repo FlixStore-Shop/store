@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FlixStore Developer Console & Admin Portal</title>
-  <link rel="stylesheet" href="/css/styles.css?v=11.0">
+  <link rel="stylesheet" href="/css/styles.css?v=12.0">
   <link rel="icon" type="image/png" href="/assets/flixstore-icon.png?v=9.2">
   <link rel="apple-touch-icon" href="/assets/flixstore-icon.png?v=9.2">
   <style>
@@ -13,40 +13,41 @@
        100% Light-Mode Exclusive • High-Contrast • Clean Color Grading
        ========================================================================== */
     :root,
-    [data-theme="transparent"] {
-      --admin-bg-base: #07090e;
-      --admin-bg-surface: rgba(15, 23, 42, 0.65);
-      --admin-bg-card: rgba(15, 23, 42, 0.52);
-      --admin-bg-subtle: rgba(255, 255, 255, 0.05);
-      --admin-bg-muted: rgba(255, 255, 255, 0.08);
+    [data-theme="transparent"],
+    [data-theme="light"] {
+      --admin-bg-base: #f1f5f9;
+      --admin-bg-surface: rgba(255, 255, 255, 0.7);
+      --admin-bg-card: rgba(255, 255, 255, 0.58);
+      --admin-bg-subtle: rgba(241, 245, 249, 0.7);
+      --admin-bg-muted: rgba(226, 232, 240, 0.8);
       
-      --admin-border: rgba(255, 255, 255, 0.1);
-      --admin-border-focus: #3b82f6;
-      --admin-border-subtle: rgba(255, 255, 255, 0.06);
+      --admin-border: rgba(226, 232, 240, 0.85);
+      --admin-border-focus: #2563eb;
+      --admin-border-subtle: rgba(241, 245, 249, 0.9);
       
-      --admin-text-main: #f8fafc;
-      --admin-text-body: #cbd5e1;
-      --admin-text-muted: #94a3b8;
-      --admin-text-light: #64748b;
+      --admin-text-main: #0f172a;
+      --admin-text-body: #334155;
+      --admin-text-muted: #64748b;
+      --admin-text-light: #94a3b8;
       
-      --neon-blue: #38bdf8;
-      --neon-purple: #a855f7;
-      --neon-emerald: #10b981;
-      --neon-amber: #f59e0b;
+      --neon-blue: #0284c7;
+      --neon-purple: #7c3aed;
+      --neon-emerald: #059669;
+      --neon-amber: #d97706;
 
-      --admin-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
-      --admin-shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 30px rgba(0, 0, 0, 0.5);
-      --admin-shadow-elevated: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 16px 40px rgba(0, 0, 0, 0.7);
-      --admin-shadow-modal: 0 30px 80px -15px rgba(0, 0, 0, 0.85);
+      --admin-shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px 0 rgba(15, 23, 42, 0.02);
+      --admin-shadow-card: inset 0 1px 0 rgba(255, 255, 255, 1), 0 8px 24px rgba(15, 23, 42, 0.05);
+      --admin-shadow-elevated: inset 0 1px 0 rgba(255, 255, 255, 1), 0 14px 34px rgba(15, 23, 42, 0.08);
+      --admin-shadow-modal: 0 25px 60px -15px rgba(15, 23, 42, 0.22);
     }
 
     body {
-      background-color: #07090e;
+      background-color: #f1f5f9;
       background-image: 
-        radial-gradient(at 10% 12%, rgba(59, 130, 246, 0.18) 0px, transparent 45%),
-        radial-gradient(at 88% 18%, rgba(139, 92, 246, 0.16) 0px, transparent 50%),
-        radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.1) 0px, transparent 60%),
-        radial-gradient(at 85% 85%, rgba(59, 130, 246, 0.14) 0px, transparent 50%);
+        radial-gradient(at 10% 12%, rgba(59, 130, 246, 0.14) 0px, transparent 45%),
+        radial-gradient(at 88% 18%, rgba(139, 92, 246, 0.13) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.09) 0px, transparent 60%),
+        radial-gradient(at 85% 85%, rgba(59, 130, 246, 0.11) 0px, transparent 50%);
       background-attachment: fixed;
       color: var(--admin-text-main);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -767,17 +768,17 @@
       border: 1px solid rgba(255, 255, 255, 0.08) !important;
     }
     .data-table th {
-      background: rgba(11, 16, 27, 0.8) !important;
-      color: #f8fafc !important;
+      background: rgba(248, 250, 252, 0.85) !important;
+      color: #0f172a !important;
     }
     .data-table td {
       border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
       color: #cbd5e1 !important;
     }
     .form-control, input, select, textarea {
-      background: rgba(255, 255, 255, 0.06) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.7) !important;
+      border: 1px solid rgba(203, 213, 225, 0.85) !important;
+      color: #0f172a !important;
     }
   
   </style>
@@ -1853,6 +1854,6 @@
     </div>
   </div>
 
-  <script src="/js/admin.js?v=11.0"></script>
+  <script src="/js/admin.js?v=12.0"></script>
 </body>
 </html>

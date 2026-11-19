@@ -5,29 +5,29 @@
 
 :root,
 [data-theme="transparent"],
-[data-theme="dark"] {
-  /* FlixStore Premium Transparent Glassmorphism Design System */
-  --bg-primary: #07090e;
-  --bg-secondary: rgba(15, 23, 42, 0.65);
-  --bg-tertiary: rgba(30, 41, 59, 0.55);
-  --bg-card: rgba(15, 23, 42, 0.52);
-  --bg-card-hover: rgba(26, 36, 56, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-border-hover: rgba(59, 130, 246, 0.45);
-  --glass-highlight: rgba(255, 255, 255, 0.14);
+[data-theme="light"] {
+  /* FlixStore Premium Light Transparent Glassmorphism Design System (NOT Dark Mode) */
+  --bg-primary: #f1f5f9;
+  --bg-secondary: rgba(255, 255, 255, 0.65);
+  --bg-tertiary: rgba(241, 245, 249, 0.6);
+  --bg-card: rgba(255, 255, 255, 0.55);
+  --bg-card-hover: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-border-hover: rgba(59, 130, 246, 0.4);
+  --glass-highlight: rgba(255, 255, 255, 0.95);
   
-  /* Apple VisionOS / iOS 18 Gloss Structure Tokens */
-  --gloss-specular-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
-  --gloss-specular-soft: inset 0 1px 1px 0 rgba(255, 255, 255, 0.16), inset 0 -1px 0 0 rgba(0, 0, 0, 0.4);
-  --gloss-specular-bevel: inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.25), inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.4);
+  /* Apple VisionOS / iOS 18 Light Gloss Structure Tokens */
+  --gloss-specular-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.98);
+  --gloss-specular-soft: inset 0 1px 1px 0 rgba(255, 255, 255, 0.85), inset 0 -1px 0 0 rgba(0, 0, 0, 0.03);
+  --gloss-specular-bevel: inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.85), inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.06);
   --gloss-specular-dark: inset 0 1px 0 0 rgba(255, 255, 255, 0.28), inset 0 -1px 0 0 rgba(0, 0, 0, 0.4);
-  --glass-acrylic-card: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
-  --glass-acrylic-blur: blur(24px) saturate(190%);
-  --glass-frosted-bg: rgba(15, 23, 42, 0.65);
+  --glass-acrylic-card: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.45) 100%);
+  --glass-acrylic-blur: blur(22px) saturate(190%);
+  --glass-frosted-bg: rgba(255, 255, 255, 0.65);
   
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
   
   --accent-blue: #3b82f6;
   --accent-purple: #8b5cf6;
@@ -90,8 +90,8 @@
 html {
   scroll-behavior: smooth;
   font-family: var(--font-main);
-  background-color: #07090e;
-  color: var(--text-primary);
+  background-color: #f1f5f9;
+  color: #0f172a;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
@@ -101,15 +101,15 @@ body {
   overflow-x: clip;
   min-height: 100vh;
   position: relative;
-  background-color: #07090e;
+  background-color: #f1f5f9;
   background-image: 
-    radial-gradient(at 10% 12%, rgba(59, 130, 246, 0.18) 0px, transparent 45%),
-    radial-gradient(at 88% 18%, rgba(139, 92, 246, 0.16) 0px, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.1) 0px, transparent 60%),
-    radial-gradient(at 20% 85%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
-    radial-gradient(at 85% 85%, rgba(59, 130, 246, 0.14) 0px, transparent 50%);
+    radial-gradient(at 10% 12%, rgba(59, 130, 246, 0.14) 0px, transparent 45%),
+    radial-gradient(at 88% 18%, rgba(139, 92, 246, 0.13) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.09) 0px, transparent 60%),
+    radial-gradient(at 20% 85%, rgba(236, 72, 153, 0.09) 0px, transparent 50%),
+    radial-gradient(at 85% 85%, rgba(59, 130, 246, 0.11) 0px, transparent 50%);
   background-attachment: fixed;
-  color: var(--text-primary);
+  color: #0f172a;
 }
 
 /* Ambient glow accents */
@@ -6798,68 +6798,68 @@ body {
 
 :root,
 [data-theme="transparent"],
-[data-theme="dark"] {
-  /* PDP Specific Theme Tokens - Transparent Glassmorphic */
-  --pdp-card-bg: rgba(15, 23, 42, 0.52);
-  --pdp-card-border: rgba(255, 255, 255, 0.1);
-  --pdp-card-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+[data-theme="light"] {
+  /* PDP Specific Theme Tokens - Light Transparent Glassmorphic */
+  --pdp-card-bg: rgba(255, 255, 255, 0.55);
+  --pdp-card-border: rgba(255, 255, 255, 0.85);
+  --pdp-card-shadow: 0 14px 36px -4px rgba(15, 23, 42, 0.07), inset 0 1px 0 rgba(255, 255, 255, 1);
   
-  --pdp-subtle-bg: rgba(255, 255, 255, 0.04);
-  --pdp-subtle-border: rgba(255, 255, 255, 0.08);
-  --pdp-subtle-hover: rgba(255, 255, 255, 0.08);
+  --pdp-subtle-bg: rgba(255, 255, 255, 0.45);
+  --pdp-subtle-border: rgba(226, 232, 240, 0.8);
+  --pdp-subtle-hover: rgba(255, 255, 255, 0.7);
 
-  --pdp-showcase-bg: rgba(15, 23, 42, 0.45);
-  --pdp-showcase-glow: radial-gradient(circle, rgba(59, 130, 246, 0.28) 0%, rgba(0, 0, 0, 0) 70%);
+  --pdp-showcase-bg: rgba(255, 255, 255, 0.55);
+  --pdp-showcase-glow: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
   --pdp-img-bg: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
-  --pdp-img-border: rgba(255, 255, 255, 0.15);
-  --pdp-img-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  --pdp-img-border: #334155;
+  --pdp-img-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.35);
 
-  --pdp-active-bg: linear-gradient(135deg, rgba(37, 99, 235, 0.3) 0%, rgba(59, 130, 246, 0.15) 100%);
-  --pdp-active-border: #3b82f6;
-  --pdp-active-text: #ffffff;
-  --pdp-active-glow: 0 0 22px rgba(59, 130, 246, 0.35);
+  --pdp-active-bg: #eff6ff;
+  --pdp-active-border: #2563eb;
+  --pdp-active-text: #1d4ed8;
+  --pdp-active-glow: 0 4px 16px rgba(37, 99, 235, 0.15);
 
-  --pdp-price-box-bg: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(30, 41, 59, 0.5) 100%);
-  --pdp-price-box-border: rgba(59, 130, 246, 0.35);
-  --pdp-price-box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --pdp-price-box-bg: linear-gradient(135deg, rgba(239, 246, 255, 0.75) 0%, rgba(248, 250, 252, 0.65) 100%);
+  --pdp-price-box-border: #bfdbfe;
+  --pdp-price-box-shadow: 0 6px 20px rgba(37, 99, 235, 0.06);
 
-  --pdp-price-text: #60a5fa;
+  --pdp-price-text: #1d4ed8;
   --pdp-price-orig: #64748b;
-  --pdp-accent-pill: #38bdf8;
+  --pdp-accent-pill: #0284c7;
 
-  --pdp-tag-green-bg: rgba(16, 185, 129, 0.18);
-  --pdp-tag-green-text: #34d399;
-  --pdp-tag-green-border: rgba(16, 185, 129, 0.35);
+  --pdp-tag-green-bg: #dcfce7;
+  --pdp-tag-green-text: #15803d;
+  --pdp-tag-green-border: #bbf7d0;
 
-  --pdp-tag-amber-bg: rgba(245, 158, 11, 0.16);
-  --pdp-tag-amber-text: #fbbf24;
-  --pdp-tag-amber-border: rgba(245, 158, 11, 0.35);
+  --pdp-tag-amber-bg: #fef3c7;
+  --pdp-tag-amber-text: #92400e;
+  --pdp-tag-amber-border: #fde68a;
 
-  --pdp-tag-red-bg: rgba(239, 68, 68, 0.18);
-  --pdp-tag-red-text: #f87171;
-  --pdp-tag-red-border: rgba(239, 68, 68, 0.35);
+  --pdp-tag-red-bg: #fee2e2;
+  --pdp-tag-red-text: #b91c1c;
+  --pdp-tag-red-border: #fecaca;
 
-  --pdp-cart-btn-bg: rgba(255, 255, 255, 0.08);
-  --pdp-cart-btn-border: rgba(255, 255, 255, 0.16);
-  --pdp-cart-btn-text: #f8fafc;
-  --pdp-cart-btn-hover: rgba(255, 255, 255, 0.14);
+  --pdp-cart-btn-bg: rgba(255, 255, 255, 0.65);
+  --pdp-cart-btn-border: #cbd5e1;
+  --pdp-cart-btn-text: #0f172a;
+  --pdp-cart-btn-hover: rgba(255, 255, 255, 0.85);
 
-  --pdp-tab-nav-bg: rgba(255, 255, 255, 0.04);
-  --pdp-tab-nav-border: rgba(255, 255, 255, 0.08);
-  --pdp-tab-btn-text: #94a3b8;
-  --pdp-tab-btn-hover: #ffffff;
-  --pdp-tab-active-bg: rgba(59, 130, 246, 0.18);
-  --pdp-tab-active-text: #60a5fa;
-  --pdp-tab-active-border: #3b82f6;
+  --pdp-tab-nav-bg: rgba(255, 255, 255, 0.5);
+  --pdp-tab-nav-border: rgba(226, 232, 240, 0.8);
+  --pdp-tab-btn-text: #475569;
+  --pdp-tab-btn-hover: #0f172a;
+  --pdp-tab-active-bg: rgba(255, 255, 255, 0.85);
+  --pdp-tab-active-text: #1d4ed8;
+  --pdp-tab-active-border: #2563eb;
 
-  --pdp-info-card-bg: rgba(255, 255, 255, 0.035);
-  --pdp-info-card-border: rgba(255, 255, 255, 0.08);
+  --pdp-info-card-bg: rgba(255, 255, 255, 0.5);
+  --pdp-info-card-border: rgba(226, 232, 240, 0.8);
 
-  --pdp-tier-hint-bg: rgba(59, 130, 246, 0.12);
-  --pdp-tier-hint-border: rgba(59, 130, 246, 0.4);
-  --pdp-tier-hint-text: #93c5fd;
+  --pdp-tier-hint-bg: #eff6ff;
+  --pdp-tier-hint-border: #2563eb;
+  --pdp-tier-hint-text: #1e40af;
 
-  --pdp-gateway-text: #f8fafc;
+  --pdp-gateway-text: #0f172a;
 }
 
 [data-theme="light-unused"] {
@@ -10551,106 +10551,106 @@ body.modal-open .floating-whatsapp-btn {
   }
 }
 
-
 /* ==========================================================================
-   FLIXSTORE 100% FULL WEBSITE TRANSPARENT GLASSMORPHIC THEME
-   Applies across Storefront, PDP, Modals, Drawers, Headers, Cards & Footers
+   FLIXSTORE 100% FULL WEBSITE LIGHT TRANSPARENT GLASSMORPHIC THEME (NOT DARK)
+   Crystal-Clear Frosted Acrylic Surfaces • Ambient Light Mesh • High Contrast
    ========================================================================== */
 
 :root,
 html,
 body,
-[data-theme="transparent"] {
-  --bg-primary: #07090e;
-  --bg-secondary: rgba(15, 23, 42, 0.65);
-  --bg-tertiary: rgba(30, 41, 59, 0.55);
-  --bg-card: rgba(15, 23, 42, 0.52);
-  --bg-card-hover: rgba(26, 36, 56, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.1);
+[data-theme="transparent"],
+[data-theme="light"] {
+  --bg-primary: #f1f5f9;
+  --bg-secondary: rgba(255, 255, 255, 0.65);
+  --bg-tertiary: rgba(241, 245, 249, 0.6);
+  --bg-card: rgba(255, 255, 255, 0.55);
+  --bg-card-hover: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.85);
   --glass-border-hover: rgba(59, 130, 246, 0.45);
-  --glass-highlight: rgba(255, 255, 255, 0.14);
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --glass-highlight: rgba(255, 255, 255, 0.95);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
 }
 
-/* Site Header & Navigation Glass */
+/* Site Header & Navigation Light Glass */
 .site-header {
-  background: rgba(7, 9, 14, 0.72) !important;
-  backdrop-filter: blur(24px) saturate(200%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.06), 0 8px 32px 0 rgba(0, 0, 0, 0.5) !important;
+  background: rgba(255, 255, 255, 0.68) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.9), 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
 }
 
 .brand-logo-text,
 .brand-name {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .top-announcement {
-  background: rgba(15, 23, 42, 0.55) !important;
+  background: rgba(255, 255, 255, 0.5) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #e2e8f0 !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.75) !important;
+  color: #334155 !important;
 }
 
-/* Search Bar Glass */
+/* Search Bar Light Glass */
 .search-input,
 .header-search-bar {
-  background: rgba(255, 255, 255, 0.06) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  color: #0f172a !important;
 }
 
 .search-input::placeholder {
-  color: rgba(255, 255, 255, 0.45) !important;
+  color: #64748b !important;
 }
 
 .search-dropdown,
 .search-results-dropdown,
 .search-popup {
-  background: rgba(11, 16, 27, 0.88) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
   backdrop-filter: blur(28px) saturate(190%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12) !important;
 }
 
 .search-result-item {
-  color: #f8fafc !important;
+  color: #0f172a !important;
 }
 
 .search-result-item:hover {
-  background: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(241, 245, 249, 0.8) !important;
 }
 
 /* Category Filter Bar */
 .category-btn,
 .category-pill {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(14px) !important;
   -webkit-backdrop-filter: blur(14px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.09) !important;
-  color: #cbd5e1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  color: #475569 !important;
 }
 
 .category-btn:hover,
 .category-pill:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  color: #0f172a !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
 }
 
 .category-btn.active,
 .category-pill.active {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.85), rgba(139, 92, 246, 0.85)) !important;
+  background: linear-gradient(135deg, #2563eb, #7c3aed) !important;
   color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 0 22px rgba(59, 130, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3) !important;
 }
 
 /* Trust Banners & Value Highlights */
@@ -10659,47 +10659,47 @@ body,
 .trust-card,
 .trust-highlight-card,
 .amazon-assurance-card {
-  background: rgba(15, 23, 42, 0.45) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(18px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 24px rgba(0, 0, 0, 0.4) !important;
-  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 8px 24px rgba(15, 23, 42, 0.05) !important;
+  color: #0f172a !important;
 }
 
 .stat-value {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .stat-label {
-  color: #94a3b8 !important;
+  color: #475569 !important;
 }
 
-/* Product Cards - Transparent Frosted Acrylic */
+/* Product Cards - Light Transparent Frosted Acrylic */
 .product-card {
-  background: rgba(15, 23, 42, 0.5) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(20px) saturate(190%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
   border-radius: var(--radius-lg) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 28px -4px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 8px 24px -2px rgba(15, 23, 42, 0.06), 0 1px 3px 0 rgba(15, 23, 42, 0.03) !important;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .product-card:hover {
   transform: translateY(-5px) !important;
-  background: rgba(22, 32, 54, 0.65) !important;
+  background: rgba(255, 255, 255, 0.78) !important;
   border-color: rgba(59, 130, 246, 0.45) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 16px 40px -4px rgba(37, 99, 235, 0.28), 0 0 0 1px rgba(59, 130, 246, 0.3) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 14px 34px -4px rgba(37, 99, 235, 0.14), 0 0 0 1px rgba(59, 130, 246, 0.25) !important;
 }
 
 .product-card-title,
 .product-card-body h3 {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .product-card-tagline {
-  color: #94a3b8 !important;
+  color: #475569 !important;
 }
 
 .product-card-bottom {
@@ -10707,7 +10707,7 @@ body,
 }
 
 .product-card-price-current {
-  color: #38bdf8 !important;
+  color: #1d4ed8 !important;
 }
 
 .product-card-price-original {
@@ -10716,375 +10716,376 @@ body,
 
 /* Product Detail Page (PDP) Showcase & Info Column */
 .pdp-showcase-card {
-  background: rgba(15, 23, 42, 0.45) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 20px 50px -10px rgba(0, 0, 0, 0.6) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 16px 40px -8px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1) !important;
 }
 
 .pdp-info-column {
-  background: rgba(15, 23, 42, 0.45) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 20px 50px -10px rgba(0, 0, 0, 0.6) !important;
-  color: #f8fafc !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 16px 40px -8px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+  color: #0f172a !important;
 }
 
 .pdp-title {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .pdp-tagline {
-  color: #94a3b8 !important;
+  color: #475569 !important;
 }
 
 .pdp-price-hero-box,
 .pdp-price-box {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(30, 41, 59, 0.5) 100%) !important;
+  background: linear-gradient(135deg, rgba(239, 246, 255, 0.75) 0%, rgba(248, 250, 252, 0.65) 100%) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(59, 130, 246, 0.35) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid rgba(191, 219, 254, 0.8) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 6px 20px rgba(37, 99, 235, 0.06) !important;
 }
 
 .pdp-price-hero-amount {
-  color: #38bdf8 !important;
+  color: #1d4ed8 !important;
 }
 
 .pdp-tier-pill,
 .pdp-validity-pill {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(255, 255, 255, 0.65) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  color: #0f172a !important;
 }
 
 .pdp-tier-pill.active,
 .pdp-validity-pill.active {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.35) 0%, rgba(59, 130, 246, 0.2) 100%) !important;
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  background: #eff6ff !important;
+  border-color: #2563eb !important;
+  color: #1d4ed8 !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15) !important;
 }
 
 .pdp-tier-hint {
-  background: rgba(59, 130, 246, 0.12) !important;
-  border: 1px solid rgba(59, 130, 246, 0.3) !important;
-  color: #93c5fd !important;
+  background: #eff6ff !important;
+  border: 1px solid #bfdbfe !important;
+  color: #1e40af !important;
 }
 
-/* About This Subscription Collapsible Glass Card */
+/* About This Subscription Collapsible Light Glass Card */
 .pdp-description-card {
-  background: rgba(15, 23, 42, 0.45) !important;
-  backdrop-filter: blur(20px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.09) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 12px 30px rgba(0, 0, 0, 0.4) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(20px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1) !important;
 }
 
 .pdp-desc-toggle-btn {
   background: transparent !important;
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .pdp-desc-body {
-  color: #cbd5e1 !important;
+  color: #334155 !important;
 }
 
 /* Features, Tabs & Reviews */
 .pdp-feature-item,
 .pdp-perk-card,
 .pdp-spec-item {
-  background: rgba(255, 255, 255, 0.04) !important;
+  background: rgba(255, 255, 255, 0.5) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #e2e8f0 !important;
+  border: 1px solid rgba(226, 232, 240, 0.75) !important;
+  color: #334155 !important;
 }
 
 .pdp-tab-nav {
-  background: rgba(255, 255, 255, 0.04) !important;
+  background: rgba(255, 255, 255, 0.5) !important;
   backdrop-filter: blur(14px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
 }
 
 .pdp-tab-btn {
-  color: #94a3b8 !important;
+  color: #475569 !important;
 }
 
 .pdp-tab-btn.active {
-  background: rgba(59, 130, 246, 0.2) !important;
-  color: #ffffff !important;
-  border-color: #3b82f6 !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  color: #1d4ed8 !important;
+  border-color: #2563eb !important;
 }
 
 .pdp-tabs-container {
-  background: rgba(15, 23, 42, 0.45) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.09) !important;
-  color: #cbd5e1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  color: #334155 !important;
 }
 
 .review-card,
 .pdp-reviews-summary {
-  background: rgba(15, 23, 42, 0.45) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  color: #334155 !important;
 }
 
 /* Mobile Sticky Purchase Bar */
 .pdp-sticky-bar {
-  background: rgba(11, 16, 27, 0.85) !important;
+  background: rgba(255, 255, 255, 0.82) !important;
   backdrop-filter: blur(28px) saturate(190%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.08) !important;
 }
 
-/* Modals - Ultra Glassmorphism */
+/* Modals - Light Ultra Glassmorphism */
 .modal-overlay {
-  background: rgba(0, 0, 0, 0.72) !important;
-  backdrop-filter: blur(22px) !important;
-  -webkit-backdrop-filter: blur(22px) !important;
+  background: rgba(15, 23, 42, 0.28) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
 }
 
 .modal-content,
 .checkout-modal-box,
 .auth-modal-box {
-  background: rgba(11, 16, 27, 0.82) !important;
-  backdrop-filter: blur(32px) saturate(200%) !important;
-  -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  box-shadow: 0 32px 80px -15px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  color: #f8fafc !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(32px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 25px 60px -10px rgba(15, 23, 42, 0.18), inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+  color: #0f172a !important;
 }
 
 .modal-header,
 .checkout-modal-header {
   background: transparent !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #ffffff !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
+  color: #0f172a !important;
 }
 
 .modal-title,
 .checkout-modal-title {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .checkout-step-card,
 .summary-card,
 .amazon-summary-card {
-  background: rgba(255, 255, 255, 0.035) !important;
+  background: rgba(255, 255, 255, 0.5) !important;
   backdrop-filter: blur(14px) !important;
   -webkit-backdrop-filter: blur(14px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #f8fafc !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  color: #0f172a !important;
 }
 
 .form-input,
 input.form-input,
 .input-with-icon .form-input {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(203, 213, 225, 0.85) !important;
+  color: #0f172a !important;
 }
 
 .form-input:focus,
 input.form-input:focus {
-  background: rgba(255, 255, 255, 0.09) !important;
-  border-color: rgba(59, 130, 246, 0.6) !important;
-  box-shadow: 0 0 18px rgba(59, 130, 246, 0.25) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(37, 99, 235, 0.6) !important;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.18) !important;
 }
 
 .form-label,
 .checkout-step-header span,
 .checkout-step-title {
-  color: #f8fafc !important;
+  color: #0f172a !important;
 }
 
 .checkout-gateway-banner {
-  background: rgba(16, 185, 129, 0.08) !important;
-  border-bottom: 1px solid rgba(16, 185, 129, 0.2) !important;
+  background: rgba(240, 253, 244, 0.7) !important;
+  border-bottom: 1px solid #bbf7d0 !important;
 }
 
 .gateway-brand-title {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .gateway-brand-desc {
-  color: #94a3b8 !important;
+  color: #475569 !important;
 }
 
 .gateway-trust-strip {
-  background: rgba(0, 0, 0, 0.2) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
-  color: #94a3b8 !important;
+  background: rgba(248, 250, 252, 0.7) !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.8) !important;
+  color: #475569 !important;
 }
 
 .checkout-item-title {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .checkout-item-meta {
-  color: #94a3b8 !important;
+  color: #64748b !important;
 }
 
 .checkout-item-price {
-  color: #38bdf8 !important;
+  color: #1d4ed8 !important;
 }
 
 .order-total-amount,
 .total-pay-val {
-  color: #38bdf8 !important;
+  color: #1d4ed8 !important;
 }
 
 /* Cart Drawer & Drawers */
 .cart-drawer,
 .nav-drawer {
-  background: rgba(11, 16, 27, 0.88) !important;
-  backdrop-filter: blur(32px) saturate(200%) !important;
-  -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
-  border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: -15px 0 45px rgba(0, 0, 0, 0.75) !important;
-  color: #f8fafc !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(32px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: -10px 0 40px rgba(15, 23, 42, 0.1) !important;
+  color: #0f172a !important;
 }
 
 .cart-item {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #f8fafc !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  color: #0f172a !important;
 }
 
 /* Site Footer & Mobile Bottom Navigation */
 .site-footer,
 .footer {
-  background: rgba(7, 9, 14, 0.8) !important;
+  background: rgba(255, 255, 255, 0.65) !important;
   backdrop-filter: blur(28px) !important;
   -webkit-backdrop-filter: blur(28px) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #cbd5e1 !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.8) !important;
+  color: #475569 !important;
 }
 
 .footer-col h4,
 .footer-heading {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .footer-link,
 .footer-nav a {
-  color: #94a3b8 !important;
+  color: #475569 !important;
 }
 
 .footer-link:hover,
 .footer-nav a:hover {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .mobile-bottom-nav {
-  background: rgba(11, 16, 27, 0.82) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
   backdrop-filter: blur(28px) saturate(190%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.6) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.05) !important;
 }
 
 .bottom-nav-item {
-  color: #94a3b8 !important;
+  color: #64748b !important;
 }
 
 .bottom-nav-item.active {
-  color: #38bdf8 !important;
+  color: #2563eb !important;
 }
 
-/* Comparison Table Glass */
+/* Comparison Table Light Glass */
 .comparison-table-wrapper {
-  background: rgba(15, 23, 42, 0.45) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
 }
 
 .comparison-table th {
-  background: rgba(15, 23, 42, 0.75) !important;
-  color: #ffffff !important;
+  background: rgba(248, 250, 252, 0.85) !important;
+  color: #0f172a !important;
 }
 
 .comparison-table td {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-  color: #cbd5e1 !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7) !important;
+  color: #334155 !important;
 }
 
 .comparison-table th.sticky-col,
 .comparison-table td.sticky-col {
-  background: rgba(11, 16, 27, 0.95) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(20px) !important;
 }
 
-/* FAQ Section Glass */
+/* FAQ Section Light Glass */
 .faq-item {
-  background: rgba(15, 23, 42, 0.45) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
 }
 
 .faq-question {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .faq-answer {
-  color: #94a3b8 !important;
+  color: #475569 !important;
 }
 
-/* Information Center Glass */
+/* Information Center Light Glass */
 .info-hero-card {
-  background: rgba(15, 23, 42, 0.5) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(22px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.09) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05) !important;
 }
 
 .info-hero-text h1 {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .info-hero-text p {
-  color: #94a3b8 !important;
+  color: #475569 !important;
 }
 
 .info-sidebar {
-  background: rgba(15, 23, 42, 0.5) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
 }
 
 .info-nav-btn {
-  color: #94a3b8 !important;
+  color: #475569 !important;
 }
 
 .info-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.08) !important;
-  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  color: #0f172a !important;
 }
 
 .info-nav-btn.active {
-  background: rgba(59, 130, 246, 0.18) !important;
-  color: #60a5fa !important;
-  border-color: rgba(59, 130, 246, 0.35) !important;
+  background: rgba(37, 99, 235, 0.1) !important;
+  color: #1d4ed8 !important;
+  border-color: rgba(37, 99, 235, 0.3) !important;
 }
 
 .info-content-card,
 .policy-card,
 .info-section {
-  background: rgba(15, 23, 42, 0.45) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #cbd5e1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  color: #334155 !important;
 }
 
 .info-content-card h2,
 .info-content-card h3,
 .info-content-card h4 {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
