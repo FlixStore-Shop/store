@@ -41,7 +41,7 @@ const state = {
   appliedCoupon: null,
   
   // Theme (Light Mode Exclusive)
-  theme: 'light',
+  theme: 'transparent',
 
   // Current User / Auth
   user: JSON.parse(localStorage.getItem('flix_user') || 'null'),
@@ -53,7 +53,7 @@ const state = {
 };
 
 // Force Light Theme & BDT Currency
-localStorage.setItem('flix_theme', 'light');
+localStorage.setItem('flix_theme', 'transparent');
 localStorage.setItem('flix_currency', 'BDT');
 
 // Formatting Helper: BDT Exclusive
@@ -204,12 +204,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Theme Management (Light Mode Exclusive)
 function initTheme() {
-  state.theme = 'light';
-  localStorage.setItem('flix_theme', 'light');
-  document.documentElement.setAttribute('data-theme', 'light');
+  state.theme = 'transparent';
+  localStorage.setItem('flix_theme', 'transparent');
+  document.documentElement.setAttribute('data-theme', 'transparent');
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
   if (metaThemeColor) {
-    metaThemeColor.setAttribute('content', '#ffffff');
+    metaThemeColor.setAttribute('content', '#07090e');
   }
 }
 
