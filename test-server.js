@@ -1,5 +1,6 @@
 const { spawn } = require('child_process');
 const http = require('http');
+const assert = require('assert');
 
 console.log('Testing FlixStore Server and APIs...');
 
@@ -72,21 +73,25 @@ async function runTests() {
     });
     console.log('[TEST 4] /api/coupons/validate Status:', couponRes.status, 'Discount:', couponRes.body.coupon.discountPercent + '%');
 
-    // 5. Checkout Test (Compulsory Login Enforcement & Verified Purchase)
+    // 5. Checkout Test (Guest Checkout & Authenticated Purchase)
     const testItem = nflxRes.body.data.plans[0];
 
-    // 5.1 Enforce Compulsory Login: Unauthenticated visitor must be rejected with 401
-    const blockedRes = await request('/api/orders/checkout', {
+    // 5.1 Guest Checkout: Unauthenticated visitor can purchase seamlessly without login
+    const guestRes = await request('/api/orders/checkout', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-test-mode': 'true' },
       body: {
         customer_name: 'Guest Visitor',
         customer_email: 'guest@example.com',
-        payment_method: 'bkash',
+        customer_phone: '01343546958',
+        payment_method: 'uddoktapay',
         items: [{ productId: nflxRes.body.data.id, planId: testItem.id, quantity: 1 }]
       }
     });
-    console.log('[TEST 5.1] Guest Checkout Blocked Status:', blockedRes.status, 'Requires Auth:', blockedRes.body.requiresAuth);
+    console.log('[TEST 5.1] Guest Checkout Success:', guestRes.status === 200, 'Order #:', guestRes.body?.order?.orderNumber);
+    assert(guestRes.status === 200, `Guest checkout should succeed with 200, got ${guestRes.status}`);
+    assert(guestRes.body?.success === true, 'Guest checkout should return success: true');
+    assert(guestRes.body?.order?.orderNumber, 'Guest checkout should generate an order number');
 
     // 5.2 Authenticate Customer
     let customerLogin = await request('/api/auth/login', {

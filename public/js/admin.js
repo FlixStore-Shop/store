@@ -471,7 +471,7 @@ function renderAllOrders(orders) {
         <td>
           <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
             ${isPendingVerification ? `
-              <button class="btn-primary" style="padding:4px 10px; font-size:0.74rem; background:linear-gradient(135deg, #059669 0%, #10b981 100%); color:#ffffff; font-weight:700; border:none; border-radius:6px; cursor:pointer;" onclick="verifyOrderPayment(${o.id}, '${o.order_number}')" title="Confirm payment on 01616-696977 and dispatch credentials">
+              <button class="btn-primary" style="padding:4px 10px; font-size:0.74rem; background:linear-gradient(135deg, #059669 0%, #10b981 100%); color:#ffffff; font-weight:700; border:none; border-radius:6px; cursor:pointer;" onclick="verifyOrderPayment(${o.id}, '${o.order_number}')" title="Confirm payment on +8801343546958 and dispatch credentials">
                 ✓ Verify & Dispatch
               </button>
               <button class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" onclick="rejectOrderPayment(${o.id}, '${o.order_number}')" title="Reject invalid payment">
@@ -515,7 +515,7 @@ async function verifyOrderPayment(orderId, orderNumber) {
 }
 
 async function rejectOrderPayment(orderId, orderNumber) {
-  const reason = prompt(`Reject payment for Order #${orderNumber}?\n\nEnter reason (e.g. TrxID not found on 01616-696977, Amount mismatch):`, 'TrxID not found in SMS records');
+  const reason = prompt(`Reject payment for Order #${orderNumber}?\n\nEnter reason (e.g. TrxID not found on +8801343546958, Amount mismatch):`, 'TrxID not found in SMS records');
   if (reason === null) return;
 
   const json = await fetchAdminApi(`/api/admin/orders/${orderId}/reject-payment`, {

@@ -1341,47 +1341,55 @@ function openCheckoutModal() {
   closeCartDrawer();
   if (state.cart.length === 0) return;
 
-  // Strict Rule: Sign up & login is compulsory for subscription purchase
-  if (!state.user || !state.token) {
-    state.pendingCheckoutAfterAuth = true;
-    openAuthModal('signup');
-    const notice = document.getElementById('authCheckoutNotice');
-    if (notice) notice.style.display = 'block';
-    return;
-  }
-
-  const notice = document.getElementById('authCheckoutNotice');
-  if (notice) notice.style.display = 'none';
-
   const modal = document.getElementById('checkoutModal');
   if (!modal) return;
 
-  // Pre-fill and lock verified customer details
   const nameInput = document.getElementById('checkoutName');
   const emailInput = document.getElementById('checkoutEmail');
   const phoneInput = document.getElementById('checkoutPhone');
   const badge = document.getElementById('checkoutEmailAccountBadge');
   const badgeText = document.getElementById('checkoutEmailAccountBadgeText');
 
-  if (nameInput) {
-    nameInput.value = state.user.full_name || '';
+  if (state.user && state.token) {
+    // Logged in user: pre-fill and display verified account badge
+    if (nameInput) nameInput.value = state.user.full_name || '';
+    if (emailInput) {
+      emailInput.value = state.user.email || '';
+      emailInput.readOnly = true;
+      emailInput.style.background = 'rgba(255, 255, 255, 0.05)';
+      emailInput.style.cursor = 'not-allowed';
+      emailInput.style.borderColor = 'rgba(52, 211, 153, 0.4)';
+    }
+    if (badge) {
+      badge.style.display = 'flex';
+      badge.style.background = 'rgba(16, 185, 129, 0.15)';
+      badge.style.borderColor = 'rgba(52, 211, 153, 0.35)';
+      badge.style.color = '#34d399';
+      if (badgeText) badgeText.textContent = `Verified Account (${state.user.email})`;
+    }
+    if (phoneInput && state.user.phone) {
+      phoneInput.value = state.user.phone;
+    }
+  } else {
+    // Guest Checkout (Sign in not compulsory)
+    if (nameInput && !nameInput.value) {
+      nameInput.value = '';
+    }
+    if (emailInput) {
+      emailInput.readOnly = false;
+      emailInput.style.background = 'transparent';
+      emailInput.style.cursor = 'text';
+      emailInput.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+      if (!emailInput.value) emailInput.value = '';
+    }
+    if (badge) {
+      badge.style.display = 'flex';
+      badge.style.background = 'rgba(99, 102, 241, 0.12)';
+      badge.style.borderColor = 'rgba(99, 102, 241, 0.25)';
+      badge.style.color = '#a5b4fc';
+      if (badgeText) badgeText.textContent = '⚡ Instant Guest Checkout (No password needed)';
+    }
   }
-  if (emailInput) {
-    emailInput.value = state.user.email || '';
-    emailInput.readOnly = true;
-    emailInput.style.background = 'rgba(255, 255, 255, 0.05)';
-    emailInput.style.cursor = 'not-allowed';
-    emailInput.style.borderColor = 'rgba(52, 211, 153, 0.4)';
-  }
-  if (badge) {
-    badge.style.display = 'flex';
-    if (badgeText) badgeText.textContent = `Verified FlixStore Account (${state.user.email})`;
-  }
-  if (phoneInput && state.user.phone) {
-    phoneInput.value = state.user.phone;
-  }
-
-
 
   selectPaymentMethod('uddoktapay');
   renderCheckoutSummary();
@@ -1776,9 +1784,8 @@ async function processOrderPayment() {
       localStorage.removeItem('flix_token');
       checkAuthStatus();
 
-      alert(json.message || 'Sign up or login is compulsory to purchase subscriptions.');
+      alert(json.message || 'Session expired. Please sign in or continue as guest.');
       closeCheckoutModal();
-      state.pendingCheckoutAfterAuth = true;
       openAuthModal('signin');
       return;
     }
@@ -1859,7 +1866,7 @@ function showOrderSuccessReceipt(order) {
             <span>⏳</span> <span>Verifying ${(order.paymentMethod || 'Mobile Banking').toUpperCase()} Payment</span>
           </h4>
           <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.6; margin:0 0 10px 0;">
-            We have recorded your payment submission for Order <strong>#${order.orderNumber}</strong>. Our accounts team is verifying your Transaction ID <strong>${order.transactionId || 'submitted'}</strong> sent to <strong>01616-696977</strong>.
+            We have recorded your payment submission for Order <strong>#${order.orderNumber}</strong>. Our accounts team is verifying your Transaction ID <strong>${order.transactionId || 'submitted'}</strong> sent to <strong>+8801343546958</strong>.
           </p>
           <div style="font-size:0.78rem; color:#64748b; display:flex; align-items:center; gap:6px;">
             <span>⚡</span> Average verification time: <strong>1 to 5 minutes</strong>. This page auto-refreshes when approved.
@@ -1890,7 +1897,7 @@ function showOrderSuccessReceipt(order) {
           <div style="font-size:2rem; margin-bottom:8px;">🔒</div>
           <div style="font-weight:700; font-size:0.95rem; color:var(--text-primary); margin-bottom:4px;">Credentials Locked Pending Payment Verification</div>
           <p style="font-size:0.82rem; color:var(--text-secondary); margin:0; line-height:1.5;">
-            As soon as our billing team confirms your TrxID on <strong>01616-696977</strong>, your account credentials and profile PIN will appear here immediately.
+            As soon as our billing team confirms your TrxID on <strong>+8801343546958</strong>, your account credentials and profile PIN will appear here immediately.
           </p>
         </div>
       `;

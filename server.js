@@ -444,30 +444,16 @@ async function fulfillOrder(orderId, paymentDetails = {}) {
 
 app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
   try {
-    // 1. Compulsory Sign Up & Login Enforcement
+    // 1. Authentication (Optional - Guest Checkout Fully Supported)
     let authUser = null;
+    let userRecord = null;
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.startsWith('Bearer ')) {
       const token = authHeader.split(' ')[1];
       authUser = verifyToken(token);
-    }
-
-    if (!authUser) {
-      return res.status(401).json({
-        success: false,
-        requiresAuth: true,
-        message: 'Sign up and login is compulsory to purchase subscriptions. Please create an account or sign in to complete your order.'
-      });
-    }
-
-    // Verify account exists in users table
-    const userRecord = await db.prepare('SELECT * FROM users WHERE id = ?').get(authUser.id);
-    if (!userRecord) {
-      return res.status(401).json({
-        success: false,
-        requiresAuth: true,
-        message: 'Account not found. Please sign up or login again.'
-      });
+      if (authUser && authUser.id) {
+        userRecord = await db.prepare('SELECT * FROM users WHERE id = ?').get(authUser.id);
+      }
     }
 
     const {
@@ -475,7 +461,7 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       customer_email,
       customer_phone,
       sender_number,
-      payment_method, // 'card', 'bkash', 'nagad', 'rocket', 'paypal', 'crypto'
+      payment_method, // 'card', 'bkash', 'nagad', 'rocket', 'paypal', 'crypto', 'uddoktapay'
       items, // array of { productId, planId, quantity }
       coupon_code,
       currency = 'USD',
@@ -484,10 +470,52 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       customer_notes
     } = req.body;
 
-    const activeCustomerEmail = userRecord.email.trim().toLowerCase();
-    const activeCustomerName = sanitizeInput(customer_name || userRecord.full_name || 'Subscriber');
-    const activeCustomerPhone = sanitizeInput(customer_phone || userRecord.phone || '');
-    const activeSenderNumber = sanitizeInput(sender_number || customer_phone || userRecord.phone || '');
+    // Resolve Customer Email (authenticated user takes precedence, otherwise guest email)
+    const rawEmail = (userRecord && userRecord.email) ? userRecord.email : (customer_email || '');
+    const activeCustomerEmail = rawEmail.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!activeCustomerEmail || !emailRegex.test(activeCustomerEmail)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide a valid email address to receive your subscription credentials and order confirmation.'
+      });
+    }
+
+    const rawName = (customer_name || (userRecord && userRecord.full_name) || 'Subscriber').trim();
+    const activeCustomerName = sanitizeInput(rawName || 'Subscriber');
+    const activeCustomerPhone = sanitizeInput(customer_phone || (userRecord && userRecord.phone) || '');
+    const activeSenderNumber = sanitizeInput(sender_number || customer_phone || (userRecord && userRecord.phone) || '');
+
+    // For Guest Checkouts: Link to existing account by email OR auto-provision customer record
+    if (!userRecord) {
+      const existingUser = await db.prepare('SELECT * FROM users WHERE LOWER(email) = ?').get(activeCustomerEmail);
+      if (existingUser) {
+        userRecord = existingUser;
+      } else {
+        try {
+          const randomPass = crypto.randomBytes(16).toString('hex');
+          const passHash = await hashPassword(randomPass);
+          const newUserRes = await db.prepare(`
+            INSERT INTO users (email, password_hash, full_name, phone, role, created_at)
+            VALUES (?, ?, ?, ?, 'customer', CURRENT_TIMESTAMP)
+          `).run(activeCustomerEmail, passHash, activeCustomerName, activeCustomerPhone || null);
+
+          const newUserId = newUserRes.lastInsertRowid;
+          userRecord = {
+            id: newUserId,
+            email: activeCustomerEmail,
+            full_name: activeCustomerName,
+            phone: activeCustomerPhone,
+            role: 'customer',
+            tier: 'standard'
+          };
+        } catch (insertErr) {
+          console.warn('Auto-provision user record fallback:', insertErr.message);
+          userRecord = await db.prepare('SELECT * FROM users WHERE LOWER(email) = ?').get(activeCustomerEmail) || null;
+        }
+      }
+    }
 
     const isManualMobileBanking = ['bkash', 'nagad', 'rocket'].includes(payment_method);
 
@@ -499,7 +527,7 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       if (!cleanSender || cleanSender.length < 6) {
         return res.status(400).json({
           success: false,
-          message: `Please provide your ${payment_method.toUpperCase()} Sender Phone Number (the number you sent money from) so we can verify payment on 01616-696977.`
+          message: `Please provide your ${payment_method.toUpperCase()} Sender Phone Number (the number you sent money from) so we can verify payment on +8801343546958.`
         });
       }
 
@@ -593,14 +621,14 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
     let isVip = false;
     let vipDiscountUSD = 0;
 
-    if (userRecord.role === 'admin' || userRecord.tier === 'vip') {
+    if (userRecord && (userRecord.role === 'admin' || userRecord.tier === 'vip')) {
       isVip = true;
     } else {
       const prevOrder = await db.prepare(`
         SELECT id FROM orders 
-        WHERE (LOWER(customer_email) = ? OR user_id = ?) AND (delivery_status = 'delivered' OR total_amount > 0)
+        WHERE (LOWER(customer_email) = ? ${userRecord ? 'OR user_id = ?' : ''}) AND (delivery_status = 'delivered' OR total_amount > 0)
         LIMIT 1
-      `).get(activeCustomerEmail, userRecord.id);
+      `).get(...(userRecord ? [activeCustomerEmail, userRecord.id] : [activeCustomerEmail]));
       if (prevOrder) {
         isVip = true;
       }
@@ -698,7 +726,7 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
 
     const orderRes = await insertOrder.run(
       orderNumber,
-      userRecord.id,
+      userRecord ? userRecord.id : null,
       activeCustomerName,
       activeCustomerEmail,
       activeCustomerPhone,
@@ -745,7 +773,7 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
     const orderSummary = {
       orderId,
       orderNumber,
-      userId: userRecord.id,
+      userId: userRecord ? userRecord.id : null,
       customerName: activeCustomerName,
       customerEmail: activeCustomerEmail,
       customerPhone: activeCustomerPhone,
@@ -775,7 +803,7 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
           metadata: {
             order_id: String(orderId),
             order_number: orderNumber,
-            user_id: String(userRecord.id)
+            user_id: userRecord ? String(userRecord.id) : 'guest'
           },
           redirectUrl: `${appUrl}/api/payment/uddoktapay/success`,
           cancelUrl: `${appUrl}/api/payment/uddoktapay/cancel?order=${orderNumber}`,
@@ -790,7 +818,7 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
             order: {
               orderId,
               orderNumber,
-              userId: userRecord.id,
+              userId: userRecord ? userRecord.id : null,
               customerName: activeCustomerName,
               customerEmail: activeCustomerEmail,
               customerPhone: activeCustomerPhone,
@@ -822,7 +850,7 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
           order: {
             orderId,
             orderNumber,
-            userId: userRecord.id,
+            userId: userRecord ? userRecord.id : null,
             customerName: activeCustomerName,
             customerEmail: activeCustomerEmail,
             customerPhone: activeCustomerPhone,
@@ -842,7 +870,7 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
 
     // Return complete order summary and verification status (for manual verification or direct orders)
     const orderReturnMessage = isManualMobileBanking
-      ? 'Order received! Payment verification in progress. Our billing team will verify your transaction on 01616-696977.'
+      ? 'Order received! Payment verification in progress. Our billing team will verify your transaction on +8801343546958.'
       : (isVip 
           ? 'Order placed with your ★ VIP 5% Member Discount automatically applied!'
           : 'Order completed successfully! Credentials dispatched.');
@@ -853,7 +881,7 @@ app.post('/api/orders/checkout', checkoutLimiter, async (req, res) => {
       order: {
         orderId,
         orderNumber,
-        userId: userRecord.id,
+        userId: userRecord ? userRecord.id : null,
         customerName: activeCustomerName,
         customerEmail: activeCustomerEmail,
         customerPhone: activeCustomerPhone,
