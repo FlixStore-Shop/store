@@ -11719,48 +11719,102 @@ body.pdp-page .pdp-title {
 }
 
 body.pdp-page .pdp-rating-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  margin-bottom: 18px;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px 10px !important;
+  font-size: 13px !important;
+  margin-bottom: 18px !important;
+  line-height: 1.4 !important;
+}
+
+.pdp-rating-stars-wrap {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 body.pdp-page .pdp-rating-stars {
-  color: #F59E0B;
-  letter-spacing: 2px;
+  color: #F59E0B !important;
+  font-size: 14px !important;
+  letter-spacing: 1.5px !important;
+  line-height: 1 !important;
 }
 
 #pdpRatingScore {
-  font-weight: 800;
-  color: #0F172A;
+  font-family: 'Sora', sans-serif !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
+  font-size: 14px !important;
 }
 
 .pdp-review-count-text {
-  color: #64748B;
-  font-size: 0.85rem;
+  color: #64748B !important;
+  font-size: 12.5px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
 }
 
 .pdp-meta-sep {
-  color: #CBD5E1;
+  color: #CBD5E1 !important;
+  font-size: 12px !important;
+  user-select: none !important;
 }
 
 .pdp-sold-badge {
-  background: #F1F5F9;
-  color: #475569;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 9999px;
+  display: inline-flex !important;
+  align-items: center !important;
+  background: #F1F5F9 !important;
+  color: #475569 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 3px 9px !important;
+  border-radius: 9999px !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
 }
 
 body.pdp-page .pdp-in-stock-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
   background: #DCFCE7 !important;
   color: #15803D !important;
   font-size: 11px !important;
   font-weight: 700 !important;
-  padding: 2px 9px !important;
+  padding: 3px 9px !important;
   border-radius: 9999px !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 480px) {
+  body.pdp-page .pdp-rating-row {
+    gap: 6px 8px !important;
+    font-size: 12px !important;
+    margin-bottom: 14px !important;
+  }
+  
+  body.pdp-page .pdp-rating-stars {
+    font-size: 13px !important;
+    letter-spacing: 1px !important;
+  }
+
+  #pdpRatingScore {
+    font-size: 13px !important;
+  }
+
+  .pdp-review-count-text {
+    font-size: 12px !important;
+  }
+
+  .pdp-sold-badge,
+  body.pdp-page .pdp-in-stock-pill {
+    font-size: 10.5px !important;
+    padding: 2.5px 7px !important;
+  }
 }
 
 /* Price Hero Strip (ShahedStore Signature) */

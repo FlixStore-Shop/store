@@ -268,7 +268,11 @@ function renderProductDetails() {
   const ratingScore = document.getElementById('pdpRatingScore');
   const reviewCount = document.getElementById('pdpReviewCount');
   if (ratingScore) ratingScore.textContent = Number(p.rating || 5.0).toFixed(1);
-  if (reviewCount) reviewCount.textContent = `(${p.review_count || 128} verified reviews)`;
+  if (reviewCount) {
+    const count = parseInt(p.review_count || 128, 10);
+    const countFormatted = count >= 1000 ? `${(count / 1000).toFixed(1)}k` : count.toLocaleString();
+    reviewCount.textContent = `(${countFormatted})`;
+  }
 
   // ShahedStore Style Highlights Card
   const hlList = document.getElementById('pdpHighlightsList');
