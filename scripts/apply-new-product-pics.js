@@ -5,12 +5,16 @@ const { db, initDatabase } = require('../db/database');
 
 const fileMapping = {
   'AdobeCreativeCloude.jpg': 'adobe-creative-cloud.jpg',
+  'AppleMusic.jpg': 'apple-music.jpg',
   'Canva.jpg': 'canva.jpg',
   'ChatGpt.jpg': 'chatgpt.jpg',
+  'Chorki.jpg': 'chorki.jpg',
   'ClaudePro.jpg': 'claude-pro.jpg',
+  'Crunchyroll.jpg': 'crunchyroll.jpg',
   'GoggleOne.jpg': 'google-one.jpg',
   'Grammarly.jpg': 'grammarly.jpg',
   'HboMax.jpg': 'hbo-max.jpg',
+  'Hoichoi.jpg': 'hoichoi.jpg',
   'Netflix.jpg': 'netflix.jpg',
   'Office365.jpg': 'microsoft-365.jpg',
   'PrimeVideo.jpg': 'prime-video.jpg',
@@ -20,12 +24,16 @@ const fileMapping = {
 
 const slugMapping = {
   'adobe-creative-cloud-all-apps': '/assets/products/adobe-creative-cloud.jpg',
+  'apple-music-premium': '/assets/products/apple-music.jpg',
   'canva-pro-subscription': '/assets/products/canva.jpg',
   'chatgpt-plus-openai': '/assets/products/chatgpt.jpg',
+  'chorki-premium': '/assets/products/chorki.jpg',
   'claude-pro-anthropic': '/assets/products/claude-pro.jpg',
+  'crunchyroll-mega-fan': '/assets/products/crunchyroll.jpg',
   'google-one-2tb-cloud': '/assets/products/google-one.jpg',
   'grammarly-premium-ai': '/assets/products/grammarly.jpg',
   'hbo-max-streaming': '/assets/products/hbo-max.jpg',
+  'hoichoi-premium': '/assets/products/hoichoi.jpg',
   'netflix-premium-4k-uhd': '/assets/products/netflix.jpg',
   'microsoft-365-office-suite': '/assets/products/microsoft-365.jpg',
   'amazon-prime-video': '/assets/products/prime-video.jpg',
