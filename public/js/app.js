@@ -122,6 +122,144 @@ function updateAllStaticPrices() {
 // -----------------------------------------------------------------------------
 // INITIALIZATION
 // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// SMOOTH PAGE TRANSITION & NANO PROGRESS BAR (Apple / Vercel Grade)
+// -----------------------------------------------------------------------------
+(function initSmoothPageTransitions() {
+  let progressTimer = null;
+  let progressEl = null;
+
+  function getProgressEl() {
+    if (!progressEl) {
+      progressEl = document.getElementById('flixPageLoader');
+      if (!progressEl) {
+        progressEl = document.createElement('div');
+        progressEl.id = 'flixPageLoader';
+        progressEl.setAttribute('aria-hidden', 'true');
+        (document.body || document.documentElement).appendChild(progressEl);
+      }
+    }
+    return progressEl;
+  }
+
+  function startProgress() {
+    const el = getProgressEl();
+    if (!el) return;
+    if (progressTimer) clearInterval(progressTimer);
+
+    el.classList.remove('done');
+    el.classList.add('active');
+    el.style.width = '0%';
+
+    let currentWidth = 18;
+    el.style.width = currentWidth + '%';
+
+    progressTimer = setInterval(() => {
+      if (currentWidth < 88) {
+        const step = Math.max(0.8, (88 - currentWidth) * 0.18);
+        currentWidth += step;
+        el.style.width = Math.min(88, currentWidth) + '%';
+      }
+    }, 70);
+  }
+
+  function finishProgress() {
+    if (progressTimer) {
+      clearInterval(progressTimer);
+      progressTimer = null;
+    }
+    const el = document.getElementById('flixPageLoader');
+    if (!el) return;
+
+    el.style.width = '100%';
+    setTimeout(() => {
+      el.classList.add('done');
+      setTimeout(() => {
+        el.classList.remove('active', 'done');
+        el.style.width = '0%';
+      }, 300);
+    }, 100);
+  }
+
+  window.smoothNavigate = function(targetUrl) {
+    if (!targetUrl) return;
+
+    // Start sleek top loader
+    startProgress();
+
+    // Trigger subtle exit transition
+    if (document.body) {
+      document.body.classList.add('page-transitioning');
+    }
+
+    // Safety timeout in case navigation is interrupted or canceled
+    setTimeout(() => {
+      if (document.body) document.body.classList.remove('page-transitioning');
+      finishProgress();
+    }, 4000);
+
+    // Give visual exit animation a slight tick to register smoothly
+    setTimeout(() => {
+      window.location.href = targetUrl;
+    }, 110);
+  };
+
+  // Complete loader on page load
+  if (document.readyState === 'complete') {
+    finishProgress();
+  } else {
+    window.addEventListener('load', finishProgress);
+  }
+
+  // Handle bfcache (Browser Back / Forward button)
+  window.addEventListener('pageshow', () => {
+    if (document.body) document.body.classList.remove('page-transitioning');
+    finishProgress();
+  });
+
+  // Global delegated click interceptor for internal links
+  document.addEventListener('click', (e) => {
+    // Ignore modified clicks (Ctrl, Cmd, Shift, Alt) or non-primary clicks
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.defaultPrevented || e.button !== 0) return;
+
+    const anchor = e.target.closest('a');
+    if (!anchor) return;
+
+    const href = anchor.getAttribute('href');
+    if (!href) return;
+
+    // Ignore anchors that are hashes, tel, mailto, javascript, external target
+    if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
+    if (anchor.target && anchor.target !== '_self') return;
+    if (anchor.hasAttribute('download')) return;
+
+    let url;
+    try {
+      url = new URL(anchor.href, window.location.origin);
+    } catch (err) {
+      return;
+    }
+
+    // Ignore external domains (e.g. WhatsApp, Facebook, payment gateways)
+    if (url.origin !== window.location.origin) return;
+
+    // Same-page hash jumps (e.g. /#faqSection or /product/slug#reviews)
+    if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) {
+      return;
+    }
+
+    // Same exact URL clicked (prevent redundant reload)
+    if (url.href === window.location.href) {
+      e.preventDefault();
+      return;
+    }
+
+    // Intercept and smoothly navigate!
+    e.preventDefault();
+    window.smoothNavigate(url.href);
+  });
+})();
+
 function initMobileDetection() {
   try {
     const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
@@ -440,7 +578,7 @@ function renderProducts() {
 
         return `
           <div class="product-card" data-slug="${p.slug}">
-            <div class="product-card-top" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer;">
+            <div class="product-card-top" onclick="smoothNavigate('/product/${p.slug}')" style="cursor: pointer;">
               <img src="${p.logo_url ? p.logo_url + '?v=5' : '/assets/flixstore-icon.png'}" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';" alt="${p.title || 'Subscription'}" class="product-card-img" loading="lazy">
               ${discountPercent > 0 ? `
                 <span class="card-discount-pill">-${discountPercent}%</span>
@@ -450,7 +588,7 @@ function renderProducts() {
             </div>
 
             <div class="product-body">
-              <h3 class="product-title" onclick="window.location.href='/product/${p.slug}'" style="cursor: pointer; ${p.title_align && p.title_align !== 'left' ? `text-align: ${p.title_align};` : ''}" title="${(p.title || 'Subscription').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')}">
+              <h3 class="product-title" onclick="smoothNavigate('/product/${p.slug}')" style="cursor: pointer; ${p.title_align && p.title_align !== 'left' ? `text-align: ${p.title_align};` : ''}" title="${(p.title || 'Subscription').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')}">
                 ${(p.title || 'Subscription').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')}
               </h3>
 
@@ -783,7 +921,7 @@ function hideSearchDropdown() {
 
 async function openProductDetail(slug) {
   if (slug) {
-    window.location.href = `/product/${slug}`;
+    smoothNavigate(`/product/${slug}`);
     return;
   }
 }
@@ -1218,7 +1356,7 @@ function handleDrawerCategory(categorySlug, event) {
       }
     }, 120);
   } else {
-    window.location.href = `/?category=${encodeURIComponent(categorySlug)}#productsGrid`;
+    smoothNavigate(`/?category=${encodeURIComponent(categorySlug)}#productsGrid`);
   }
 }
 
@@ -1243,7 +1381,7 @@ function handleDrawerNav(action, event) {
         const el = document.getElementById('pdpTabNav') || document.getElementById('pdpTab_warranty');
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        window.location.href = '/?jump=warranty#trust-100-guarantee';
+        smoothNavigate('/?jump=warranty#trust-100-guarantee');
       }
     } else if (action === 'delivery') {
       if (isHome) {
@@ -1258,7 +1396,7 @@ function handleDrawerNav(action, event) {
         const el = document.getElementById('pdpTabNav') || document.getElementById('pdpTab_instructions');
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        window.location.href = '/?jump=delivery#howItWorks';
+        smoothNavigate('/?jump=delivery#howItWorks');
       }
     } else if (action === 'faq' || action === 'payments') {
       if (isHome) {
@@ -1279,7 +1417,7 @@ function handleDrawerNav(action, event) {
         const el = document.getElementById('pdpTabNav') || document.getElementById('pdpTab_faq');
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        window.location.href = '/?jump=faq#faqSection';
+        smoothNavigate('/?jump=faq#faqSection');
       }
     } else if (['terms', 'refund', 'delivery', 'delivery-policy', 'privacy', 'about', 'contact'].includes(action)) {
       let slug = 'terms';
@@ -1288,7 +1426,7 @@ function handleDrawerNav(action, event) {
       else if (action === 'privacy') slug = 'privacy-policy';
       else if (action === 'about') slug = 'about-us';
       else if (action === 'contact') slug = 'contact-us';
-      window.location.href = '/' + slug;
+      smoothNavigate('/' + slug);
     }
   }, 120);
 }
@@ -3573,7 +3711,7 @@ function openInfoModal(tabKey = 'terms', event) {
   else if (tabKey === 'privacy') slug = 'privacy-policy';
   else if (tabKey === 'about') slug = 'about-us';
   else if (tabKey === 'contact') slug = 'contact-us';
-  window.location.href = '/' + slug;
+  smoothNavigate('/' + slug);
 }
 
 function closeInfoModal() {

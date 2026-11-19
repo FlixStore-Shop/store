@@ -994,12 +994,12 @@ function renderRelatedProducts() {
     const offerFormatted = formatPrice(offerPriceBDT, true);
     return `
       <div class="product-card" data-slug="${p.slug}">
-        <div class="product-card-top" onclick="window.location.href='/product/${p.slug}'" style="cursor:pointer;">
+        <div class="product-card-top" onclick="smoothNavigate('/product/${p.slug}')" style="cursor:pointer;">
           <img src="${p.logo_url ? p.logo_url + '?v=5' : '/assets/flixstore-icon.png'}" alt="${p.title}" class="product-card-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/flixstore-icon.png';">
           <span class="card-discount-pill hot">HOT</span>
         </div>
         <div class="product-body">
-          <h3 class="product-title" onclick="window.location.href='/product/${p.slug}'" style="cursor:pointer;" title="${p.title}">
+          <h3 class="product-title" onclick="smoothNavigate('/product/${p.slug}')" style="cursor:pointer;" title="${p.title}">
             ${p.title}
           </h3>
           <div class="product-rating-row">
@@ -1010,7 +1010,7 @@ function renderRelatedProducts() {
             <span class="card-price-violet">${offerFormatted}</span>
           </div>
           <div class="card-action-group">
-            <button type="button" class="btn-card-buy-now" onclick="window.location.href='/product/${p.slug}'" title="View Plan">
+            <button type="button" class="btn-card-buy-now" onclick="smoothNavigate('/product/${p.slug}')" title="View Plan">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
                 <line x1="1" y1="10" x2="23" y2="10"></line>
