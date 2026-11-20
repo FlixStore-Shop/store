@@ -230,32 +230,112 @@ body.page-transitioning {
   z-index: 1;
 }
 
-/* Top Announcement Marquee */
+/* Top Announcement Marquee Bar (News Ticker Animation) */
 .top-announcement {
-  background: linear-gradient(90deg, #1e1b4b, #311042, #1e1b4b);
-  border-bottom: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.85) !important;
   font-size: 0.85rem;
-  padding: 8px 0;
-  color: #e2e8f0;
-  text-align: center;
+  padding: 0 !important;
+  color: #334155 !important;
   position: relative;
   z-index: 100;
+  overflow: hidden;
+  height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+.top-announcement-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 16px;
+  height: 100%;
+}
+
+.top-announcement-ticker {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  mask-image: linear-gradient(to right, transparent 0%, black 18px, black calc(100% - 18px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18px, black calc(100% - 18px), transparent 100%);
+}
+
+.top-announcement-track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: flixNewsTicker 32s linear infinite;
+  will-change: transform;
+}
+
+.top-announcement:hover .top-announcement-track,
+.top-announcement-track:hover {
+  animation-play-state: paused;
+}
+
+.top-announcement-item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding-right: 50px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #334155;
+  user-select: none;
 }
 
 .top-announcement .badge-pill {
-  background: rgba(236, 72, 153, 0.25);
-  color: #f472b6;
-  border: 1px solid rgba(236, 72, 153, 0.4);
+  background: rgba(236, 72, 153, 0.15) !important;
+  color: #db2777 !important;
+  border: 1px solid rgba(236, 72, 153, 0.35) !important;
   padding: 2px 8px;
   border-radius: var(--radius-full);
-  font-weight: 600;
-  font-size: 0.75rem;
+  font-weight: 700;
+  font-size: 0.72rem;
   margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .top-announcement strong {
-  color: #38bdf8;
-  letter-spacing: 0.5px;
+  color: #2563eb !important;
+  font-weight: 700;
+  margin: 0 3px;
+}
+
+.top-announcement-social {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+@keyframes flixNewsTicker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-announcement-track {
+    animation: none !important;
+  }
 }
 
 /* Header & Sticky Navbar */
@@ -5813,15 +5893,23 @@ body.page-transitioning {
   }
 
   .top-announcement {
-    font-size: 0.82rem !important;
-    padding: 6px 10px !important;
-    line-height: 1.35 !important;
+    height: 32px !important;
+    padding: 0 !important;
   }
 
-  .top-announcement .badge-pill {
-    padding: 1px 6px !important;
-    font-size: 0.66rem !important;
-    margin-right: 4px !important;
+  .top-announcement-container {
+    padding: 0 6px !important;
+  }
+
+  .top-announcement-item {
+    font-size: 0.76rem !important;
+    padding-right: 32px !important;
+  }
+
+  .top-announcement-item .badge-pill {
+    padding: 1.5px 6px !important;
+    font-size: 0.65rem !important;
+    margin-right: 6px !important;
   }
 
   .mobile-search-section {
