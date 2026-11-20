@@ -3308,7 +3308,7 @@ function scrollToTrustFeature(featureKey) {
 window.scrollToTrustFeature = scrollToTrustFeature;
 
 // -----------------------------------------------------------------------------
-// FLOATING MOBILE BOTTOM NAV (AUTO-HIDE AFTER 1S TOUCH / APPEAR ON INTERACTION)
+// FLOATING MOBILE BOTTOM NAV (STANDARD 3.5S TIME DURATION & SMOOTH INTERACTION)
 // -----------------------------------------------------------------------------
 
 function initFloatingMobileNav() {
@@ -3316,7 +3316,8 @@ function initFloatingMobileNav() {
   if (!nav) return;
 
   let hideTimer = null;
-  const HIDE_TIMEOUT_MS = 1000; // 1 second
+  const HIDE_TIMEOUT_MS = 3500; // Standard 3.5s time duration (comfortable mobile browsing)
+  let lastScrollY = window.scrollY;
 
   function showNav() {
     nav.classList.remove('nav-hidden');
@@ -3342,15 +3343,29 @@ function initFloatingMobileNav() {
     }, HIDE_TIMEOUT_MS);
   }
 
-  // User interactions that trigger appear and restart the 2s timer
-  const interactionEvents = ['touchstart', 'touchmove', 'scroll', 'mousedown'];
+  // Handle scroll and interactions with standard timing
+  window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+    // Scrolling up reveals bottom navigation immediately
+    if (currentScrollY < lastScrollY - 6) {
+      showNav();
+    } else if (currentScrollY > lastScrollY + 25 && currentScrollY > 120) {
+      // Sustained scroll down hides smoothly to give full reading space
+      hideNav();
+    } else {
+      scheduleHide();
+    }
+    lastScrollY = currentScrollY;
+  }, { passive: true });
+
+  const interactionEvents = ['touchstart', 'touchmove', 'mousedown'];
   interactionEvents.forEach(evt => {
     window.addEventListener(evt, () => {
       showNav();
     }, { passive: true });
   });
 
-  // Tapping directly inside the floating dock keeps it visible
+  // Tapping or interacting directly inside the floating dock keeps it visible
   nav.addEventListener('touchstart', () => {
     if (hideTimer) clearTimeout(hideTimer);
   }, { passive: true });
@@ -3359,7 +3374,7 @@ function initFloatingMobileNav() {
     scheduleHide();
   }, { passive: true });
 
-  // Initial countdown on page load
+  // Initial standard countdown on page load
   scheduleHide();
 }
 

@@ -12986,3 +12986,57 @@ body.pdp-page .pdp-warranty-card {
     padding: 3px 9px !important;
   }
 }
+
+/* ==========================================================================
+   SMARTPHONE VIEW: STANDARD DURATION BAR & PLAN OPTIONS STYLING
+   ========================================================================== */
+@media (max-width: 480px) {
+  .pdp-duration-section {
+    margin-bottom: 16px !important;
+  }
+  .pdp-duration-header-row {
+    margin-bottom: 8px !important;
+  }
+  .pdp-duration-label-title {
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+  }
+  #pdpSelectedDurationLabel {
+    display: none !important;
+  }
+  .pdp-plan-card {
+    padding: 12px 14px !important;
+    border-radius: 14px !important;
+    gap: 8px !important;
+    min-height: 48px !important;
+  }
+  .pdp-plan-card-left {
+    gap: 10px !important;
+  }
+  .pdp-plan-radio-dot {
+    width: 17px !important;
+    height: 17px !important;
+  }
+  .pdp-plan-duration-name {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    white-space: nowrap !important;
+  }
+  .pdp-plan-card-right {
+    gap: 7px !important;
+    margin-left: auto !important;
+  }
+  .pdp-plan-orig-bdt {
+    font-size: 12px !important;
+  }
+  .pdp-plan-current-bdt {
+    font-size: 15.5px !important;
+    font-weight: 800 !important;
+  }
+  .pdp-plan-disc-tag {
+    font-size: 10.5px !important;
+    padding: 2px 6px !important;
+  }
+}
