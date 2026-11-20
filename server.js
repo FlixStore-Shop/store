@@ -2189,6 +2189,150 @@ app.post('/api/admin/products', authMiddleware('admin'), async (req, res) => {
   }
 });
 
+// Admin: Update Product / Subscription
+app.put('/api/admin/products/:id', authMiddleware('admin'), async (req, res) => {
+  try {
+    const prodId = parseInt(req.params.id, 10);
+    if (!prodId) {
+      return res.status(400).json({ success: false, message: 'Valid product ID is required' });
+    }
+
+    const existing = await db.prepare('SELECT id, slug FROM products WHERE id = ?').get(prodId);
+    if (!existing) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    const {
+      category_id,
+      title,
+      slug,
+      tagline,
+      description,
+      logo_url,
+      badge,
+      base_price,
+      original_price,
+      original_price_bdt,
+      delivery_time,
+      warranty,
+      rating,
+      review_count,
+      stock_status,
+      is_featured,
+      is_trending,
+      is_bestseller,
+      features_list,
+      instructions,
+      title_align,
+      desc_align,
+      tagline_align,
+      plans
+    } = req.body;
+
+    if (!title || !slug || !base_price || !category_id) {
+      return res.status(400).json({ success: false, message: 'Title, slug, base price, and category are required' });
+    }
+
+    const cleanSlug = slug.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+
+    // Check slug collision with other products
+    const collision = await db.prepare('SELECT id FROM products WHERE slug = ? AND id != ?').get(cleanSlug, prodId);
+    if (collision) {
+      return res.status(400).json({ success: false, message: `A product with slug "${cleanSlug}" already exists. Please choose a unique slug.` });
+    }
+
+    const basePriceNum = parseFloat(base_price);
+    const origPriceNum = original_price ? parseFloat(original_price) : parseFloat((basePriceNum * 1.35).toFixed(2));
+    const origPriceBdtNum = original_price_bdt ? parseFloat(original_price_bdt) : Math.round(origPriceNum * 120);
+
+    const titleAlign = (title_align === 'center' || title_align === 'right') ? title_align : 'left';
+    const descAlign = (desc_align === 'center' || desc_align === 'justify' || desc_align === 'right') ? desc_align : 'left';
+    const taglineAlign = (tagline_align === 'center' || tagline_align === 'justify' || tagline_align === 'right') ? tagline_align : 'left';
+
+    const updateProd = db.prepare(`
+      UPDATE products SET
+        category_id = ?, title = ?, slug = ?, tagline = ?, description = ?, logo_url = ?, badge = ?,
+        base_price = ?, original_price = ?, original_price_bdt = ?, delivery_time = ?, warranty = ?,
+        rating = ?, review_count = ?, stock_status = ?, is_featured = ?, is_trending = ?, is_bestseller = ?,
+        features_list = ?, instructions = ?, title_align = ?, desc_align = ?, tagline_align = ?
+      WHERE id = ?
+    `);
+
+    await updateProd.run(
+      parseInt(category_id, 10),
+      sanitizeInput(title),
+      cleanSlug,
+      sanitizeInput(tagline || ''),
+      sanitizeInput(description || ''),
+      logo_url || '/assets/brands/netflix.svg',
+      badge || 'Official Verified',
+      basePriceNum,
+      origPriceNum,
+      origPriceBdtNum,
+      sanitizeInput(delivery_time || '60s Instant Delivery'),
+      sanitizeInput(warranty || 'Full Duration Warranty'),
+      rating ? parseFloat(rating) : 4.9,
+      review_count ? parseInt(review_count, 10) : 128,
+      stock_status || 'in_stock',
+      is_featured ? 1 : 0,
+      is_trending ? 1 : 0,
+      is_bestseller ? 1 : 0,
+      JSON.stringify(Array.isArray(features_list) && features_list.length > 0 ? features_list : [
+        '4K Ultra HD & HDR Streaming',
+        'Works directly in Bangladesh without VPN',
+        'Full Duration Replacement Warranty',
+        'Instant Credentials Vault Dispatch'
+      ]),
+      instructions || 'Login at official platform with provided credentials. Do not change master account credentials.',
+      titleAlign,
+      descAlign,
+      taglineAlign,
+      prodId
+    );
+
+    // Update plans if provided
+    if (plans && Array.isArray(plans) && plans.length > 0) {
+      await db.prepare('DELETE FROM product_plans WHERE product_id = ?').run(prodId);
+
+      const insertPlan = db.prepare(`
+        INSERT INTO product_plans (
+          product_id, plan_name, tier_type, duration_months, duration_label,
+          price_usd, price_bdt, original_price_usd, original_price_bdt, is_popular, device_limit, plan_features, sort_order
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+
+      let order = 1;
+      for (const pl of plans) {
+        const planUsd = parseFloat(pl.price_usd || pl.usd || basePriceNum);
+        const planBdt = parseFloat(pl.price_bdt || pl.bdt || Math.round(planUsd * 120));
+        const planOrigUsd = parseFloat(pl.original_price_usd || pl.orig || (planUsd * 1.35).toFixed(2));
+        const planOrigBdt = parseFloat(pl.original_price_bdt || Math.round(planOrigUsd * 120));
+
+        await insertPlan.run(
+          prodId,
+          sanitizeInput(pl.plan_name || pl.name || '1 Month Dedicated'),
+          sanitizeInput(pl.tier_type || pl.tier || 'private'),
+          parseInt(pl.duration_months || pl.months || 1, 10),
+          cleanDurationLabel(sanitizeInput(pl.duration_label || pl.label || '1 Month'), parseInt(pl.duration_months || pl.months || 1, 10)),
+          planUsd,
+          planBdt,
+          planOrigUsd,
+          planOrigBdt,
+          (pl.is_popular || pl.popular) ? 1 : 0,
+          sanitizeInput(pl.device_limit || pl.devices || '1 Device'),
+          sanitizeInput(pl.plan_features || pl.features || 'Full Premium Access'),
+          order++
+        );
+      }
+    }
+
+    res.json({ success: true, message: `Subscription "${title}" updated successfully!`, productId: prodId });
+  } catch (err) {
+    console.error('Error updating product:', err);
+    res.status(500).json({ success: false, message: 'Failed to update product: ' + err.message });
+  }
+});
+
 // Admin: Delete Product / Subscription
 app.delete('/api/admin/products/:id', authMiddleware('admin'), async (req, res) => {
   try {

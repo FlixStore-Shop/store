@@ -691,6 +691,9 @@ function renderAdminProducts(products) {
             <a href="/product/${p.slug}" target="_blank" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="View on Live Storefront">
               👁️ View
             </a>
+            <button onclick="editProduct(${p.id})" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#2563eb; border-color:#bfdbfe; background:#eff6ff;" title="Edit Subscription">
+              ✏️ Edit
+            </button>
             <button onclick="deleteProduct(${p.id}, '${safeTitle}')" class="btn-secondary" style="padding:4px 8px; font-size:0.74rem; color:#dc2626; border-color:#fecaca; background:#fef2f2;" title="Delete Subscription">
               🗑️ Delete
             </button>
@@ -1416,6 +1419,94 @@ function syncLivePreview() {
   }
 }
 
+let editingProductId = null;
+
+async function editProduct(productId) {
+  const p = adminState.products.find(item => item.id === productId);
+  if (!p) {
+    showToast('Product not found in state', true);
+    return;
+  }
+
+  editingProductId = productId;
+  openAddProductModal();
+
+  // Populate form inputs
+  const form = document.getElementById('createProductForm');
+  if (form) {
+    if (form.title) form.title.value = p.title || '';
+    if (form.slug) form.slug.value = p.slug || '';
+    if (form.category_id) form.category_id.value = p.category_id || 1;
+    if (form.logo_url) form.logo_url.value = p.logo_url || '';
+    if (form.tagline) form.tagline.value = p.tagline || '';
+    if (form.description) form.description.value = p.description || '';
+    if (form.badge) form.badge.value = p.badge || 'Official Verified';
+    if (form.delivery_time) form.delivery_time.value = p.delivery_time || '60s Instant Delivery';
+    if (form.warranty) form.warranty.value = p.warranty || 'Full Duration Warranty';
+    if (form.stock_status) form.stock_status.value = p.stock_status || 'in_stock';
+  }
+
+  // Update alignments
+  if (p.title_align) setTitleAlign(p.title_align);
+  if (p.desc_align) setDescAlign(p.desc_align);
+  if (p.tagline_align) setTaglineAlign(p.tagline_align);
+
+  // Checkboxes
+  const feat = document.getElementById('prodIsFeatured');
+  if (feat) feat.checked = Boolean(p.is_featured);
+  const trend = document.getElementById('prodIsTrending');
+  if (trend) trend.checked = Boolean(p.is_trending);
+  const best = document.getElementById('prodIsBestseller');
+  if (best) best.checked = Boolean(p.is_bestseller);
+
+  // Features list
+  const featInput = document.getElementById('prodFeaturesInput');
+  if (featInput) {
+    let fl = p.features_list;
+    if (typeof fl === 'string') {
+      try { fl = JSON.parse(fl); } catch(e) { fl = [fl]; }
+    }
+    if (Array.isArray(fl)) featInput.value = fl.join('\n');
+  }
+
+  // Instructions
+  const instInput = document.getElementById('prodInstructionsInput');
+  if (instInput) instInput.value = p.instructions || '';
+
+  // Load plans for this product via /api/products/${p.slug}
+  try {
+    const res = await fetch(`/api/products/${p.slug}`);
+    const data = await res.json();
+    if (data.success && data.product && data.product.plans && data.product.plans.length > 0) {
+      studioPlans = data.product.plans.map((pl, idx) => ({
+        id: 'plan_' + (idx + 1),
+        name: pl.plan_name,
+        tier: pl.tier_type || 'private',
+        months: pl.duration_months || 1,
+        label: pl.duration_label || `${pl.duration_months || 1} Month`,
+        bdt: pl.price_bdt,
+        usd: pl.price_usd,
+        origBdt: pl.original_price_bdt,
+        origUsd: pl.original_price_usd,
+        devices: pl.device_limit || '1 Device',
+        popular: Boolean(pl.is_popular),
+        features: pl.plan_features || 'Full Access'
+      }));
+      renderPlansList();
+    }
+  } catch(err) {
+    console.warn('Could not fetch product plans:', err);
+  }
+
+  // Update modal header & button text
+  const modalHeader = document.querySelector('#addProductModal .studio-header h2');
+  if (modalHeader) modalHeader.textContent = 'Edit Subscription Offering';
+  const submitBtn = document.getElementById('submitProductBtn');
+  if (submitBtn) submitBtn.innerHTML = '<span>✏️ Update Subscription</span>';
+
+  syncLivePreview();
+}
+
 function openAddProductModal() {
   setTimeout(() => {
     initDescKeyBindings();
@@ -1427,11 +1518,18 @@ function openAddProductModal() {
   studioSlugManuallyEdited = false;
   renderBrandPresets();
 
-  if (studioPlans.length === 0) {
-    studioPlans = [
-      { id: 'plan_1', name: '1 Month Premium Plan', tier: 'private', months: 1, label: '1 Month', bdt: 299, usd: 2.50, origBdt: 500, origUsd: 4.20, devices: '1 Device', popular: false, features: 'Full Access • 60s Automated Delivery' }
-    ];
-    renderPlansList();
+  if (!editingProductId) {
+    const modalHeader = document.querySelector('#addProductModal .studio-header h2');
+    if (modalHeader) modalHeader.textContent = 'Publish Subscription Offering';
+    const submitBtn = document.getElementById('submitProductBtn');
+    if (submitBtn) submitBtn.innerHTML = '<span>🚀 Publish & Synchronize Catalog</span>';
+
+    if (studioPlans.length === 0) {
+      studioPlans = [
+        { id: 'plan_1', name: '1 Month Premium Plan', tier: 'private', months: 1, label: '1 Month', bdt: 299, usd: 2.50, origBdt: 500, origUsd: 4.20, devices: '1 Device', popular: false, features: 'Full Access • 60s Automated Delivery' }
+      ];
+      renderPlansList();
+    }
   }
 
   // Set default alignment cleanly
@@ -1449,6 +1547,13 @@ function openAddProductModal() {
 function closeAddProductModal() {
   const modal = document.getElementById('addProductModal');
   if (modal) modal.style.display = 'none';
+  editingProductId = null;
+  const form = document.getElementById('createProductForm');
+  if (form) form.reset();
+  const modalHeader = document.querySelector('#addProductModal .studio-header h2');
+  if (modalHeader) modalHeader.textContent = 'Publish Subscription Offering';
+  const submitBtn = document.getElementById('submitProductBtn');
+  if (submitBtn) submitBtn.innerHTML = '<span>🚀 Publish & Synchronize Catalog</span>';
 }
 
 async function handleCreateProduct(e) {
@@ -1548,32 +1653,36 @@ async function handleCreateProduct(e) {
     }
   }
 
+  const isEditing = Boolean(editingProductId);
+  const targetUrl = isEditing ? `/api/admin/products/${editingProductId}` : '/api/admin/products';
+  const method = isEditing ? 'PUT' : 'POST';
+
   if (submitBtn) {
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span>⏳ Publishing Subscription...</span>';
+    submitBtn.innerHTML = `<span>⏳ ${isEditing ? 'Updating' : 'Publishing'} Subscription...</span>`;
   }
 
   try {
-    const json = await fetchAdminApi('/api/admin/products', {
-      method: 'POST',
+    const json = await fetchAdminApi(targetUrl, {
+      method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
     if (json && json.success) {
-      showToast('🎉 Subscription product published successfully!', false);
+      showToast(isEditing ? '🎉 Subscription updated successfully!' : '🎉 Subscription product published successfully!', false);
       closeAddProductModal();
       loadProductsList();
       loadOverviewStats();
     } else if (json) {
-      alert(`Error publishing subscription: ${json.message}`);
+      alert(`Error saving subscription: ${json.message}`);
     }
   } catch (err) {
-    console.error('Create product error:', err);
-    showToast('Network error while publishing product', true);
+    console.error('Save product error:', err);
+    showToast('Network error while saving product', true);
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
-      submitBtn.innerHTML = '<span>🚀 Publish Subscription to Catalog</span>';
+      submitBtn.innerHTML = `<span>${isEditing ? '✏️ Update Subscription' : '🚀 Publish Subscription to Catalog'}</span>`;
     }
   }
 }
@@ -1782,9 +1891,12 @@ function renderCustomers(users) {
         <td><strong style="font-size:0.95rem;">${u.order_count}</strong></td>
         <td><strong>৳${spentBDT.toLocaleString()}</strong></td>
         <td>
-          <span class="badge-tag ${isVip ? 'bestseller' : 'hot'}" style="font-size:0.72rem;">
-            ${u.role === 'admin' ? '👑 ADMIN PRO' : (isVip ? '★ VIP (5% OFF)' : 'STANDARD')}
-          </span>
+          ${u.role === 'admin'
+            ? '<span class="badge-tag" style="background:#e0e7ff; color:#4338ca; border:1px solid #c7d2fe; font-size:0.72rem;">👑 ADMIN PRO</span>'
+            : (isVip
+              ? '<span class="badge-tag bestseller" style="font-size:0.72rem;">★ VIP (5% OFF)</span>'
+              : '<span class="badge-tag" style="background:#f1f5f9; color:#475569; border:1px solid #e2e8f0; font-size:0.72rem;">STANDARD</span>')
+          }
         </td>
         <td>
           <select onchange="updateUserRole(${u.id}, this.value)" style="background:#ffffff; color:#0f172a; border:1px solid #cbd5e1; padding:4px 8px; border-radius:6px; font-size:0.75rem;">
